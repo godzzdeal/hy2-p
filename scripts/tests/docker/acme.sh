@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 test_acme_gateway() {
+  # backup restarts the panel and invalidates the previous session.
+  curl -fsS -c "$WORK/cookies" -H "Content-Type: application/json" -H "X-Panel-Request: 1" \
+    --data '{"username":"admin","password":"integration-test-password-only"}' "$URL/api/login" >/dev/null
   # Engine stays stopped: no public CA orders are submitted by this test.
   curl -fsS -b "$WORK/cookies" -H 'X-Panel-Request: 1' -X POST "$URL/api/core/stop" >/dev/null
   jq -n --arg config 'listen: 127.0.0.1:0
