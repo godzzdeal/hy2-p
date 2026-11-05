@@ -49,10 +49,7 @@ tls:
 curl -fsS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
   -X PUT --data-binary "@$WORK/settings.json" "$url/api/settings" >/dev/null
 curl -fsS -b "$WORK/cookies" -H 'X-Panel-Request: 1' -X POST "$url/api/core/start" >/dev/null
-manager restart
-# Sessions intentionally expire on restart; sign in again.
-curl -fsS -c "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
-  --data '{"username":"admin","password":"integration-test-password-only"}' "$url/api/login" >/dev/null
+wait_core() {
 core_running=false
 for ((attempt=0; attempt<45; attempt++)); do
   if curl -fsS -b "$WORK/cookies" "$url/api/core" | jq -e '.running == true and .watchdog.desiredRunning == true' >/dev/null; then
@@ -60,7 +57,17 @@ for ((attempt=0; attempt<45; attempt++)); do
   fi
   sleep 1
 done
-[[ $core_running == true ]] || { printf 'Core did not resume after panel restart.\n' >&2; exit 1; }
+[[ $core_running == true ]] || {
+ curl -fsS -b "$WORK/cookies" "$url/api/core" >&2 || true
+ printf "Core did not become ready.\n" >&2; return 1
+ }
+}
+wait_core
+manager restart
+# Sessions intentionally expire on restart; sign in again.
+curl -fsS -c "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
+  --data '{"username":"admin","password":"integration-test-password-only"}' "$url/api/login" >/dev/null
+wait_core
 manager backup
 snapshot=$(sudo find "$ROOT/backups" -name data.tar.gz -print -quit)
 sudo tar -tzf "$snapshot" | grep -q './secrets/users.key'

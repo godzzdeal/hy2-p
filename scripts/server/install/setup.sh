@@ -4,6 +4,8 @@ install_panel() {
   [[ ! -f $ROOT/current ]] || die "Панель уже установлена. Используйте sudo hy2-panel update."
   mkdir -p -- "$ROOT/certs" "$ROOT/backups"
   chmod 700 "$ROOT" "$ROOT/backups"
+  chown root:10001 "$ROOT/certs"
+  chmod 750 "$ROOT/certs"
   if [[ ! -f $ROOT/.env ]]; then configure_installation; fi
   if [[ -e $launcher || -L $launcher ]]; then
     [[ -L $launcher && $(readlink -- "$launcher") == "$ROOT/hy2-panel" ]] ||
