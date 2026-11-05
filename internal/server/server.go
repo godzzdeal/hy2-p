@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"golang.org/x/crypto/bcrypt"
+	"hy2-panel/internal/acmehttp/gateway"
 	"hy2-panel/internal/auth"
 	"hy2-panel/internal/certificates"
 	"hy2-panel/internal/configuration"
@@ -77,9 +78,13 @@ func Run() error {
 	if err != nil {
 		return err
 	}
+	if os.Getenv("PANEL_CONTAINER") == "true" {
+		challenge = gateway.Server(web.Active().Host, web.Active().ChallengePort, challenge, config)
+	}
 	public.TLSConfig = tlsConfig
 	internalMux := http.NewServeMux()
 	internalMux.HandleFunc("GET /health", func(writer http.ResponseWriter, request *http.Request) { writer.WriteHeader(http.StatusNoContent) })
+	internalMux.HandleFunc("GET /deployment", gateway.Metadata(config))
 	internalMux.HandleFunc("POST /auth", users.Authenticate)
 	internal := httpServer("127.0.0.1:8081", internalMux)
 	failures := make(chan error, 3)

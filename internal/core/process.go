@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"gopkg.in/yaml.v3"
+	"hy2-panel/internal/acmehttp"
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/core/supervision"
 	"hy2-panel/internal/core/update"
@@ -66,11 +67,7 @@ func (handler *Handler) start() error {
 	}
 	var document map[string]any
 	yaml.Unmarshal([]byte(settings.Config), &document)
-	if acmeConfig, ok := document["acme"].(map[string]any); ok {
-		if directory, _ := acmeConfig["dir"].(string); directory == "" {
-			acmeConfig["dir"] = filepath.Join(handler.Data, "acme-hy2")
-		}
-	}
+	acmehttp.Prepare(document, handler.Data, os.Getenv("PANEL_CONTAINER") == "true")
 	if settings.AuthMode != "native" {
 		document["auth"] = map[string]any{"type": "http", "http": map[string]any{"url": "http://127.0.0.1:8081/auth"}}
 	}

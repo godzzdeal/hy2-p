@@ -19,4 +19,6 @@ export const INTERFACE = {
   "Список пользователей": "User list",
   "Параметры Hysteria2": "Hysteria2 settings",
   "Обновление ядра": "Engine update",
+  "ACME продлевает сертификаты, пока ядро работает. В Docker HTTP-проверка панели и ядра использует общий внешний TCP-порт 80. После её включения выполните sudo hy2-panel restart. TLS-проверка требует отдельного проброса TCP 443; DNS-проверка не занимает порты.":
+    "ACME renews certificates while the engine is running. In Docker, HTTP validation shares public TCP port 80 between the panel and engine. Run sudo hy2-panel restart after enabling it. TLS validation requires a separate TCP 443 mapping; DNS validation uses no inbound ports.",
 };

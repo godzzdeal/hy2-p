@@ -7,6 +7,7 @@ import { readField, updateField } from "./model";
 import { TRANSPORT_SECTIONS, CERTIFICATE_SECTIONS, NETWORK_SECTIONS } from "./schema";
 import { CertificateMode, CertificateUpload, CertificateStatus } from "./certificates";
 import { cn } from "@/shared/lib";
+import { useWebSettings } from "@/features/admin/model";
 import { useUiStore } from "@/app/state";
 const SECTIONS = [...TRANSPORT_SECTIONS, ...CERTIFICATE_SECTIONS, ...NETWORK_SECTIONS];
 export function ConfigurationForm({
@@ -17,6 +18,7 @@ export function ConfigurationForm({
   onChange: (value: IConfiguration) => void;
 }) {
   const { t } = useTranslation();
+  const web = useWebSettings();
   const [section, setSection] = useState("server");
   const document = useMemo(() => parseDocument(value.config), [value.config]);
   const showError = useUiStore((state) => state.showError);
@@ -32,6 +34,8 @@ export function ConfigurationForm({
   }
   const isNative = value.authMode === "native";
   const isAcme = document.has("acme");
+  const challengeType = readField(document, "acme.type");
+  const isManagedHttp = web.data?.container && (!challengeType || challengeType === "http");
   const effectiveSection = section === "tls" || section === "acme" ? (isAcme ? "acme" : "tls") : section;
   const active = SECTIONS.find((item) => item.id === effectiveSection);
   return (
@@ -96,6 +100,9 @@ export function ConfigurationForm({
           {active?.fields
             .filter((field) => !field.when || readField(document, field.when.path) === field.when.value)
             .filter(() => effectiveSection !== "auth" || isNative)
+            .filter(
+              (field) => !isManagedHttp || !["acme.http.altPort", "acme.listenHost"].includes(field.path),
+            )
             .map((field) => (
               <ConfigField
                 key={field.path}

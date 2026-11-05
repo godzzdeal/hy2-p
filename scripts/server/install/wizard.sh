@@ -39,8 +39,8 @@ configure_installation() {
   else
     port=${port:-8080}
   fi
-  [[ $port =~ ^[0-9]{4,5}$ && $port -ge 1024 && $port -le 65535 && $port != 8081 && $port != 9999 && $port != 9080 ]] ||
-    die "Выберите порт 1024–65535, кроме 8081, 9080 и 9999."
+  [[ $port =~ ^[1-9][0-9]{3,4}$ && $port -ge 1024 && $port -le 65535 && $port != 8081 && $port != 9999 && $port != 9080 && $port != 9090 ]] ||
+    die "Выберите порт 1024–65535, кроме 8081, 9080, 9090 и 9999."
   cat >"$ROOT/.env" <<EOF
 PANEL_ADMIN_USERNAME=$username
 PANEL_ADMIN_PASSWORD=$password

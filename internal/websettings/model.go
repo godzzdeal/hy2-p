@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
+	"hy2-panel/internal/acmehttp"
 	"net"
 	"net/url"
 	"os"
@@ -28,7 +29,7 @@ func Validate(config Config) error {
 	if config.Host != "127.0.0.1" && config.Host != "0.0.0.0" && config.Host != "::" && config.Host != "::1" {
 		return errors.New("выберите допустимый адрес прослушивания")
 	}
-	if config.Port < 1 || config.Port > 65535 || config.Port == 8081 || config.Port == 9999 {
+	if config.Port < 1 || config.Port > 65535 || config.Port == 8081 || config.Port == 9999 || config.Port == acmehttp.CorePort {
 		return errors.New("порт панели недопустим или зарезервирован")
 	}
 	if config.Mode != "http" && config.Mode != "manual" && config.Mode != "acme" {
@@ -57,7 +58,10 @@ func Validate(config Config) error {
 		if config.Email == "" {
 			return errors.New("для ACME укажите email")
 		}
-		if config.ChallengePort < 1 || config.ChallengePort > 65535 || config.ChallengePort == config.Port || config.ChallengePort == 8081 || config.ChallengePort == 9999 {
+
+	}
+	if config.Mode == "acme" || os.Getenv("PANEL_CONTAINER") == "true" {
+		if config.ChallengePort < 1 || config.ChallengePort > 65535 || config.ChallengePort == config.Port || config.ChallengePort == 8081 || config.ChallengePort == 9999 || config.ChallengePort == acmehttp.CorePort {
 			return errors.New("неверный HTTP-порт ACME")
 		}
 	}

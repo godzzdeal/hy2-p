@@ -46,4 +46,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Install from GitHub, start core, restart and back up
-        run: bash scripts/tests/docker.sh
+        run: bash scripts/tests/docker/run.sh

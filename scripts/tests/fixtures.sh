@@ -26,6 +26,7 @@ engine() {
     volume)
       if [[ $* == *--format* ]]; then printf '%s\n' "$ROOT"; fi ;;
     inspect) printf 'true\n' ;;
+    exec) printf '{"httpChallenge":true}\n' ;;
     run)
       if [[ $* == *'--entrypoint tar'* ]]; then
         [[ $BACKUP_FAIL != true ]] || return 1

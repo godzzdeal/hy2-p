@@ -40,7 +40,7 @@ export function certificateMode(source: string, mode: string): string {
         domains: [],
         email: "",
         ca: "letsencrypt",
-        type: "dns",
+        type: "http",
         dir: "/data/acme-hy2",
         dns: { name: "cloudflare", config: {} },
       });

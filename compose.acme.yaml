@@ -1,4 +1,4 @@
-# Optional HTTP-01 challenge for the web panel.
+# Optional HTTP-01 challenge for the web panel and Hysteria2 core.
 # Domain must point to this host, with public TCP 80 reachable.
 services:
   panel:
