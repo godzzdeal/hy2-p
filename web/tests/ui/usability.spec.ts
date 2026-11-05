@@ -22,6 +22,9 @@ test("keyboard selection, resets and saving produce clean ordered YAML", async (
   await page.keyboard.press("Home");
   await expect(page.getByRole("option", { name: "По умолчанию", exact: true })).toBeFocused();
   await page.keyboard.press("Enter");
+  page.once("dialog", (dialog) => void dialog.dismiss());
+  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Конфигурация сервера", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Сохранить конфигурацию", exact: true }).click();
   await expect(
     page.getByText("Сохранено. Перезапустите ядро для применения.", { exact: true }),

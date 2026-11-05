@@ -7,8 +7,13 @@ export function useConfigurationDraft(initial: IConfiguration) {
   const [draft, setDraft] = useState(initial);
   const [baseline, setBaseline] = useState(initial);
   const save = useSaveConfiguration();
+  const setConfigurationDirty = useUiStore((state) => state.setConfigurationDirty);
   const showError = useUiStore((state) => state.showError);
   const isDirty = JSON.stringify(draft) !== JSON.stringify(baseline);
+  useEffect(() => {
+    setConfigurationDirty(isDirty);
+    return () => setConfigurationDirty(false);
+  }, [isDirty, setConfigurationDirty]);
   useEffect(() => {
     if (!isDirty) return;
     const onLeave = (event: BeforeUnloadEvent) => event.preventDefault();

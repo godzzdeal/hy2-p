@@ -1,4 +1,5 @@
 export const INTERFACE = {
+  "Есть несохранённые изменения. Уйти без сохранения?": "You have unsaved changes. Leave without saving?",
   Настройки: "Settings",
   "Запуск, журнал и обновление Hysteria2.": "Start, monitor and update Hysteria2.",
   "Обновление Hysteria2": "Update Hysteria2",
