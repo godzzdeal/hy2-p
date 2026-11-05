@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { TPage } from "@/app/navigation";
+import { type TPage } from "@/app/navigation";
 interface IUiState {
   theme: "system" | "light" | "dark";
   setTheme: (theme: "system" | "light" | "dark") => void;

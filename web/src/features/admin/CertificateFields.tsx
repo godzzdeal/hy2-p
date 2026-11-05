@@ -1,5 +1,6 @@
+import { Select, SelectOption } from "@/shared/ui/select";
 import { useTranslation } from "react-i18next";
-import type { IWebConfig } from "./model";
+import { type IWebConfig } from "./model";
 import { PemFileField } from "@/shared/security/PemFileField";
 export function CertificateFields({
   value,
@@ -15,14 +16,14 @@ export function CertificateFields({
     <div className="form-body">
       <label>
         {t("HTTPS веб-панели")}
-        <select
+        <Select
           value={value.mode}
-          onChange={(event) => onChange({ ...value, mode: event.target.value as IWebConfig["mode"] })}
+          onValueChange={(nextValue) => onChange({ ...value, mode: nextValue as IWebConfig["mode"] })}
         >
-          <option value="http">{t("HTTP (локально или за reverse proxy)")}</option>
-          <option value="manual">{t("HTTPS \u2014 собственный сертификат")}</option>
-          <option value="acme">{t("HTTPS \u2014 ACME с автопродлением")}</option>
-        </select>
+          <SelectOption value="http">{t("HTTP через обратный прокси или локально")}</SelectOption>
+          <SelectOption value="manual">{t("HTTPS со своим сертификатом")}</SelectOption>
+          <SelectOption value="acme">{t("HTTPS с автоматическим сертификатом")}</SelectOption>
+        </Select>
       </label>
       {value.mode !== "http" && (
         <label>

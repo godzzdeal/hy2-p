@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import type { IConfiguration } from "@/features/configuration/model";
+import { type IConfiguration } from "@/features/configuration/model";
 interface IConnectionFields {
   value: IConfiguration;
   onChange: (value: IConfiguration) => void;

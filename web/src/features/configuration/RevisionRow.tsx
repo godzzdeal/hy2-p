@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { ChevronRight, History } from "lucide-react";
-import type { IConfiguration, IRevision } from "./model";
+import { type IConfiguration, type IRevision } from "./model";
 export function RevisionRow({
   revision,
   onRestore,

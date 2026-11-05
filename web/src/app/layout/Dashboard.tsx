@@ -53,7 +53,7 @@ export function Dashboard() {
           </Suspense>
           <footer>
             <span>HY2 / CONTROL</span>
-            <span>Hysteria 2 · Self-hosted</span>
+            <span>Hysteria 2</span>
           </footer>
         </div>
       </main>

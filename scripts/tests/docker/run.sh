@@ -7,6 +7,7 @@ WORK=$(mktemp -d /tmp/hy2-docker-test.XXXXXX)
 ROOT=$WORK/install
 cleanup() {
   local result=$?
+  if [[ -n ${CLIENT_CONTAINER:-} ]]; then sudo docker rm -f "$CLIENT_CONTAINER" >/dev/null 2>&1 || true; fi
   if [[ $(sudo docker volume inspect --format '{{index .Labels "io.hy2-panel.install-dir"}}' hy2-panel_panel-data 2>/dev/null || true) == "$ROOT" ]]; then
     if [[ $result != 0 ]]; then sudo docker ps -a; sudo docker logs hy2-panel-panel-1 || true; fi
     local sha

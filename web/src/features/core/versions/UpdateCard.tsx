@@ -1,3 +1,4 @@
+import { Select, SelectOption } from "@/shared/ui/select";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Download, RefreshCw, Undo2 } from "lucide-react";
@@ -22,7 +23,7 @@ export function UpdateCard() {
       <div className="card-header">
         <div>
           <span className="eyebrow">{t("ОБНОВЛЕНИЕ ЯДРА")}</span>
-          <h2>{t("Выберите свою версию")}</h2>
+          <h2>{t("Обновление Hysteria2")}</h2>
         </div>
         <span className="verified-label">SHA-256</span>
       </div>
@@ -30,7 +31,7 @@ export function UpdateCard() {
         <div className="version-summary">
           <div>
             <span>{t("Установленная")}</span>
-            <strong>{status.data?.current.replace("app/", "") || "—"}</strong>
+            <strong>{status.data?.current.replace("app/", "") || t("Не установлена")}</strong>
           </div>
           <div>
             <span>{t("Для отката")}</span>
@@ -38,18 +39,18 @@ export function UpdateCard() {
           </div>
         </div>
         <label htmlFor="core-version">
-          {t("Стабильный релиз")}
-          <select
+          {t("Версия Hysteria2")}
+          <Select
             id="core-version"
             value={version}
             disabled={versions.isPending || isBusy || !!versions.error}
-            onChange={(event) => setSelected(event.target.value)}
+            onValueChange={(nextValue) => setSelected(nextValue)}
           >
-            <option value="">{t("Выберите версию")}</option>
+            <SelectOption value="">{t("Выберите версию")}</SelectOption>
             {versions.data?.map((release) => (
               <ReleaseOption key={release.tag} release={release} current={status.data?.current ?? ""} />
             ))}
-          </select>
+          </Select>
         </label>
         {versions.isPending && (
           <p className="muted" role="status">
@@ -93,7 +94,7 @@ export function UpdateCard() {
         </div>
         {status.data && <UpdateProgress status={status.data} />}
         <p className="caption">
-          {t("Официальный файл \u00B7 проверка SHA-256 \u00B7 сохранение предыдущего ядра")}
+          {t("Проверяем подлинность файла и сохраняем предыдущую версию для отката.")}
         </p>
       </div>
       {confirmation && (

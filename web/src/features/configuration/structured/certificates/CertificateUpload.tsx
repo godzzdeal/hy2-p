@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import type { ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { certificateApi } from "@/features/configuration/structured/model/certificate-api";
 import { useUiStore } from "@/app/state";

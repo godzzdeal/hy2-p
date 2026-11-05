@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import type { FormEvent } from "react";
+import { type FormEvent } from "react";
 import { useAccountChange } from "@/features/admin/model";
 import { PasswordField } from "@/shared/security";
 export function AccountForm({ username }: { username: string }) {

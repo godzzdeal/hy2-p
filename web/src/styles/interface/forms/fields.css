@@ -13,8 +13,8 @@ label small {
 .field-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-4);
-  padding: var(--space-4);
+  gap: var(--space-3);
+  padding: var(--space-3);
 }
 .field-grid label {
   margin: 0;

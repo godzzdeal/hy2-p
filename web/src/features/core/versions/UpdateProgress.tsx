@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Check, ShieldCheck, TriangleAlert } from "lucide-react";
-import type { IUpdateStatus } from "@/features/core/model/updates";
+import { type IUpdateStatus } from "@/features/core/model/updates";
 import { UPDATE_LABELS } from "@/features/core/model/updates";
 import { cn } from "@/shared/lib";
 export function UpdateProgress({ status }: { status: IUpdateStatus }) {

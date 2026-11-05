@@ -1,5 +1,5 @@
 import { request, API_ROUTES } from "@/shared/http";
-import type { IAccount, IAccountChange, IWebConfig, IWebSettings } from "./admin-types";
+import { type IAccount, type IAccountChange, type IWebConfig, type IWebSettings } from "./admin-types";
 export const adminApi = {
   account: () => request<IAccount>(API_ROUTES.adminAccount),
   changeAccount: (body: IAccountChange) =>

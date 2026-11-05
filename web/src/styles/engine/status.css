@@ -6,7 +6,7 @@
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-5);
+  padding: var(--space-4);
 }
 .engine-summary h2 {
   font-size: 24px;
@@ -18,8 +18,8 @@
   font-size: var(--text-small);
 }
 .engine-symbol {
-  width: var(--space-16);
-  height: var(--space-16);
+  width: var(--space-12);
+  height: var(--space-12);
   border-radius: var(--radius-lg);
   display: grid;
   place-items: center;
@@ -57,7 +57,7 @@
   justify-content: space-between;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--space-4);
   background: var(--input);
   border-top: 1px solid var(--line);
   flex-wrap: wrap;
@@ -80,52 +80,9 @@
 .documentation-link:hover {
   color: var(--foreground);
 }
-.engine-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(256px, 1fr);
-  gap: var(--space-4);
-  align-items: start;
-}
-.engine-details {
-  min-width: 0;
-}
-.safety-card {
-  padding: var(--space-5);
-  background: var(--surface);
-}
-.safety-card > svg {
-  color: var(--accent);
-  margin-bottom: var(--space-4);
-}
-.safety-card h2 {
-  font-size: 24px;
-  margin-bottom: var(--space-4);
-}
-.safety-card h3 {
-  margin-bottom: var(--space-2);
-}
-.safety-card p {
-  color: var(--muted);
-  font-size: var(--text-small);
-  line-height: 1.9;
-}
-.safety-divider {
-  height: 1px;
-  background: var(--line);
-  margin: var(--space-6) 0;
-}
-@media (max-width: 1200px) {
-  .engine-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-  }
-  .safety-card {
-    display: none;
-  }
-}
 @media (max-width: 760px) {
   .engine-summary {
-    padding: var(--space-5);
+    padding: var(--space-4);
     gap: var(--space-4);
     grid-template-columns: auto minmax(0, 1fr);
   }
@@ -137,7 +94,7 @@
     justify-self: start;
   }
   .engine-controls {
-    padding: var(--space-4) var(--space-5);
+    padding: var(--space-3) var(--space-4);
   }
   .engine-controls .row-actions {
     width: 100%;

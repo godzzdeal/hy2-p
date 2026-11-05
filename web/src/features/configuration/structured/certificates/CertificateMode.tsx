@@ -1,3 +1,4 @@
+import { Select, SelectOption } from "@/shared/ui/select";
 import { useTranslation } from "react-i18next";
 import { parseDocument } from "yaml";
 import { certificateMode } from "@/features/configuration/structured/model";
@@ -14,13 +15,13 @@ export function CertificateMode({
     <div className="config-note">
       <label>
         {t("Сертификат Hysteria2")}
-        <select
+        <Select
           value={isAcme ? "acme" : "tls"}
-          onChange={(event) => onChange(certificateMode(source, event.target.value))}
+          onValueChange={(nextValue) => onChange(certificateMode(source, nextValue))}
         >
-          <option value="tls">{t("Собственный TLS-сертификат")}</option>
-          <option value="acme">{t("ACME \u2014 автоматический выпуск и продление")}</option>
-        </select>
+          <SelectOption value="tls">{t("Собственный TLS-сертификат")}</SelectOption>
+          <SelectOption value="acme">{t("Автоматический сертификат ACME")}</SelectOption>
+        </Select>
       </label>
       <p>
         {t(

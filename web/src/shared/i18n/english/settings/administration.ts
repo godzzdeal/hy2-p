@@ -7,7 +7,6 @@ export const ADMINISTRATION: Record<string, string> = {
   "Публичный URL панели и подписок": "Public panel and subscription URL",
   "Публичный адрес": "Public address",
   "Публичный адрес, порт и TLS-сертификат.": "Public address, port and TLS certificate.",
-  "Пустое значение — бессрочный доступ.": "Leave empty for access without expiry.",
   "Путь к GeoIP": "GeoIP path",
   "Путь к GeoSite": "GeoSite path",
   "Путь к ключу ECH": "ECH key path",
@@ -85,7 +84,6 @@ export const ADMINISTRATION: Record<string, string> = {
   "Тип обфускации": "Obfuscation type",
   Трафик: "Traffic",
   "Трафик ": "Traffic ",
-  "Трафик · ": "Traffic · ",
   "Трафик обновляется раз в 5 секунд. При аварийном завершении ядра последние неопросенные байты могут не попасть в учёт.":
     "Traffic is sampled every 5 seconds. If the engine crashes, bytes since the last sample may not be counted.",
   "Требуется вмешательство": "Attention required",

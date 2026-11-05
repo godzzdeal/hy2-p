@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { Component } from "react";
-import type { ErrorInfo, ReactNode } from "react";
+import { type ErrorInfo, type ReactNode } from "react";
 interface IErrorState {
   hasError: boolean;
 }

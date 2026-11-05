@@ -28,7 +28,11 @@ jobs:
       - run: go vet ./...
       - run: bun install --frozen-lockfile
         working-directory: web
-      - run: bun run lint && bun run build
+      - run: bun run test && bun run lint && bun run build
+        working-directory: web
+      - run: bunx playwright install --with-deps chromium
+        working-directory: web
+      - run: bun run test:ui
         working-directory: web
       - name: Check deployment scripts
         run: |

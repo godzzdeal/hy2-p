@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import type { FormEvent } from "react";
+import { type FormEvent } from "react";
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { LanguageSelect } from "@/shared/i18n";
 import { useSession } from "./use-session";
@@ -40,7 +40,7 @@ export function LoginPage() {
           />
         </label>
         <label>
-          {t("Пароль администратора")}
+          {t("Пароль")}
           <input
             autoFocus
             type="password"
@@ -55,7 +55,7 @@ export function LoginPage() {
           <ArrowUpRight size={20} aria-hidden />
         </button>
       </form>
-      <small>Hysteria 2 · Self-hosted control panel</small>
+      <small>Hysteria 2</small>
     </div>
   );
 }

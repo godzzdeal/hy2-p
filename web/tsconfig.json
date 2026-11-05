@@ -17,12 +17,17 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@config-schema": [
+        "../internal/configuration/ordering/order.json"
       ]
     },
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "resolveJsonModule": true
   },
   "include": [
-    "src"
+    "src",
+    "tests"
   ]
 }

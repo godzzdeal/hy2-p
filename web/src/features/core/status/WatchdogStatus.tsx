@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { ShieldCheck } from "lucide-react";
-import type { IWatchdog } from "@/features/core/model/watchdog-types";
+import { type IWatchdog } from "@/features/core/model/watchdog-types";
 import { WATCHDOG_LABELS } from "@/features/core/model/watchdog-types";
 export function WatchdogStatus({ watchdog }: { watchdog?: IWatchdog }) {
   const { t } = useTranslation();

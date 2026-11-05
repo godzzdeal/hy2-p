@@ -1,3 +1,4 @@
+import { Select, SelectOption } from "@/shared/ui/select";
 import { useTranslation } from "react-i18next";
 import { Activity, LogOut, Server } from "lucide-react";
 import { NAVIGATION } from "@/app/navigation";
@@ -38,11 +39,11 @@ export function Sidebar() {
         <LanguageSelect />
         <label className="theme-control">
           {t("Тема")}
-          <select value={theme} onChange={(event) => setTheme(event.target.value as typeof theme)}>
-            <option value="system">{t("Системная")}</option>
-            <option value="light">{t("Светлая")}</option>
-            <option value="dark">{t("Тёмная")}</option>
-          </select>
+          <Select value={theme} onValueChange={(nextValue) => setTheme(nextValue as typeof theme)}>
+            <SelectOption value="system">{t("Системная")}</SelectOption>
+            <SelectOption value="light">{t("Светлая")}</SelectOption>
+            <SelectOption value="dark">{t("Тёмная")}</SelectOption>
+          </Select>
         </label>
         <div className="version">
           <span className="status-dot" />

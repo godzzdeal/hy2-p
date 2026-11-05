@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import type { IConfiguration } from "@/features/configuration/model";
+import { type IConfiguration } from "@/features/configuration/model";
 import { configurationApi } from "@/features/configuration/model";
 import { QUERY_KEYS } from "@/shared/http";
 import { Modal, QueryState } from "@/shared/ui";

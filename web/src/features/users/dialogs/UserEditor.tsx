@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { PasswordField } from "@/shared/security";
 import { useState } from "react";
-import type { FormEvent } from "react";
-import type { IUser } from "@/features/users/model";
+import { type FormEvent } from "react";
+import { type IUser } from "@/features/users/model";
 import { useUserCommands } from "@/features/users/model";
 import { Modal } from "@/shared/ui";
 interface IUserEditor {
@@ -43,7 +43,7 @@ export function UserEditor({ user, onClose }: IUserEditor) {
         <label>
           {t("Доступ до")}
           <input type="date" value={expires} onChange={(event) => setExpires(event.target.value)} />
-          <small>{t("Пустое значение \u2014 бессрочный доступ.")}</small>
+          <small>{t("Оставьте пустым для бессрочного доступа.")}</small>
         </label>
         {user && (
           <label className="checkbox">

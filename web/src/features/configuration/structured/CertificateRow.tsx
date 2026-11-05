@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import type { ICertificateInfo } from "./model/certificate-api";
+import { type ICertificateInfo } from "./model/certificate-api";
 export function CertificateRow({ certificate }: { certificate: ICertificateInfo }) {
   const { t } = useTranslation();
   return (

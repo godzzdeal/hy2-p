@@ -1,5 +1,5 @@
 import { request, API_ROUTES } from "@/shared/http";
-import type { IConfiguration, IRevision } from "./configuration-types";
+import { type IConfiguration, type IRevision } from "./configuration-types";
 export const configurationApi = {
   read: () => request<IConfiguration>(API_ROUTES.settings),
   save: (body: IConfiguration) => request<IConfiguration>(API_ROUTES.settings, { method: "PUT", body }),

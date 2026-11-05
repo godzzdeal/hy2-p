@@ -1,5 +1,6 @@
+import { Select, SelectOption } from "@/shared/ui/select";
 import { useTranslation } from "react-i18next";
-import type { IWebConfig } from "@/features/admin/model";
+import { type IWebConfig } from "@/features/admin/model";
 export function NetworkFields({
   value,
   onChange,
@@ -12,12 +13,12 @@ export function NetworkFields({
     <div className="field-grid">
       <label>
         {t("Адрес веб-панели")}
-        <select value={value.host} onChange={(event) => onChange({ ...value, host: event.target.value })}>
-          <option value="127.0.0.1">{t("127.0.0.1 \u2014 только локально")}</option>
-          <option value="0.0.0.0">{t("0.0.0.0 \u2014 все IPv4-интерфейсы")}</option>
-          <option value="::1">{t("::1 \u2014 только локально IPv6")}</option>
-          <option value="::">{t(":: \u2014 все IPv6-интерфейсы")}</option>
-        </select>
+        <Select value={value.host} onValueChange={(nextValue) => onChange({ ...value, host: nextValue })}>
+          <SelectOption value="127.0.0.1">{t("Только локально (127.0.0.1)")}</SelectOption>
+          <SelectOption value="0.0.0.0">{t("Все IPv4 адреса (0.0.0.0)")}</SelectOption>
+          <SelectOption value="::1">{t("Только локально по IPv6 (::1)")}</SelectOption>
+          <SelectOption value="::">{t("Все IPv6 адреса (::)")}</SelectOption>
+        </Select>
       </label>
       <label>
         {t("Порт веб-панели")}

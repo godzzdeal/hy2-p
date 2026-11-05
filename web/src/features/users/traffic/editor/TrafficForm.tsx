@@ -1,9 +1,10 @@
+import { Select, SelectOption } from "@/shared/ui/select";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import type { FormEvent } from "react";
-import type { IUser } from "@/features/users/model";
+import { type FormEvent } from "react";
+import { type IUser } from "@/features/users/model";
 import { formatBytes, useAdjustTraffic } from "../model";
-import type { IUserUsage } from "../model";
+import { type IUserUsage } from "../model";
 export function TrafficForm({
   user,
   usage,
@@ -31,11 +32,11 @@ export function TrafficForm({
       </p>
       <label>
         {t("Единица измерения")}
-        <select value={unit} onChange={(event) => setUnit(Number(event.target.value))}>
-          <option value={1}>B</option>
-          <option value={1024 ** 2}>MiB</option>
-          <option value={1024 ** 3}>GiB</option>
-        </select>
+        <Select value={unit} onValueChange={(nextValue) => setUnit(Number(nextValue))}>
+          <SelectOption value={1}>B</SelectOption>
+          <SelectOption value={1024 ** 2}>MiB</SelectOption>
+          <SelectOption value={1024 ** 3}>GiB</SelectOption>
+        </Select>
       </label>
       <label>
         {t("Отправлено клиентом")}
@@ -61,7 +62,7 @@ export function TrafficForm({
         />
       </label>
       <label>
-        {t("Общий лимит (0 — без лимита)")}
+        {t("Лимит трафика (0 без ограничений)")}
         <input
           type="number"
           min={0}

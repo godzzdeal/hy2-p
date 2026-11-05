@@ -3,7 +3,7 @@ import { useUiStore } from "@/app/state";
 import { QUERY_KEYS } from "@/shared/http";
 import { updateApi } from "./update-api";
 import { UPDATE_TIMING } from "./update-types";
-import type { IUpdateStatus } from "./update-types";
+import { type IUpdateStatus } from "./update-types";
 export function useReleaseVersions() {
   return useQuery({
     queryKey: QUERY_KEYS.coreVersions,

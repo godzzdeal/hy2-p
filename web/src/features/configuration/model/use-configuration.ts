@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/shared/http";
 import { useUiStore } from "@/app/state";
 import { configurationApi } from "./configuration-api";
-import type { IConfiguration } from "./configuration-types";
+import { type IConfiguration } from "./configuration-types";
 export function useConfiguration() {
   return useQuery({
     queryKey: QUERY_KEYS.settings,

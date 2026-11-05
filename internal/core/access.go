@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"os/exec"
-	"sync"
 	"time"
 )
 
@@ -78,22 +77,6 @@ func (handler *Handler) Activate(ctx context.Context, path string, run bool) err
 		}
 	}
 }
-
-type ring struct {
-	mu   sync.Mutex
-	data string
-}
-
-func (buffer *ring) Write(payload []byte) (int, error) {
-	buffer.mu.Lock()
-	defer buffer.mu.Unlock()
-	buffer.data += string(payload)
-	if len(buffer.data) > 64000 {
-		buffer.data = buffer.data[len(buffer.data)-64000:]
-	}
-	return len(payload), nil
-}
-func (buffer *ring) Read() string { buffer.mu.Lock(); defer buffer.mu.Unlock(); return buffer.data }
 
 func (handler *Handler) Version() string { return handler.Updates.Current().Version }
 func (handler *Handler) Restart(ctx context.Context) error {

@@ -1,5 +1,5 @@
 import { request, API_ROUTES } from "@/shared/http";
-import type { ITraffic, IUserUsage } from "./traffic-types";
+import { type ITraffic, type IUserUsage } from "./traffic-types";
 export const trafficApi = {
   read: () => request<ITraffic>(API_ROUTES.traffic),
   adjust: ({

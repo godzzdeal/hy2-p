@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { UserDialogs } from "@/features/users";
-import type { TUserDialog } from "@/features/users";
+import { type TUserDialog } from "@/features/users";
 import { useConfiguration } from "@/features/configuration/model";
 import { useUsers } from "@/features/users/model";
 import { NETWORK } from "@/shared/http";
@@ -40,6 +40,13 @@ export function UsersPage() {
       {configuration.data?.authMode === "native" && (
         <p className="info-note">
           {t("Панель не подменяет auth. Пользователи и лимиты панели не управляют внешней аутентификацией.")}
+        </p>
+      )}
+      {configuration.data && configuration.data.authMode !== "native" && (
+        <p className="info-note">
+          {t(
+            "Пользователи хранятся в панели и работают сразу после добавления. Для Happ скопируйте подписку или откройте QR-код.",
+          )}
         </p>
       )}
       <section

@@ -22,8 +22,8 @@ aside {
 .brand-mark {
   display: grid;
   place-items: center;
-  width: var(--space-12);
-  height: var(--space-12);
+  width: var(--space-8);
+  height: var(--space-8);
   border-radius: var(--radius-md);
   color: var(--accent-text);
   background: var(--accent);
@@ -39,7 +39,7 @@ aside {
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-4) 0;
-  margin: var(--space-8) 0;
+  margin: var(--space-4) 0;
   border-block: 1px solid var(--line);
 }
 .workspace small {

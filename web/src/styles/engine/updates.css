@@ -1,6 +1,6 @@
 .version-card .card-header {
   align-items: center;
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--space-4);
 }
 .version-card h2 {
   margin-top: var(--space-2);
@@ -15,14 +15,14 @@
   white-space: nowrap;
 }
 .version-body {
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--space-4);
 }
 .version-summary {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-4);
-  margin-bottom: var(--space-6);
-  padding-bottom: var(--space-6);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--line);
 }
 .version-summary span {
@@ -46,7 +46,7 @@
   display: flex;
   gap: var(--space-3);
   flex-wrap: wrap;
-  margin: var(--space-6) 0;
+  margin: var(--space-3) 0;
 }
 .version-actions .primary {
   flex: 1;
@@ -98,7 +98,7 @@
   display: flex;
   justify-content: flex-end;
   gap: var(--space-3);
-  margin-top: var(--space-6);
+  margin-top: var(--space-3);
   flex-wrap: wrap;
 }
 @media (max-width: 760px) {

@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import type { FormEvent } from "react";
+import { type FormEvent } from "react";
 import { ANNOUNCEMENT_LIMIT, MAX_UPDATE_HOURS, useSaveAnnouncement } from "./model";
-import type { IAnnouncement } from "./model";
+import { type IAnnouncement } from "./model";
 export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
   const { t } = useTranslation();
   const [draft, setDraft] = useState(initial);

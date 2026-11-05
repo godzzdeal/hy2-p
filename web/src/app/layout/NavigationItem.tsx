@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import type { NAVIGATION } from "@/app/navigation";
+import { type NAVIGATION } from "@/app/navigation";
 import { useUiStore } from "@/app/state";
 import { cn } from "@/shared/lib";
 interface INavigationItem {

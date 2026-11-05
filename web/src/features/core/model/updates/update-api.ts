@@ -1,5 +1,5 @@
 import { request, API_ROUTES } from "@/shared/http";
-import type { IReleaseVersion, IUpdateStatus } from "./update-types";
+import { type IReleaseVersion, type IUpdateStatus } from "./update-types";
 export const updateApi = {
   versions: () => request<IReleaseVersion[]>(API_ROUTES.coreVersions),
   status: () => request<IUpdateStatus>(API_ROUTES.coreUpdate),

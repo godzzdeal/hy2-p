@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { Gauge, QrCode, Trash2 } from "lucide-react";
-import type { IUser } from "@/features/users/model";
+import { type IUser } from "@/features/users/model";
 import { isUserActive } from "@/features/users/model";
-import type { IUserUsage } from "@/features/users/traffic/model";
+import { type IUserUsage } from "@/features/users/traffic/model";
 import { ConnectionBadge, UsageCell } from "@/features/users/traffic";
 import { cn, formatDate } from "@/shared/lib";
 export interface IUserActions {

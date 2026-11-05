@@ -6,7 +6,7 @@ export function ConnectionBadge({ online, isAvailable }: { online: number; isAva
     <span className={cn("badge", isAvailable && online > 0 ? "green" : "gray")}>
       <i />
       {!isAvailable ? t("Нет данных") : online > 0 ? t("В сети") : t("Не в сети")}
-      {isAvailable && online > 1 && <> · {online}</>}
+      {isAvailable && online > 1 && <> ({online})</>}
     </span>
   );
 }

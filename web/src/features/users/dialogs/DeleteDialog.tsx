@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import type { IUser } from "@/features/users/model";
+import { type IUser } from "@/features/users/model";
 import { useUserCommands } from "@/features/users/model";
 import { Modal } from "@/shared/ui";
 export function DeleteDialog({ user, onClose }: { user: IUser; onClose: () => void }) {

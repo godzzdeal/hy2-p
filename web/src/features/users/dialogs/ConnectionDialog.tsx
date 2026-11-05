@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Copy, RefreshCw } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
-import type { IUser } from "@/features/users/model";
+import { type IUser } from "@/features/users/model";
 import { userApi, isUserActive } from "@/features/users/model";
 import { Modal, QueryState } from "@/shared/ui";
 import { cn } from "@/shared/lib";
@@ -37,7 +37,7 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
     }
   }
   return (
-    <Modal title={t("Подключение \u00B7 ") + user.name} onClose={onClose}>
+    <Modal title={t("Подключение: ") + user.name} onClose={onClose}>
       <QueryState isLoading={links.isPending} error={links.error} />
       {links.data && (
         <>

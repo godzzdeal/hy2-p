@@ -39,7 +39,11 @@ export function PairEditor({
           value={String(current)}
           hasGenerator={hasGenerator}
           onCommit={(key, next) => onCommit(name, key, next)}
-          onRemove={() => onChange(Object.fromEntries(entries.filter(([key]) => key !== name)))}
+          onRemove={() =>
+            onChange(
+              entries.length === 1 ? undefined : Object.fromEntries(entries.filter(([key]) => key !== name)),
+            )
+          }
         />
       ))}
       <button type="button" className="secondary" onClick={onAdd}>

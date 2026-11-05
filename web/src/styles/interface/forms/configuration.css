@@ -1,0 +1,81 @@
+.config-field {
+  min-width: 0;
+}
+.config-field label {
+  margin: 0;
+  font-size: var(--text-control);
+  font-weight: 500;
+}
+.config-field > input,
+.config-field > textarea {
+  margin-top: var(--space-2);
+}
+.field-reset {
+  color: var(--muted);
+  min-height: var(--space-8);
+  min-width: var(--space-8);
+  padding: var(--space-2);
+}
+.field-reset:not(:disabled):hover {
+  color: var(--accent);
+  background: var(--surface-soft);
+}
+.field-reset:disabled {
+  visibility: hidden;
+}
+.field-hint,
+.field-path {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--muted);
+}
+.field-path {
+  opacity: 0.85;
+  overflow-wrap: anywhere;
+}
+.config-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  padding: var(--space-2) var(--space-3);
+  gap: var(--space-1);
+}
+.config-tabs button {
+  font-size: var(--text-control);
+  padding-inline: var(--space-3);
+}
+.draft-bar {
+  position: sticky;
+  bottom: var(--space-3);
+  z-index: var(--layer-navigation);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: 0 var(--space-2) var(--space-6) var(--shadow);
+}
+.draft-bar span {
+  color: var(--muted);
+  font-size: var(--text-small);
+}
+
+.yaml-details summary {
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  color: var(--accent);
+}
+.yaml-details summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+@media (max-width: 760px) {
+  .draft-bar {
+    bottom: var(--space-16);
+  }
+}

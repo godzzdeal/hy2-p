@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/shared/http";
 import { useUiStore } from "@/app/state";
 import { userApi } from "./user-api";
-import type { IUser } from "./user-types";
+import { type IUser } from "./user-types";
 export function useUsers() {
   return useQuery({ queryKey: QUERY_KEYS.users, queryFn: userApi.list });
 }

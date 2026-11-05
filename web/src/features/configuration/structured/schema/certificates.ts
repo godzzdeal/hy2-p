@@ -1,4 +1,4 @@
-import type { IConfigSection } from "@/features/configuration/structured/model";
+import { type IConfigSection } from "@/features/configuration/structured/model";
 export const CERTIFICATE_SECTIONS: readonly IConfigSection[] = [
   {
     id: "tls",
@@ -61,7 +61,7 @@ export const CERTIFICATE_SECTIONS: readonly IConfigSection[] = [
   },
   {
     id: "auth",
-    title: "Нативная аутентификация Hysteria2",
+    title: "Доступ пользователей",
     fields: [
       {
         path: "auth.type",

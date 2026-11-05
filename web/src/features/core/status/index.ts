@@ -1,2 +1,2 @@
 export { CoreStatusCard } from "./CoreStatusCard";
-export { CoreLog } from "./CoreLog";
+export { CoreLog } from "../logs";

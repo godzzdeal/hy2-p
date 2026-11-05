@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { cn } from "@/shared/lib";
-import type { IScrollSection } from "./use-scroll-sections";
+import { type IScrollSection } from "./use-scroll-sections";
 interface IScrollPoint {
   section: IScrollSection;
   isActive: boolean;

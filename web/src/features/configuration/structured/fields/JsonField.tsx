@@ -1,11 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import type { ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 export function JsonField({
+  id,
   value,
   onChange,
   multiline = false,
 }: {
+  id?: string;
   value: string;
   onChange: (value: unknown) => void;
   multiline?: boolean;
@@ -24,5 +26,7 @@ export function JsonField({
       event.target.setCustomValidity(t("Некорректный JSON"));
     }
   }
-  return <textarea className="structured-textarea" value={draft} spellCheck={false} onChange={onInput} />;
+  return (
+    <textarea id={id} className="structured-textarea" value={draft} spellCheck={false} onChange={onInput} />
+  );
 }

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { formatBytes } from "./model";
-import type { IUserUsage } from "./model";
+import { type IUserUsage } from "./model";
 export function UsageCell({ usage }: { usage: IUserUsage }) {
   const { t } = useTranslation();
   return (

@@ -11,6 +11,7 @@ export const API_ROUTES = {
   hy2Certificates: "/certificates/hysteria",
   traffic: "/traffic",
   userTraffic: (id: string) => "/users/" + encodeURIComponent(id) + "/traffic",
+  logs: "/logs",
   core: "/core",
   coreVersions: "/core/versions",
   coreUpdate: "/core/update",

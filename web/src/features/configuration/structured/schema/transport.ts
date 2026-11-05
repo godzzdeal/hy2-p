@@ -1,4 +1,4 @@
-import type { IConfigSection } from "@/features/configuration/structured/model";
+import { type IConfigSection } from "@/features/configuration/structured/model";
 export const TRANSPORT_SECTIONS: readonly IConfigSection[] = [
   {
     id: "server",

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import type { ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 import { useUiStore } from "@/app/state";
 const MAX_PEM_SIZE = 1 << 20;
 export function PemFileField({ label, onChange }: { label: string; onChange: (value: string) => void }) {

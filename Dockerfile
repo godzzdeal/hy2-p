@@ -4,6 +4,7 @@ WORKDIR /app/web
 COPY web/package.json web/bun.lock ./
 RUN bun install --frozen-lockfile
 COPY web/ ./
+COPY internal/configuration/ordering/order.json /app/internal/configuration/ordering/order.json
 RUN bun run build
 
 FROM golang:1.26-bookworm AS server

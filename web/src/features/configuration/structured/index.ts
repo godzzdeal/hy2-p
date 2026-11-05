@@ -1,1 +1,1 @@
-export { ConfigurationForm } from "./ConfigurationForm";
+export { ConfigurationForm } from "./form";

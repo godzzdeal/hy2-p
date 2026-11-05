@@ -7,6 +7,8 @@ import (
 	"gopkg.in/yaml.v3"
 	"hy2-panel/internal/acmehttp"
 	"hy2-panel/internal/configuration"
+	"hy2-panel/internal/configuration/ordering"
+	"hy2-panel/internal/core/logs"
 	"hy2-panel/internal/core/supervision"
 	"hy2-panel/internal/core/update"
 	"hy2-panel/internal/core/watchdog"
@@ -29,14 +31,14 @@ type Handler struct {
 	generation string
 	core       *exec.Cmd
 	done       chan struct{}
-	logs       *ring
+	logs       *logs.Buffer
 	Binary     string
 	Updates    *update.Service
 	Watchdog   *watchdog.Monitor
 }
 
 func New(db *sql.DB, config *configuration.Handler, data, secret string) (*Handler, error) {
-	handler := &Handler{DB: db, Config: config, Data: data, Secret: secret, logs: &ring{}, Binary: security.Env("HYSTERIA_BIN", "hysteria")}
+	handler := &Handler{DB: db, Config: config, Data: data, Secret: secret, logs: &logs.Buffer{}, Binary: security.Env("HYSTERIA_BIN", "hysteria")}
 	updates, err := update.New(data, handler.Binary, handler, releases.New())
 	if err != nil {
 		return nil, err
@@ -72,7 +74,7 @@ func (handler *Handler) start() error {
 		document["auth"] = map[string]any{"type": "http", "http": map[string]any{"url": "http://127.0.0.1:8081/auth"}}
 	}
 	document["trafficStats"] = map[string]any{"listen": "127.0.0.1:9999", "secret": handler.Secret}
-	payload, err := yaml.Marshal(document)
+	payload, err := ordering.Marshal(document)
 	if err != nil {
 		return err
 	}

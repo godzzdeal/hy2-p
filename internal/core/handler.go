@@ -64,6 +64,9 @@ func (handler *Handler) Control(writer http.ResponseWriter, request *http.Reques
 	handler.Status(writer, request)
 }
 func (handler *Handler) Logs(writer http.ResponseWriter, request *http.Request) {
+	if request.Method == http.MethodDelete {
+		handler.logs.Clear()
+	}
 	transport.Respond(writer, map[string]string{"logs": handler.logs.Read()})
 }
 

@@ -1,4 +1,4 @@
-import type { IWebConfig } from "./model";
+import { type IWebConfig } from "./model";
 export function updateWebConfig(previous: IWebConfig, next: IWebConfig): IWebConfig {
   if (previous.publicURL !== next.publicURL || !previous.publicURL) return next;
   let address: URL;

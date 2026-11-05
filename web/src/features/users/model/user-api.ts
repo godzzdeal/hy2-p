@@ -1,5 +1,5 @@
 import { request, API_ROUTES } from "@/shared/http";
-import type { IUser, IUserInput, IUserUpdate, IConnectionLinks } from "./user-types";
+import { type IUser, type IUserInput, type IUserUpdate, type IConnectionLinks } from "./user-types";
 export const userApi = {
   list: () => request<IUser[]>(API_ROUTES.users),
   create: (body: IUserInput) => request<IUser>(API_ROUTES.users, { method: "POST", body }),

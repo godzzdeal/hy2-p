@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { KeyboardEvent } from "react";
+import { type KeyboardEvent } from "react";
 export function useDialogFocus(onClose: () => void) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {

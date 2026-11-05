@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { RefObject } from "react";
+import { type RefObject } from "react";
 export interface IScrollSection {
   id: string;
   label: string;

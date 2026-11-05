@@ -38,7 +38,7 @@ export const NAVIGATION = [
   },
   {
     id: PageEnum.Admin,
-    label: "Настройки панели",
+    label: "Настройки",
     title: "Настройки панели",
     description: "Вход, порт и HTTPS",
     icon: Settings2,

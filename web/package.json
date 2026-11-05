@@ -8,9 +8,12 @@
     "build": "tsc --noEmit && rspack build --mode production",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write src rspack.config.ts",
-    "lint": "prettier --check src rspack.config.ts && tsc --noEmit"
+    "lint": "prettier --check src rspack.config.ts && tsc --noEmit",
+    "test": "bun test tests/configuration tests/logs.test.ts",
+    "test:ui": "playwright test --config tests/ui/playwright.config.ts"
   },
   "dependencies": {
+    "@radix-ui/react-select": "^2.4.1",
     "@tanstack/react-query": "5",
     "clsx": "^2.1.1",
     "i18next": "^26.7.1",
@@ -24,12 +27,17 @@
     "zustand": "5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "@rspack/cli": "^1.5.0",
     "@rspack/core": "^1.5.0",
     "@rspack/dev-server": "^1.1.0",
+    "@tailwindcss/postcss": "4",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "postcss": "8",
+    "postcss-loader": "8",
     "prettier": "^3.9.10",
+    "tailwindcss": "4",
     "typescript": "^5.9.0"
   }
 }

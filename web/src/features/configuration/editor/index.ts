@@ -1,1 +1,1 @@
-export { ConfigurationEditor } from "./ConfigurationEditor";
+export { ConfigurationEditor } from "./draft";

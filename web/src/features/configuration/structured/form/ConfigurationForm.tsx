@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import { parseDocument } from "yaml";
-import type { IConfiguration } from "@/features/configuration/model";
-import { ConfigField } from "./ConfigField";
-import { readField, updateField } from "./model";
-import { TRANSPORT_SECTIONS, CERTIFICATE_SECTIONS, NETWORK_SECTIONS } from "./schema";
-import { CertificateMode, CertificateUpload, CertificateStatus } from "./certificates";
-import { cn } from "@/shared/lib";
+import { type IConfiguration } from "@/features/configuration/model";
+import { ConfigField } from "../controls";
+import { AuthSettings } from "./AuthSettings";
+import { ConfigTab } from "./ConfigTab";
+import { readField, updateField } from "../model";
+import { TRANSPORT_SECTIONS, CERTIFICATE_SECTIONS, NETWORK_SECTIONS } from "../schema";
+import { CertificateMode, CertificateUpload, CertificateStatus } from "../certificates";
 import { useWebSettings } from "@/features/admin/model";
 import { useUiStore } from "@/app/state";
 const SECTIONS = [...TRANSPORT_SECTIONS, ...CERTIFICATE_SECTIONS, ...NETWORK_SECTIONS];
@@ -45,22 +46,19 @@ export function ConfigurationForm({
       data-scroll-section
       data-scroll-label={t("Параметры Hysteria2")}
     >
-      <div className="config-tabs" role="tablist" aria-label={t("Разделы конфигурации")}>
+      <nav className="config-tabs" aria-label={t("Разделы конфигурации")}>
         {SECTIONS.filter((item) => item.id !== "tls" || !isAcme)
           .filter((item) => item.id !== "acme" || isAcme)
           .map((item) => (
-            <button
-              type="button"
-              role="tab"
-              aria-selected={effectiveSection === item.id}
-              className={cn({ selected: effectiveSection === item.id })}
+            <ConfigTab
               key={item.id}
-              onClick={() => setSection(item.id)}
-            >
-              {t(item.title)}
-            </button>
+              id={item.id}
+              title={item.title}
+              isSelected={effectiveSection === item.id}
+              onSelect={setSection}
+            />
           ))}
-      </div>
+      </nav>
       {(effectiveSection === "tls" || effectiveSection === "acme") && (
         <CertificateMode
           source={value.config}
@@ -70,29 +68,7 @@ export function ConfigurationForm({
           }}
         />
       )}
-      {section === "auth" && (
-        <div className="config-note">
-          <label>
-            {t("Источник аутентификации")}
-            <select
-              value={value.authMode ?? "panel"}
-              onChange={(event) => onChange({ ...value, authMode: event.target.value as "panel" | "native" })}
-            >
-              <option value="panel">{t("Панель \u2014 пользователи, подписки и лимиты")}</option>
-              <option value="native">{t("Нативный auth Hysteria2")}</option>
-            </select>
-          </label>
-          <p>
-            {isNative
-              ? t(
-                  "Панель не подменяет auth. Пользователи и лимиты панели не управляют внешней аутентификацией.",
-                )
-              : t(
-                  "Панель использует HTTP-аутентификацию для сроков доступа и квот. Нативные параметры ниже не применяются.",
-                )}
-          </p>
-        </div>
-      )}
+      {section === "auth" && <AuthSettings value={value} onChange={onChange} />}
       {document.errors.length > 0 ? (
         <p className="inline-error">{t(document.errors[0].message)}</p>
       ) : (

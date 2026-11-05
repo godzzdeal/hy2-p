@@ -1,3 +1,4 @@
+import tailwind from "@tailwindcss/postcss";
 import path from "node:path";
 import { defineConfig } from "@rspack/cli";
 import { rspack } from "@rspack/core";
@@ -6,7 +7,10 @@ export default defineConfig({
   output: { clean: true, publicPath: "/" },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
-    alias: { "@": path.resolve(import.meta.dirname, "src") },
+    alias: {
+      "@": path.resolve(import.meta.dirname, "src"),
+      "@config-schema": path.resolve(import.meta.dirname, "../internal/configuration/ordering/order.json"),
+    },
   },
   module: {
     rules: [
@@ -21,7 +25,11 @@ export default defineConfig({
           },
         },
       },
-      { test: /\.css$/, type: "css" },
+      {
+        test: /\.css$/,
+        type: "css",
+        use: [{ loader: "postcss-loader", options: { postcssOptions: { plugins: [tailwind()] } } }],
+      },
     ],
   },
   experiments: { css: true },

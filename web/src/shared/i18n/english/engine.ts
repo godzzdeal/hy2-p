@@ -1,17 +1,10 @@
 export const ENGINE: Record<string, string> = {
-  " · недоступна для платформы": " · unavailable for this platform",
-  " · установлена": " · installed",
   ". При исчерпании квоты доступ блокируется до её увеличения или сброса счётчиков.":
     ". Access is blocked when the quota is exhausted until you increase it or reset the counters.",
-  "0.0.0.0 — все IPv4-интерфейсы": "0.0.0.0 — all IPv4 interfaces",
-  "127.0.0.1 — только локально": "127.0.0.1 — localhost only",
-  ":: — все IPv6-интерфейсы": ":: — all IPv6 interfaces",
-  "::1 — только локально IPv6": "::1 — IPv6 localhost only",
   "; ошибка сохранения: ": "; could not save: ",
   "ACL и исходящие подключения": "ACL and outbounds",
   "ACME продлевает сертификаты, пока ядро работает. DNS-проверка не занимает порты 80/443 и удобна, если на них работает веб-панель.":
     "Hysteria2 renews ACME certificates while the engine is running. DNS validation leaves ports 80/443 available for the web panel.",
-  "ACME — автоматический выпуск и продление": "ACME — automatic issuance and renewal",
   "ACME: выпуск и автопродление": "ACME: issuance and renewal",
   "API статистики недоступен": "Statistics API unavailable",
   "CA клиентских сертификатов (mTLS)": "Client certificate CA (mTLS)",
@@ -27,8 +20,6 @@ export const ENGINE: Record<string, string> = {
   "HTTP-код ответа": "HTTP response status",
   "HTTP-порт маскировки": "Masquerade HTTP port",
   "HTTPS веб-панели": "Web panel HTTPS",
-  "HTTPS — ACME с автопродлением": "HTTPS — ACME with automatic renewal",
-  "HTTPS — собственный сертификат": "HTTPS — custom certificate",
   "HTTPS-порт маскировки": "Masquerade HTTPS port",
   "Hysteria2 доступен": "Hysteria2 is available",
   "QR-код подключения": "Connection QR code",

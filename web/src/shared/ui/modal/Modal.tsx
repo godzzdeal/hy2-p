@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import type { ReactNode, MouseEvent } from "react";
+import { type ReactNode, type MouseEvent } from "react";
 import { X } from "lucide-react";
 import { useDialogFocus } from "./use-dialog-focus";
 interface IModal {

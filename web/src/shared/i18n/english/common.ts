@@ -11,7 +11,6 @@ export const COMMON: Record<string, string> = {
     "An update or another engine operation is already in progress",
   "Обновление: %v. Откат: %v. Требуется проверка журнала.": "Update: %v. Rollback: %v. Check the logs.",
   Обфускация: "Obfuscation",
-  "Общий лимит (байты, 0 — без лимита)": "Total quota (bytes, 0 for unlimited)",
   "Общий пароль": "Shared password",
   "Одна ссылка.": "One link.",
   "Ожидание перезапуска": "Waiting to restart",
@@ -32,8 +31,6 @@ export const COMMON: Record<string, string> = {
   Отмена: "Cancel",
   "Отправка сервера": "Server upload",
   "Отправлено клиентом (байты)": "Sent by client (bytes)",
-  "Официальный файл · проверка SHA-256 · сохранение предыдущего ядра":
-    "Official release · SHA-256 verification · previous engine preserved",
   "ПАНЕЛЬ УПРАВЛЕНИЯ": "CONTROL PANEL",
   "ПРОСТОЕ ПОДКЛЮЧЕНИЕ": "EASY CONNECTION",
   "Панель использует HTTP-аутентификацию для сроков доступа и квот. Нативные параметры ниже не применяются.":
@@ -41,7 +38,6 @@ export const COMMON: Record<string, string> = {
   "Панель не подменяет auth. Пользователи и лимиты панели не управляют внешней аутентификацией.":
     "The panel does not override auth. Panel users and quotas do not control external authentication.",
   "Панель управления /": "Control panel /",
-  "Панель — пользователи, подписки и лимиты": "Panel-managed users, subscriptions and quotas",
   "Пара сертификат/ключ проверяется перед сохранением. Затем сохраните конфигурацию и перезапустите ядро.":
     "The certificate/key pair is checked before saving. Then save the configuration and restart the engine.",
   "Параметры API DNS-провайдера": "DNS provider API parameters",
@@ -50,7 +46,6 @@ export const COMMON: Record<string, string> = {
   Пароль: "Password",
   "Пароль Gecko": "Gecko password",
   "Пароль Salamander": "Salamander password",
-  "Пароль администратора": "Administrator password",
   "Пароль подключения (или автоматический)": "Connection password (or automatic)",
   "Перезаписывать домены": "Rewrite domains",
   "Перезапуск %d из %d и проверка API": "Restart %d of %d and API health check",
@@ -67,7 +62,6 @@ export const COMMON: Record<string, string> = {
   Подключение: "Connection",
   "Подключение ": "Connection ",
   "Подключение / Happ": "Connection / Happ",
-  "Подключение · ": "Connection · ",
   "Подключения кратковременно прервутся. Панель проверит запуск и локальный API ядра. При ошибке она попытается автоматически восстановить предыдущее ядро.":
     "Connections will briefly disconnect. The panel checks startup and the local engine API, then tries to restore the previous engine if the check fails.",
   "Подключите устройство": "Connect your device",
@@ -90,8 +84,6 @@ export const COMMON: Record<string, string> = {
   "Пользователь удалён": "User deleted",
   "Порт веб-панели": "Web panel port",
   "Порт, домен и HTTPS веб-панели": "Web panel port, domain and HTTPS",
-  "Последние сообщения процесса · обновление автоматически":
-    "Recent process output · automatically refreshed",
   "Потом переключение.": "Then switch.",
   "Правила ACL, по одному в строке": "ACL rules, one per line",
   "Предыдущая версия восстановлена": "Previous version restored",
@@ -113,9 +105,7 @@ export const COMMON: Record<string, string> = {
   "Проверка файла": "Checking file",
   "Проверьте журнал запуска.": "Check the startup logs.",
   "Лимит исчерпан": "Quota exhausted",
-  "Трафик · ": "Traffic · ",
   "Единица измерения": "Unit",
   "Отправлено клиентом": "Sent by client",
   "Получено клиентом": "Received by client",
-  "Общий лимит (0 — без лимита)": "Total quota (0 for unlimited)",
 };

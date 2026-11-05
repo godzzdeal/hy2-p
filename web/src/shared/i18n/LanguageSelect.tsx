@@ -1,13 +1,14 @@
+import { Select, SelectOption } from "@/shared/ui/select";
 import { useTranslation } from "react-i18next";
 export function LanguageSelect() {
   const { t, i18n } = useTranslation();
   return (
     <label className="language-control">
       {t("Язык")}
-      <select value={i18n.language} onChange={(event) => void i18n.changeLanguage(event.target.value)}>
-        <option value="ru">Русский</option>
-        <option value="en">English</option>
-      </select>
+      <Select value={i18n.language} onValueChange={(nextValue) => void i18n.changeLanguage(nextValue)}>
+        <SelectOption value="ru">Русский</SelectOption>
+        <SelectOption value="en">English</SelectOption>
+      </Select>
     </label>
   );
 }

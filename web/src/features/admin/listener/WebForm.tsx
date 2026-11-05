@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { updateWebConfig } from "@/features/admin/web-config";
 import { useState } from "react";
-import type { FormEvent } from "react";
-import type { IWebSettings } from "@/features/admin/model";
+import { type FormEvent } from "react";
+import { type IWebSettings } from "@/features/admin/model";
 import { useSaveWeb } from "@/features/admin/model";
 import { NetworkFields } from "./NetworkFields";
 import { CertificateFields } from "@/features/admin/CertificateFields";

@@ -21,11 +21,11 @@
 .toast {
   position: fixed;
   right: var(--space-6);
-  bottom: var(--space-6);
+  top: var(--space-6);
   display: flex;
   gap: var(--space-3);
   align-items: center;
-  max-width: calc(100vw - var(--space-12));
+  max-width: min(512px, calc(100vw - var(--space-12)));
   border: 1px solid var(--accent);
   background: var(--success-bg);
   padding: var(--space-4) var(--space-6);

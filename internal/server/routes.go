@@ -54,6 +54,7 @@ func routes(auth *auth.Handler, users *users.Handler, config *configuration.Hand
 		"POST /api/core/update":   core.Update,
 		"POST /api/core/rollback": core.Rollback,
 		"GET /api/core":           core.Status, "POST /api/core/{action}": core.Control, "GET /api/logs": core.Logs,
+		"DELETE /api/logs": core.Logs,
 	}
 	for pattern, handler := range protected {
 		mux.HandleFunc(pattern, auth.Protect(handler))

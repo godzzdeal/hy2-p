@@ -1,6 +1,8 @@
 import { parseDocument, isCollection, isScalar } from "yaml";
-import type { Document } from "yaml";
-import type { TFieldKind } from "./field-types";
+import { type Document } from "yaml";
+import { orderDocument } from "./ordering";
+import { deleteField, resetDependencies } from "./reset";
+import { type TFieldKind } from "../field-types";
 export function readField(document: Document, path: string): unknown {
   const node: unknown = document.getIn(path.split("."), true);
   if (isScalar(node)) return node.value as unknown;
@@ -10,12 +12,14 @@ export function readField(document: Document, path: string): unknown {
 export function updateField(source: string, path: string, value: unknown): string {
   const document = parseDocument(source);
   if (document.errors.length) throw document.errors[0];
-  if (value === "") document.deleteIn(path.split("."));
+  resetDependencies(document, path, value);
+  if (value === "" || value === undefined) deleteField(document, path.split("."));
   else document.setIn(path.split("."), value);
-  return document.toString();
+  return orderDocument(document);
 }
 export function parseField(value: string, kind: TFieldKind): unknown {
   if (kind === "number") return value === "" ? "" : Number(value);
+  if (kind === "lines" && value.trim() === "") return undefined;
   if (kind === "lines")
     return value
       .split("\n")
@@ -42,11 +46,10 @@ export function certificateMode(source: string, mode: string): string {
         ca: "letsencrypt",
         type: "http",
         dir: "/data/acme-hy2",
-        dns: { name: "cloudflare", config: {} },
       });
   } else {
     document.delete("acme");
     if (!document.has("tls")) document.set("tls", { cert: "", key: "" });
   }
-  return document.toString();
+  return orderDocument(document);
 }

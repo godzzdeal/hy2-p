@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import type { RefObject } from "react";
+import { type RefObject } from "react";
 import { useScrollSections } from "./use-scroll-sections";
 import { ScrollPoint } from "./ScrollPoint";
 export function ScrollNavigation({ root, page }: { root: RefObject<HTMLDivElement | null>; page: string }) {
