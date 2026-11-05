@@ -1,0 +1,50 @@
+.share-tabs {
+  display: flex;
+  gap: var(--space-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1);
+}
+.share-tabs button {
+  width: 50%;
+  font-size: var(--text-small);
+  padding: var(--space-2);
+}
+.share-tabs button.active {
+  background: var(--surface-soft);
+  color: var(--accent);
+}
+.qr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 248px;
+  padding: var(--space-3);
+  margin: var(--space-6) auto;
+  border-radius: var(--radius-md);
+  background: var(--qr-background);
+}
+.qr svg {
+  width: 224px;
+  max-width: 100%;
+  height: auto;
+}
+.share-help {
+  text-align: center;
+  color: var(--muted);
+  font-size: var(--text-small);
+  margin-bottom: var(--space-4);
+}
+.share-url {
+  height: 96px;
+  resize: none;
+  font:
+    13px/1.7 Consolas,
+    monospace;
+  word-break: break-all;
+  margin-bottom: var(--space-4);
+}
+.rotate {
+  margin: var(--space-4) auto 0;
+  display: flex;
+}

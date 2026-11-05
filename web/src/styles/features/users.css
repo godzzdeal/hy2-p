@@ -1,0 +1,53 @@
+.table-wrap {
+  overflow-x: auto;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+}
+th {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-small);
+  color: var(--muted);
+  font-weight: 500;
+  background: var(--input);
+}
+td {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--line);
+  font-size: var(--text-small);
+}
+.user-cell {
+  padding: 0;
+  gap: var(--space-3);
+  text-align: left;
+}
+.user-cell strong,
+.user-cell small {
+  display: block;
+}
+.user-cell small {
+  color: var(--muted);
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: var(--space-10);
+  height: var(--space-10);
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.badge {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+.badge.green {
+  background: var(--success-bg);
+}
+.badge.gray {
+  color: var(--muted);
+  background: var(--input);
+}

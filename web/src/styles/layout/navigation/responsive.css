@@ -1,0 +1,37 @@
+@media (max-width: 760px) {
+  aside {
+    position: static;
+    width: 100%;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: var(--space-4);
+  }
+  .brand {
+    font-size: 24px;
+  }
+  .workspace,
+  .nav-label {
+    display: none;
+  }
+  nav {
+    display: flex;
+    overflow-x: auto;
+    margin-top: var(--space-4);
+  }
+  nav button {
+    flex-shrink: 0;
+  }
+  .aside-bottom {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-top: var(--space-3);
+  }
+  .aside-bottom .version {
+    display: none;
+  }
+  .theme-control {
+    margin: 0;
+    flex: 1;
+  }
+}

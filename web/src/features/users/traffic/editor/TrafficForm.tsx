@@ -1,0 +1,96 @@
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import type { FormEvent } from "react";
+import type { IUser } from "@/features/users/model";
+import { formatBytes, useAdjustTraffic } from "../model";
+import type { IUserUsage } from "../model";
+export function TrafficForm({
+  user,
+  usage,
+  onClose,
+}: {
+  user: IUser;
+  usage: IUserUsage;
+  onClose: () => void;
+}) {
+  const { t } = useTranslation();
+  const [unit, setUnit] = useState(1024 ** 3);
+  const [upload, setUpload] = useState<number>();
+  const [download, setDownload] = useState<number>();
+  const [limit, setLimit] = useState(usage.limit);
+  const mutation = useAdjustTraffic();
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    mutation.mutate({ id: user.id, upload, download, limit }, { onSuccess: onClose });
+  }
+  return (
+    <form onSubmit={onSubmit}>
+      <p className="config-note">
+        {t("Использовано:")} {formatBytes(usage.upload + usage.download)}
+        {t(". При исчерпании квоты доступ блокируется до её увеличения или сброса счётчиков.")}
+      </p>
+      <label>
+        {t("Единица измерения")}
+        <select value={unit} onChange={(event) => setUnit(Number(event.target.value))}>
+          <option value={1}>B</option>
+          <option value={1024 ** 2}>MiB</option>
+          <option value={1024 ** 3}>GiB</option>
+        </select>
+      </label>
+      <label>
+        {t("Отправлено клиентом")}
+        <input
+          type="number"
+          min={0}
+          max={Number.MAX_SAFE_INTEGER / unit}
+          step="any"
+          required
+          value={(upload ?? usage.upload) / unit}
+          onChange={(event) => setUpload(Math.round(Number(event.target.value) * unit))}
+        />
+      </label>
+      <label>
+        {t("Получено клиентом")}
+        <input
+          type="number"
+          min={0}
+          step="any"
+          required
+          value={(download ?? usage.download) / unit}
+          onChange={(event) => setDownload(Math.round(Number(event.target.value) * unit))}
+        />
+      </label>
+      <label>
+        {t("Общий лимит (0 — без лимита)")}
+        <input
+          type="number"
+          min={0}
+          step="any"
+          required
+          value={limit / unit}
+          onChange={(event) => setLimit(Math.round(Number(event.target.value) * unit))}
+        />
+      </label>
+      <div className="row-actions">
+        <button
+          type="button"
+          className="secondary"
+          onClick={() => {
+            setUpload(0);
+            setDownload(0);
+          }}
+        >
+          {t("Сбросить счётчики")}
+        </button>
+        <button className="primary" disabled={mutation.isPending}>
+          {t("Сохранить трафик")}
+        </button>
+      </div>
+      <p className="caption">
+        {t(
+          "Трафик обновляется раз в 5 секунд. При аварийном завершении ядра последние неопросенные байты могут не попасть в учёт.",
+        )}
+      </p>
+    </form>
+  );
+}

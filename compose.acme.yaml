@@ -1,0 +1,6 @@
+# Optional HTTP-01 challenge for the web panel.
+# Domain must point to this host, with public TCP 80 reachable.
+services:
+  panel:
+    ports:
+      - "80:${PANEL_ACME_PORT:-9080}"

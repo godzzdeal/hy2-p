@@ -1,0 +1,14 @@
+/data/
+/web/node_modules/
+/web/dist/
+/certs/
+*.exe
+/hy2-panel
+.env*
+!.env.example
+*.db
+*.db-shm
+*.db-wal
+*.pem
+*.key
+*.crt

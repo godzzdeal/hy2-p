@@ -1,0 +1,10 @@
+.git
+data
+certs
+.env
+.env.*
+web/node_modules
+web/dist
+*.exe
+*.pem
+*.key

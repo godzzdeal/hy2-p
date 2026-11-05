@@ -1,0 +1,35 @@
+{
+  "name": "hy2-panel-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "rspack serve --mode development",
+    "build": "tsc --noEmit && rspack build --mode production",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write src rspack.config.ts",
+    "lint": "prettier --check src rspack.config.ts && tsc --noEmit"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "5",
+    "clsx": "^2.1.1",
+    "i18next": "^26.7.1",
+    "lucide-react": "^0.468.0",
+    "qrcode.react": "^4.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-i18next": "^17.1.12",
+    "tailwind-merge": "^3.7.0",
+    "yaml": "2",
+    "zustand": "5"
+  },
+  "devDependencies": {
+    "@rspack/cli": "^1.5.0",
+    "@rspack/core": "^1.5.0",
+    "@rspack/dev-server": "^1.1.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "prettier": "^3.9.10",
+    "typescript": "^5.9.0"
+  }
+}

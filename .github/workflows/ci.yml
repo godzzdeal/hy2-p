@@ -1,0 +1,49 @@
+name: Checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.x"
+          cache: true
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: "1.4.3"
+      - run: go test -race ./...
+      - run: go vet ./...
+      - run: bun install --frozen-lockfile
+        working-directory: web
+      - run: bun run lint && bun run build
+        working-directory: web
+      - name: Check deployment scripts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq shellcheck jq
+          find scripts -name '*.sh' -exec bash -n {} \;
+          find scripts -name '*.sh' -print0 | xargs -0 shellcheck -S warning
+          bash scripts/tests/run.sh
+  docker-install:
+    if: github.event_name != 'pull_request' && github.repository == 'godzzdeal/hy2-p'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install from GitHub, start core, restart and back up
+        run: bash scripts/tests/docker.sh

@@ -1,0 +1,37 @@
+services:
+  panel:
+    build: .
+    image: ${PANEL_IMAGE:-hy2-panel:local}
+    labels:
+      io.hy2-panel.install-dir: ${PANEL_INSTALL_DIR:-manual}
+    restart: unless-stopped
+    init: true
+    ports:
+      - "${PANEL_BIND:-127.0.0.1}:${PANEL_PORT:-8080}:${PANEL_PORT:-8080}"
+      - "8443:8443/udp"
+    environment:
+      PANEL_ADMIN_USERNAME: ${PANEL_ADMIN_USERNAME:-admin}
+      PANEL_ADMIN_PASSWORD: ${PANEL_ADMIN_PASSWORD:?Set PANEL_ADMIN_PASSWORD in .env}
+      PANEL_PUBLIC_URL: ${PANEL_PUBLIC_URL:-}
+      PANEL_SECURE_COOKIE: ${PANEL_SECURE_COOKIE:-false}
+      PANEL_LISTEN: ":${PANEL_PORT:-8080}"
+      PANEL_CONTAINER: "true"
+      PANEL_TLS_MODE: ${PANEL_TLS_MODE:-http}
+      PANEL_DOMAIN: ${PANEL_DOMAIN:-}
+      PANEL_ACME_EMAIL: ${PANEL_ACME_EMAIL:-}
+      PANEL_ACME_ACCEPT_TERMS: ${PANEL_ACME_ACCEPT_TERMS:-false}
+      PANEL_ACME_PORT: ${PANEL_ACME_PORT:-9080}
+    volumes:
+      - panel-data:/data
+      - ${PANEL_CERTS_DIR:-./certs}:/certs:ro
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8081/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+volumes:
+  panel-data:
+    labels:
+      io.hy2-panel.install-dir: ${PANEL_INSTALL_DIR:-manual}
