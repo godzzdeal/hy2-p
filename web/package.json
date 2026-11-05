@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write src rspack.config.ts",
     "lint": "prettier --check src rspack.config.ts && tsc --noEmit",
-    "test": "bun test tests/configuration tests/logs.test.ts",
+    "test": "bun test tests/configuration tests/logs.test.ts tests/subscriptions",
     "test:ui": "playwright test --config tests/ui/playwright.config.ts"
   },
   "dependencies": {

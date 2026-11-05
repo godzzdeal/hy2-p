@@ -3,6 +3,7 @@ export const API_ROUTES = {
   login: "/login",
   logout: "/logout",
   users: "/users",
+  deployment: "/deployment",
   settings: "/settings",
   history: "/history",
   adminAccount: "/admin/account",
@@ -24,6 +25,7 @@ export const API_ROUTES = {
 export const QUERY_KEYS = {
   session: ["session"],
   users: ["users"],
+  deployment: ["deployment"],
   settings: ["settings"],
   history: ["history"],
   adminAccount: ["admin-account"],

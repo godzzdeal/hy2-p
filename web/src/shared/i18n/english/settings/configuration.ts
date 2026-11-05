@@ -1,4 +1,21 @@
 export const CONFIGURATION: Record<string, string> = {
+  "Сейчас Docker принимает UDP {{public}} и передаёт его ядру на порт {{target}}.":
+    "Docker currently forwards public UDP port {{public}} to engine port {{target}}.",
+  "Сохранённые порты: снаружи {{public}}, в контейнере {{target}}.":
+    "Saved ports: public {{public}}, container {{target}}.",
+  "Для применения выполните команду на сервере. Перезапуск ядра не меняет проброс Docker.":
+    "Run this command on the server to apply the ports. Restarting the engine does not change Docker port forwarding.",
+  "Скопировать команду": "Copy command",
+  "Скопируйте команду вручную.": "Copy the command manually.",
+  "Не удалось проверить UDP-порты Docker.": "Could not check Docker UDP ports.",
+  "После команды войдите в панель заново. Публичный UDP-порт должен быть разрешён в сетевом экране сервера и хостинга.":
+    "Sign in again after running the command. Allow the public UDP port in the server and hosting firewall.",
+  "Для автоматического проброса Docker укажите один UDP-порт в listen, например :61254.":
+    "For automatic Docker forwarding, set a single UDP port in listen, for example :61254.",
+  "Ядро слушает только внутри контейнера. Для подключения снаружи укажите listen без 127.0.0.1, например :61254.":
+    "The engine listens on container loopback only. To accept external connections, set listen without 127.0.0.1, for example :61254.",
+  "Порт для подключения Happ. Проброс Docker показан ниже.":
+    "The port Happ connects to. Docker forwarding is shown below.",
   "Добавить параметр": "Add entry",
   "Добавить пользователя": "Add user",
   "Добавьте первого пользователя для получения ссылки подключения.":

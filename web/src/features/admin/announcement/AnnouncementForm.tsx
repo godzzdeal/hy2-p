@@ -1,3 +1,4 @@
+import { ProfileFields, PROFILE_TITLE_LIMIT } from "./profile";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { type FormEvent } from "react";
@@ -8,16 +9,21 @@ export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
   const [draft, setDraft] = useState(initial);
   const mutation = useSaveAnnouncement();
   const count = Array.from(draft.text).length;
+  const titleCount = Array.from(draft.profileTitle ?? "").length;
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (count <= ANNOUNCEMENT_LIMIT) mutation.mutate(draft);
+    if (count <= ANNOUNCEMENT_LIMIT && titleCount <= PROFILE_TITLE_LIMIT) mutation.mutate(draft);
   }
   return (
     <form className="card settings-form" onSubmit={onSubmit}>
       <div className="card-header">
-        <h2>{t("Объявление в Happ")}</h2>
+        <h2>{t("Подписка Happ")}</h2>
       </div>
       <div className="form-body">
+        <ProfileFields
+          value={draft.profileTitle ?? ""}
+          onChange={(profileTitle) => setDraft({ ...draft, profileTitle })}
+        />
         <label className="checkbox">
           <input
             type="checkbox"
@@ -61,8 +67,11 @@ export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
             "Сообщение получат пользователи подписки. При импорте только ссылки сервера объявление не передаётся.",
           )}
         </p>
-        <button className="primary" disabled={mutation.isPending || count > ANNOUNCEMENT_LIMIT}>
-          {t("Сохранить объявление")}
+        <button
+          className="primary"
+          disabled={mutation.isPending || count > ANNOUNCEMENT_LIMIT || titleCount > PROFILE_TITLE_LIMIT}
+        >
+          {t("Сохранить настройки подписки")}
         </button>
       </div>
     </form>

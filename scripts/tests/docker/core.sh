@@ -8,11 +8,11 @@ openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes -days 1 \
 sudo cp "$WORK/server.key" "$WORK/server.crt" "$ROOT/certs/"
 # Disposable self-signed test fixture, readable by the non-root container.
 sudo chmod 644 "$ROOT/certs/server.key" "$ROOT/certs/server.crt"
-jq -n --arg config 'listen: 127.0.0.1:18443
+jq -n --arg config 'listen: :61254
 tls:
   cert: /certs/server.crt
   key: /certs/server.key
-' '{host:"127.0.0.1",port:"18443",sni:"localhost",config:$config}' >"$WORK/settings.json"
+' '{host:"127.0.0.1",port:"61255",sni:"localhost",config:$config}' >"$WORK/settings.json"
 curl -fsS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
   -X PUT --data-binary "@$WORK/settings.json" "$URL/api/settings" >/dev/null
 curl -fsS -b "$WORK/cookies" -H 'X-Panel-Request: 1' -X POST "$URL/api/core/start" >/dev/null
@@ -43,12 +43,17 @@ curl -fsS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Req
   --data '{"name":"Subscription test","password":"client:@/+?#fixture-only"}' "$URL/api/users" >"$WORK/user.json"
 user_id=$(jq -er '.id' "$WORK/user.json")
 token=$(curl -fsS -b "$WORK/cookies" "$URL/api/users/$user_id/links" | jq -er '.subscription | split("/sub/")[1]')
-uri=$(curl -fsS "$URL/sub/$token" | base64 -d)
-jq -n --arg server "$uri" '{server:$server,tls:{ca:"/certs/server.crt"},socks5:{listen:"0.0.0.0:11080"}}' >"$WORK/client.json"
+curl -fsS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
+  -X PUT --data '{"profileTitle":"🇩🇪 Германия","enabled":false,"text":"","updateInterval":6}' "$URL/api/admin/announcement" >/dev/null
+uri=$(curl -fsS -D "$WORK/subscription.headers" "$URL/sub/$token" | base64 -d)
+expected_title=$(printf '🇩🇪 Германия' | base64 -w0)
+tr -d '\r' <"$WORK/subscription.headers" | grep -qi "^profile-title: base64:$expected_title$"
+jq -n --arg server "$uri" '{server:$server,tls:{ca:"/certs/server.crt"},socks5:{listen:"127.0.0.1:11080"}}' >"$WORK/client.json"
 panel_id=$(sudo docker ps -q --filter name=hy2-panel-panel-1)
-panel_ip=$(sudo docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$panel_id")
+socks_host=127.0.0.1
+sudo docker inspect "$panel_id" | jq -e '.[0].HostConfig.PortBindings["61254/udp"][0].HostPort == "61255" and (.[0].HostConfig.PortBindings | has("8443/udp") | not)' >/dev/null
 panel_image=$(sudo docker inspect --format '{{.Config.Image}}' "$panel_id")
-CLIENT_CONTAINER=$(sudo docker run -d --rm --network "container:$panel_id" \
+CLIENT_CONTAINER=$(sudo docker run -d --rm --network host \
   --entrypoint /usr/local/bin/hysteria -v "$WORK/client.json:/client.json:ro" \
   -v "$ROOT/certs:/certs:ro" "$panel_image" client -c /client.json)
 wait_online() {
@@ -56,7 +61,7 @@ wait_online() {
   for ((attempt=0; attempt<30; attempt++)); do
     # Hysteria applies /kick on the next traffic event, not on idle QUIC keepalives.
     if [[ $expected == 0 ]]; then
-      curl -fsS --max-time 3 --noproxy "" --socks5-hostname "$panel_ip:11080" \
+      curl -fsS --max-time 3 --noproxy "" --socks5-hostname "$socks_host:11080" \
         http://127.0.0.1:8081/health >/dev/null 2>&1 || true
     fi
     if curl -fsS -b "$WORK/cookies" "$URL/api/traffic" |
@@ -70,7 +75,7 @@ wait_online() {
 }
 wait_online 1
 # Verify an actual proxy request before disabling access.
-curl -fsS --max-time 10 --noproxy "" --socks5-hostname "$panel_ip:11080" \
+curl -fsS --max-time 10 --noproxy "" --socks5-hostname "$socks_host:11080" \
   http://127.0.0.1:8081/health >/dev/null
 curl -fsS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
   -X PATCH --data '{"name":"Subscription test","enabled":false}' "$URL/api/users/$user_id" >/dev/null

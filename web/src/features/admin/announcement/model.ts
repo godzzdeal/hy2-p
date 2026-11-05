@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { request, API_ROUTES, QUERY_KEYS } from "@/shared/http";
 import { useUiStore } from "@/app/state";
 export interface IAnnouncement {
+  profileTitle?: string;
   enabled: boolean;
   text: string;
   updateInterval: number;
@@ -23,7 +24,7 @@ export function useSaveAnnouncement() {
     onError: showError,
     onSuccess: (result) => {
       client.setQueryData(QUERY_KEYS.announcement, result);
-      notify("Объявление сохранено. Клиенты получат его при обновлении подписки.");
+      notify("Настройки подписки сохранены. Обновите подписку в Happ.");
     },
   });
 }

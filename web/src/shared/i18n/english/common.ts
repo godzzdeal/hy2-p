@@ -1,4 +1,17 @@
 export const COMMON: Record<string, string> = {
+  "Подписка Happ": "Happ subscription",
+  "Название подписки": "Subscription name",
+  Флаг: "Flag",
+  "Без флага": "No flag",
+  "Название появится в Happ после обновления подписки. Можно вставить свой флаг или эмодзи.":
+    "The name appears in Happ after updating the subscription. You can paste a custom flag or emoji.",
+  "Сохранить настройки подписки": "Save subscription settings",
+  "Настройки подписки сохранены. Обновите подписку в Happ.":
+    "Subscription settings saved. Update the subscription in Happ.",
+  "название подписки: не более 25 символов": "subscription name: maximum 25 characters",
+  "название подписки не должно содержать управляющие символы":
+    "subscription name must not contain control characters",
+  "Конфигурация сохранена.": "Configuration saved.",
   "Нужен вход": "Sign-in required",
   "Нужен перезапуск панели": "Panel restart required",
   "Нужен раздел tls или acme": "A tls or acme section is required",

@@ -1,14 +1,12 @@
 package gateway
 
 import (
-	"encoding/json"
 	"hy2-panel/internal/acmehttp"
 	"hy2-panel/internal/configuration"
 	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -79,22 +77,4 @@ func Server(host string, port int, web *http.Server, config *configuration.Handl
 		return web
 	}
 	return &http.Server{Addr: net.JoinHostPort(host, strconv.Itoa(port)), Handler: handler, ReadHeaderTimeout: ProxyTimeout, ReadTimeout: RequestTimeout, WriteTimeout: 5 * ProxyTimeout}
-}
-
-// Metadata is only mounted on the internal loopback API; it contains no credentials.
-func Metadata(config *configuration.Handler) http.HandlerFunc {
-	return func(writer http.ResponseWriter, request *http.Request) {
-		settings, err := config.Get()
-		if err != nil {
-			http.Error(writer, "Configuration unavailable", 500)
-			return
-		}
-		domains, err := acmehttp.Domains(settings.Config)
-		if err != nil {
-			http.Error(writer, "Invalid configuration", 500)
-			return
-		}
-		writer.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(writer).Encode(map[string]bool{"httpChallenge": os.Getenv("PANEL_CONTAINER") == "true" && len(domains) > 0})
-	}
 }

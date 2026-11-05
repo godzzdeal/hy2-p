@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 sync_listener() {
-  local sha=$1 settings port mode challenge identifier metadata core_http
+  local sha=$1 settings port mode challenge identifier metadata core_http udp_public udp_listen
   check_volume
   settings=$(engine run --rm --network none --read-only -v "$VOLUME:/data:ro" \
     --entrypoint sh "$(image_for "$sha")" -c '
@@ -26,6 +26,14 @@ sync_listener() {
     core_http=$(jq -er '.httpChallenge | tostring' <<<"$metadata")
     [[ $core_http == true || $core_http == false ]] || die "Некорректные параметры ACME ядра."
     env_set PANEL_CORE_ACME_HTTP "$core_http"
+    udp_public=$(jq -r '.udpPublicPort // empty' <<<"$metadata")
+    udp_listen=$(jq -r '.udpListenPort // empty' <<<"$metadata")
+    if [[ -n $udp_public && -n $udp_listen ]]; then
+      [[ $udp_public =~ ^[1-9][0-9]{0,4}$ && $udp_public -le 65535 ]] || die "Некорректный публичный UDP-порт."
+      [[ $udp_listen =~ ^[1-9][0-9]{0,4}$ && $udp_listen -le 65535 ]] || die "Некорректный UDP-порт ядра."
+      env_set HYSTERIA_PUBLIC_PORT "$udp_public"
+      env_set HYSTERIA_LISTEN_PORT "$udp_listen"
+    fi
   fi
   if [[ $mode == acme || $core_http == true ]]; then
     challenge=$(jq -r '.challengePort // empty' <<<"$settings")

@@ -66,6 +66,8 @@ setup_case listener
 source "$TEST_SOURCE/server/listener.sh"
 sync_listener "$OLD"
 assert_equal "$(env_read PANEL_PORT)" 9443
+assert_equal "$(env_read HYSTERIA_PUBLIC_PORT)" 61254
+assert_equal "$(env_read HYSTERIA_LISTEN_PORT)" 61254
 assert_equal "$(env_read PANEL_ACME_ENABLED)" true
 printf 'PANEL_DOMAIN=$(touch forbidden)\n' >>"$ROOT/.env"
 assert_equal "$(env_read PANEL_DOMAIN)" '$(touch forbidden)'

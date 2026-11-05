@@ -1,3 +1,4 @@
+import { DeploymentNotice } from "./DeploymentNotice";
 import { useTranslation } from "react-i18next";
 import { type IConfiguration } from "@/features/configuration/model";
 interface IConnectionFields {
@@ -29,11 +30,12 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
         <label>
           {t("Публичный UDP-порт")}
           <input
+            aria-label={t("Публичный UDP-порт")}
             required
             value={value.port}
             onChange={(event) => onChange({ ...value, port: event.target.value })}
           />
-          <small>{t("Учитывайте проброс порта Docker.")}</small>
+          <small>{t("Порт для подключения Happ. Проброс Docker показан ниже.")}</small>
         </label>
         <label>
           TLS Server Name (SNI)
@@ -41,6 +43,7 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
           <small>{t("Имя в сертификате сервера.")}</small>
         </label>
       </div>
+      <DeploymentNotice />
     </section>
   );
 }

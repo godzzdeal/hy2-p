@@ -5,6 +5,7 @@ import (
 	"hy2-panel/internal/auth"
 	"hy2-panel/internal/certificates"
 	"hy2-panel/internal/configuration"
+	"hy2-panel/internal/configuration/deployment"
 	"hy2-panel/internal/core"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/subscriptions"
@@ -19,7 +20,8 @@ func routes(auth *auth.Handler, users *users.Handler, config *configuration.Hand
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /api/login", auth.Login)
 	protected := map[string]http.HandlerFunc{
-		"GET /api/traffic": traffic.Read,
+		"GET /api/deployment": deployment.Read(config),
+		"GET /api/traffic":    traffic.Read,
 		"PUT /api/users/{id}/traffic": func(writer http.ResponseWriter, request *http.Request) {
 			if _, err := users.User(request.PathValue("id")); err != nil {
 				transport.Fail(writer, errors.New("Пользователь не найден"), 404)

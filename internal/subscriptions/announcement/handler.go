@@ -17,6 +17,7 @@ func (store *Store) Save(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 	next.Text = strings.TrimSpace(next.Text)
+	next.ProfileTitle = strings.TrimSpace(next.ProfileTitle)
 	if err := validate(next); err != nil {
 		transport.Fail(writer, err, 400)
 		return

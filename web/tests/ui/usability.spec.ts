@@ -26,9 +26,7 @@ test("keyboard selection, resets and saving produce clean ordered YAML", async (
   await page.getByRole("button", { name: "Пользователи", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Конфигурация сервера", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Сохранить конфигурацию", exact: true }).click();
-  await expect(
-    page.getByText("Сохранено. Перезапустите ядро для применения.", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("Конфигурация сохранена.", { exact: true })).toBeVisible();
   expect(panel.saved().config).not.toContain("congestion:");
   expect(panel.saved().config).not.toContain("speedTest:");
   expect(panel.saved().config.indexOf("listen:")).toBeLessThan(panel.saved().config.indexOf("tls:"));
@@ -53,4 +51,28 @@ test("logs support Unicode, search, level filters, pause and clearing", async ({
   await page.screenshot({ path: info.outputPath("logs.png"), fullPage: true });
   await page.getByRole("button", { name: "Очистить", exact: true }).click();
   await expect(region).toContainText("Пока нет записей");
+});
+
+test("custom UDP ports show the Docker restart requirement after saving", async ({ page }) => {
+  await mockPanel(page);
+  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByLabel("Публичный UDP-порт", { exact: true }).fill("61254");
+  await page.getByLabel("Адрес прослушивания Hysteria2", { exact: true }).fill(":61254");
+  await page.getByRole("button", { name: "Сохранить конфигурацию", exact: true }).click();
+  await expect(
+    page.getByText("Сохранённые порты: снаружи 61254, в контейнере 61254.", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText("sudo hy2-panel restart", { exact: true })).toBeVisible();
+});
+test("subscription title and country flag are saved together", async ({ page }, info) => {
+  const panel = await mockPanel(page);
+  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  const title = page.getByLabel("Название подписки", { exact: true });
+  await title.fill("Сервер");
+  await page.getByRole("combobox", { name: "Флаг", exact: true }).click();
+  await page.getByRole("option", { name: /Германия/ }).click();
+  await expect(title).toHaveValue("🇩🇪 Сервер");
+  await page.getByRole("button", { name: "Сохранить настройки подписки", exact: true }).click();
+  await expect.poll(() => panel.subscription().profileTitle).toBe("🇩🇪 Сервер");
+  await page.screenshot({ path: info.outputPath("subscription-title.png"), fullPage: true });
 });

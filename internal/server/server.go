@@ -8,6 +8,7 @@ import (
 	"hy2-panel/internal/auth"
 	"hy2-panel/internal/certificates"
 	"hy2-panel/internal/configuration"
+	"hy2-panel/internal/configuration/deployment"
 	"hy2-panel/internal/core"
 	"hy2-panel/internal/cryptovault"
 	"hy2-panel/internal/security"
@@ -84,7 +85,7 @@ func Run() error {
 	public.TLSConfig = tlsConfig
 	internalMux := http.NewServeMux()
 	internalMux.HandleFunc("GET /health", func(writer http.ResponseWriter, request *http.Request) { writer.WriteHeader(http.StatusNoContent) })
-	internalMux.HandleFunc("GET /deployment", gateway.Metadata(config))
+	internalMux.HandleFunc("GET /deployment", deployment.Read(config))
 	internalMux.HandleFunc("POST /auth", users.Authenticate)
 	internal := httpServer("127.0.0.1:8081", internalMux)
 	failures := make(chan error, 3)

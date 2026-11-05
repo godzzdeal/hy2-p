@@ -10,14 +10,17 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"unicode"
 	"unicode/utf8"
 )
 
+const MaxProfileTitleLength = 25
 const MaxTextLength = 200
 const MaxUpdateHours = 168
 const DefaultUpdateHours = 6
 
 type Settings struct {
+	ProfileTitle   string `json:"profileTitle,omitempty"`
 	Enabled        bool   `json:"enabled"`
 	Text           string `json:"text"`
 	UpdateInterval int    `json:"updateInterval"`
@@ -39,6 +42,12 @@ func Open(data string) (*Store, error) {
 	return store, nil
 }
 func validate(settings Settings) error {
+	if !utf8.ValidString(settings.ProfileTitle) || utf8.RuneCountInString(settings.ProfileTitle) > MaxProfileTitleLength {
+		return errors.New("название подписки: не более 25 символов")
+	}
+	if strings.IndexFunc(settings.ProfileTitle, unicode.IsControl) >= 0 {
+		return errors.New("название подписки не должно содержать управляющие символы")
+	}
 	if utf8.RuneCountInString(settings.Text) > MaxTextLength {
 		return errors.New("объявление: не более 200 символов")
 	}
@@ -57,6 +66,9 @@ func (store *Store) Current() Settings {
 }
 func (store *Store) Headers(headers http.Header) {
 	settings := store.Current()
+	if settings.ProfileTitle != "" {
+		headers.Set("profile-title", "base64:"+base64.StdEncoding.EncodeToString([]byte(settings.ProfileTitle)))
+	}
 	text := ""
 	if settings.Enabled {
 		text = settings.Text

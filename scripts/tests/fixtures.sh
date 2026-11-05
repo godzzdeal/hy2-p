@@ -26,7 +26,7 @@ engine() {
     volume)
       if [[ $* == *--format* ]]; then printf '%s\n' "$ROOT"; fi ;;
     inspect) printf 'true\n' ;;
-    exec) printf '{"httpChallenge":true}\n' ;;
+    exec) printf '{"httpChallenge":true,"udpPublicPort":"61254","udpListenPort":"61254"}\n' ;;
     run)
       if [[ $* == *'--entrypoint tar'* ]]; then
         [[ $BACKUP_FAIL != true ]] || return 1

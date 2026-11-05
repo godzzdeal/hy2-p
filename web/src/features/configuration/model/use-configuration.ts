@@ -26,8 +26,12 @@ export function useSaveConfiguration() {
     },
     onSuccess: (saved) => {
       client.setQueryData(QUERY_KEYS.settings, saved);
-      notify("Сохранено. Перезапустите ядро для применения.");
+      notify("Конфигурация сохранена.");
     },
-    onSettled: () => client.invalidateQueries({ queryKey: QUERY_KEYS.history }),
+    onSettled: () =>
+      Promise.all([
+        client.invalidateQueries({ queryKey: QUERY_KEYS.history }),
+        client.invalidateQueries({ queryKey: QUERY_KEYS.deployment }),
+      ]),
   });
 }

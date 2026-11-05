@@ -6,7 +6,7 @@ export function AnnouncementSettings() {
   const { t } = useTranslation();
   const query = useAnnouncement();
   return (
-    <section id="subscription-announcement" data-scroll-section data-scroll-label={t("Объявление в Happ")}>
+    <section id="subscription-announcement" data-scroll-section data-scroll-label={t("Подписка Happ")}>
       <QueryState isLoading={query.isPending} error={query.error} />
       {query.data && <AnnouncementForm initial={query.data} />}
     </section>

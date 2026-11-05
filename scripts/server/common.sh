@@ -75,5 +75,14 @@ wait_healthy() {
   done
   return 1
 }
-start_release() { compose "$1" up -d --no-build --pull never && wait_healthy "$1"; }
+start_release() {
+  local before
+  compose "$1" up -d --no-build --pull never && wait_healthy "$1" || return 1
+  # A stopped or older panel cannot report its saved ports before first startup.
+  before=$(sha256sum "$ROOT/.env")
+  sync_listener "$1" || return 1
+  if [[ $(sha256sum "$ROOT/.env") != "$before" ]]; then
+    compose "$1" up -d --no-build --pull never && wait_healthy "$1" || return 1
+  fi
+}
 validate_root
