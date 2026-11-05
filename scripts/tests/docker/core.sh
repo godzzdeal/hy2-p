@@ -44,8 +44,9 @@ curl -fsS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Req
 user_id=$(jq -er '.id' "$WORK/user.json")
 token=$(curl -fsS -b "$WORK/cookies" "$URL/api/users/$user_id/links" | jq -er '.subscription | split("/sub/")[1]')
 uri=$(curl -fsS "$URL/sub/$token" | base64 -d)
-jq -n --arg server "$uri" '{server:$server,tls:{ca:"/certs/server.crt"},socks5:{listen:"127.0.0.1:11080"}}' >"$WORK/client.json"
+jq -n --arg server "$uri" '{server:$server,tls:{ca:"/certs/server.crt"},socks5:{listen:"0.0.0.0:11080"}}' >"$WORK/client.json"
 panel_id=$(sudo docker ps -q --filter name=hy2-panel-panel-1)
+panel_ip=$(sudo docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$panel_id")
 panel_image=$(sudo docker inspect --format '{{.Config.Image}}' "$panel_id")
 CLIENT_CONTAINER=$(sudo docker run -d --rm --network "container:$panel_id" \
   --entrypoint /usr/local/bin/hysteria -v "$WORK/client.json:/client.json:ro" \
@@ -53,6 +54,11 @@ CLIENT_CONTAINER=$(sudo docker run -d --rm --network "container:$panel_id" \
 wait_online() {
   local expected=$1
   for ((attempt=0; attempt<30; attempt++)); do
+    # Hysteria applies /kick on the next traffic event, not on idle QUIC keepalives.
+    if [[ $expected == 0 ]]; then
+      curl -fsS --max-time 3 --noproxy "" --socks5-hostname "$panel_ip:11080" \
+        http://127.0.0.1:8081/health >/dev/null 2>&1 || true
+    fi
     if curl -fsS -b "$WORK/cookies" "$URL/api/traffic" |
       jq -e --arg id "$user_id" --argjson expected "$expected" \
       '.available and ((.users[$id].online // 0) == $expected)' >/dev/null; then return 0; fi
@@ -63,6 +69,9 @@ wait_online() {
   return 1
 }
 wait_online 1
+# Verify an actual proxy request before disabling access.
+curl -fsS --max-time 10 --noproxy "" --socks5-hostname "$panel_ip:11080" \
+  http://127.0.0.1:8081/health >/dev/null
 curl -fsS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
   -X PATCH --data '{"name":"Subscription test","enabled":false}' "$URL/api/users/$user_id" >/dev/null
 wait_online 0
