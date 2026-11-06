@@ -1,5 +1,4 @@
 export const PIXEL = {
-  "Поставить звезду на GitHub": "Star on GitHub",
   "Всего пользователей: {{count}}": "Total users: {{count}}",
   "Найдено: {{count}}": "Found: {{count}}",
   "Список пользователей обновлён": "User list refreshed",

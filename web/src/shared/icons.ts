@@ -36,3 +36,4 @@ export { User as UserRound } from "pixelarticons/react/User.js";
 export { Earth } from "pixelarticons/react/Earth.js";
 export { Moon } from "pixelarticons/react/Moon.js";
 export { Star } from "pixelarticons/react/Star.js";
+export { Github } from "pixelarticons/react/Github.js";

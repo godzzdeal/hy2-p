@@ -5,7 +5,7 @@ import { NAVIGATION, PageEnum } from "@/app/navigation";
 import { useUiStore } from "@/app/state";
 import { Sidebar } from "./sidebar";
 import { SpaceScene } from "@/shared/SpaceScene";
-import { Star } from "@/shared/icons";
+import { Github } from "@/shared/icons";
 const UsersPage = lazy(() =>
   import("@/features/users/list").then((module) => ({
     default: module.UsersPage,
@@ -66,8 +66,8 @@ export function Dashboard() {
               target="_blank"
               rel="noreferrer"
             >
-              <Star width={24} height={24} aria-hidden />
-              {t("Поставить звезду на GitHub")}
+              <Github width={24} height={24} aria-hidden />
+              GitHub
             </a>
           </footer>
         </div>

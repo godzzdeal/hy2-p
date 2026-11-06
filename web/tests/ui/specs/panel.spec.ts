@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { mockPanel, chooseTheme } from "../fixtures";
 test("phone installation metadata and manual steps are available", async ({ page }) => {
   await mockPanel(page);
-  await expect(page.getByRole("link", { name: "Поставить звезду на GitHub" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "GitHub", exact: true })).toHaveAttribute(
     "href",
     "https://github.com/godzzdeal/hy2-p",
   );
