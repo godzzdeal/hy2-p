@@ -51,8 +51,8 @@ export default defineConfig({
           to: "licenses/epilepsy-sans.txt",
         },
         {
-          from: path.resolve(import.meta.dirname, "node_modules/lucide-react/LICENSE"),
-          to: "licenses/lucide.txt",
+          from: path.resolve(import.meta.dirname, "node_modules/pixelarticons/LICENSE"),
+          to: "licenses/pixelarticons.txt",
         },
         {
           from: path.resolve(import.meta.dirname, "node_modules/@twemoji/svg/*.svg"),
@@ -74,16 +74,16 @@ export default defineConfig({
       ],
     }),
     new rspack.HtmlRspackPlugin({
-      title: "HY2 / Control",
+      title: "HY2-P",
       meta: {
         viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
         "theme-color": "#081320",
         "apple-mobile-web-app-capable": "yes",
-        "apple-mobile-web-app-title": "HY2 Control",
+        "apple-mobile-web-app-title": "HY2-P",
         "apple-mobile-web-app-status-bar-style": "default",
       },
       templateContent:
-        '<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>HY2 Control</title><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/app-icons/apple-touch-icon.png"></head><body></body></html>',
+        '<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>HY2-P</title><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/app-icons/apple-touch-icon.png"></head><body></body></html>',
       favicon: path.resolve(import.meta.dirname, "assets/pwa/icons/icon.svg"),
     }),
   ],

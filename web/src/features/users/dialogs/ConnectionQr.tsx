@@ -15,7 +15,7 @@ export function ConnectionQr({
   return (
     <figure className="connection-qr">
       <div className="qr-brand">
-        <span>HY2</span>
+        <span>HY2-P</span>
         <span>{t(isSubscription ? "Подписка" : "Подключение")}</span>
       </div>
       <div className="qr-canvas">

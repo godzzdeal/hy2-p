@@ -1,85 +1,102 @@
 body::before {
   content: "";
   position: fixed;
-  z-index: -1;
+  inset: 0;
+  z-index: -2;
   pointer-events: none;
-  left: var(--space-6);
-  top: var(--space-10);
-  width: var(--space-1);
-  height: var(--space-1);
-  background: var(--star-color);
-  box-shadow:
-    64px 96px 0 var(--star-color),
-    256px 32px 0 var(--star-color),
-    448px 160px 0 var(--star-color),
-    640px 64px 0 var(--star-color),
-    832px 240px 0 var(--star-color),
-    1024px 128px 0 var(--star-color),
-    1120px 448px 0 var(--star-color),
-    736px 512px 0 var(--star-color),
-    384px 608px 0 var(--star-color),
-    160px 448px 0 var(--star-color),
-    80px 704px 0 var(--star-color),
-    560px 768px 0 var(--star-color),
-    944px 688px 0 var(--star-color),
-    1232px 784px 0 var(--star-color),
-    calc(100vw - 96px) 40px 0 var(--star-color),
-    calc(100vw - 208px) 352px 0 var(--star-color),
-    calc(100vw - 48px) 624px 0 var(--star-color);
+  background-image:
+    radial-gradient(var(--star-color) 1px, transparent 1px),
+    radial-gradient(var(--star-color) 1px, transparent 1px);
+  background-size:
+    96px 96px,
+    160px 160px;
+  background-position:
+    var(--space-4) var(--space-8),
+    var(--space-16) var(--space-3);
+  opacity: 0.55;
 }
-.login::before {
-  content: "";
+.space-scene {
   position: fixed;
+  inset: 0;
   z-index: -1;
-  width: 128px;
-  height: 128px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.space-scene > * {
+  position: absolute;
+}
+.space-earth {
+  top: var(--space-16);
+  right: var(--space-16);
+  width: var(--planet-size);
+  height: var(--planet-size);
+  color: var(--planet-color);
+  opacity: 0.55;
+}
+.space-orbit {
+  top: var(--space-4);
+  right: var(--space-4);
+  width: var(--orbit-size);
+  height: var(--orbit-size);
+  border: 1px dashed var(--star-color);
+  border-radius: 50%;
+  opacity: 0.45;
+}
+.space-moon {
+  left: calc(var(--sidebar-width) + var(--space-6));
+  bottom: var(--space-6);
+  width: var(--moon-size);
+  height: var(--moon-size);
+  color: var(--planet-shadow);
+}
+.space-sparkles {
+  right: var(--space-6);
+  bottom: var(--space-16);
+  color: var(--star-color);
+}
+.space-star {
+  top: 50%;
+  right: var(--space-5);
+  color: var(--accent);
+  opacity: 0.5;
+}
+.login .space-orbit {
   top: 12%;
-  right: 12%;
-  background: var(--planet-color);
-  box-shadow: inset -32px -16px 0 var(--planet-shadow);
-  clip-path: polygon(
-    25% 0,
-    75% 0,
-    75% 12.5%,
-    87.5% 12.5%,
-    87.5% 25%,
-    100% 25%,
-    100% 75%,
-    87.5% 75%,
-    87.5% 87.5%,
-    75% 87.5%,
-    75% 100%,
-    25% 100%,
-    25% 87.5%,
-    12.5% 87.5%,
-    12.5% 75%,
-    0 75%,
-    0 25%,
-    12.5% 25%,
-    12.5% 12.5%,
-    25% 12.5%
-  );
+  right: 8%;
 }
-.config-technical-toggle {
-  padding: var(--space-3) var(--space-4);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  border-bottom: 1px solid var(--line);
+.login .space-earth {
+  top: calc(12% + var(--space-12));
+  right: calc(8% + var(--space-12));
 }
-.config-technical-toggle p {
-  color: var(--muted);
+.login .space-moon {
+  left: 12%;
+  bottom: 12%;
+}
+.app-header {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
 }
 @media (max-width: 760px) {
-  .config-technical-toggle {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-  .login::before {
-    width: 64px;
-    height: 64px;
-    top: var(--space-6);
+  .space-earth {
+    top: 288px;
     right: var(--space-6);
+    opacity: 0.25;
+  }
+  .space-orbit {
+    top: 240px;
+    right: calc(-1 * var(--space-6));
+    opacity: 0.25;
+  }
+  .space-moon {
+    left: var(--space-4);
+    bottom: var(--space-4);
+    opacity: 0.4;
+  }
+  .login .space-earth {
+    top: var(--space-16);
+    right: var(--space-8);
+  }
+  .login .space-orbit {
+    top: var(--space-4);
+    right: calc(-1 * var(--space-4));
   }
 }

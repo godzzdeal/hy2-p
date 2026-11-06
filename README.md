@@ -1,4 +1,4 @@
-# HY2 Control
+# HY2-P
 
 Веб-панель для Hysteria2 на собственном сервере. Создавайте пользователей, выдавайте ссылки и QR-коды для Happ, меняйте конфигурацию и обновляйте ядро через браузер.
 
@@ -93,4 +93,5 @@ sudo hy2-panel update
 - [Готовые версии](https://github.com/godzzdeal/hy2-p/releases)
 - [Roadmap](ROADMAP.md)
 - [Ручной Docker и запуск для разработки](docs/docker.md)
+- [Документация Hysteria2](https://v2.hysteria.network/docs/getting-started/Installation/)
 - [Официальная конфигурация Hysteria2](https://v2.hysteria.network/docs/advanced/Full-Server-Config/)

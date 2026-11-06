@@ -12,9 +12,9 @@
 }
 .field-reset {
   color: var(--muted);
-  min-height: var(--space-8);
-  min-width: var(--space-8);
-  padding: var(--space-2);
+  width: var(--control-height);
+  min-width: var(--control-height);
+  padding: var(--space-1);
 }
 .field-reset:not(:disabled):hover {
   color: var(--accent);
@@ -46,13 +46,15 @@
 }
 .config-tabs button {
   font-size: var(--text-control);
-  padding-inline: var(--space-3);
+  padding-inline: var(--space-2);
+  height: auto;
+  padding-block: var(--space-1);
   justify-content: flex-start;
   text-align: left;
 }
 .configuration-layout {
   display: grid;
-  grid-template-columns: 224px minmax(0, 1fr);
+  grid-template-columns: 208px minmax(0, 1fr);
 }
 .configuration-fields {
   min-width: 0;

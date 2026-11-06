@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "name": "HY2 Control",
-  "short_name": "HY2",
+  "name": "HY2-P",
+  "short_name": "HY2-P",
   "description": "Панель управления Hysteria2",
   "lang": "ru",
   "start_url": "/",

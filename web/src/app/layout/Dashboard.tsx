@@ -4,6 +4,7 @@ import { lazy, Suspense, useRef } from "react";
 import { NAVIGATION, PageEnum } from "@/app/navigation";
 import { useUiStore } from "@/app/state";
 import { Sidebar } from "./sidebar";
+import { SpaceScene } from "@/shared/SpaceScene";
 const UsersPage = lazy(() =>
   import("@/features/users/list").then((module) => ({
     default: module.UsersPage,
@@ -45,13 +46,11 @@ export function Dashboard() {
   const content = useRef<HTMLDivElement>(null);
   return (
     <div className="shell">
+      <SpaceScene />
       <Sidebar />
       <main>
         <header className="app-header">
-          <div className="breadcrumbs">
-            {t("Центр управления")} <span aria-hidden> / </span>{" "}
-            {t(NAVIGATION.find((item) => item.id === page)?.label ?? "")}
-          </div>
+          <div className="breadcrumbs">{t(NAVIGATION.find((item) => item.id === page)?.label ?? "")}</div>
           <span className="admin">{t("Администратор")}</span>
         </header>
         <div className="content" ref={content}>
@@ -59,7 +58,7 @@ export function Dashboard() {
             <Page />
           </Suspense>
           <footer>
-            <span>HY2</span>
+            <span>HY2-P</span>
             <span>Hysteria 2</span>
           </footer>
         </div>

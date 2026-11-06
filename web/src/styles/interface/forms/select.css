@@ -64,7 +64,7 @@
   cursor: not-allowed;
 }
 .select-check {
-  width: var(--space-4);
+  width: var(--icon-size);
   display: flex;
   flex-shrink: 0;
 }

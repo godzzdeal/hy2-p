@@ -40,6 +40,7 @@
   --epr-highlight-color: var(--accent);
 }
 .emoji-grid button {
+  height: auto;
   padding: 0;
   min-height: 0;
   border: 0;

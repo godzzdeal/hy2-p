@@ -14,7 +14,7 @@ export function CorePage() {
         </div>
         <a
           className="documentation-link"
-          href="https://v2.hysteria.network/docs/"
+          href="https://v2.hysteria.network/docs/getting-started/Installation/"
           target="_blank"
           rel="noreferrer"
         >

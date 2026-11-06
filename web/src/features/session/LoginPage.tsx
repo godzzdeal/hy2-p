@@ -3,6 +3,7 @@ import { useState } from "react";
 import { type FormEvent } from "react";
 import { ArrowUpRight, ShieldCheck } from "@/shared/icons";
 import { LanguageSelect } from "@/shared/i18n";
+import { SpaceScene } from "@/shared/SpaceScene";
 import { useSession } from "./use-session";
 export function LoginPage() {
   const { t } = useTranslation();
@@ -15,17 +16,13 @@ export function LoginPage() {
   }
   return (
     <div className="login">
-      <div className="login-brand">
+      <SpaceScene />
+      <h1 className="login-brand">
         <ShieldCheck width={24} height={24} aria-hidden />
-        <span>
-          HY2 <span className="muted">{t("Центр управления")}</span>
-        </span>
-      </div>
+        <span>HY2-P</span>
+      </h1>
       <form onSubmit={onSubmit}>
         <LanguageSelect />
-        <span className="eyebrow">{t("ПАНЕЛЬ УПРАВЛЕНИЯ")}</span>
-        <h1>{t("Вход в панель")}</h1>
-        <p className="muted">{t("Войдите, чтобы управлять подключениями и настройками сервера.")}</p>
         <label>
           {t("Логин")}
           <input

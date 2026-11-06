@@ -12,21 +12,15 @@
   gap: var(--space-3);
   color: var(--accent);
   font-size: 24px;
-  margin-bottom: var(--space-10);
+  margin-bottom: var(--space-5);
 }
 .login form {
-  width: 416px;
+  width: 384px;
   max-width: 100%;
-  padding: var(--space-8);
+  padding: var(--space-5);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
-}
-.login h1 {
-  margin: var(--space-4) 0;
-}
-.login p {
-  margin-bottom: var(--space-8);
 }
 .login .primary {
   width: 100%;

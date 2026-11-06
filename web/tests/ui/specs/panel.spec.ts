@@ -34,13 +34,17 @@ test("the install button uses the browser prompt and installed event", async ({ 
   await page.evaluate(() => window.dispatchEvent(new Event("appinstalled")));
   await expect(page.getByText("Панель уже установлена", { exact: true })).toBeVisible();
 });
-test("login has a simple password label and accessible language choice", async ({ page }) => {
+test("login has a simple password label and accessible language choice", async ({ page }, info) => {
   await mockPanel(page, false);
+  await expect(page.getByRole("heading", { name: "HY2-P", exact: true })).toBeVisible();
+  await expect(page.getByText("Вход в панель", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Центр управления", { exact: true })).toHaveCount(0);
   await expect(page.getByLabel("Пароль", { exact: true })).toBeVisible();
   await expect(page.getByText("Пароль администратора")).toHaveCount(0);
   await page.getByRole("combobox").click();
   await page.getByRole("option", { name: "English", exact: true }).click();
   await expect(page.getByLabel("Password", { exact: true })).toBeVisible();
+  await page.screenshot({ path: info.outputPath("login.png"), fullPage: true });
 });
 
 test("logs support Unicode, search, level filters, pause and clearing", async ({ page }, info) => {

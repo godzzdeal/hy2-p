@@ -14,7 +14,6 @@ export function OverviewPage() {
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">{t("Центр управления")}</span>
           <h1>{t("Ваш сервер")}</h1>
           <p>{t("Доступ, подключения и состояние вашего сервера.")}</p>
         </div>

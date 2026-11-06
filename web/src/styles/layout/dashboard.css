@@ -19,7 +19,7 @@ main {
 .content {
   max-width: var(--content-width);
   margin: auto;
-  padding: var(--space-6) var(--space-16) var(--space-6) var(--space-6);
+  padding: var(--space-4) var(--space-16) var(--space-4) var(--space-4);
 }
 .page-heading {
   display: flex;
@@ -70,6 +70,7 @@ main {
 .step {
   display: flex;
   width: 100%;
+  height: auto;
   padding: var(--space-3) 0;
   text-align: left;
   justify-content: flex-start;

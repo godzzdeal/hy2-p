@@ -5,7 +5,7 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font: var(--text-body)/1.5 var(--font-body);
+  font: var(--text-body)/1.4 var(--font-body);
   font-optical-sizing: auto;
 }
 button,
@@ -14,7 +14,7 @@ textarea,
 select {
   font: inherit;
   font-size: var(--text-control);
-  line-height: 1.5;
+  line-height: 1.2;
 }
 button {
   cursor: pointer;
@@ -25,7 +25,8 @@ button {
   border: 0;
   border-radius: var(--radius-sm);
   min-height: var(--control-height);
-  padding: var(--space-2) var(--space-3);
+  height: var(--control-height);
+  padding: 0 var(--space-3);
   color: inherit;
   background: transparent;
 }
@@ -47,13 +48,24 @@ select {
   background: var(--input);
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  padding: var(--space-2) var(--space-3);
+  padding: 0 var(--space-3);
   outline: none;
 }
 input:focus,
 textarea:focus,
 select:focus {
   border-color: var(--accent);
+}
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+select {
+  height: var(--control-height);
+}
+textarea {
+  padding-block: var(--space-2);
+  line-height: 1.4;
+}
+button > svg {
+  flex-shrink: 0;
 }
 h1,
 h2,
@@ -103,8 +115,9 @@ small,
   width: 100%;
 }
 .icon-btn {
-  min-width: var(--control-height);
-  padding: var(--space-3);
+  width: var(--control-height);
+  padding: var(--space-1);
+  flex-shrink: 0;
 }
 .danger {
   color: var(--danger);

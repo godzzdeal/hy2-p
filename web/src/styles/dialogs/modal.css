@@ -7,14 +7,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: var(--space-6);
+  padding: var(--space-4);
 }
 .modal {
   width: var(--dialog-width);
   max-width: 100%;
   max-height: 90dvh;
   overflow: auto;
-  padding: var(--space-6);
+  padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -26,7 +26,7 @@
   justify-content: space-between;
   align-items: center;
   gap: var(--space-3);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
 }
 .modal > p {
   margin-bottom: var(--space-5);
@@ -41,6 +41,7 @@
 .history-item {
   display: flex;
   width: 100%;
+  height: auto;
   justify-content: flex-start;
   text-align: left;
   gap: var(--space-4);

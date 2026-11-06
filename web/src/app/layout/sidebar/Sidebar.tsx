@@ -1,6 +1,6 @@
 import { Select, SelectOption } from "@/shared/ui/select";
 import { useTranslation } from "react-i18next";
-import { Activity, LogOut, Server } from "@/shared/icons";
+import { Earth, LogOut, Server } from "@/shared/icons";
 import { NAVIGATION } from "@/app/navigation";
 import { useConfiguration } from "@/features/configuration/model";
 import { useSession } from "@/features/session";
@@ -17,11 +17,9 @@ export function Sidebar() {
     <aside className="app-sidebar">
       <div className="brand">
         <span className="brand-mark">
-          <Activity width={24} height={24} aria-hidden />
+          <Earth width={24} height={24} aria-hidden />
         </span>
-        <span>
-          HY2<span className="brand-sub">{t("Центр управления")}</span>
-        </span>
+        <span>HY2-P</span>
       </div>
       <div className="workspace">
         <Server width={24} height={24} aria-hidden />
@@ -48,7 +46,7 @@ export function Sidebar() {
         </label>
         <div className="version">
           <span className="status-dot" />
-          HY2 Control <BuildVersion />
+          HY2-P <BuildVersion />
         </div>
         <button aria-label={t("Выйти")} disabled={logout.isPending} onClick={() => logout.mutate()}>
           <LogOut width={24} height={24} aria-hidden />

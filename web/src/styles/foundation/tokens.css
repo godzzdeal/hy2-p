@@ -38,19 +38,24 @@
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
-  --text-small: 26px;
+  --text-small: 18px;
   --text-code: 14px;
-  --text-body: 26px;
-  --text-title: 39px;
+  --text-body: 20px;
+  --text-title: 26px;
+  --text-heading: 24px;
   --sidebar-width: 240px;
-  --control-height: 40px;
+  --control-height: 36px;
+  --icon-size: 24px;
+  --orbit-size: 192px;
+  --planet-size: 96px;
+  --moon-size: 48px;
   --content-width: 1280px;
   --layer-navigation: 10;
   --dialog-width: 512px;
   --layer-feedback: 50;
   --layer-dialog: 20;
   --layer-select: 60;
-  --text-control: 26px;
+  --text-control: 20px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
