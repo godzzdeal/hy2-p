@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Download, Trash2, ArrowDownToLine } from "lucide-react";
+import { Download, Trash2, ArrowDownToLine } from "@/shared/icons";
 import { Select, SelectOption } from "@/shared/ui";
 import { type TLogLevel } from "./model";
 export function LogToolbar({
@@ -45,15 +45,15 @@ export function LogToolbar({
         <SelectOption value="info">{t("Информация")}</SelectOption>
       </Select>
       <button type="button" className="secondary" aria-pressed={isFollowing} onClick={onFollow}>
-        <ArrowDownToLine size={16} aria-hidden />
+        <ArrowDownToLine width={24} height={24} aria-hidden />
         {t("Автопрокрутка")}
       </button>
       <button type="button" className="text-btn" onClick={onDownload} disabled={!canClear}>
-        <Download size={16} aria-hidden />
+        <Download width={24} height={24} aria-hidden />
         {t("Скачать")}
       </button>
       <button type="button" className="text-btn" onClick={onClear} disabled={!canClear}>
-        <Trash2 size={16} aria-hidden />
+        <Trash2 width={24} height={24} aria-hidden />
         {t("Очистить")}
       </button>
     </div>

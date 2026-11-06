@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Check, ShieldCheck, TriangleAlert } from "lucide-react";
+import { Check, ShieldCheck, TriangleAlert } from "@/shared/icons";
 import { type IUpdateStatus } from "@/features/core/model/updates";
 import { UPDATE_LABELS } from "@/features/core/model/updates";
 import { cn } from "@/shared/lib";
@@ -15,7 +15,7 @@ export function UpdateProgress({ status }: { status: IUpdateStatus }) {
       role="status"
       aria-live="polite"
     >
-      <Icon size={20} aria-hidden />
+      <Icon width={24} height={24} aria-hidden />
       <div>
         <strong>{t(UPDATE_LABELS[status.result.phase])}</strong>
         <p>{status.result.message || t("Скачивание и проверка выполняются до остановки текущего ядра.")}</p>

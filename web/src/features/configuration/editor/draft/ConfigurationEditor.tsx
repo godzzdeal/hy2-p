@@ -1,15 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { History } from "lucide-react";
+import { History } from "@/shared/icons";
 import { ConfigurationForm } from "@/features/configuration/structured";
 import { type IConfiguration } from "@/features/configuration/model";
 import { ConnectionFields } from "../ConnectionFields";
 import { HistoryDialog } from "../HistoryDialog";
-import { DraftBar } from "./DraftBar";
+import { DraftBar, SavedConfiguration } from "./status";
 import { useConfigurationDraft } from "./use-configuration-draft";
 export function ConfigurationEditor({ initial }: { initial: IConfiguration }) {
   const { t } = useTranslation();
-  const { draft, setDraft, isDirty, isPending, onOrder, onSave, onReset } = useConfigurationDraft(initial);
+  const { draft, setDraft, isDirty, isPending, onOrder, onSave, onReset, savedSequence, onApplied } =
+    useConfigurationDraft(initial);
   const [isHistoryOpen, setHistoryOpen] = useState(false);
   function onRestore(value: IConfiguration) {
     setDraft(value);
@@ -24,6 +25,7 @@ export function ConfigurationEditor({ initial }: { initial: IConfiguration }) {
         }}
       >
         <ConnectionFields value={draft} onChange={setDraft} />
+        <SavedConfiguration sequence={savedSequence} isDirty={isDirty} onApplied={onApplied} />
         <ConfigurationForm value={draft} onChange={setDraft} />
         <section
           className="card config-card"
@@ -38,7 +40,7 @@ export function ConfigurationEditor({ initial }: { initial: IConfiguration }) {
                 {t("Упорядочить YAML")}
               </button>
               <button type="button" className="text-btn" onClick={() => setHistoryOpen(true)}>
-                <History size={16} aria-hidden />
+                <History width={24} height={24} aria-hidden />
                 {t("История")}
               </button>
             </div>

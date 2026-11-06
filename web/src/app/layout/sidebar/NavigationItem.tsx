@@ -10,7 +10,7 @@ export function NavigationItem({ item }: INavigationItem) {
   const { page, selectPage } = useUiStore();
   return (
     <button className={cn({ selected: page === item.id })} onClick={() => selectPage(item.id)}>
-      <item.icon size={20} aria-hidden />
+      <item.icon width={24} height={24} aria-hidden />
       {t(item.label)}
     </button>
   );

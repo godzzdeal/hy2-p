@@ -1,29 +1,24 @@
 import { useId } from "react";
 import { useTranslation } from "react-i18next";
-import { FlagPicker, FLAG_PREFIX, replaceFlag } from "@/shared/flags";
-import { PROFILE_TITLE_LIMIT } from "./flag-options";
+import { FlagPicker } from "@/shared/flags";
+import { EmojiPicker, EmojiText } from "@/shared/emoji";
+import { PROFILE_TITLE_LIMIT, parseProfileTitle, formatProfileTitle, renameProfileTitle } from "./title";
 export function ProfileFields({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   const { t } = useTranslation();
   const id = useId();
-  const flag = value.match(FLAG_PREFIX)?.[0].trim() ?? "";
+  const parts = parseProfileTitle(value);
   const count = Array.from(value).length;
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
       <label className="md:col-span-2" htmlFor={id}>
         {t("Название подписки")}
         <input
           id={id}
           aria-label={t("Название подписки")}
           aria-invalid={count > PROFILE_TITLE_LIMIT}
-          value={value.replace(FLAG_PREFIX, "")}
+          value={parts.name}
           placeholder={t("Например, Германия")}
-          onChange={(event) =>
-            onChange(
-              FLAG_PREFIX.test(event.target.value)
-                ? event.target.value
-                : replaceFlag(event.target.value, flag),
-            )
-          }
+          onChange={(event) => onChange(renameProfileTitle(value, event.target.value))}
           aria-describedby={id + "-hint"}
         />
         <small id={id + "-hint"}>
@@ -33,7 +28,17 @@ export function ProfileFields({ value, onChange }: { value: string; onChange: (v
           {t("Название появится в Happ после обновления подписки. Можно вставить свой флаг или эмодзи.")}
         </small>
       </label>
-      <FlagPicker value={value} onChange={(next) => onChange(replaceFlag(value, next))} />
+      <FlagPicker value={parts.flag} onChange={(flag) => onChange(formatProfileTitle({ ...parts, flag }))} />
+      <EmojiPicker
+        value={parts.emoji}
+        onChange={(emoji) => onChange(formatProfileTitle({ ...parts, emoji }))}
+      />
+      <div className="subscription-preview md:col-span-2">
+        <small>{t("Предпросмотр названия подписки")}</small>
+        <output aria-label={t("Предпросмотр названия подписки")}>
+          <EmojiText value={value || t("Название подписки")} />
+        </output>
+      </div>
     </div>
   );
 }

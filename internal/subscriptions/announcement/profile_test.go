@@ -17,7 +17,7 @@ func TestFlagTitleSurvivesSaveAndHeaderEncoding(t *testing.T) {
 	}
 	writer := httptest.NewRecorder()
 	store.Save(writer, httptest.NewRequest("PUT", "/", strings.NewReader(
-		`{"profileTitle":"🇩🇪 Германия","enabled":false,"text":"","updateInterval":6}`)))
+		`{"profileTitle":"🇩🇪 🚀 Германия","enabled":false,"text":"","updateInterval":6}`)))
 	if writer.Code != 200 {
 		t.Fatal(writer.Body.String())
 	}
@@ -28,7 +28,7 @@ func TestFlagTitleSurvivesSaveAndHeaderEncoding(t *testing.T) {
 	headers := http.Header{}
 	restored.Headers(headers)
 	title, err := base64.StdEncoding.DecodeString(strings.TrimPrefix(headers.Get("profile-title"), "base64:"))
-	if err != nil || string(title) != "🇩🇪 Германия" {
+	if err != nil || string(title) != "🇩🇪 🚀 Германия" {
 		t.Fatalf("%q %v", title, err)
 	}
 	if headers.Get("announce") != "base64:" {

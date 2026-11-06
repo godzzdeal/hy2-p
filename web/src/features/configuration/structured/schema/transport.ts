@@ -2,7 +2,7 @@ import { type IConfigSection } from "@/features/configuration/structured/model";
 export const TRANSPORT_SECTIONS: readonly IConfigSection[] = [
   {
     id: "server",
-    title: "Сервер и скорость",
+    title: "Общие настройки",
     fields: [
       {
         path: "listen",
@@ -33,7 +33,7 @@ export const TRANSPORT_SECTIONS: readonly IConfigSection[] = [
   },
   {
     id: "quic",
-    title: "QUIC",
+    title: "Соединение",
     fields: [
       ...[
         "initStreamReceiveWindow",
@@ -49,7 +49,7 @@ export const TRANSPORT_SECTIONS: readonly IConfigSection[] = [
   },
   {
     id: "obfs",
-    title: "Обфускация",
+    title: "Маскировка трафика",
     fields: [
       { path: "obfs.type", label: "Тип обфускации", kind: "select", options: ["salamander", "gecko"] },
       {

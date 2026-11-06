@@ -25,6 +25,7 @@ export function UserNameField({ value, onChange }: { value: string; onChange: (v
       <EmojiPicker value={value} onChange={(next) => onChange(replaceEmoji(value, next))} />
       <small className="user-name-hint">
         {t("Эмодзи появится рядом с пользователем и в названии подключения Happ после обновления подписки.")}
+        {t("Эмодзи отображается в названии Happ. Отдельной иконкой Happ может сделать только флаг.")}
       </small>
     </div>
   );

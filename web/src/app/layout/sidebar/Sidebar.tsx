@@ -1,6 +1,6 @@
 import { Select, SelectOption } from "@/shared/ui/select";
 import { useTranslation } from "react-i18next";
-import { Activity, LogOut, Server } from "lucide-react";
+import { Activity, LogOut, Server } from "@/shared/icons";
 import { NAVIGATION } from "@/app/navigation";
 import { useConfiguration } from "@/features/configuration/model";
 import { useSession } from "@/features/session";
@@ -14,17 +14,17 @@ export function Sidebar() {
   const config = useConfiguration();
   const { logout } = useSession();
   return (
-    <aside>
+    <aside className="app-sidebar">
       <div className="brand">
         <span className="brand-mark">
-          <Activity size={24} aria-hidden />
+          <Activity width={24} height={24} aria-hidden />
         </span>
         <span>
-          HY2<span className="brand-sub">CONTROL PANEL</span>
+          HY2<span className="brand-sub">{t("Центр управления")}</span>
         </span>
       </div>
       <div className="workspace">
-        <Server size={20} aria-hidden />
+        <Server width={24} height={24} aria-hidden />
         <div>
           <strong>{t("Мой сервер")}</strong>
           <small>{config.data?.host || t("Адрес не настроен")}</small>
@@ -50,9 +50,9 @@ export function Sidebar() {
           <span className="status-dot" />
           HY2 Control <BuildVersion />
         </div>
-        <button disabled={logout.isPending} onClick={() => logout.mutate()}>
-          <LogOut size={20} aria-hidden />
-          {t("Выйти")}
+        <button aria-label={t("Выйти")} disabled={logout.isPending} onClick={() => logout.mutate()}>
+          <LogOut width={24} height={24} aria-hidden />
+          <span className="logout-label">{t("Выйти")}</span>
         </button>
       </div>
     </aside>

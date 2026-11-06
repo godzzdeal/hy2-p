@@ -13,3 +13,8 @@ export interface IConfigSection {
   title: string;
   fields: readonly IConfigField[];
 }
+
+export interface IFieldCopy {
+  label: string;
+  hint: string;
+}

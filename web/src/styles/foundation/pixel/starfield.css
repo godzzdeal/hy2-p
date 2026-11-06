@@ -1,0 +1,85 @@
+body::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  left: var(--space-6);
+  top: var(--space-10);
+  width: var(--space-1);
+  height: var(--space-1);
+  background: var(--star-color);
+  box-shadow:
+    64px 96px 0 var(--star-color),
+    256px 32px 0 var(--star-color),
+    448px 160px 0 var(--star-color),
+    640px 64px 0 var(--star-color),
+    832px 240px 0 var(--star-color),
+    1024px 128px 0 var(--star-color),
+    1120px 448px 0 var(--star-color),
+    736px 512px 0 var(--star-color),
+    384px 608px 0 var(--star-color),
+    160px 448px 0 var(--star-color),
+    80px 704px 0 var(--star-color),
+    560px 768px 0 var(--star-color),
+    944px 688px 0 var(--star-color),
+    1232px 784px 0 var(--star-color),
+    calc(100vw - 96px) 40px 0 var(--star-color),
+    calc(100vw - 208px) 352px 0 var(--star-color),
+    calc(100vw - 48px) 624px 0 var(--star-color);
+}
+.login::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  width: 128px;
+  height: 128px;
+  top: 12%;
+  right: 12%;
+  background: var(--planet-color);
+  box-shadow: inset -32px -16px 0 var(--planet-shadow);
+  clip-path: polygon(
+    25% 0,
+    75% 0,
+    75% 12.5%,
+    87.5% 12.5%,
+    87.5% 25%,
+    100% 25%,
+    100% 75%,
+    87.5% 75%,
+    87.5% 87.5%,
+    75% 87.5%,
+    75% 100%,
+    25% 100%,
+    25% 87.5%,
+    12.5% 87.5%,
+    12.5% 75%,
+    0 75%,
+    0 25%,
+    12.5% 25%,
+    12.5% 12.5%,
+    25% 12.5%
+  );
+}
+.config-technical-toggle {
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  border-bottom: 1px solid var(--line);
+}
+.config-technical-toggle p {
+  color: var(--muted);
+}
+@media (max-width: 760px) {
+  .config-technical-toggle {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .login::before {
+    width: 64px;
+    height: 64px;
+    top: var(--space-6);
+    right: var(--space-6);
+  }
+}

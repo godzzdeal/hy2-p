@@ -47,9 +47,10 @@ export function Dashboard() {
     <div className="shell">
       <Sidebar />
       <main>
-        <header>
+        <header className="app-header">
           <div className="breadcrumbs">
-            {t("Панель управления /")} {t(NAVIGATION.find((item) => item.id === page)?.label ?? "")}
+            {t("Центр управления")} <span aria-hidden> / </span>{" "}
+            {t(NAVIGATION.find((item) => item.id === page)?.label ?? "")}
           </div>
           <span className="admin">{t("Администратор")}</span>
         </header>
@@ -58,7 +59,7 @@ export function Dashboard() {
             <Page />
           </Suspense>
           <footer>
-            <span>HY2 / CONTROL</span>
+            <span>HY2</span>
             <span>Hysteria 2</span>
           </footer>
         </div>

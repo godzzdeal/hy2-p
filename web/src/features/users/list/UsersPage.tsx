@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { PageEnum } from "@/app/navigation";
 import { useUiStore } from "@/app/state";
-import { Plus, Rss } from "lucide-react";
+import { Plus, Rss } from "@/shared/icons";
 import { UserDialogs } from "@/features/users";
 import { type TUserDialog } from "@/features/users";
 import { useConfiguration } from "@/features/configuration/model";
@@ -37,11 +37,11 @@ export function UsersPage() {
         </div>
         <div className="row-actions">
           <button className="secondary" onClick={() => selectPage(PageEnum.Subscriptions)}>
-            <Rss size={16} aria-hidden />
+            <Rss width={24} height={24} aria-hidden />
             {t("Настроить подписку")}
           </button>
           <button className="primary" onClick={() => setDialog({ type: "create" })}>
-            <Plus size={20} aria-hidden />
+            <Plus width={24} height={24} aria-hidden />
             {t("Добавить пользователя")}
           </button>
         </div>
@@ -53,9 +53,7 @@ export function UsersPage() {
       )}
       {configuration.data && configuration.data.authMode !== "native" && (
         <p className="info-note">
-          {t(
-            "Пользователи хранятся в панели и работают сразу после добавления. Для Happ скопируйте подписку или откройте QR-код.",
-          )}
+          {t("Создайте пользователя, затем откройте его QR-код или скопируйте подписку для Happ.")}
         </p>
       )}
       <section
@@ -66,7 +64,7 @@ export function UsersPage() {
       >
         <div className="card-header">
           <h2>
-            {t("Все пользователи /")}
+            {t("Пользователи")}
             {query.data?.length ?? 0}
           </h2>
           <input

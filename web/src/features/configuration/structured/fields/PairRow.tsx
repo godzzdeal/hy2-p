@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { RefreshCw, Trash2 } from "lucide-react";
+import { RefreshCw, Trash2 } from "@/shared/icons";
 import { generatePassword } from "@/shared/security";
 interface IPairRow {
   name: string;
@@ -40,11 +40,11 @@ export function PairRow({ name, value, onCommit, onRemove, hasGenerator }: IPair
           aria-label={t("Сгенерировать пароль")}
           onClick={onGenerate}
         >
-          <RefreshCw size={20} aria-hidden />
+          <RefreshCw width={24} height={24} aria-hidden />
         </button>
       )}
       <button type="button" className="icon-btn danger" aria-label={t("Удалить параметр")} onClick={onRemove}>
-        <Trash2 size={20} aria-hidden />
+        <Trash2 width={24} height={24} aria-hidden />
       </button>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Power, RefreshCw, Square, Activity } from "lucide-react";
+import { Power, RefreshCw, Square, Activity } from "@/shared/icons";
 import { useCore, useCoreControl } from "@/features/core/model";
 import { useUpdateStatus } from "@/features/core/model/updates";
 import { cn } from "@/shared/lib";
@@ -26,7 +26,7 @@ export function CoreStatusCard() {
     >
       <div className="engine-summary">
         <span className={cn("engine-symbol", { "engine-symbol-active": isRunning })}>
-          <Activity size={28} aria-hidden />
+          <Activity width={24} height={24} aria-hidden />
         </span>
         <div>
           <span className="eyebrow">HYSTERIA 2</span>
@@ -57,7 +57,7 @@ export function CoreStatusCard() {
             disabled={isBusy || !query.data?.available || isRunning}
             onClick={() => control.mutate("start")}
           >
-            <Power size={20} aria-hidden />
+            <Power width={24} height={24} aria-hidden />
             {t("Запустить")}
           </button>
           <button
@@ -65,7 +65,7 @@ export function CoreStatusCard() {
             disabled={isBusy || !isRunning}
             onClick={() => control.mutate("restart")}
           >
-            <RefreshCw size={20} aria-hidden />
+            <RefreshCw width={24} height={24} aria-hidden />
             {t("Перезапустить")}
           </button>
           <button
@@ -73,7 +73,7 @@ export function CoreStatusCard() {
             disabled={isBusy || (!isRunning && !watchdog?.desiredRunning)}
             onClick={() => control.mutate("stop")}
           >
-            <Square size={16} aria-hidden />
+            <Square width={24} height={24} aria-hidden />
             {t("Остановить")}
           </button>
         </div>

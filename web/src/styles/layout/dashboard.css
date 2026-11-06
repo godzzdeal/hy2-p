@@ -2,7 +2,7 @@ main {
   margin-left: var(--sidebar-width);
   width: calc(100% - var(--sidebar-width));
 }
-header {
+.app-header {
   min-height: var(--space-12);
   border-bottom: 1px solid var(--line);
   padding: var(--space-3) var(--space-6);

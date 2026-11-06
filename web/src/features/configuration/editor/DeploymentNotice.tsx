@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { ApplyPortButton } from "@/features/configuration/ports";
-import { Copy } from "lucide-react";
+import { Copy } from "@/shared/icons";
 import { useUiStore } from "@/app/state";
 import { useDeployment } from "@/features/configuration/model/deployment";
 export function DeploymentNotice() {
@@ -49,7 +49,7 @@ export function DeploymentNotice() {
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <code>{command}</code>
                 <button type="button" className="text-btn" onClick={() => void onCopy()}>
-                  <Copy size={16} aria-hidden />
+                  <Copy width={24} height={24} aria-hidden />
                   {t("Скопировать команду")}
                 </button>
               </div>

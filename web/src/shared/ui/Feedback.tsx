@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
-import { Check, X } from "lucide-react";
+import { Check, X } from "@/shared/icons";
 import { NETWORK } from "@/shared/http";
 import { useUiStore } from "@/app/state";
 export function Feedback() {
@@ -17,13 +17,13 @@ export function Feedback() {
         <div className="alert global-error" role="alert">
           {t(error)}
           <button aria-label={t("Закрыть ошибку")} onClick={clearError}>
-            <X size={16} aria-hidden />
+            <X width={24} height={24} aria-hidden />
           </button>
         </div>
       )}
       {notice && (
         <div className="toast" role="status">
-          <Check size={20} aria-hidden />
+          <Check width={24} height={24} aria-hidden />
           {t(notice)}
         </div>
       )}

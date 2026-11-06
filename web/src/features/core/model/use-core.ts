@@ -14,9 +14,9 @@ export function useCoreControl() {
   const { notify, showError } = useUiStore();
   return useMutation({
     mutationFn: coreApi.control,
-    onSuccess: (data) => {
+    onSuccess: (data, action) => {
       client.setQueryData(QUERY_KEYS.core, data);
-      notify("Команда выполнена. Проверьте журнал ядра.");
+      notify(action === "stop" ? "Ядро остановлено." : "Ядро запускается. Проверьте подключение в Happ.");
     },
     onError: showError,
   });

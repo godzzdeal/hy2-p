@@ -1,3 +1,12 @@
+import { type IConfiguration } from "@/features/configuration/model";
+export const INITIAL_SETTINGS: IConfiguration = {
+  host: "vpn.example.org",
+  port: "8443",
+  sni: "vpn.example.org",
+  authMode: "panel",
+  config:
+    "listen: :8443\ntls:\n  cert: /certs/server.crt\n  key: /certs/server.key\ncongestion:\n  type: bbr\n  bbrProfile: aggressive\nspeedTest: true\n",
+};
 export const WEB_SETTINGS = {
   container: true,
   hasPrivateKey: false,

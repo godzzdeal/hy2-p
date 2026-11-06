@@ -17,7 +17,7 @@ export function DraftBar({
           {isDirty ? t("Есть несохранённые изменения") : t("Все изменения сохранены")}
         </span>
         <small className="hidden text-muted md:block">
-          {t("Изменения применяются после перезапуска ядра.")}
+          {t("Сохранение не прерывает подключения. Чтобы применить настройки, перезапустите ядро.")}
         </small>
       </div>
       <div className="flex flex-wrap items-center gap-2">

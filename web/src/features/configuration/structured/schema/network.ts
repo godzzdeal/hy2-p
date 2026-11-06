@@ -2,7 +2,7 @@ import { type IConfigSection } from "@/features/configuration/structured/model";
 export const NETWORK_SECTIONS: readonly IConfigSection[] = [
   {
     id: "resolver",
-    title: "DNS и sniffing",
+    title: "DNS и домены",
     fields: [
       {
         path: "resolver.type",
@@ -47,7 +47,7 @@ export const NETWORK_SECTIONS: readonly IConfigSection[] = [
   },
   {
     id: "routing",
-    title: "ACL и исходящие подключения",
+    title: "Правила трафика",
     fields: [
       { path: "acl.file", label: "Файл правил ACL", kind: "text" },
       { path: "acl.inline", label: "Правила ACL, по одному в строке", kind: "lines" },
@@ -59,7 +59,7 @@ export const NETWORK_SECTIONS: readonly IConfigSection[] = [
   },
   {
     id: "masquerade",
-    title: "Маскировка",
+    title: "Сайт маскировки",
     fields: [
       {
         path: "masquerade.type",
@@ -110,7 +110,7 @@ export const NETWORK_SECTIONS: readonly IConfigSection[] = [
   },
   {
     id: "advanced",
-    title: "Расширенные возможности",
+    title: "Особые режимы",
     fields: [
       { path: "realm", label: "Hysteria Realms (JSON)", kind: "json" },
       { path: "mimic.enabled", label: "Включить Mimic (требует отдельной настройки Linux)", kind: "toggle" },

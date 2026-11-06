@@ -1,6 +1,6 @@
 @media (max-width: 760px) {
-  aside {
-    position: static;
+  .app-sidebar {
+    position: relative;
     width: 100%;
     border-right: 0;
     border-bottom: 1px solid var(--line);
@@ -13,16 +13,17 @@
   .nav-label {
     display: none;
   }
-  nav {
+  .app-sidebar nav {
     display: flex;
     overflow-x: auto;
     margin-top: var(--space-4);
   }
-  nav button {
+  .app-sidebar nav button {
     flex-shrink: 0;
   }
   .aside-bottom {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: center;
     gap: var(--space-3);
     padding-top: var(--space-3);
@@ -33,5 +34,19 @@
   .theme-control {
     margin: 0;
     flex: 1;
+    min-width: 0;
+  }
+  .aside-bottom > label {
+    min-width: 0;
+  }
+  .aside-bottom > button {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    width: var(--space-10);
+    padding: var(--space-2);
+  }
+  .logout-label {
+    display: none;
   }
 }

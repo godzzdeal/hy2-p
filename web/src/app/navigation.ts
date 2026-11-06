@@ -1,4 +1,4 @@
-import { Settings2, FileCode2, LayoutDashboard, Terminal, Users, Rss } from "lucide-react";
+import { Settings2, FileCode2, LayoutDashboard, Terminal, Users, Rss } from "@/shared/icons";
 export const PageEnum = {
   Overview: "overview",
   Users: "users",
@@ -27,7 +27,7 @@ export const NAVIGATION = [
     id: PageEnum.Subscriptions,
     label: "Подписки",
     title: "Подписки",
-    description: "Название, флаг и сообщения для пользователей Happ.",
+    description: "Название, эмодзи и объявления для пользователей Happ.",
     icon: Rss,
   },
   {

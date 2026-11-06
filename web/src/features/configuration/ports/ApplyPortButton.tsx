@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { PlugZap } from "lucide-react";
+import { PlugZap } from "@/shared/icons";
 import { useCore } from "@/features/core/model";
 import { useUiStore } from "@/app/state";
 import { useApplyPort } from "@/features/configuration/model/deployment/operation";
@@ -21,7 +21,7 @@ export function ApplyPortButton({ status }: { status: IDeployment }) {
           mutation.mutate({ publicPort: status.udpPublicPort, listenPort: status.udpListenPort })
         }
       >
-        <PlugZap size={16} aria-hidden />
+        <PlugZap width={24} height={24} aria-hidden />
         {t(mutation.isPending ? "Запускаем проверку…" : "Применить UDP-порт")}
       </button>
       <small className="mt-2 block">

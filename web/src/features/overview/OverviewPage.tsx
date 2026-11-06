@@ -14,8 +14,8 @@ export function OverviewPage() {
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">HYSTERIA 2 / CONTROL</span>
-          <h1>{t("Всё под контролем")}</h1>
+          <span className="eyebrow">{t("Центр управления")}</span>
+          <h1>{t("Ваш сервер")}</h1>
           <p>{t("Доступ, подключения и состояние вашего сервера.")}</p>
         </div>
       </div>
@@ -32,7 +32,11 @@ export function OverviewPage() {
         <section className="metric">
           <div>{t("Состояние ядра")}</div>
           <strong>{core.data?.running ? t("Запущено") : t("Остановлено")}</strong>
-          <small>{core.data?.available ? t("Hysteria2 доступен") : t("Бинарный файл не найден")}</small>
+          <small>
+            {core.data?.available
+              ? t("Hysteria2 установлен")
+              : t("Установите Hysteria2 в разделе «Ядро и журнал».")}
+          </small>
         </section>
         <section className="metric">
           <div>{t("Пользователи")}</div>

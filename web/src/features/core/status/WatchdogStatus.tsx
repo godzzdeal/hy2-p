@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "@/shared/icons";
 import { type IWatchdog } from "@/features/core/model/watchdog-types";
 import { WATCHDOG_LABELS } from "@/features/core/model/watchdog-types";
 export function WatchdogStatus({ watchdog }: { watchdog?: IWatchdog }) {
@@ -7,7 +7,7 @@ export function WatchdogStatus({ watchdog }: { watchdog?: IWatchdog }) {
   if (!watchdog) return null;
   return (
     <div className="watchdog-status" role="status">
-      <ShieldCheck size={20} aria-hidden />
+      <ShieldCheck width={24} height={24} aria-hidden />
       <div>
         <strong>{t(WATCHDOG_LABELS[watchdog.state])}</strong>
         <span>{t(watchdog.message)}</span>

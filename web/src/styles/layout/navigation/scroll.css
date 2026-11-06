@@ -5,6 +5,10 @@ html:has(.shell) {
 html:has(.overlay) {
   scroll-snap-type: none;
 }
+.shell {
+  scroll-snap-align: start;
+  scroll-margin: 0;
+}
 [data-scroll-section] {
   scroll-snap-align: start;
   scroll-snap-stop: always;

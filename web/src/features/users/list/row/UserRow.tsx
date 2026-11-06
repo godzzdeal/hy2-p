@@ -1,7 +1,7 @@
 import { UserAvatar } from "./UserAvatar";
 import { stripEmoji } from "@/shared/emoji";
 import { useTranslation } from "react-i18next";
-import { Gauge, QrCode, Trash2 } from "lucide-react";
+import { Gauge, QrCode, Trash2 } from "@/shared/icons";
 import { type IUser } from "@/features/users/model";
 import { isUserActive } from "@/features/users/model";
 import { type IUserUsage } from "@/features/users/traffic/model";
@@ -58,17 +58,17 @@ export function UserRow({ user, usage, isTrafficAvailable, onEdit, onShare, onDe
             aria-label={t("Подключение ") + user.name}
             onClick={() => onShare(user)}
           >
-            <QrCode size={20} aria-hidden />
+            <QrCode width={24} height={24} aria-hidden />
           </button>
           <button className="icon-btn" aria-label={t("Трафик ") + user.name} onClick={() => onTraffic(user)}>
-            <Gauge size={20} aria-hidden />
+            <Gauge width={24} height={24} aria-hidden />
           </button>
           <button
             className="icon-btn danger"
             aria-label={t("Удалить ") + user.name}
             onClick={() => onDelete(user)}
           >
-            <Trash2 size={16} aria-hidden />
+            <Trash2 width={24} height={24} aria-hidden />
           </button>
         </div>
       </td>

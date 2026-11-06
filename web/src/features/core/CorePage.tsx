@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "@/shared/icons";
 import { CoreStatusCard, CoreLog } from "./status";
 import { UpdateCard } from "./versions";
 export function CorePage() {
@@ -19,7 +19,7 @@ export function CorePage() {
           rel="noreferrer"
         >
           {t("Документация")}
-          <ArrowUpRight size={20} aria-hidden />
+          <ArrowUpRight width={24} height={24} aria-hidden />
         </a>
       </div>
       <CoreStatusCard />

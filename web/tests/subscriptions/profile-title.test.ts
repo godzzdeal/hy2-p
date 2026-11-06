@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { replaceFlag, FLAGS } from "@/features/admin/announcement/profile/flag-options";
+import { replaceFlag, FLAGS } from "@/shared/flags/flag-options";
 test("changing a flag preserves the subscription name", () => {
   assert.equal(replaceFlag("Германия", "🇩🇪"), "🇩🇪 Германия");
   assert.equal(replaceFlag("🇩🇪 Германия", "🇫🇮"), "🇫🇮 Германия");

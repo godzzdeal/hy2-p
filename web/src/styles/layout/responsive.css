@@ -2,7 +2,7 @@
   .content {
     padding: var(--space-5) var(--space-16) var(--space-5) var(--space-5);
   }
-  header {
+  .app-header {
     padding-inline: var(--space-6);
   }
   .field-grid {
@@ -27,7 +27,7 @@
   .content {
     padding: var(--space-4) var(--space-16) var(--space-4) var(--space-4);
   }
-  header {
+  .app-header {
     padding-inline: var(--space-4);
   }
   .admin {
@@ -41,7 +41,7 @@
     grid-template-columns: 1fr;
     gap: 0;
   }
-  .card-header {
+  .card-.app-header {
     flex-wrap: wrap;
     padding: var(--space-4);
   }

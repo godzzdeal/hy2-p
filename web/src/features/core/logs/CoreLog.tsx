@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw } from "@/shared/icons";
 import { useCore } from "@/features/core/model";
 import { cn } from "@/shared/lib";
 import { QueryState } from "@/shared/ui";
@@ -54,7 +54,7 @@ export function CoreLog() {
             disabled={query.isFetching}
             onClick={() => void query.refetch()}
           >
-            <RefreshCw size={16} aria-hidden />
+            <RefreshCw width={24} height={24} aria-hidden />
           </button>
         </div>
       </div>

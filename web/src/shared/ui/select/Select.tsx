@@ -1,5 +1,5 @@
 import * as Primitive from "@radix-ui/react-select";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp } from "@/shared/icons";
 import { type ComponentPropsWithoutRef, type ReactNode } from "react";
 import { cn } from "@/shared/lib";
 import { EMPTY_SELECT_VALUE, encodeSelectValue } from "./select-value";
@@ -35,17 +35,17 @@ export function Select({
       >
         <Primitive.Value />
         <Primitive.Icon asChild>
-          <ChevronDown size={16} aria-hidden />
+          <ChevronDown width={24} height={24} aria-hidden />
         </Primitive.Icon>
       </Primitive.Trigger>
       <Primitive.Portal>
         <Primitive.Content className="select-popup" position="popper" sideOffset={4} collisionPadding={8}>
           <Primitive.ScrollUpButton className="select-scroll">
-            <ChevronUp size={16} aria-hidden />
+            <ChevronUp width={24} height={24} aria-hidden />
           </Primitive.ScrollUpButton>
           <Primitive.Viewport className="select-viewport">{children}</Primitive.Viewport>
           <Primitive.ScrollDownButton className="select-scroll">
-            <ChevronDown size={16} aria-hidden />
+            <ChevronDown width={24} height={24} aria-hidden />
           </Primitive.ScrollDownButton>
         </Primitive.Content>
       </Primitive.Portal>

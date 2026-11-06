@@ -50,3 +50,18 @@
 .custom-emoji input {
   min-width: 0;
 }
+
+.custom-emoji-picker summary {
+  cursor: pointer;
+  padding-block: var(--space-2);
+}
+.subscription-preview {
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--input);
+}
+.subscription-preview output {
+  display: block;
+  margin-top: var(--space-2);
+}

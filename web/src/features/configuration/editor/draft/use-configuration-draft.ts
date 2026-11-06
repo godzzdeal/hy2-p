@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useUiStore } from "@/app/state";
 import { useSaveConfiguration, type IConfiguration } from "@/features/configuration/model";
 import { orderConfiguration } from "@/features/configuration/structured/model";
@@ -7,6 +7,8 @@ export function useConfigurationDraft(initial: IConfiguration) {
   const [draft, setDraft] = useState(initial);
   const [baseline, setBaseline] = useState(initial);
   const save = useSaveConfiguration();
+  const [savedSequence, setSavedSequence] = useState(0);
+  const sequenceRef = useRef(0);
   const setConfigurationDirty = useUiStore((state) => state.setConfigurationDirty);
   const showError = useUiStore((state) => state.showError);
   const isDirty = JSON.stringify(draft) !== JSON.stringify(baseline);
@@ -33,6 +35,8 @@ export function useConfigurationDraft(initial: IConfiguration) {
       setDraft(ordered);
       save.mutate(ordered, {
         onSuccess: (saved) => {
+          sequenceRef.current++;
+          setSavedSequence(sequenceRef.current);
           setBaseline(saved);
           setDraft((current) => (current === ordered ? saved : current));
         },
@@ -43,6 +47,10 @@ export function useConfigurationDraft(initial: IConfiguration) {
   }
   return {
     draft,
+    savedSequence,
+    onApplied: (sequence: number) => {
+      if (sequenceRef.current === sequence) setSavedSequence(0);
+    },
     setDraft,
     isDirty,
     isPending: save.isPending,

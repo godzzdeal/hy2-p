@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { CheckCircle2, LoaderCircle, TriangleAlert } from "lucide-react";
+import { CheckCircle2, LoaderCircle, TriangleAlert } from "@/shared/icons";
 import { usePortProgress, usePortOperationStore } from "@/features/configuration/model/deployment/operation";
 export function ApplyPortProgress() {
   const { t } = useTranslation();
@@ -13,7 +13,7 @@ export function ApplyPortProgress() {
   return (
     <aside className="port-operation" aria-label={t("Применение UDP-порта")}>
       <div className="flex items-start gap-3">
-        <Icon size={20} aria-hidden />
+        <Icon width={24} height={24} aria-hidden />
         <div>
           <strong>
             {t(

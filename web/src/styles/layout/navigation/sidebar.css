@@ -2,7 +2,7 @@
   min-height: 100vh;
   display: flex;
 }
-aside {
+.app-sidebar {
   position: fixed;
   inset: 0 auto 0 0;
   width: var(--sidebar-width);
@@ -56,16 +56,16 @@ aside {
   font-size: var(--text-small);
   margin-bottom: var(--space-3);
 }
-nav {
+.app-sidebar nav {
   display: grid;
   gap: var(--space-2);
 }
-nav button {
+.app-sidebar nav button {
   justify-content: flex-start;
   font-size: 15px;
   min-height: var(--control-height);
 }
-nav button.selected {
+.app-sidebar nav button.selected {
   background: var(--surface-soft);
   color: var(--accent);
 }

@@ -46,7 +46,7 @@ export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
           </small>
         </label>
         <label>
-          {t("Обновление подписки (часы)")}
+          {t("Обновлять подписку каждые (часов)")}
           <input
             type="number"
             min={1}
@@ -58,14 +58,10 @@ export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
           />
         </label>
         <p className="caption">
-          {t(
-            "Happ показывает объявление после обновления подписки. Это не push-уведомление; фоновое обновление зависит от приложения и ОС.",
-          )}
+          {t("Сообщение появится в Happ после обновления подписки. Мгновенной рассылки нет.")}
         </p>
         <p className="caption">
-          {t(
-            "Сообщение получат пользователи подписки. При импорте только ссылки сервера объявление не передаётся.",
-          )}
+          {t("При добавлении только отдельной ссылки сервера сообщение не передаётся.")}
         </p>
         <button
           className="primary"

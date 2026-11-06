@@ -2,7 +2,7 @@ import { EmojiText } from "@/shared/emoji";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Copy, RefreshCw } from "lucide-react";
+import { Copy, RefreshCw } from "@/shared/icons";
 import { QRCodeSVG } from "qrcode.react";
 import { type IUser } from "@/features/users/model";
 import { userApi, isUserActive } from "@/features/users/model";
@@ -82,12 +82,12 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
             value={links.data[format]}
           />
           <button className="primary full" onClick={() => void onCopy()}>
-            <Copy size={16} aria-hidden />
+            <Copy width={24} height={24} aria-hidden />
             {t("Скопировать ссылку")}
           </button>
           {format === "subscription" && (
             <button className="text-btn rotate" disabled={rotate.isPending} onClick={() => rotate.mutate()}>
-              <RefreshCw size={16} aria-hidden />
+              <RefreshCw width={24} height={24} aria-hidden />
               {t("Заменить ссылку подписки")}
             </button>
           )}

@@ -15,6 +15,11 @@ export default defineConfig({
   module: {
     rules: [
       {
+        test: /\.woff2?$/,
+        type: "asset/resource",
+        generator: { filename: "fonts/[name].[contenthash][ext]" },
+      },
+      {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         loader: "builtin:swc-loader",
@@ -36,6 +41,14 @@ export default defineConfig({
   plugins: [
     new rspack.CopyRspackPlugin({
       patterns: [
+        {
+          from: path.resolve(import.meta.dirname, "node_modules/@fontsource/pixelify-sans/LICENSE"),
+          to: "licenses/pixelify-sans.txt",
+        },
+        {
+          from: path.resolve(import.meta.dirname, "node_modules/pixelarticons/LICENSE"),
+          to: "licenses/pixelarticons.txt",
+        },
         {
           from: path.resolve(import.meta.dirname, "node_modules/@twemoji/svg/*.svg"),
           to: "emoji/[name][ext]",

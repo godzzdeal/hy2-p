@@ -3,17 +3,11 @@ import { type IAnnouncement } from "@/features/admin/announcement/model";
 import { type Page } from "@playwright/test";
 import path from "node:path";
 import { type IConfiguration } from "@/features/configuration/model";
-import { WEB_SETTINGS } from "./data";
+import { INITIAL_SETTINGS, WEB_SETTINGS } from "./data";
 const DIST = path.resolve(process.cwd(), "dist");
 export async function mockPanel(page: Page, isAuthorized = true) {
-  let settings: IConfiguration = {
-    host: "vpn.example.org",
-    port: "8443",
-    sni: "vpn.example.org",
-    authMode: "panel",
-    config:
-      "listen: :8443\ntls:\n  cert: /certs/server.crt\n  key: /certs/server.key\ncongestion:\n  type: bbr\n  bbrProfile: aggressive\nspeedTest: true\n",
-  };
+  let settings = { ...INITIAL_SETTINGS };
+  const coreActions: string[] = [];
   let users: IUser[] = [];
   let announcement: IAnnouncement = { enabled: false, text: "", updateInterval: 6, profileTitle: "" };
   let published = { publicPort: "8443", listenPort: "8443" };
@@ -29,6 +23,14 @@ export async function mockPanel(page: Page, isAuthorized = true) {
       return;
     }
     let response: unknown = {};
+    if (/^\/api\/core\/(start|stop|restart)$/.test(url.pathname)) {
+      const action = url.pathname.split("/").at(-1) ?? "";
+      coreActions.push(action);
+      await route.fulfill({
+        json: { available: true, running: action !== "stop", binary: "hysteria", logs },
+      });
+      return;
+    }
     if (url.pathname.startsWith("/api/deployment/udp/status/")) {
       polls++;
       if (polls >= 2 && operation) {
@@ -136,5 +138,6 @@ export async function mockPanel(page: Page, isAuthorized = true) {
     await route.fulfill({ json: response });
   });
   await page.goto("http://panel.test");
-  return { saved: () => settings, subscription: () => announcement };
+  await page.evaluate(() => document.fonts.ready);
+  return { saved: () => settings, subscription: () => announcement, coreActions };
 }

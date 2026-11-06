@@ -7,7 +7,7 @@ export function SubscriptionsPage() {
       <div className="page-heading">
         <div>
           <h1>{t("Подписки")}</h1>
-          <p>{t("Название, флаг и сообщения для пользователей Happ.")}</p>
+          <p>{t("Название, эмодзи и объявления для пользователей Happ.")}</p>
         </div>
       </div>
       <AnnouncementSettings />

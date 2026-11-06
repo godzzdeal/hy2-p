@@ -1,7 +1,7 @@
 import { Select, SelectOption } from "@/shared/ui/select";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { Download, RefreshCw, Undo2 } from "lucide-react";
+import { Download, RefreshCw, Undo2 } from "@/shared/icons";
 import { useReleaseVersions, useUpdateStatus } from "@/features/core/model/updates";
 import { ReleaseOption } from "./ReleaseOption";
 import { UpdateProgress } from "./UpdateProgress";
@@ -61,7 +61,7 @@ export function UpdateCard() {
           <div className="inline-error" role="alert">
             <p>{t(versions.error.message)}</p>
             <button className="text-btn" onClick={() => void versions.refetch()}>
-              <RefreshCw size={16} aria-hidden />
+              <RefreshCw width={24} height={24} aria-hidden />
               {t("Повторить")}
             </button>
           </div>
@@ -80,7 +80,7 @@ export function UpdateCard() {
             disabled={isBusy || !hasSelection || !status.data}
             onClick={() => setConfirmation("install")}
           >
-            <Download size={20} aria-hidden />
+            <Download width={24} height={24} aria-hidden />
             {t("Установить версию")}
           </button>
           <button
@@ -88,7 +88,7 @@ export function UpdateCard() {
             disabled={isBusy || !status.data?.rollbackAvailable}
             onClick={() => setConfirmation("rollback")}
           >
-            <Undo2 size={20} aria-hidden />
+            <Undo2 width={24} height={24} aria-hidden />
             {t("Откатить")}
           </button>
         </div>

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { type ReactNode, type MouseEvent } from "react";
-import { X } from "lucide-react";
+import { X } from "@/shared/icons";
 import { useDialogFocus } from "./use-dialog-focus";
 interface IModal {
   title: string;
@@ -20,7 +20,7 @@ export function Modal({ title, heading, onClose, children }: IModal) {
         <div className="modal-heading">
           <h2>{heading ?? t(title)}</h2>
           <button className="icon-btn" aria-label={t("Закрыть")} onClick={onClose}>
-            <X size={20} aria-hidden />
+            <X width={24} height={24} aria-hidden />
           </button>
         </div>
         {children}

@@ -20,6 +20,7 @@ export function ConfigurationForm({
 }) {
   const { t } = useTranslation();
   const web = useWebSettings();
+  const [showPath, setShowPath] = useState(false);
   const [section, setSection] = useState("server");
   const document = useMemo(() => parseDocument(value.config), [value.config]);
   const showError = useUiStore((state) => state.showError);
@@ -46,6 +47,15 @@ export function ConfigurationForm({
       data-scroll-section
       data-scroll-label={t("Параметры Hysteria2")}
     >
+      <div className="config-technical-toggle">
+        <p>
+          {t("Порт, сертификат и доступ нужны для запуска. Остальные параметры можно оставить по умолчанию.")}
+        </p>
+        <label className="checkbox">
+          <input type="checkbox" checked={showPath} onChange={(event) => setShowPath(event.target.checked)} />
+          {t("Технические названия")}
+        </label>
+      </div>
       <nav className="config-tabs" aria-label={t("Разделы конфигурации")}>
         {SECTIONS.filter((item) => item.id !== "tls" || !isAcme)
           .filter((item) => item.id !== "acme" || isAcme)
@@ -83,6 +93,7 @@ export function ConfigurationForm({
               <ConfigField
                 key={field.path}
                 field={field}
+                showPath={showPath}
                 value={readField(document, field.path)}
                 onChange={(next) => onSet(field.path, next)}
               />

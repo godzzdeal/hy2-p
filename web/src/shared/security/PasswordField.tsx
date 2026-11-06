@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useId } from "react";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw } from "@/shared/icons";
 import { generatePassword } from "./password";
 export function PasswordField({
   inputId,
@@ -35,7 +35,7 @@ export function PasswordField({
           onChange={(event) => onChange(event.target.value)}
         />
         <button type="button" className="secondary" onClick={() => onChange(generatePassword())}>
-          <RefreshCw size={16} aria-hidden />
+          <RefreshCw width={24} height={24} aria-hidden />
           {t("Сгенерировать")}
         </button>
       </div>

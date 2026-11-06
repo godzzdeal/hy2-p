@@ -25,7 +25,7 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
             value={value.host}
             onChange={(event) => onChange({ ...value, host: event.target.value })}
           />
-          <small>{t("Домен или IP, доступный клиентам.")}</small>
+          <small>{t("Адрес, к которому будет подключаться Happ. Например vpn.example.com.")}</small>
         </label>
         <label>
           {t("Публичный UDP-порт")}
@@ -35,12 +35,16 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
             value={value.port}
             onChange={(event) => onChange({ ...value, port: event.target.value })}
           />
-          <small>{t("Порт для подключения Happ. Проброс Docker показан ниже.")}</small>
+          <small>
+            {t(
+              "Порт, к которому подключается Happ. После изменения сохраните и нажмите «Применить UDP-порт».",
+            )}
+          </small>
         </label>
         <label>
-          TLS Server Name (SNI)
+          {t("Имя в сертификате (SNI)")}
           <input value={value.sni} onChange={(event) => onChange({ ...value, sni: event.target.value })} />
-          <small>{t("Имя в сертификате сервера.")}</small>
+          <small>{t("Домен, на который выпущен сертификат. Обычно совпадает с публичным адресом.")}</small>
         </label>
       </div>
       <DeploymentNotice />

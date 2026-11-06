@@ -2,7 +2,7 @@ import { type IConfigSection } from "@/features/configuration/structured/model";
 export const CERTIFICATE_SECTIONS: readonly IConfigSection[] = [
   {
     id: "tls",
-    title: "TLS: собственный сертификат",
+    title: "Сертификат",
     fields: [
       { path: "tls.cert", label: "Путь к сертификату", kind: "text" },
       { path: "tls.key", label: "Путь к приватному ключу", kind: "text" },
@@ -18,7 +18,7 @@ export const CERTIFICATE_SECTIONS: readonly IConfigSection[] = [
   },
   {
     id: "acme",
-    title: "ACME: выпуск и автопродление",
+    title: "Автоматический сертификат",
     fields: [
       { path: "acme.domains", label: "Домены, по одному в строке", kind: "lines" },
       { path: "acme.email", label: "Email для ACME", kind: "text" },
