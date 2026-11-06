@@ -4,6 +4,7 @@ import { Activity, LogOut, Server } from "lucide-react";
 import { NAVIGATION } from "@/app/navigation";
 import { useConfiguration } from "@/features/configuration/model";
 import { useSession } from "@/features/session";
+import { BuildVersion } from "./BuildVersion";
 import { NavigationItem } from "./NavigationItem";
 import { useUiStore } from "@/app/state";
 import { LanguageSelect } from "@/shared/i18n";
@@ -47,7 +48,7 @@ export function Sidebar() {
         </label>
         <div className="version">
           <span className="status-dot" />
-          HY2 Control <span className="muted">v0.1</span>
+          HY2 Control <BuildVersion />
         </div>
         <button disabled={logout.isPending} onClick={() => logout.mutate()}>
           <LogOut size={20} aria-hidden />

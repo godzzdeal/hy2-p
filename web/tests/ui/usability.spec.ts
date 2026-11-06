@@ -108,3 +108,13 @@ test("users have locally rendered flags and connection labels", async ({ page },
   await expect(row.getByRole("button", { name: "Подключение 🇩🇪 Телефон", exact: true })).toBeVisible();
   await page.screenshot({ path: info.outputPath("user-flags.png"), fullPage: true });
 });
+
+test("the panel displays the server build version", async ({ page }) => {
+  await mockPanel(page);
+  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expect(page.getByRole("status", { name: "Версия панели" }).last()).toHaveText("v0.2.1");
+  await expect(page.getByRole("status", { name: "Версия панели" }).last()).toHaveAttribute(
+    "title",
+    "Сборка: test-build",
+  );
+});

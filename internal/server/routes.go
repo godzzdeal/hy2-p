@@ -3,6 +3,7 @@ package server
 import (
 	"errors"
 	"hy2-panel/internal/auth"
+	"hy2-panel/internal/buildinfo"
 	"hy2-panel/internal/certificates"
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/configuration/deployment"
@@ -19,6 +20,7 @@ import (
 
 func routes(auth *auth.Handler, users *users.Handler, config *configuration.Handler, core *core.Handler, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, certificates *certificates.Handler, ports *portweb.Handler) http.Handler {
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /api/version", buildinfo.Read)
 	mux.HandleFunc("POST /api/login", auth.Login)
 	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{

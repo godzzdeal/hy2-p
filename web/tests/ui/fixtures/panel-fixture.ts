@@ -46,6 +46,9 @@ export async function mockPanel(page: Page, isAuthorized = true) {
       return;
     }
     switch (url.pathname) {
+      case "/api/version":
+        response = { version: "v0.2.1", revision: "test-build" };
+        break;
       case "/api/session":
         response = { ok: isAuthorized };
         break;

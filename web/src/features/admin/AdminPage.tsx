@@ -1,3 +1,4 @@
+import { BuildVersion } from "@/app/layout/sidebar";
 import { useTranslation } from "react-i18next";
 import { AccountSettings } from "./account";
 import { WebSettings } from "./listener";
@@ -13,6 +14,9 @@ export function AdminPage() {
         </div>
       </div>
       <AccountSettings />
+      <p className="muted">
+        <BuildVersion />
+      </p>
       <WebSettings />
     </>
   );

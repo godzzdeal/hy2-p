@@ -3,7 +3,7 @@ import { ScrollNavigation } from "./scroll";
 import { lazy, Suspense, useRef } from "react";
 import { NAVIGATION, PageEnum } from "@/app/navigation";
 import { useUiStore } from "@/app/state";
-import { Sidebar } from "./Sidebar";
+import { Sidebar } from "./sidebar";
 const UsersPage = lazy(() =>
   import("@/features/users/list").then((module) => ({
     default: module.UsersPage,

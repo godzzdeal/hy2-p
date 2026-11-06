@@ -1,4 +1,8 @@
 export const PORTS = {
+  "Версия панели": "Panel version",
+  Сборка: "Build",
+  "Версия недоступна": "Version unavailable",
+  "Проверяем версию…": "Checking version…",
   "Например, Германия": "For example, Germany",
   "Флаг появится рядом с пользователем и в названии подключения Happ после обновления подписки.":
     "The flag appears beside the user and in the Happ connection name after a subscription refresh.",

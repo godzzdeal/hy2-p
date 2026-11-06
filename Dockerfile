@@ -8,12 +8,13 @@ COPY internal/configuration/ordering/order.json /app/internal/configuration/orde
 RUN bun run build
 
 FROM golang:1.26-bookworm AS server
+ARG PANEL_REVISION=local
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY cmd/ cmd/
 COPY internal/ internal/
-RUN CGO_ENABLED=0 go build -trimpath -o /panel ./cmd/panel && CGO_ENABLED=0 go build -trimpath -o /port-agent ./cmd/port-agent
+RUN CGO_ENABLED=0 go build -trimpath -ldflags "-X hy2-panel/internal/buildinfo.Revision=${PANEL_REVISION}" -o /panel ./cmd/panel && CGO_ENABLED=0 go build -trimpath -o /port-agent ./cmd/port-agent
 
 FROM ${HYSTERIA_IMAGE} AS core
 FROM docker:28-cli AS docker-client
