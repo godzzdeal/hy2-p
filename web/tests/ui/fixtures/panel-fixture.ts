@@ -124,6 +124,9 @@ export async function mockPanel(page: Page, isAuthorized = true) {
       case "/api/history":
         response = [];
         break;
+      case "/api/certificates/hysteria":
+        response = { mode: "tls", automaticRenewal: false, certificates: [] };
+        break;
       case "/api/traffic":
         response = { available: true, users: {}, updated: "" };
         break;

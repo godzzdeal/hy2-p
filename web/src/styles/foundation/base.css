@@ -61,6 +61,9 @@ select {
   height: var(--control-height);
 }
 textarea {
+  min-width: 0;
+  max-width: 100%;
+  resize: vertical;
   padding-block: var(--space-2);
   line-height: 1.4;
 }

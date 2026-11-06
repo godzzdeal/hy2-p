@@ -38,3 +38,27 @@ test("YAML search closes before the editor window", async ({ page }) => {
   await editor.press("Escape");
   await expect(dialog).toHaveCount(0);
 });
+
+test("multiline properties stay inside their column after resizing", async ({ page }, info) => {
+  await mockPanel(page);
+  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("searchbox", { name: "Найти свойство" }).fill("acme.domains");
+  await page.getByRole("combobox", { name: "Сертификат Hysteria2", exact: true }).click();
+  await page.getByRole("option", { name: "Автоматический сертификат ACME", exact: true }).click();
+  const domains = page.getByLabel("acme.domains", { exact: true });
+  await domains.fill("first.example.com\nsecond.example.com");
+  const initial = await domains.boundingBox();
+  await domains.evaluate((element) => {
+    element.style.width = "2000px";
+    element.style.height = "200px";
+  });
+  const resized = await domains.boundingBox();
+  expect(initial).not.toBeNull();
+  expect(resized).not.toBeNull();
+  expect(resized!.width).toBeLessThanOrEqual(initial!.width);
+  expect(await domains.evaluate((element) => getComputedStyle(element).resize)).toBe("vertical");
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth),
+  ).toBe(true);
+  await page.screenshot({ path: info.outputPath("bounded-domains.png"), fullPage: true });
+});

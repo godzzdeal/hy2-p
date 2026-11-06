@@ -8,7 +8,7 @@
   width: var(--sidebar-width);
   background: var(--background);
   border-right: 1px solid var(--line);
-  padding: var(--space-4) var(--space-3);
+  padding: 0 var(--space-3) var(--space-3);
   display: flex;
   flex-direction: column;
 }
@@ -18,6 +18,8 @@
   gap: var(--space-3);
   font-size: 24px;
   font-weight: 700;
+  height: var(--header-height);
+  min-height: var(--header-height);
 }
 .brand-mark {
   display: grid;
@@ -40,7 +42,8 @@
   gap: var(--space-3);
   padding: var(--space-3) 0;
   margin: var(--space-3) 0;
-  border-block: 1px solid var(--line);
+  background: var(--surface-soft);
+  padding-inline: var(--space-3);
 }
 .workspace small {
   display: block;
@@ -68,10 +71,15 @@
 .app-sidebar nav button.selected {
   background: var(--surface-soft);
   color: var(--accent);
+  box-shadow: none;
 }
 .aside-bottom {
   margin-top: auto;
   padding-top: var(--space-4);
+}
+.aside-bottom > button {
+  width: 100%;
+  justify-content: flex-start;
 }
 .version {
   display: flex;

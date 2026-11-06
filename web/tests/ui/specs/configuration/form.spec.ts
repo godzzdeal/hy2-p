@@ -1,5 +1,25 @@
 import { test, expect } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
+test("property names use the pixel font and neighbouring controls align", async ({ page }, info) => {
+  await mockPanel(page);
+  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("searchbox", { name: "Найти свойство" }).fill("sniff");
+  const enabled = page.getByLabel("sniff.enable", { exact: true });
+  const timeout = page.getByLabel("sniff.timeout", { exact: true });
+  await expect(enabled).toBeVisible();
+  await expect(timeout).toBeVisible();
+  const first = await enabled.boundingBox();
+  const second = await timeout.boundingBox();
+  expect(first!.height).toBe(second!.height);
+  if (info.project.name === "desktop") expect(Math.abs(first!.y - second!.y)).toBeLessThanOrEqual(1);
+  expect(
+    await page
+      .locator(".config-property label")
+      .first()
+      .evaluate((label) => getComputedStyle(label).fontFamily),
+  ).toContain("Epilepsy Sans");
+  await page.screenshot({ path: info.outputPath("aligned-properties.png"), fullPage: true });
+});
 test("SNI follows the address only while linked", async ({ page }) => {
   const panel = await mockPanel(page);
   await page.getByRole("button", { name: "Конфигурация", exact: true }).click();

@@ -2,6 +2,10 @@ import { test, expect } from "@playwright/test";
 import { mockPanel, chooseTheme } from "../fixtures";
 test("phone installation metadata and manual steps are available", async ({ page }) => {
   await mockPanel(page);
+  await expect(page.getByRole("link", { name: "Поставить звезду на GitHub" })).toHaveAttribute(
+    "href",
+    "https://github.com/godzzdeal/hy2-p",
+  );
   await expect(page.locator('link[rel="manifest"]')).toHaveAttribute("href", "/manifest.webmanifest");
   const manifest = await page.evaluate(async () => {
     const response = await fetch("/manifest.webmanifest");
@@ -51,6 +55,7 @@ test("logs support Unicode, search, level filters, pause and clearing", async ({
   await mockPanel(page);
   await page.getByRole("button", { name: "Ядро и журнал", exact: true }).click();
   const region = page.getByRole("region", { name: "Сообщения ядра" });
+  expect(await region.evaluate((element) => getComputedStyle(element).fontFamily)).toContain("Epilepsy Sans");
   await expect(region).toContainText("Сертификат обновлён ✓");
   await page.getByRole("searchbox", { name: "Поиск в журнале" }).fill("ACME");
   await expect(region).not.toContainText("Сертификат обновлён");

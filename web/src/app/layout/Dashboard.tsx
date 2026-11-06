@@ -5,6 +5,7 @@ import { NAVIGATION, PageEnum } from "@/app/navigation";
 import { useUiStore } from "@/app/state";
 import { Sidebar } from "./sidebar";
 import { SpaceScene } from "@/shared/SpaceScene";
+import { Star } from "@/shared/icons";
 const UsersPage = lazy(() =>
   import("@/features/users/list").then((module) => ({
     default: module.UsersPage,
@@ -59,7 +60,15 @@ export function Dashboard() {
           </Suspense>
           <footer>
             <span>HY2-P</span>
-            <span>Hysteria 2</span>
+            <a
+              className="footer-support"
+              href="https://github.com/godzzdeal/hy2-p"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Star width={24} height={24} aria-hidden />
+              {t("Поставить звезду на GitHub")}
+            </a>
           </footer>
         </div>
       </main>

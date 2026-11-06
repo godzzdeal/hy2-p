@@ -29,7 +29,7 @@ export function ConfigField({
   const isSet = value !== undefined && value !== null;
   return (
     <div className={cn("config-field", { "col-span-full": field.kind === "json" || field.kind === "pairs" })}>
-      <div className="flex items-center justify-between gap-2">
+      <div className="config-property">
         <label htmlFor={id} id={id + "-label"}>
           {field.path}
         </label>
@@ -47,13 +47,15 @@ export function ConfigField({
       <fieldset className="config-control" disabled={!!disabledReason}>
         <FieldControl id={id} field={displayField} value={value} onChange={onChange} />
       </fieldset>
-      {disabledReason && <small className="field-hint">{t(disabledReason)}</small>}
-      {showDescription && <small className="field-hint">{t(displayField.hint)}</small>}
-      {FIELD_DEFAULTS[field.path] !== undefined && (
-        <small className="field-default">
-          {t("По умолчанию: {{value}}", { value: String(FIELD_DEFAULTS[field.path]) })}
-        </small>
-      )}
+      <div className="config-field-help">
+        {disabledReason && <small className="field-hint">{t(disabledReason)}</small>}
+        {showDescription && <small className="field-hint">{t(displayField.hint)}</small>}
+        {FIELD_DEFAULTS[field.path] !== undefined && (
+          <small className="field-default">
+            {t("По умолчанию: {{value}}", { value: String(FIELD_DEFAULTS[field.path]) })}
+          </small>
+        )}
+      </div>
     </div>
   );
 }

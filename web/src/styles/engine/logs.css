@@ -12,8 +12,9 @@
   max-height: 80vh;
   padding: var(--space-3);
   color: var(--foreground);
-  font-size: 14px;
-  line-height: 1.7;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.4;
   overscroll-behavior: contain;
   overflow-anchor: none;
   scrollbar-gutter: stable;
