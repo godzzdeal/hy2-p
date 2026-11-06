@@ -9,7 +9,8 @@
 @import "./interface/forms/select.css" layer(components);
 @import "./interface/forms/configuration.css" layer(components);
 @import "./interface/feedback.css" layer(components);
-@import "./features/users.css" layer(components);
+@import "./features/users/list.css" layer(components);
+@import "./features/users/flags.css" layer(components);
 @import "./features/session.css" layer(components);
 @import "./dialogs/modal.css" layer(components);
 @import "./dialogs/connection.css" layer(components);

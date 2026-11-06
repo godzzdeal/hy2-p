@@ -1,9 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { lazy, Suspense } from "react";
 import { type TUserDialog } from "./dialog-types";
-const UserEditor = lazy(() =>
-  import("./dialogs/UserEditor").then((module) => ({ default: module.UserEditor })),
-);
+const UserEditor = lazy(() => import("./dialogs/editor").then((module) => ({ default: module.UserEditor })));
 const ConnectionDialog = lazy(() =>
   import("./dialogs/ConnectionDialog").then((module) => ({ default: module.ConnectionDialog })),
 );

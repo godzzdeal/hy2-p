@@ -1,3 +1,5 @@
+import { UserAvatar } from "./UserAvatar";
+import { FLAG_PREFIX } from "@/shared/flags";
 import { useTranslation } from "react-i18next";
 import { Gauge, QrCode, Trash2 } from "lucide-react";
 import { type IUser } from "@/features/users/model";
@@ -24,9 +26,9 @@ export function UserRow({ user, usage, isTrafficAvailable, onEdit, onShare, onDe
     <tr>
       <td>
         <button className="user-cell" onClick={() => onEdit(user)}>
-          <span className="avatar">{user.name.slice(0, 2).toUpperCase()}</span>
+          <UserAvatar name={user.name} />
           <span>
-            <strong>{user.name}</strong>
+            <strong>{user.name.replace(FLAG_PREFIX, "")}</strong>
             <small>{user.id.slice(0, 8)}</small>
           </span>
         </button>

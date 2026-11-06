@@ -1,0 +1,28 @@
+.country-flag {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--space-8);
+  height: var(--space-6);
+  object-fit: contain;
+  vertical-align: middle;
+}
+.flag-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  vertical-align: middle;
+}
+.user-name-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-3);
+}
+.user-name-hint {
+  grid-column: 1 / -1;
+}
+@media (max-width: 480px) {
+  .user-name-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

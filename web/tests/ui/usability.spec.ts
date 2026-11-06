@@ -31,7 +31,9 @@ test("keyboard selection, resets and saving produce clean ordered YAML", async (
   expect(panel.saved().config).not.toContain("speedTest:");
   expect(panel.saved().config.indexOf("listen:")).toBeLessThan(panel.saved().config.indexOf("tls:"));
   await expect
-    .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth),
+    )
     .toBe(true);
   await page.screenshot({ path: info.outputPath("configuration.png"), fullPage: true });
 });
@@ -77,8 +79,32 @@ test("subscription title and country flag are saved together", async ({ page }, 
   await title.fill("Сервер");
   await page.getByRole("combobox", { name: "Флаг", exact: true }).click();
   await page.getByRole("option", { name: /Германия/ }).click();
-  await expect(title).toHaveValue("🇩🇪 Сервер");
+  await expect(title).toHaveValue("Сервер");
   await page.getByRole("button", { name: "Сохранить настройки подписки", exact: true }).click();
   await expect.poll(() => panel.subscription().profileTitle).toBe("🇩🇪 Сервер");
   await page.screenshot({ path: info.outputPath("subscription-title.png"), fullPage: true });
+});
+
+test("users have locally rendered flags and connection labels", async ({ page }, info) => {
+  await mockPanel(page);
+  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth),
+    )
+    .toBe(true);
+  await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
+  await page.getByLabel("Имя", { exact: true }).fill("Телефон");
+  await page.getByRole("combobox", { name: "Флаг", exact: true }).click();
+  await page.getByRole("option", { name: /Германия/ }).click();
+  const selectedFlag = page.getByRole("combobox", { name: "Флаг", exact: true }).locator("img");
+  await expect(selectedFlag).toHaveAttribute("src", "/flags/de.svg");
+  await expect
+    .poll(() => selectedFlag.evaluate((element: HTMLImageElement) => element.naturalWidth))
+    .toBeGreaterThan(0);
+  await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();
+  const row = page.getByRole("row").filter({ hasText: "Телефон" });
+  await expect(row.locator("img.country-flag")).toHaveAttribute("src", "/flags/de.svg");
+  await expect(row.getByRole("button", { name: "Подключение 🇩🇪 Телефон", exact: true })).toBeVisible();
+  await page.screenshot({ path: info.outputPath("user-flags.png"), fullPage: true });
 });

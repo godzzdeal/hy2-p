@@ -34,6 +34,15 @@ export default defineConfig({
   },
   experiments: { css: true },
   plugins: [
+    new rspack.CopyRspackPlugin({
+      patterns: [
+        { from: path.resolve(import.meta.dirname, "node_modules/flag-icons/flags/4x3"), to: "flags" },
+        {
+          from: path.resolve(import.meta.dirname, "node_modules/flag-icons/LICENSE"),
+          to: "licenses/flag-icons.txt",
+        },
+      ],
+    }),
     new rspack.HtmlRspackPlugin({
       title: "HY2 / Control",
       meta: { viewport: "width=device-width, initial-scale=1" },

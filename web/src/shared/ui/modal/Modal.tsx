@@ -4,10 +4,11 @@ import { X } from "lucide-react";
 import { useDialogFocus } from "./use-dialog-focus";
 interface IModal {
   title: string;
+  heading?: ReactNode;
   onClose: () => void;
   children: ReactNode;
 }
-export function Modal({ title, onClose, children }: IModal) {
+export function Modal({ title, heading, onClose, children }: IModal) {
   const { t } = useTranslation();
   const focus = useDialogFocus(onClose);
   function onBackdrop(event: MouseEvent<HTMLDivElement>) {
@@ -17,7 +18,7 @@ export function Modal({ title, onClose, children }: IModal) {
     <div className="overlay" onMouseDown={onBackdrop}>
       <div {...focus} tabIndex={-1} className="modal" role="dialog" aria-modal="true" aria-label={t(title)}>
         <div className="modal-heading">
-          <h2>{t(title)}</h2>
+          <h2>{heading ?? t(title)}</h2>
           <button className="icon-btn" aria-label={t("Закрыть")} onClick={onClose}>
             <X size={20} aria-hidden />
           </button>

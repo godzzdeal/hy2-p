@@ -1,3 +1,4 @@
+import { FlagName } from "@/shared/flags";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -37,7 +38,16 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
     }
   }
   return (
-    <Modal title={t("Подключение: ") + user.name} onClose={onClose}>
+    <Modal
+      title={t("Подключение: ") + user.name}
+      heading={
+        <>
+          {t("Подключение: ")}
+          <FlagName value={user.name} />
+        </>
+      }
+      onClose={onClose}
+    >
       <QueryState isLoading={links.isPending} error={links.error} />
       {links.data && (
         <>

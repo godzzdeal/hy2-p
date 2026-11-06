@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { type IUser } from "@/features/users/model";
-import { UserRow } from "./UserRow";
-import { type IUserActions } from "./UserRow";
+import { UserRow } from "./row";
+import { type IUserActions } from "./row";
 import { EMPTY_USAGE, useTraffic } from "@/features/users/traffic/model";
 interface IUserTable extends IUserActions {
   users: IUser[];

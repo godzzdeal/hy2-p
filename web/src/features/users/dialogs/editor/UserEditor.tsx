@@ -4,6 +4,7 @@ import { useState } from "react";
 import { type FormEvent } from "react";
 import { type IUser } from "@/features/users/model";
 import { useUserCommands } from "@/features/users/model";
+import { UserNameField } from "./UserNameField";
 import { Modal } from "@/shared/ui";
 interface IUserEditor {
   user?: IUser;
@@ -30,16 +31,7 @@ export function UserEditor({ user, onClose }: IUserEditor) {
   return (
     <Modal title={user ? t("Редактировать пользователя") : t("Новый пользователь")} onClose={onClose}>
       <form onSubmit={onSubmit}>
-        <label>
-          {t("Имя")}
-          <input
-            autoFocus
-            required
-            maxLength={100}
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-        </label>
+        <UserNameField value={name} onChange={setName} />
         <label>
           {t("Доступ до")}
           <input type="date" value={expires} onChange={(event) => setExpires(event.target.value)} />

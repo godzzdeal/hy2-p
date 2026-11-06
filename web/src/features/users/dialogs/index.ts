@@ -1,2 +1,2 @@
-export { UserEditor } from "./UserEditor";
+export { UserEditor } from "./editor";
 export { DeleteDialog } from "./DeleteDialog";

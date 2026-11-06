@@ -1,3 +1,4 @@
+import { type IUser } from "@/features/users/model";
 import { type IAnnouncement } from "@/features/admin/announcement/model";
 import { type Page } from "@playwright/test";
 import path from "node:path";
@@ -13,6 +14,7 @@ export async function mockPanel(page: Page, isAuthorized = true) {
     config:
       "listen: :8443\ntls:\n  cert: /certs/server.crt\n  key: /certs/server.key\ncongestion:\n  type: bbr\n  bbrProfile: aggressive\nspeedTest: true\n",
   };
+  let users: IUser[] = [];
   let announcement: IAnnouncement = { enabled: false, text: "", updateInterval: 6, profileTitle: "" };
   let published = { publicPort: "8443", listenPort: "8443" };
   let polls = 0;
@@ -22,7 +24,7 @@ export async function mockPanel(page: Page, isAuthorized = true) {
     const url = new URL(route.request().url());
     if (!url.pathname.startsWith("/api/")) {
       await route.fulfill({
-        path: path.join(DIST, url.pathname === "/" ? "index.html" : path.basename(url.pathname)),
+        path: path.join(DIST, url.pathname === "/" ? "index.html" : url.pathname.slice(1)),
       });
       return;
     }
@@ -52,7 +54,11 @@ export async function mockPanel(page: Page, isAuthorized = true) {
         response = { ok: true };
         break;
       case "/api/users":
-        response = [];
+        if (route.request().method() === "POST") {
+          const input = route.request().postDataJSON() as IUser;
+          users = [...users, { ...input, id: "test-user", enabled: true, expires: "", created: "" }];
+        }
+        response = route.request().method() === "POST" ? users.at(-1) : users;
         break;
       case "/api/settings":
         if (route.request().method() === "PUT") settings = route.request().postDataJSON() as IConfiguration;
