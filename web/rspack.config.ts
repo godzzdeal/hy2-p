@@ -36,6 +36,18 @@ export default defineConfig({
   plugins: [
     new rspack.CopyRspackPlugin({
       patterns: [
+        {
+          from: path.resolve(import.meta.dirname, "node_modules/@twemoji/svg/*.svg"),
+          to: "emoji/[name][ext]",
+        },
+        {
+          from: path.resolve(import.meta.dirname, "node_modules/@twemoji/svg/LICENSE"),
+          to: "licenses/twemoji-package.txt",
+        },
+        {
+          from: path.resolve(import.meta.dirname, "assets/twemoji-license.txt"),
+          to: "licenses/twemoji-graphics.txt",
+        },
         { from: path.resolve(import.meta.dirname, "node_modules/flag-icons/flags/4x3"), to: "flags" },
         {
           from: path.resolve(import.meta.dirname, "node_modules/flag-icons/LICENSE"),

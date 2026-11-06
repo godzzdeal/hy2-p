@@ -1,4 +1,4 @@
-import { FlagName } from "@/shared/flags";
+import { EmojiText } from "@/shared/emoji";
 import { useTranslation } from "react-i18next";
 import { type IUser } from "@/features/users/model";
 import { useUserCommands } from "@/features/users/model";
@@ -10,7 +10,7 @@ export function DeleteDialog({ user, onClose }: { user: IUser; onClose: () => vo
     <Modal title={t("Удалить пользователя?")} onClose={onClose}>
       <p>
         {t("Пользователь \u00AB")}
-        <FlagName value={user.name} />
+        <EmojiText value={user.name} />
         {t("\u00BB и его подписка будут удалены без возможности восстановления.")}
       </p>
       <button

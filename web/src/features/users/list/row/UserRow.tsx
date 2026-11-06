@@ -1,5 +1,5 @@
 import { UserAvatar } from "./UserAvatar";
-import { FLAG_PREFIX } from "@/shared/flags";
+import { stripEmoji } from "@/shared/emoji";
 import { useTranslation } from "react-i18next";
 import { Gauge, QrCode, Trash2 } from "lucide-react";
 import { type IUser } from "@/features/users/model";
@@ -28,7 +28,7 @@ export function UserRow({ user, usage, isTrafficAvailable, onEdit, onShare, onDe
         <button className="user-cell" onClick={() => onEdit(user)}>
           <UserAvatar name={user.name} />
           <span>
-            <strong>{user.name.replace(FLAG_PREFIX, "")}</strong>
+            <strong>{stripEmoji(user.name)}</strong>
             <small>{user.id.slice(0, 8)}</small>
           </span>
         </button>

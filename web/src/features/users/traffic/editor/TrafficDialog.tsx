@@ -1,4 +1,4 @@
-import { FlagName } from "@/shared/flags";
+import { EmojiText } from "@/shared/emoji";
 import { useTranslation } from "react-i18next";
 import { type IUser } from "@/features/users/model";
 import { Modal, QueryState } from "@/shared/ui";
@@ -13,7 +13,7 @@ export function TrafficDialog({ user, onClose }: { user: IUser; onClose: () => v
       heading={
         <>
           {t("Трафик: ")}
-          <FlagName value={user.name} />
+          <EmojiText value={user.name} />
         </>
       }
       onClose={onClose}

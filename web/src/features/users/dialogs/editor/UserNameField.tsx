@@ -1,10 +1,10 @@
 import { useId } from "react";
 import { useTranslation } from "react-i18next";
-import { FLAG_PREFIX, FlagPicker, replaceFlag } from "@/shared/flags";
+import { leadingEmoji, stripEmoji, replaceEmoji, EmojiPicker } from "@/shared/emoji";
 export function UserNameField({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   const { t } = useTranslation();
   const id = useId();
-  const flag = value.match(FLAG_PREFIX)?.[0].trim() ?? "";
+  const emoji = leadingEmoji(value);
   return (
     <div className="user-name-fields">
       <label htmlFor={id}>
@@ -14,19 +14,17 @@ export function UserNameField({ value, onChange }: { value: string; onChange: (v
           autoFocus
           required
           maxLength={80}
-          value={value.replace(FLAG_PREFIX, "")}
+          value={stripEmoji(value)}
           onChange={(event) =>
             onChange(
-              FLAG_PREFIX.test(event.target.value)
-                ? event.target.value
-                : replaceFlag(event.target.value, flag),
+              leadingEmoji(event.target.value) ? event.target.value : replaceEmoji(event.target.value, emoji),
             )
           }
         />
       </label>
-      <FlagPicker value={value} onChange={(next) => onChange(replaceFlag(value, next))} />
+      <EmojiPicker value={value} onChange={(next) => onChange(replaceEmoji(value, next))} />
       <small className="user-name-hint">
-        {t("Флаг появится рядом с пользователем и в названии подключения Happ после обновления подписки.")}
+        {t("Эмодзи появится рядом с пользователем и в названии подключения Happ после обновления подписки.")}
       </small>
     </div>
   );

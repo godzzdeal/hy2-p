@@ -26,3 +26,27 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.emoji-image {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--space-6);
+  height: var(--space-6);
+  object-fit: contain;
+  vertical-align: middle;
+}
+.emoji-text > span {
+  white-space: pre-wrap;
+}
+.emoji-picker {
+  display: grid;
+  gap: var(--space-3);
+}
+.custom-emoji {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.custom-emoji input {
+  min-width: 0;
+}

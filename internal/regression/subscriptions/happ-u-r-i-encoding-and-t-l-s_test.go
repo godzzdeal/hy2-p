@@ -10,7 +10,7 @@ import (
 
 func TestHappURIEncodingAndTLS(t *testing.T) {
 	s := configuration.Settings{Host: "2001:db8::1", Port: "8443", SNI: "tls.example.com", Config: "tls:\n  cert: test\n  key: test\nobfs:\n  type: salamander\n  salamander:\n    password: 'a & b'\n"}
-	u := users.User{Name: "🇩🇪 Телефон #1", Password: "secret:@/?"}
+	u := users.User{Name: "👩🏽‍💻 Телефон #1", Password: "secret:@/?"}
 	raw, e := subscriptions.ConnectionURI(s, u)
 	if e != nil {
 		t.Fatal(e)

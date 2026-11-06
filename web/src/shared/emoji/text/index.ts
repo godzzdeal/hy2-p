@@ -1,0 +1,1 @@
+export { EmojiText } from "./EmojiText";

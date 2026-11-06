@@ -85,7 +85,7 @@ test("subscription title and country flag are saved together", async ({ page }, 
   await page.screenshot({ path: info.outputPath("subscription-title.png"), fullPage: true });
 });
 
-test("users have locally rendered flags and connection labels", async ({ page }, info) => {
+test("users have local emoji icons and complete Unicode labels", async ({ page }, info) => {
   await mockPanel(page);
   await page.getByRole("button", { name: "Пользователи", exact: true }).click();
   await expect
@@ -95,18 +95,20 @@ test("users have locally rendered flags and connection labels", async ({ page },
     .toBe(true);
   await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
   await page.getByLabel("Имя", { exact: true }).fill("Телефон");
-  await page.getByRole("combobox", { name: "Флаг", exact: true }).click();
-  await page.getByRole("option", { name: /Германия/ }).click();
-  const selectedFlag = page.getByRole("combobox", { name: "Флаг", exact: true }).locator("img");
-  await expect(selectedFlag).toHaveAttribute("src", "/flags/de.svg");
+  await page.getByRole("combobox", { name: "Эмодзи", exact: true }).click();
+  await page.getByRole("option", { name: "Ракета", exact: true }).click();
+  await page.getByLabel("Свой эмодзи", { exact: true }).fill("👩🏽‍💻");
+  await expect(page.getByLabel("Имя", { exact: true })).toHaveValue("Телефон");
+  const selectedFlag = page.getByRole("combobox", { name: "Эмодзи", exact: true }).locator("img");
+  await expect(selectedFlag).toHaveAttribute("src", "/emoji/1f469-1f3fd-200d-1f4bb.svg");
   await expect
     .poll(() => selectedFlag.evaluate((element: HTMLImageElement) => element.naturalWidth))
     .toBeGreaterThan(0);
   await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();
   const row = page.getByRole("row").filter({ hasText: "Телефон" });
-  await expect(row.locator("img.country-flag")).toHaveAttribute("src", "/flags/de.svg");
-  await expect(row.getByRole("button", { name: "Подключение 🇩🇪 Телефон", exact: true })).toBeVisible();
-  await page.screenshot({ path: info.outputPath("user-flags.png"), fullPage: true });
+  await expect(row.locator("img.emoji-image")).toHaveAttribute("src", "/emoji/1f469-1f3fd-200d-1f4bb.svg");
+  await expect(row.getByRole("button", { name: "Подключение 👩🏽‍💻 Телефон", exact: true })).toBeVisible();
+  await page.screenshot({ path: info.outputPath("user-emoji.png"), fullPage: true });
 });
 
 test("the panel displays the server build version", async ({ page }) => {

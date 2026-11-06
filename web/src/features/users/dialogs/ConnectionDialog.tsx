@@ -1,4 +1,4 @@
-import { FlagName } from "@/shared/flags";
+import { EmojiText } from "@/shared/emoji";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -43,7 +43,7 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
       heading={
         <>
           {t("Подключение: ")}
-          <FlagName value={user.name} />
+          <EmojiText value={user.name} />
         </>
       }
       onClose={onClose}
