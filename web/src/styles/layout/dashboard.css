@@ -113,20 +113,3 @@ main {
 .connect-card h2 {
   font-size: 24px;
 }
-footer {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-4);
-  color: var(--muted);
-  font-size: var(--text-small);
-  padding-top: var(--space-8);
-  align-items: center;
-}
-.footer-support {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-height: var(--control-height);
-  color: var(--accent);
-  text-decoration: none;
-}

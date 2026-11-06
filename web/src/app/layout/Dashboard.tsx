@@ -5,7 +5,7 @@ import { NAVIGATION, PageEnum } from "@/app/navigation";
 import { useUiStore } from "@/app/state";
 import { Sidebar } from "./sidebar";
 import { SpaceScene } from "@/shared/SpaceScene";
-import { Github } from "@/shared/icons";
+import { PanelFooter } from "./footer";
 const UsersPage = lazy(() =>
   import("@/features/users/list").then((module) => ({
     default: module.UsersPage,
@@ -58,18 +58,7 @@ export function Dashboard() {
           <Suspense fallback={<p role="status">{t("Загрузка раздела\u2026")}</p>}>
             <Page />
           </Suspense>
-          <footer>
-            <span>HY2-P</span>
-            <a
-              className="footer-support"
-              href="https://github.com/godzzdeal/hy2-p"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Github width={24} height={24} aria-hidden />
-              GitHub
-            </a>
-          </footer>
+          <PanelFooter />
         </div>
       </main>
       <ScrollNavigation root={content} page={page} />

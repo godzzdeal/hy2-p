@@ -1,5 +1,6 @@
 export const API_ROUTES = {
   panelVersion: "/version",
+  panelRelease: "/panel/update",
   session: "/session",
   login: "/login",
   logout: "/logout",
@@ -27,6 +28,7 @@ export const API_ROUTES = {
 } as const;
 export const QUERY_KEYS = {
   panelVersion: ["panel-version"],
+  panelRelease: ["panel-release"],
   session: ["session"],
   users: ["users"],
   udpOperation: ["udp-operation"],

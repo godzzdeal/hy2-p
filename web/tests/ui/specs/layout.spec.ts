@@ -20,6 +20,37 @@ test("quick-start content and navigation stay inside their bounds", async ({ pag
   } else {
     expect(logout!.y).toBeGreaterThanOrEqual(logo!.y);
     expect(logout!.y + logout!.height).toBeLessThanOrEqual(logo!.y + logo!.height);
+    for (const width of [320, 390]) {
+      await page.setViewportSize({ width, height: 844 });
+      const menu = page.locator(".app-sidebar > nav");
+      expect(await menu.evaluate((element) => element.scrollHeight <= element.clientHeight)).toBe(true);
+      expect(await menu.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
+      const first = await menu.getByRole("button").first().boundingBox();
+      for (const button of await menu.getByRole("button").all()) {
+        const item = await button.boundingBox();
+        expect(item!.y).toBe(first!.y);
+        expect(item!.height).toBe(first!.height);
+        expect(
+          await button.evaluate(
+            (element) =>
+              element.scrollWidth <= element.clientWidth && element.scrollHeight <= element.clientHeight,
+          ),
+        ).toBe(true);
+      }
+      await menu.getByRole("button").last().focus();
+      const last = await menu.getByRole("button").last().boundingBox();
+      const menuBounds = await menu.boundingBox();
+      expect(last!.x).toBeGreaterThanOrEqual(menuBounds!.x);
+      // Scroll offsets round to whole pixels; text widths can remain fractional.
+      expect(last!.x + last!.width).toBeLessThanOrEqual(menuBounds!.x + menuBounds!.width + 1);
+      expect(
+        await menu.evaluate((element) => {
+          element.scrollTop = 100;
+          return element.scrollTop;
+        }),
+      ).toBe(0);
+      await menu.getByRole("button").first().focus();
+    }
   }
   await page.screenshot({ path: info.outputPath("navigation-spacing.png"), fullPage: true });
 });

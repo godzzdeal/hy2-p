@@ -1,4 +1,12 @@
 export const PIXEL = {
+  "Проверяем обновления…": "Checking for updates…",
+  "Не удалось проверить обновления": "Could not check for updates",
+  "Проверить обновления панели": "Check for panel updates",
+  "Доступна версия {{version}}": "Version {{version}} available",
+  "Установлена последняя версия": "Up to date",
+  "Новее последнего релиза": "Newer than the latest release",
+  "Последний релиз: {{version}}": "Latest release: {{version}}",
+  Проверить: "Check",
   "Всего пользователей: {{count}}": "Total users: {{count}}",
   "Найдено: {{count}}": "Found: {{count}}",
   "Список пользователей обновлён": "User list refreshed",

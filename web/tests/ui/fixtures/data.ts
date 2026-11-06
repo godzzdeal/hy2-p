@@ -1,4 +1,15 @@
 import { type IConfiguration } from "@/features/configuration/model";
+export const PANEL_METADATA: Record<string, unknown> = {
+  "/api/version": { version: "v0.2.1", revision: "test-build" },
+  "/api/panel/update": {
+    current: "v0.2.1",
+    latest: "v0.2.1",
+    state: "current",
+    url: "https://github.com/godzzdeal/hy2-p/releases/tag/v0.2.1",
+    publishedAt: "2026-11-05T00:00:00Z",
+    checkedAt: "2026-11-06T00:00:00Z",
+  },
+};
 export const INITIAL_SETTINGS: IConfiguration = {
   host: "vpn.example.org",
   port: "8443",

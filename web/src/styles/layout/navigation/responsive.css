@@ -15,11 +15,32 @@
   }
   .app-sidebar nav {
     display: flex;
+    align-items: center;
     overflow-x: auto;
-    margin-top: var(--space-4);
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    padding-block: var(--space-1);
+    margin-top: var(--space-2);
   }
   .app-sidebar nav button {
-    flex-shrink: 0;
+    flex: 0 0 auto;
+    min-width: 0;
+    height: var(--control-height);
+    padding: var(--space-1);
+    gap: var(--space-1);
+    text-align: left;
+  }
+  .app-sidebar nav button:focus-visible {
+    outline-offset: -2px;
+  }
+  .nav-item-label {
+    min-width: 0;
+    font-size: var(--text-small);
+    overflow-wrap: normal;
+    white-space: nowrap;
+  }
+  .app-sidebar nav .user-count {
+    padding-inline: var(--space-1);
   }
   .aside-bottom {
     display: grid;

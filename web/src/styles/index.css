@@ -4,6 +4,7 @@
 @import "./foundation/base.css" layer(base);
 @import "./layout/navigation/sidebar.css" layer(components);
 @import "./layout/dashboard.css" layer(components);
+@import "./layout/footer.css" layer(components);
 @import "./interface/cards.css" layer(components);
 @import "./interface/forms/fields.css" layer(components);
 @import "./interface/forms/select.css" layer(components);

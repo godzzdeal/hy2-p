@@ -22,7 +22,7 @@ td {
 }
 .user-cell {
   height: auto;
-  padding: 0;
+  padding: var(--space-1) var(--space-2);
   gap: var(--space-3);
   text-align: left;
 }

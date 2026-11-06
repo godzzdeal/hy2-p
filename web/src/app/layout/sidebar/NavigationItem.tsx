@@ -16,7 +16,7 @@ export function NavigationItem({ item }: INavigationItem) {
       onClick={() => selectPage(item.id)}
     >
       <item.icon width={24} height={24} aria-hidden />
-      {t(item.label)}
+      <span className="nav-item-label">{t(item.label)}</span>
       {item.id === "users" && <UserCount />}
     </button>
   );

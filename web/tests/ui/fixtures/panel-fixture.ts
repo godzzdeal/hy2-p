@@ -3,7 +3,7 @@ import { type IAnnouncement } from "@/features/admin/announcement/model";
 import { type Page } from "@playwright/test";
 import path from "node:path";
 import { type IConfiguration } from "@/features/configuration/model";
-import { INITIAL_SETTINGS, WEB_SETTINGS } from "./data";
+import { INITIAL_SETTINGS, WEB_SETTINGS, PANEL_METADATA } from "./data";
 const DIST = path.resolve(process.cwd(), "dist");
 export async function mockPanel(page: Page, isAuthorized = true) {
   let settings = { ...INITIAL_SETTINGS };
@@ -22,7 +22,7 @@ export async function mockPanel(page: Page, isAuthorized = true) {
       });
       return;
     }
-    let response: unknown = {};
+    let response: unknown = PANEL_METADATA[url.pathname] ?? {};
     if (/^\/api\/core\/(start|stop|restart)$/.test(url.pathname)) {
       const action = url.pathname.split("/").at(-1) ?? "";
       coreActions.push(action);
@@ -48,9 +48,6 @@ export async function mockPanel(page: Page, isAuthorized = true) {
       return;
     }
     switch (url.pathname) {
-      case "/api/version":
-        response = { version: "v0.2.1", revision: "test-build" };
-        break;
       case "/api/session":
         response = { ok: isAuthorized };
         break;
