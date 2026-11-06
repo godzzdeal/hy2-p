@@ -7,6 +7,9 @@ test("announcement checkbox supports its label, keyboard and saving", async ({ p
   await expect(checkbox).not.toBeChecked();
   await page.getByText("Показывать объявление в подписках", { exact: true }).click();
   await expect(checkbox).toBeChecked();
+  expect(await checkbox.evaluate((element) => getComputedStyle(element, "::before").maskImage)).toContain(
+    "/icons/check.",
+  );
   await checkbox.focus();
   await checkbox.press("Space");
   await expect(checkbox).not.toBeChecked();

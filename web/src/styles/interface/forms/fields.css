@@ -74,11 +74,10 @@ input[type="checkbox"] {
 }
 input[type="checkbox"]::before {
   content: "";
-  width: var(--space-3);
-  height: var(--space-2);
-  border-left: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: translateY(-2px) rotate(-45deg);
+  width: var(--icon-size);
+  height: var(--icon-size);
+  background: currentColor;
+  mask: url("../../../../node_modules/pixelarticons/svg/check.svg") center / contain no-repeat;
   opacity: 0;
 }
 input[type="checkbox"]:checked,
@@ -91,9 +90,7 @@ input[type="checkbox"]:indeterminate::before {
   opacity: 1;
 }
 input[type="checkbox"]:indeterminate::before {
-  border: 0;
-  background: currentColor;
-  transform: none;
+  mask: none;
   width: var(--space-3);
   height: var(--space-1);
 }

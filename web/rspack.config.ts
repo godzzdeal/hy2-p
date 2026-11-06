@@ -15,6 +15,11 @@ export default defineConfig({
   module: {
     rules: [
       {
+        test: /\.svg$/,
+        type: "asset/resource",
+        generator: { filename: "icons/[name].[contenthash][ext]" },
+      },
+      {
         test: /\.(woff2?|ttf)$/,
         type: "asset/resource",
         generator: { filename: "fonts/[name].[contenthash][ext]" },
