@@ -1,6 +1,7 @@
 :root {
   color-scheme: light dark;
-  --font-body: "Pixelify Sans", "Segoe UI", sans-serif;
+  --font-body: "Inter Variable", "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --star-color: #91a8aa;
   --planet-color: #d9bda1;
   --planet-shadow: #bc9e8f;
@@ -32,8 +33,8 @@
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
-  --text-small: 15px;
-  --text-body: 18px;
+  --text-small: 14px;
+  --text-body: 16px;
   --text-title: 24px;
   --sidebar-width: 208px;
   --control-height: 40px;
@@ -43,7 +44,7 @@
   --layer-feedback: 50;
   --layer-dialog: 20;
   --layer-select: 60;
-  --text-control: 17px;
+  --text-control: 16px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {

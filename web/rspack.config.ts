@@ -42,12 +42,12 @@ export default defineConfig({
     new rspack.CopyRspackPlugin({
       patterns: [
         {
-          from: path.resolve(import.meta.dirname, "node_modules/@fontsource/pixelify-sans/LICENSE"),
-          to: "licenses/pixelify-sans.txt",
+          from: path.resolve(import.meta.dirname, "node_modules/@fontsource-variable/inter/LICENSE"),
+          to: "licenses/inter.txt",
         },
         {
-          from: path.resolve(import.meta.dirname, "node_modules/pixelarticons/LICENSE"),
-          to: "licenses/pixelarticons.txt",
+          from: path.resolve(import.meta.dirname, "node_modules/lucide-react/LICENSE"),
+          to: "licenses/lucide.txt",
         },
         {
           from: path.resolve(import.meta.dirname, "node_modules/@twemoji/svg/*.svg"),

@@ -41,7 +41,7 @@
     grid-template-columns: 1fr;
     gap: 0;
   }
-  .card-.app-header {
+  .card-header {
     flex-wrap: wrap;
     padding: var(--space-4);
   }

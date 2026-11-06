@@ -49,9 +49,13 @@ test("pixel themes and the emoji menu work with keyboard navigation", async ({ p
     await page.screenshot({ path: info.outputPath("pixel-" + choice.value + ".png"), fullPage: true });
   }
   expect(backgrounds[0]).not.toBe(backgrounds[1]);
-  expect(await page.evaluate(() => document.fonts.check('18px "Pixelify Sans"'))).toBe(true);
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
-  await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
+  expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain("Inter Variable");
+  for (const sample of ["Настройки сервера Ёжик", "Server settings 0123456789"]) {
+    expect(await page.evaluate((text) => document.fonts.check('16px "Inter Variable"', text), sample)).toBe(
+      true,
+    );
+  }
+  await page.getByRole("button", { name: "Подписки", exact: true }).click();
   await page.getByRole("button", { name: "Выбрать эмодзи", exact: true }).click();
   await page.getByLabel("Поиск эмодзи", { exact: true }).fill("ракета");
   await page.getByRole("gridcell", { name: "ракета", exact: true }).focus();
@@ -60,7 +64,7 @@ test("pixel themes and the emoji menu work with keyboard navigation", async ({ p
   await expect(page.getByRole("dialog", { name: "Меню эмодзи", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog", { name: "Меню эмодзи", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("dialog", { name: "Новый пользователь", exact: true })).toBeVisible();
+  await expect(page.getByLabel("Название подписки", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Выбрать эмодзи", exact: true }).click();
   await page.getByLabel("Поиск эмодзи", { exact: true }).fill("ракета");
   await page.getByRole("gridcell", { name: "ракета", exact: true }).focus();

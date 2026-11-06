@@ -35,6 +35,7 @@ export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
         <label>
           {t("Текст объявления")}
           <textarea
+            aria-label={t("Текст объявления")}
             rows={3}
             required={draft.enabled}
             value={draft.text}

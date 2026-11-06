@@ -69,6 +69,10 @@ export async function mockPanel(page: Page, isAuthorized = true) {
         if (route.request().method() === "PUT") settings = route.request().postDataJSON() as IConfiguration;
         response = settings;
         break;
+      case "/api/users/test-user":
+        users = users.map((user) => ({ ...user, ...(route.request().postDataJSON() as Partial<IUser>) }));
+        response = users[0];
+        break;
       case "/api/deployment/udp":
         operation = {
           ...route.request().postDataJSON(),

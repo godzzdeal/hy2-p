@@ -1,10 +1,10 @@
 import { UserRound } from "@/shared/icons";
-import { Emoji, leadingEmoji } from "@/shared/emoji";
+import { CountryFlag, FLAG_PREFIX } from "@/shared/flags";
 export function UserAvatar({ name }: { name: string }) {
-  const emoji = leadingEmoji(name);
+  const flag = name.match(FLAG_PREFIX)?.[0].trim() ?? "";
   return (
     <span className="avatar" aria-hidden>
-      {emoji ? <Emoji value={emoji} /> : <UserRound width={24} height={24} />}
+      {flag ? <CountryFlag value={flag} /> : <UserRound width={24} height={24} />}
     </span>
   );
 }

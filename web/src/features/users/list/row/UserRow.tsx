@@ -1,5 +1,6 @@
 import { UserAvatar } from "./UserAvatar";
-import { stripEmoji } from "@/shared/emoji";
+import { EmojiText } from "@/shared/emoji";
+import { FLAG_PREFIX } from "@/shared/flags";
 import { useTranslation } from "react-i18next";
 import { Gauge, QrCode, Trash2 } from "@/shared/icons";
 import { type IUser } from "@/features/users/model";
@@ -28,7 +29,9 @@ export function UserRow({ user, usage, isTrafficAvailable, onEdit, onShare, onDe
         <button className="user-cell" onClick={() => onEdit(user)}>
           <UserAvatar name={user.name} />
           <span>
-            <strong>{stripEmoji(user.name)}</strong>
+            <strong>
+              <EmojiText value={user.name.replace(FLAG_PREFIX, "")} />
+            </strong>
             <small>{user.id.slice(0, 8)}</small>
           </span>
         </button>

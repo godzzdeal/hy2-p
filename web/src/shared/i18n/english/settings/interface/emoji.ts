@@ -1,4 +1,6 @@
 export const EMOJI = {
+  "Флаг станет иконкой подключения в Happ. Эмодзи можно добавить прямо в имя. После изменения обновите подписку.":
+    "The flag becomes the Happ connection icon. Add emoji directly to the name. Refresh the subscription after changing it.",
   "Выбрать эмодзи": "Choose emoji",
   "Изменить эмодзи": "Change emoji",
   "Меню эмодзи": "Emoji menu",

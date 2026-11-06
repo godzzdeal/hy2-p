@@ -1,4 +1,5 @@
 export const PIXEL = {
+  "Раздел конфигурации": "Configuration section",
   "Ядро остановлено.": "Engine stopped.",
   "Ядро запускается. Проверьте подключение в Happ.": "The engine is starting. Check your connection in Happ.",
   "Конфигурация сохранена": "Configuration saved",

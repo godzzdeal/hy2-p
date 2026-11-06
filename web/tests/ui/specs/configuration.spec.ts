@@ -1,5 +1,26 @@
 import { test, expect } from "@playwright/test";
 import { mockPanel } from "../fixtures";
+test("configuration sections preserve edits on desktop and mobile", async ({ page }, info) => {
+  await mockPanel(page);
+  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByLabel("Порт Hysteria2", { exact: true }).fill(":61254");
+  for (const title of ["Соединение", "Общие настройки"]) {
+    if (info.project.name === "mobile") {
+      await page.getByRole("combobox", { name: "Раздел конфигурации", exact: true }).click();
+      await page.getByRole("option", { name: title, exact: true }).click();
+    } else {
+      await page
+        .getByRole("navigation", { name: "Разделы конфигурации" })
+        .getByRole("button", { name: title, exact: true })
+        .click();
+    }
+    await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+  }
+  await expect(page.getByLabel("Порт Hysteria2", { exact: true })).toHaveValue(":61254");
+  await page.getByRole("checkbox", { name: "Технические названия", exact: true }).check();
+  await expect(page.locator(".field-path").first()).toContainText("listen");
+  await page.screenshot({ path: info.outputPath("configuration-navigation.png"), fullPage: true });
+});
 test("keyboard selection, resets and saving produce clean ordered YAML", async ({ page }, info) => {
   const panel = await mockPanel(page);
   await page.getByRole("button", { name: "Конфигурация", exact: true }).click();

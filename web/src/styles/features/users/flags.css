@@ -17,6 +17,10 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-3);
+  align-items: start;
+}
+.user-name-fields > label {
+  margin: 0;
 }
 .user-name-hint {
   grid-column: 1 / -1;
@@ -39,8 +43,10 @@
   white-space: pre-wrap;
 }
 .emoji-picker {
-  display: grid;
-  gap: var(--space-3);
+  align-self: start;
+}
+.emoji-picker > label {
+  margin: 0;
 }
 .custom-emoji {
   display: flex;

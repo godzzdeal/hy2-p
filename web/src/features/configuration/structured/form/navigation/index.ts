@@ -1,0 +1,1 @@
+export { ConfigNavigation } from "./ConfigNavigation";

@@ -16,7 +16,7 @@
   min-width: 0;
 }
 .generated-password {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: var(--text-small);
   color: var(--muted);
   margin-top: var(--space-2);
@@ -26,7 +26,7 @@
 }
 .structured-textarea {
   min-height: 192px;
-  font-family: monospace;
+  font-family: var(--font-mono);
 }
 .pair-row {
   display: flex;

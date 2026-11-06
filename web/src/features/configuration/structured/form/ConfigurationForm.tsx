@@ -4,7 +4,7 @@ import { parseDocument } from "yaml";
 import { type IConfiguration } from "@/features/configuration/model";
 import { ConfigField } from "../controls";
 import { AuthSettings } from "./AuthSettings";
-import { ConfigTab } from "./ConfigTab";
+import { ConfigNavigation } from "./navigation";
 import { readField, updateField } from "../model";
 import { TRANSPORT_SECTIONS, CERTIFICATE_SECTIONS, NETWORK_SECTIONS } from "../schema";
 import { CertificateMode, CertificateUpload, CertificateStatus } from "../certificates";
@@ -56,52 +56,49 @@ export function ConfigurationForm({
           {t("Технические названия")}
         </label>
       </div>
-      <nav className="config-tabs" aria-label={t("Разделы конфигурации")}>
-        {SECTIONS.filter((item) => item.id !== "tls" || !isAcme)
-          .filter((item) => item.id !== "acme" || isAcme)
-          .map((item) => (
-            <ConfigTab
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              isSelected={effectiveSection === item.id}
-              onSelect={setSection}
-            />
-          ))}
-      </nav>
-      {(effectiveSection === "tls" || effectiveSection === "acme") && (
-        <CertificateMode
-          source={value.config}
-          onChange={(config) => {
-            onChange({ ...value, config });
-            setSection(parseDocument(config).has("acme") ? "acme" : "tls");
-          }}
+      <div className="configuration-layout">
+        <ConfigNavigation
+          sections={SECTIONS.filter((item) => item.id !== (isAcme ? "tls" : "acme"))}
+          value={effectiveSection}
+          onSelect={setSection}
         />
-      )}
-      {section === "auth" && <AuthSettings value={value} onChange={onChange} />}
-      {document.errors.length > 0 ? (
-        <p className="inline-error">{t(document.errors[0].message)}</p>
-      ) : (
-        <div className="field-grid">
-          {active?.fields
-            .filter((field) => !field.when || readField(document, field.when.path) === field.when.value)
-            .filter(() => effectiveSection !== "auth" || isNative)
-            .filter(
-              (field) => !isManagedHttp || !["acme.http.altPort", "acme.listenHost"].includes(field.path),
-            )
-            .map((field) => (
-              <ConfigField
-                key={field.path}
-                field={field}
-                showPath={showPath}
-                value={readField(document, field.path)}
-                onChange={(next) => onSet(field.path, next)}
-              />
-            ))}
+        <div className="configuration-fields">
+          <h2 className="configuration-section-title">{active ? t(active.title) : ""}</h2>
+          {(effectiveSection === "tls" || effectiveSection === "acme") && (
+            <CertificateMode
+              source={value.config}
+              onChange={(config) => {
+                onChange({ ...value, config });
+                setSection(parseDocument(config).has("acme") ? "acme" : "tls");
+              }}
+            />
+          )}
+          {section === "auth" && <AuthSettings value={value} onChange={onChange} />}
+          {document.errors.length > 0 ? (
+            <p className="inline-error">{t(document.errors[0].message)}</p>
+          ) : (
+            <div className="field-grid">
+              {active?.fields
+                .filter((field) => !field.when || readField(document, field.when.path) === field.when.value)
+                .filter(() => effectiveSection !== "auth" || isNative)
+                .filter(
+                  (field) => !isManagedHttp || !["acme.http.altPort", "acme.listenHost"].includes(field.path),
+                )
+                .map((field) => (
+                  <ConfigField
+                    key={field.path}
+                    field={field}
+                    showPath={showPath}
+                    value={readField(document, field.path)}
+                    onChange={(next) => onSet(field.path, next)}
+                  />
+                ))}
+            </div>
+          )}
+          {effectiveSection === "tls" && <CertificateUpload onUploaded={onUploaded} />}
+          {(effectiveSection === "tls" || effectiveSection === "acme") && <CertificateStatus />}
         </div>
-      )}
-      {effectiveSection === "tls" && <CertificateUpload onUploaded={onUploaded} />}
-      {(effectiveSection === "tls" || effectiveSection === "acme") && <CertificateStatus />}
+      </div>
     </section>
   );
 }
