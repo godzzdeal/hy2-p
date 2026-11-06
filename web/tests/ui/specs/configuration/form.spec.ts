@@ -64,17 +64,15 @@ test("configuration sections preserve edits on desktop and mobile", async ({ pag
   await mockPanel(page);
   await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
   await page.getByLabel("listen", { exact: true }).fill(":61254");
-  for (const title of ["QUIC parameters", "Listen"]) {
-    if (info.project.name === "mobile") {
-      await page.getByRole("combobox", { name: "Раздел конфигурации", exact: true }).click();
-      await page.getByRole("option", { name: title, exact: true }).click();
-    } else {
-      await page
-        .getByRole("navigation", { name: "Разделы конфигурации" })
-        .getByRole("button", { name: title, exact: true })
-        .click();
-    }
+  const navigation = page.getByRole("navigation", { name: "Разделы конфигурации" });
+  await expect(navigation).toBeVisible();
+  for (const title of ["QUIC parameters", "Masquerade", "Listen"]) {
+    await navigation.getByRole("button", { name: title, exact: true }).click();
     await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+  }
+  if (info.project.name === "mobile") {
+    expect(await navigation.evaluate((element) => element.scrollHeight <= element.clientHeight)).toBe(true);
+    expect(await navigation.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
   }
   await expect(page.getByLabel("listen", { exact: true })).toHaveValue(":61254");
   await expect(page.getByLabel("listen", { exact: true })).toBeVisible();
