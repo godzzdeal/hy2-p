@@ -5,6 +5,7 @@ import (
 	"hy2-panel/internal/auth"
 	"hy2-panel/internal/buildinfo"
 	"hy2-panel/internal/buildinfo/updates"
+	deviceapi "hy2-panel/internal/devices/integration"
 	"hy2-panel/internal/instances"
 	instanceapi "hy2-panel/internal/instances/api"
 	portweb "hy2-panel/internal/portcontrol/web"
@@ -12,20 +13,27 @@ import (
 	"hy2-panel/internal/subscriptions"
 	"hy2-panel/internal/traffic"
 	"hy2-panel/internal/transport"
+	useraccess "hy2-panel/internal/useraccess/integration"
 	"hy2-panel/internal/users"
 	"hy2-panel/internal/websettings"
 	"net/http"
 )
 
-func routes(auth *auth.Handler, users *users.Handler, registry *instances.Registry, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler) http.Handler {
+func routes(auth *auth.Handler, users *users.Handler, registry *instances.Registry, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, access *useraccess.Handler, devices *deviceapi.Handler) http.Handler {
 	mux := http.NewServeMux()
 	panelUpdates := updates.New(buildinfo.Version())
 	mux.HandleFunc("GET /api/version", buildinfo.Read)
 	mux.HandleFunc("POST /api/login", auth.Login)
 	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{
-		"GET /api/panel/update": panelUpdates.Read,
-		"GET /api/traffic":      traffic.Read,
+		"GET /api/users/{id}/devices":             devices.Read,
+		"PUT /api/users/{id}/devices":             devices.SetLimit,
+		"PATCH /api/users/{id}/devices/{device}":  devices.Edit,
+		"DELETE /api/users/{id}/devices/{device}": devices.Remove,
+		"GET /api/users/{id}/cores":               access.Read,
+		"PUT /api/users/{id}/cores":               access.Save,
+		"GET /api/panel/update":                   panelUpdates.Read,
+		"GET /api/traffic":                        traffic.Read,
 		"PUT /api/users/{id}/traffic": func(writer http.ResponseWriter, request *http.Request) {
 			if _, err := users.User(request.PathValue("id")); err != nil {
 				transport.Fail(writer, errors.New("Пользователь не найден"), 404)

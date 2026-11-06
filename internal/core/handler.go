@@ -2,15 +2,14 @@ package core
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
+	"hy2-panel/internal/core/statistics"
 	"hy2-panel/internal/core/supervision"
 	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/transport"
 	"net/http"
 	"os/exec"
 	"regexp"
-	"strings"
 	"time"
 )
 
@@ -118,15 +117,10 @@ func (handler *Handler) beginUpdate(writer http.ResponseWriter, version string, 
 }
 
 func (handler *Handler) Kick(id string) {
-	client := http.Client{Timeout: 2 * time.Second}
-	body, _ := json.Marshal([]string{id})
-	req, _ := http.NewRequest("POST", handler.StatsURL()+"/kick", strings.NewReader(string(body)))
-	req.Header.Set("Authorization", handler.Secret)
-	req.Header.Set("Content-Type", "application/json")
-	res, err := client.Do(req)
-	if err == nil {
-		res.Body.Close()
-	}
+	statistics.Client{Address: handler.StatsURL(), Secret: handler.Secret}.KickUser(context.Background(), id)
+}
+func (handler *Handler) KickIdentity(id string) {
+	statistics.Client{Address: handler.StatsURL(), Secret: handler.Secret}.KickIdentity(context.Background(), id)
 }
 
 func (handler *Handler) ExpiryLoop(ctx context.Context) {

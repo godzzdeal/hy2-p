@@ -2,7 +2,7 @@ import { UserAvatar } from "./UserAvatar";
 import { EmojiText } from "@/shared/emoji";
 import { FLAG_PREFIX } from "@/shared/flags";
 import { useTranslation } from "react-i18next";
-import { Gauge, QrCode, Trash2 } from "@/shared/icons";
+import { Gauge, QrCode, Trash2, Server, Monitor } from "@/shared/icons";
 import { type IUser } from "@/features/users/model";
 import { isUserActive } from "@/features/users/model";
 import { type IUserUsage } from "@/features/users/traffic/model";
@@ -13,13 +13,25 @@ export interface IUserActions {
   onShare: (user: IUser) => void;
   onDelete: (user: IUser) => void;
   onTraffic: (user: IUser) => void;
+  onAccess: (user: IUser) => void;
+  onDevices: (user: IUser) => void;
 }
 interface IUserRow extends IUserActions {
   user: IUser;
   usage: IUserUsage;
   isTrafficAvailable: boolean;
 }
-export function UserRow({ user, usage, isTrafficAvailable, onEdit, onShare, onDelete, onTraffic }: IUserRow) {
+export function UserRow({
+  user,
+  usage,
+  isTrafficAvailable,
+  onEdit,
+  onShare,
+  onDelete,
+  onTraffic,
+  onAccess,
+  onDevices,
+}: IUserRow) {
   const { t } = useTranslation();
   const isQuotaExceeded = usage.limit > 0 && usage.upload + usage.download >= usage.limit;
   const hasAccess = isUserActive(user) && !isQuotaExceeded;
@@ -56,6 +68,24 @@ export function UserRow({ user, usage, isTrafficAvailable, onEdit, onShare, onDe
       <td>{formatDate(user.expires)}</td>
       <td>
         <div className="row-actions">
+          <button
+            className="text-btn"
+            aria-label={t("Устройства ") + user.name}
+            title={t("Устройства пользователя")}
+            onClick={() => onDevices(user)}
+          >
+            <Monitor width={24} height={24} aria-hidden />
+            {t("Устройства")}
+          </button>
+          <button
+            className="text-btn"
+            aria-label={t("Доступные ядра ") + user.name}
+            title={t("Доступные ядра")}
+            onClick={() => onAccess(user)}
+          >
+            <Server width={24} height={24} aria-hidden />
+            {t("Ядра")}
+          </button>
           <button
             className="icon-btn"
             aria-label={t("Подключение ") + user.name}

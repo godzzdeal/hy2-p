@@ -15,6 +15,7 @@ import (
 	"hy2-panel/internal/core/watchdog"
 	"hy2-panel/internal/releases"
 	"hy2-panel/internal/security"
+	"hy2-panel/internal/useraccess"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -79,7 +80,7 @@ func (handler *Handler) start() error {
 	}
 	acmehttp.PrepareAt(document, handler.Data, os.Getenv("PANEL_CONTAINER") == "true", handler.ChallengePort())
 	if settings.AuthMode != "native" {
-		document["auth"] = map[string]any{"type": "http", "http": map[string]any{"url": "http://127.0.0.1:8081/auth"}}
+		document["auth"] = map[string]any{"type": "http", "http": map[string]any{"url": useraccess.CallbackURL(handler.InstanceID)}}
 	}
 	document["trafficStats"] = map[string]any{"listen": handler.StatsAddress(), "secret": handler.Secret}
 	payload, err := ordering.Marshal(document)

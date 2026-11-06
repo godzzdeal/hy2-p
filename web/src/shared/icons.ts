@@ -37,3 +37,4 @@ export { Earth } from "pixelarticons/react/Earth.js";
 export { Moon } from "pixelarticons/react/Moon.js";
 export { Star } from "pixelarticons/react/Star.js";
 export { Github } from "pixelarticons/react/Github.js";
+export { Monitor } from "pixelarticons/react/Monitor.js";

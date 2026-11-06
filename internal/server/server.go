@@ -10,12 +10,14 @@ import (
 	"hy2-panel/internal/core"
 	"hy2-panel/internal/core/supervision"
 	"hy2-panel/internal/cryptovault"
+	deviceapi "hy2-panel/internal/devices/integration"
 	"hy2-panel/internal/instances"
 	instanceapi "hy2-panel/internal/instances/api"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/subscriptions"
 	"hy2-panel/internal/subscriptions/announcement"
 	"hy2-panel/internal/traffic"
+	useraccess "hy2-panel/internal/useraccess/integration"
 	"hy2-panel/internal/users"
 	"hy2-panel/internal/websettings"
 	"log"
@@ -68,6 +70,19 @@ func Run() error {
 	}
 	go traffic.Run(monitorContext)
 	users := &users.Handler{DB: db, Kick: registry.Kick, Allow: traffic.Allowed, Vault: vault}
+	access, err := useraccess.Open(data, registry, users)
+	if err != nil {
+		return err
+	}
+	devices, err := deviceapi.Open(data, users, registry.Kick)
+	if err != nil {
+		return err
+	}
+	go devices.Store.Run(monitorContext)
+	access.AllowIdentity = devices.AllowedIdentity
+	access.Sources, access.Observe = devices.Store.Sources, devices.Store.Observe
+	go access.Run(monitorContext)
+	defer devices.Store.Flush()
 	auth, err := auth.Open(passwordHash, security.Env("PANEL_SECURE_COOKIE", "false") == "true" || web.Active().Mode != "http", data, security.Env("PANEL_ADMIN_USERNAME", "admin"))
 	if err != nil {
 		return err
@@ -76,8 +91,8 @@ func Run() error {
 	if err != nil {
 		return err
 	}
-	subscriptions := &subscriptions.Handler{Announcements: announcements, DB: db, Users: users, Sources: instanceapi.Profiles(registry), PublicURL: strings.TrimRight(web.Active().URL(), "/")}
-	public := httpServer(web.Active().Address(), routes(auth, users, registry, subscriptions, traffic, web))
+	subscriptions := &subscriptions.Handler{Announcements: announcements, DB: db, Users: users, Sources: instanceapi.Profiles(registry), AllowCore: access.Store.Allows, DeviceLimit: devices.Store.Limit, PrepareSubscription: devices.Prepare, PublicURL: strings.TrimRight(web.Active().URL(), "/")}
+	public := httpServer(web.Active().Address(), routes(auth, users, registry, subscriptions, traffic, web, access, devices))
 	tlsConfig, challenge, err := web.TLS()
 	if err != nil {
 		return err
@@ -89,7 +104,8 @@ func Run() error {
 	internalMux := http.NewServeMux()
 	internalMux.HandleFunc("GET /health", func(writer http.ResponseWriter, request *http.Request) { writer.WriteHeader(http.StatusNoContent) })
 	internalMux.HandleFunc("GET /deployment", instanceapi.Handler{Registry: registry}.Deployment)
-	internalMux.HandleFunc("POST /auth", users.Authenticate)
+	internalMux.HandleFunc("POST /auth", access.Authenticate)
+	internalMux.HandleFunc("POST /auth/{instance}", access.Authenticate)
 	internal := httpServer("127.0.0.1:8081", internalMux)
 	failures := make(chan error, 3)
 	servers := []*http.Server{public, internal}

@@ -1,6 +1,9 @@
 package sources
 
-import "errors"
+import (
+	"errors"
+	"hy2-panel/internal/security"
+)
 
 func delta(current, previous uint64) uint64 {
 	if current < previous {
@@ -25,16 +28,17 @@ func (collector *Collector) merge(samples []Sample) Result {
 			collector.generations[id] = sample.Generation
 			collector.baselines[id] = map[string]Counter{}
 		}
-		for user, current := range sample.Counters {
-			previous := collector.baselines[id][user]
+		for identity, current := range sample.Counters {
+			user := security.ParentUser(identity)
+			previous := collector.baselines[id][identity]
 			total := result.Counters[user]
 			total.TX += delta(current.TX, previous.TX)
 			total.RX += delta(current.RX, previous.RX)
 			result.Counters[user] = total
-			collector.baselines[id][user] = current
+			collector.baselines[id][identity] = current
 		}
-		for user, count := range sample.Online {
-			result.Online[user] += count
+		for identity, count := range sample.Online {
+			result.Online[security.ParentUser(identity)] += count
 		}
 	}
 	return result

@@ -4,6 +4,10 @@ token=${token:?Run core.sh first}
 user_id=${user_id:?Run core.sh first}
 panel_image=${panel_image:?Run core.sh first}
 socks_host=${socks_host:?Run core.sh first}
+for file in requests cores devices; do
+  # shellcheck source=/dev/null
+  source "$(dirname -- "${BASH_SOURCE[0]}")/../users/$file.sh"
+done
 login_panel
 curl -fsS -b "$WORK/cookies" "$URL/api/settings" |
   jq '.port="61258" | .config |= sub("listen: :[0-9]+";"listen: :61258") | {name:"Second engine",settings:.}' >"$WORK/instance.json"
@@ -86,6 +90,7 @@ CLIENT_CONTAINER=$(sudo docker run -d --rm --network host \
   -v "$ROOT/certs:/certs:ro" "$panel_image" client -c /client.json)
 wait_online 1
 curl -fsS --max-time 10 --noproxy "" --socks5-hostname "$socks_host:11080" http://127.0.0.1:8081/health >/dev/null
+test_core_access
 curl -fsS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
   -X PATCH --data '{"name":"Subscription test","enabled":false}' "$URL/api/users/$user_id" >/dev/null
 wait_online 0
@@ -93,6 +98,7 @@ sudo docker rm -f "$CLIENT_CONTAINER" >/dev/null
 CLIENT_CONTAINER=
 curl -fsS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
   -X PATCH --data '{"name":"Subscription test","enabled":true}' "$URL/api/users/$user_id" >/dev/null
+test_device_limit
 curl -fsS -b "$WORK/cookies" -H 'X-Panel-Request: 1' -X POST "$extra_api/core/stop" >/dev/null
 ticket=$(curl -fsS -b "$WORK/cookies" -H 'X-Panel-Request: 1' -X DELETE "$extra_api" | jq -er '.operation.id')
 wait_operation "$ticket"

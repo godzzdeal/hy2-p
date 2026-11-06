@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+import { mockInstances, EXTRA_ID } from "../instances/fixture";
+import { type IUserAccess } from "@/features/users/access/model";
 import { mockPanel } from "../../fixtures";
 test("refresh updates total counts and filtering keeps the total", async ({ page }, info) => {
   await mockPanel(page);
@@ -64,4 +66,37 @@ test("users have a flag icon and emoji remain in their name", async ({ page }, i
   await expect(row.locator(".avatar img")).toHaveCount(0);
   await expect(row.locator("img.emoji-image")).toHaveAttribute("src", "/emoji/1f469-1f3fd-200d-1f4bb.svg");
   await page.screenshot({ path: info.outputPath("user-emoji.png"), fullPage: true });
+});
+
+test("user engine access is selectable and survives reopening", async ({ page }, info) => {
+  await mockInstances(page, true);
+  let access: IUserAccess = { mode: "all", instances: [] };
+  await page.route("http://panel.test/api/users/test-user/cores", async (route) => {
+    if (route.request().method() === "PUT") access = route.request().postDataJSON() as IUserAccess;
+    await route.fulfill({ json: access });
+  });
+  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
+  await page.getByLabel("Имя", { exact: true }).fill("Phone");
+  await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();
+  await page.getByRole("button", { name: "Доступные ядра Phone", exact: true }).click();
+  await expect(page.getByRole("checkbox", { name: /Основной/ })).toBeChecked();
+  await expect(page.getByRole("checkbox", { name: /Основной/ })).toBeDisabled();
+  await page.getByRole("combobox", { name: "Режим доступа к ядрам", exact: true }).click();
+  await page.getByRole("option", { name: "Только выбранные ядра", exact: true }).click();
+  await page.getByRole("checkbox", { name: /Основной/ }).uncheck();
+  await page
+    .getByRole("dialog", { name: "Доступные ядра", exact: true })
+    .screenshot({ path: info.outputPath("user-core-access.png") });
+  await page.getByRole("button", { name: "Сохранить доступ", exact: true }).click();
+  await expect.poll(() => access).toEqual({ mode: "selected", instances: [EXTRA_ID] });
+  await page.getByRole("button", { name: "Доступные ядра Phone", exact: true }).click();
+  await expect(page.getByRole("checkbox", { name: /Основной/ })).not.toBeChecked();
+  await expect(page.getByRole("checkbox", { name: /Второй/ })).toBeChecked();
+  await page.getByRole("checkbox", { name: /Второй/ }).uncheck();
+  await expect(
+    page.getByText("Ни одно ядро не выбрано. Подключения пользователя будут запрещены.", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Сохранить доступ", exact: true }).click();
+  await expect.poll(() => access.instances).toEqual([]);
 });

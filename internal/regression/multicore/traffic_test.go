@@ -2,12 +2,47 @@ package multicore_test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"hy2-panel/internal/security"
 	"hy2-panel/internal/traffic/sources"
 	"net/http"
 	"net/http/httptest"
+	"strings"
+	"sync/atomic"
 	"testing"
 )
+
+func TestDeviceCountersAggregateWithoutResettingOtherDevices(t *testing.T) {
+	user := strings.Repeat("a", 16)
+	first := security.DeviceIdentity(user, strings.Repeat("b", 32), strings.Repeat("c", 16))
+	second := security.DeviceIdentity(user, strings.Repeat("d", 32), strings.Repeat("e", 16))
+	rotated := security.DeviceIdentity(user, strings.Repeat("b", 32), strings.Repeat("f", 16))
+	var changed atomic.Bool
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		id, count := first, uint64(100)
+		if changed.Load() {
+			id, count = rotated, 5
+		}
+		if r.URL.Path == "/online" {
+			json.NewEncoder(w).Encode(map[string]int{id: 1, second: 1, user: 1})
+			return
+		}
+		json.NewEncoder(w).Encode(map[string]sources.Counter{id: {TX: count}, second: {TX: 200}, user: {TX: 50}})
+	}))
+	defer server.Close()
+	collector := sources.New(server.Client())
+	inputs := []sources.Source{{ID: "core", Address: server.URL, Runtime: &runtime{"generation", true}}}
+	firstSample := collector.Read(context.Background(), inputs)
+	if firstSample.Err != nil || firstSample.Counters[user].TX != 350 || firstSample.Online[user] != 3 || len(firstSample.Counters) != 1 {
+		t.Fatal(firstSample)
+	}
+	changed.Store(true)
+	next := collector.Read(context.Background(), inputs)
+	if next.Err != nil || next.Counters[user].TX != 5 {
+		t.Fatal("credential rotation reset other device baselines", next)
+	}
+}
 
 type runtime struct {
 	generation string

@@ -12,10 +12,13 @@ import (
 )
 
 type Handler struct {
-	Vault *cryptovault.Vault
-	DB    *sql.DB
-	Kick  func(string)
-	Allow func(string) bool
+	Vault             *cryptovault.Vault
+	DB                *sql.DB
+	Kick              func(string)
+	Allow             func(string) bool
+	AllowCore         func(string, string) bool
+	ResolveCredential func(string) (User, string, error)
+	OnAuthenticated   func(string, string, string, string)
 }
 
 func (handler *Handler) User(id string) (User, error) {

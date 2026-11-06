@@ -16,12 +16,15 @@ import (
 )
 
 type Handler struct {
-	DB            *sql.DB
-	Users         *users.Handler
-	Config        *configuration.Handler
-	Announcements *announcement.Store
-	PublicURL     string
-	Sources       func() ([]Profile, error)
+	DB                  *sql.DB
+	Users               *users.Handler
+	Config              *configuration.Handler
+	Announcements       *announcement.Store
+	PublicURL           string
+	Sources             func() ([]Profile, error)
+	AllowCore           func(string, string) bool
+	DeviceLimit         func(string) int
+	PrepareSubscription func(http.ResponseWriter, *http.Request, users.User) (users.User, bool)
 }
 
 func (handler *Handler) Links(writer http.ResponseWriter, request *http.Request) {
@@ -35,7 +38,18 @@ func (handler *Handler) Links(writer http.ResponseWriter, request *http.Request)
 		transport.Fail(writer, err, 422)
 		return
 	}
-	transport.Respond(writer, map[string]any{"uri": connections[0].URI, "connections": connections, "subscription": handler.PublicURL + "/sub/" + user.Token})
+	uri := ""
+	if len(connections) > 0 {
+		uri = connections[0].URI
+	}
+	limit := 0
+	if handler.DeviceLimit != nil {
+		limit = handler.DeviceLimit(user.ID)
+	}
+	if limit > 0 {
+		uri, connections = "", []Connection{}
+	}
+	transport.Respond(writer, map[string]any{"uri": uri, "connections": connections, "deviceLimit": limit, "subscription": handler.PublicURL + "/sub/" + user.Token})
 }
 
 func (handler *Handler) Serve(writer http.ResponseWriter, request *http.Request) {
@@ -53,6 +67,26 @@ func (handler *Handler) Serve(writer http.ResponseWriter, request *http.Request)
 	if err != nil {
 		http.Error(writer, "Server configuration does not support URI export", 503)
 		return
+	}
+	if len(connections) == 0 {
+		http.Error(writer, "No available connections", http.StatusForbidden)
+		return
+	}
+	if handler.PrepareSubscription != nil {
+		var ok bool
+		user, ok = handler.PrepareSubscription(writer, request, user)
+		if !ok {
+			return
+		}
+		connections, err = handler.connections(user)
+		if err != nil {
+			http.Error(writer, "Unavailable", 503)
+			return
+		}
+		if len(connections) == 0 {
+			http.Error(writer, "No available connections", 403)
+			return
+		}
 	}
 	lines := make([]string, 0, len(connections))
 	for _, connection := range connections {

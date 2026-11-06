@@ -48,6 +48,14 @@ func Scan(row interface{ Scan(...any) error }) (User, error) {
 	return user, err
 }
 func (handler *Handler) Authenticate(writer http.ResponseWriter, request *http.Request) {
+	handler.authenticate(writer, request, "default")
+}
+func (handler *Handler) AuthenticateFor(instance string) http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		handler.authenticate(writer, request, instance)
+	}
+}
+func (handler *Handler) authenticate(writer http.ResponseWriter, request *http.Request, instance string) {
 	var payload struct {
 		Auth string `json:"auth"`
 		Addr string `json:"addr"`
@@ -58,10 +66,28 @@ func (handler *Handler) Authenticate(writer http.ResponseWriter, request *http.R
 		return
 	}
 	// The callback is bound to loopback and never exposed by the public router.
-	user, err := Scan(handler.DB.QueryRow("SELECT id,name,enabled,expires,created,password,token FROM users WHERE password LIKE ? OR password=?", handler.Vault.Prefix(payload.Auth)+"%", payload.Auth))
+	resolve := handler.ResolveCredential
+	if resolve == nil {
+		resolve = func(password string) (User, string, error) {
+			user, err := handler.ByPassword(password)
+			return user, user.ID, err
+		}
+	}
+	user, identity, err := resolve(payload.Auth)
+	ok := err == nil && Active(user) && (handler.Allow == nil || handler.Allow(user.ID))
+	ok = ok && (handler.AllowCore == nil || handler.AllowCore(user.ID, instance))
+	if ok && handler.OnAuthenticated != nil {
+		handler.OnAuthenticated(user.ID, payload.Auth, instance, payload.Addr)
+	}
+	transport.Respond(writer, map[string]any{"ok": ok, "id": identity})
+}
+func (handler *Handler) ByPassword(password string) (User, error) {
+	user, err := Scan(handler.DB.QueryRow("SELECT id,name,enabled,expires,created,password,token FROM users WHERE password LIKE ? OR password=?", handler.Vault.Prefix(password)+"%", password))
 	if err == nil {
 		user.Password, err = handler.Vault.OpenPassword(user.Password)
 	}
-	ok := err == nil && Active(user) && (handler.Allow == nil || handler.Allow(user.ID)) && subtle.ConstantTimeCompare([]byte(user.Password), []byte(payload.Auth)) == 1
-	transport.Respond(writer, map[string]any{"ok": ok, "id": user.ID})
+	if err != nil || subtle.ConstantTimeCompare([]byte(user.Password), []byte(password)) != 1 {
+		return User{}, errors.New("Неверные данные доступа")
+	}
+	return user, nil
 }

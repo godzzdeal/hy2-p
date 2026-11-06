@@ -13,6 +13,7 @@
 @import "./interface/forms/configuration/outbounds.css" layer(components);
 @import "./interface/feedback.css" layer(components);
 @import "./features/users/list.css" layer(components);
+@import "./features/users/access/cores.css" layer(components);
 @import "./features/users/flags.css" layer(components);
 @import "./features/session.css" layer(components);
 @import "./dialogs/modal.css" layer(components);
@@ -47,3 +48,6 @@
 @import "./foundation/scrollbars.css" layer(components);
 @import "./dialogs/yaml-editor.css" layer(components);
 @import "./interface/buttons.css" layer(components);
+
+@import "./features/users/access/devices.css" layer(components);
+@import "./features/users/access/rows.css" layer(components);

@@ -1,0 +1,42 @@
+.device-row {
+  border: 1px solid var(--line);
+  padding: var(--space-3);
+  min-width: 0;
+}
+.device-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: space-between;
+}
+.device-row dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-block: var(--space-3);
+}
+.device-row dt {
+  color: var(--muted);
+}
+.device-row dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.device-row dl > div {
+  min-width: 0;
+}
+.device-row button {
+  width: 100%;
+}
+.device-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+.device-actions > button:first-child {
+  flex: 1;
+  min-width: 0;
+}
+.device-actions > .icon-btn {
+  width: var(--control-height);
+  flex: 0 0 var(--control-height);
+}

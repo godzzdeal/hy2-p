@@ -71,6 +71,8 @@ export function UsersPage() {
           onShare={(user) => setDialog({ type: "share", user })}
           onDelete={(user) => setDialog({ type: "delete", user })}
           onTraffic={(user) => setDialog({ type: "traffic", user })}
+          onAccess={(user) => setDialog({ type: "access", user })}
+          onDevices={(user) => setDialog({ type: "devices", user })}
         />
         {!query.isPending && !filtered.length && (
           <p className="empty">

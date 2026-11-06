@@ -9,6 +9,10 @@ const DeleteDialog = lazy(() =>
   import("./dialogs/DeleteDialog").then((module) => ({ default: module.DeleteDialog })),
 );
 const TrafficDialog = lazy(() => import("./traffic").then((module) => ({ default: module.TrafficDialog })));
+const UserAccessDialog = lazy(() =>
+  import("./access").then((module) => ({ default: module.UserAccessDialog })),
+);
+const DevicesDialog = lazy(() => import("./devices").then((module) => ({ default: module.DevicesDialog })));
 export function UserDialogs({ dialog, onClose }: { dialog: TUserDialog; onClose: () => void }) {
   const { t } = useTranslation();
   if (!dialog) return null;
@@ -19,6 +23,8 @@ export function UserDialogs({ dialog, onClose }: { dialog: TUserDialog; onClose:
       {dialog.type === "share" && <ConnectionDialog user={dialog.user} onClose={onClose} />}{" "}
       {dialog.type === "delete" && <DeleteDialog user={dialog.user} onClose={onClose} />}{" "}
       {dialog.type === "traffic" && <TrafficDialog user={dialog.user} onClose={onClose} />}
+      {dialog.type === "access" && <UserAccessDialog user={dialog.user} onClose={onClose} />}
+      {dialog.type === "devices" && <DevicesDialog user={dialog.user} onClose={onClose} />}
     </Suspense>
   );
 }

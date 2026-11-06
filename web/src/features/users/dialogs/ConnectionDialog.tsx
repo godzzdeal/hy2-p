@@ -32,8 +32,9 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
   });
   const connection =
     links.data?.connections?.find((item) => item.instanceId === instanceId) ?? links.data?.connections?.[0];
+  const activeFormat = links.data && !links.data.uri ? "subscription" : format;
   const value =
-    (format === "subscription" ? links.data?.subscription : (connection?.uri ?? links.data?.uri)) ?? "";
+    (activeFormat === "subscription" ? links.data?.subscription : (connection?.uri ?? links.data?.uri)) ?? "";
   async function onCopy() {
     if (!links.data) return;
     try {
@@ -58,17 +59,33 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
       {links.data && (
         <>
           <div className="share-tabs">
-            <button className={cn({ active: format === "uri" })} onClick={() => setFormat("uri")}>
+            <button
+              disabled={!links.data.uri}
+              className={cn({ active: activeFormat === "uri" })}
+              onClick={() => setFormat("uri")}
+            >
               {t("Подключение / Happ")}
             </button>
             <button
-              className={cn({ active: format === "subscription" })}
+              className={cn({ active: activeFormat === "subscription" })}
               onClick={() => setFormat("subscription")}
             >
               {t("Подписка")}
             </button>
           </div>
-          {format === "uri" && (links.data.connections?.length ?? 0) > 1 && (
+          {(links.data.deviceLimit ?? 0) > 0 && (
+            <p className="info-note">
+              {t(
+                "Включён лимит устройств. Импортируйте подписку в Happ, чтобы получить персональный ключ устройства.",
+              )}
+            </p>
+          )}
+          {!links.data.uri && !(links.data.deviceLimit ?? 0) && (
+            <p className="alert">
+              {t("Нет доступных подключений. Проверьте доступ пользователя к ядрам и публикацию портов.")}
+            </p>
+          )}
+          {activeFormat === "uri" && (links.data.connections?.length ?? 0) > 1 && (
             <label>
               {t("Ядро")}
               <Select
@@ -84,7 +101,7 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
               </Select>
             </label>
           )}
-          <ConnectionQr value={value} name={user.name} isSubscription={format === "subscription"} />
+          <ConnectionQr value={value} name={user.name} isSubscription={activeFormat === "subscription"} />
           <p className="share-help">
             {t("В Happ нажмите + и импортируйте ссылку из буфера или отсканируйте QR-код.")}
           </p>
@@ -94,7 +111,7 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
             <Copy width={24} height={24} aria-hidden />
             {t("Скопировать ссылку")}
           </button>
-          {format === "subscription" && (
+          {activeFormat === "subscription" && (
             <button className="text-btn rotate" disabled={rotate.isPending} onClick={() => rotate.mutate()}>
               <RefreshCw width={24} height={24} aria-hidden />
               {t("Заменить ссылку подписки")}

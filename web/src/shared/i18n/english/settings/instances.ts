@@ -1,4 +1,33 @@
 export const INSTANCES: Record<string, string> = {
+  "Доступные ядра": "Available engines",
+  "Доступные ядра ": "Available engines ",
+  "Пользователь: {{name}}": "User: {{name}}",
+  "Режим доступа к ядрам": "Engine access mode",
+  "Все ядра, включая новые": "All engines, including new ones",
+  "Только выбранные ядра": "Selected engines only",
+  "Ядра в подписке пользователя": "Engines in the user's subscription",
+  "Собственная аутентификация": "Custom authentication",
+  "Конфигурация недоступна": "Configuration unavailable",
+  "Порт опубликован": "Port published",
+  "Порт пока не опубликован": "Port not published yet",
+  "Ни одно ядро не выбрано. Подключения пользователя будут запрещены.":
+    "No engines selected. The user will not be able to connect.",
+  "В подписке будут только разрешённые опубликованные ядра. При снятии доступа активное подключение к этому ядру отключается.":
+    "Subscriptions include only allowed, published engines. Removing access disconnects active sessions on that engine.",
+  "Ядра с собственной аутентификацией управляют доступом через свою конфигурацию.":
+    "Engines with custom authentication manage access through their own configuration.",
+  "Доступ к ядрам сохранён": "Engine access saved",
+  "Сохранить доступ": "Save access",
+  "Нет доступных подключений. Проверьте доступ пользователя к ядрам и публикацию портов.":
+    "No connections available. Check the user's engine access and port publication.",
+  "Выберите режим доступа к ядрам": "Choose an engine access mode",
+  "Некорректный список доступных ядер": "Invalid list of available engines",
+  "Ядро больше недоступно. Обновите список": "Engine no longer available. Refresh the list",
+  "Ядро ожидает удаления": "Engine is pending removal",
+  "Не удалось проверить конфигурацию ядра": "Could not check the engine configuration",
+  "Доступ к этому ядру задаётся в его конфигурации": "Access to this engine is set in its configuration",
+  "Пользователи и лимиты трафика общие. Доступ к ядрам настраивается отдельно для каждого пользователя.":
+    "Users and traffic limits are shared. Engine access is configured separately for each user.",
   "UDP-порт этого ядра ещё не опубликован. Запустите ядро и нажмите «Применить UDP-порт».":
     "This engine's UDP port is not published yet. Start the engine and click “Apply UDP port”.",
   Ядра: "Engines",

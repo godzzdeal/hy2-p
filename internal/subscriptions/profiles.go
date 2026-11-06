@@ -34,6 +34,18 @@ func (handler *Handler) connections(user users.User) ([]Connection, error) {
 	if err != nil {
 		return nil, err
 	}
+	if handler.AllowCore != nil {
+		allowed := []Profile{}
+		for _, profile := range profiles {
+			if handler.AllowCore(user.ID, profile.ID) {
+				allowed = append(allowed, profile)
+			}
+		}
+		profiles = allowed
+		if len(profiles) == 0 {
+			return []Connection{}, nil
+		}
+	}
 	result := []Connection{}
 	for _, profile := range profiles {
 		labelled := user
