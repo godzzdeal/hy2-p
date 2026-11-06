@@ -5,7 +5,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 # shellcheck source=/dev/null
 source "$SCRIPT_DIR/common.sh"
 require_root
-for file in listener ports/verify ports/recover ports/apply backups/create backups/restore releases/source/fetch releases/source/image releases/update releases/rollback; do
+for file in listener ports/mappings ports/transaction/verify ports/transaction/recover ports/transaction/apply backups/create backups/restore releases/source/fetch releases/source/image releases/update releases/rollback; do
   # shellcheck source=/dev/null
   source "$SCRIPT_DIR/$file.sh"
 done
@@ -21,7 +21,7 @@ case $command in
       '  backup                 Согласованная резервная копия данных и ключей' \
       '  url                    Адрес панели или SSH-туннель'
     exit 0 ;;
-  status|logs|start|stop|restart|update|rollback|backup|url|apply-udp|recover-udp) ;;
+  status|logs|start|stop|restart|update|rollback|backup|url|apply-udp|remove-udp|recover-udp) ;;
   *) die "Неизвестная команда: $command" ;;
 esac
 [[ -f $ROOT/.env && -f $ROOT/current ]] || die "Установка не найдена."
@@ -37,7 +37,8 @@ case $command in
     recover_pending || die "Сначала нужно восстановить прерванную операцию."
     current=$(cat "$ROOT/current")
     case $command in
-      apply-udp) apply_udp "$current" "${2:-}" "${3:-}" "${4:-}" ;;
+      apply-udp) apply_udp "$current" "${2:-}" "${3:-}" "${4:-}" "${5:-default}" ;;
+      remove-udp) remove_udp "$current" "${2:-}" "${3:-}" "${4:-}" "${5:-}" ;;
       recover-udp)
         if [[ -f $ROOT/udp.pending ]]; then
           if recover_udp; then exit 10; else exit 11; fi

@@ -2,14 +2,18 @@ package acmehttp
 
 import (
 	"gopkg.in/yaml.v3"
+	"hy2-panel/internal/security"
 	"path/filepath"
 )
 
-const CorePort = 9090
+const CorePort = security.FirstChallengePort
 const TokenPrefix = "/.well-known/acme-challenge/"
 
 // Prepare keeps user YAML unchanged; only the generated runtime uses the local gateway.
 func Prepare(document map[string]any, data string, managed bool) {
+	PrepareAt(document, data, managed, CorePort)
+}
+func PrepareAt(document map[string]any, data string, managed bool, port int) {
 	acme, ok := document["acme"].(map[string]any)
 	if !ok {
 		return
@@ -26,7 +30,7 @@ func Prepare(document map[string]any, data string, managed bool) {
 			options = map[string]any{}
 			acme["http"] = options
 		}
-		options["altPort"] = CorePort
+		options["altPort"] = port
 	}
 }
 func Domains(source string) ([]string, error) {

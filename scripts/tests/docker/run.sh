@@ -41,6 +41,8 @@ curl -fsS "$URL/api/version" | jq -e --arg commit "$GITHUB_SHA" --arg version "$
 source "$(dirname -- "${BASH_SOURCE[0]}")/hysteria/core.sh"
 # shellcheck source=/dev/null
 source "$(dirname -- "${BASH_SOURCE[0]}")/hysteria/ports.sh"
+# shellcheck source=/dev/null
+source "$(dirname -- "${BASH_SOURCE[0]}")/hysteria/instances.sh"
 manager backup
 snapshot=$(sudo find "$ROOT/backups" -name data.tar.gz -print -quit)
 sudo tar -tzf "$snapshot" | grep -q './secrets/users.key'

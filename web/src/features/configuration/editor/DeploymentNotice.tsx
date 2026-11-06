@@ -27,10 +27,12 @@ export function DeploymentNotice() {
   return (
     <div className="config-note" role="status">
       <p>
-        {t("Сейчас Docker принимает UDP {{public}} и передаёт его ядру на порт {{target}}.", {
-          public: status.publishedUdpPort,
-          target: status.publishedUdpListenPort,
-        })}
+        {status.publishedUdpPort
+          ? t("Сейчас Docker принимает UDP {{public}} и передаёт его ядру на порт {{target}}.", {
+              public: status.publishedUdpPort,
+              target: status.publishedUdpListenPort,
+            })
+          : t("UDP-порт этого ядра ещё не опубликован. Запустите ядро и нажмите «Применить UDP-порт».")}
       </p>
       {status.udpWarning && <p className="mt-2">{t(status.udpWarning)}</p>}
       {status.udpRestartRequired && (

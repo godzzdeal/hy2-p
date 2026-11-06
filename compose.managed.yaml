@@ -6,6 +6,7 @@ services:
     environment:
       PANEL_UDP_PROBE_TOKEN: ${PANEL_UDP_PROBE_TOKEN:-}
       PANEL_UDP_PROBE_ID: ${PANEL_UDP_PROBE_ID:-}
+      PANEL_UDP_PROBE_PORT: ${PANEL_UDP_PROBE_PORT:-}
     volumes:
       - port-agent-socket:/run/hy2-port-agent:ro
   port-agent:

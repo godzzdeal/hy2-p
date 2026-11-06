@@ -1,3 +1,4 @@
+import { useInstanceId, instanceKey } from "@/features/instances/model";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { certificateApi } from "@/features/configuration/structured/model/certificate-api";
@@ -5,8 +6,12 @@ import { CertificateRow } from "@/features/configuration/structured/CertificateR
 import { QUERY_KEYS } from "@/shared/http";
 import { QueryState } from "@/shared/ui";
 export function CertificateStatus() {
+  const id = useInstanceId();
   const { t } = useTranslation();
-  const query = useQuery({ queryKey: QUERY_KEYS.hy2Certificates, queryFn: certificateApi.read });
+  const query = useQuery({
+    queryKey: instanceKey(QUERY_KEYS.hy2Certificates, id),
+    queryFn: () => certificateApi.read(id),
+  });
   return (
     <section className="certificate-status">
       <div className="card-header">

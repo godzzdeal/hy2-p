@@ -1,3 +1,4 @@
+import { useInstanceId } from "@/features/instances/model";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { type ChangeEvent } from "react";
@@ -6,12 +7,13 @@ import { certificateApi } from "@/features/configuration/structured/model/certif
 import { useUiStore } from "@/app/state";
 const MAX_PEM_FILE = 1 << 20;
 export function CertificateUpload({ onUploaded }: { onUploaded: (cert: string, key: string) => void }) {
+  const id = useInstanceId();
   const { t } = useTranslation();
   const [certificate, setCertificate] = useState("");
   const [privateKey, setPrivateKey] = useState("");
   const showError = useUiStore((state) => state.showError);
   const mutation = useMutation({
-    mutationFn: certificateApi.upload,
+    mutationFn: (body: Parameters<typeof certificateApi.upload>[0]) => certificateApi.upload(body, id),
     onSuccess: (result) => {
       onUploaded(result.certificatePath, result.keyPath);
       setPrivateKey("");

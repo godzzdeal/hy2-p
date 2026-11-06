@@ -1,5 +1,21 @@
 import { type IConfiguration } from "@/features/configuration/model";
 export const PANEL_METADATA: Record<string, unknown> = {
+  "/api/instances": [
+    {
+      id: "default",
+      name: "Основной",
+      slot: 0,
+      running: true,
+      updating: false,
+      version: "v2.13.0",
+      host: "vpn.example.org",
+      port: "8443",
+      publishedPort: "8443",
+      listenPort: "8443",
+      portChangeRequired: false,
+      authMode: "panel",
+    },
+  ],
   "/api/version": { version: "v0.2.1", revision: "test-build" },
   "/api/panel/update": {
     current: "v0.2.1",

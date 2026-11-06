@@ -6,8 +6,11 @@ import (
 	"fmt"
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/configuration/deployment"
+	"hy2-panel/internal/security"
+	"net"
 	"net/http"
 	"os/exec"
+	"strconv"
 	"time"
 )
 
@@ -63,7 +66,7 @@ func (handler *Handler) Activate(ctx context.Context, path string, run bool) err
 		if !handler.Running() {
 			return errors.New("новое ядро завершилось во время проверки")
 		}
-		request, err := http.NewRequestWithContext(ctx, "GET", "http://127.0.0.1:9999/online", nil)
+		request, err := http.NewRequestWithContext(ctx, "GET", handler.StatsURL()+"/online", nil)
 		if err != nil {
 			return err
 		}
@@ -106,7 +109,7 @@ func (handler *Handler) PortChangesOnly(settings configuration.Settings) bool {
 	return handler.core != nil && fingerprint != "" && fingerprint == handler.activeConfig
 }
 func (handler *Handler) Healthy(ctx context.Context) bool {
-	request, err := http.NewRequestWithContext(ctx, "GET", "http://127.0.0.1:9999/online", nil)
+	request, err := http.NewRequestWithContext(ctx, "GET", handler.StatsURL()+"/online", nil)
 	if err != nil {
 		return false
 	}
@@ -118,4 +121,19 @@ func (handler *Handler) Healthy(ctx context.Context) bool {
 	}
 	defer response.Body.Close()
 	return response.StatusCode == 200
+}
+
+func (handler *Handler) StatsAddress() string {
+	port := handler.StatsPort
+	if port == 0 {
+		port = security.FirstStatsPort
+	}
+	return net.JoinHostPort("127.0.0.1", strconv.Itoa(port))
+}
+func (handler *Handler) StatsURL() string { return "http://" + handler.StatsAddress() }
+func (handler *Handler) ChallengePort() int {
+	if handler.ACMEPort == 0 {
+		return security.FirstChallengePort
+	}
+	return handler.ACMEPort
 }

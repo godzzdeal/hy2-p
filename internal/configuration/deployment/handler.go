@@ -4,7 +4,6 @@ import (
 	"hy2-panel/internal/acmehttp"
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/portcontrol/protocol"
-	"hy2-panel/internal/security"
 	"hy2-panel/internal/transport"
 	"net/http"
 	"os"
@@ -12,6 +11,9 @@ import (
 
 // Read exposes deployment ports only; credentials and configuration contents stay private.
 func Read(config *configuration.Handler) http.HandlerFunc {
+	return ReadFor(config, "default", false, nil)
+}
+func ReadFor(config *configuration.Handler, instance string, removing bool, running func() bool, needsHTTP ...func() bool) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		settings, err := config.Get()
 		if err != nil {
@@ -19,9 +21,8 @@ func Read(config *configuration.Handler) http.HandlerFunc {
 			return
 		}
 		container := os.Getenv("PANEL_CONTAINER") == "true"
-		result, err := Inspect(settings, container,
-			security.Env("HYSTERIA_PUBLIC_PORT", DefaultPublishedPort),
-			security.Env("HYSTERIA_LISTEN_PORT", DefaultPublishedPort))
+		public, target := Published(instance)
+		result, err := Inspect(settings, container, public, target)
 		if err != nil {
 			http.Error(writer, "Invalid configuration", 500)
 			return
@@ -36,6 +37,14 @@ func Read(config *configuration.Handler) http.HandlerFunc {
 			result.AgentBusy = agent.Busy
 		}
 		result.HTTPChallenge = container && len(domains) > 0
+		if container && len(needsHTTP) > 0 {
+			result.HTTPChallenge = result.HTTPChallenge || needsHTTP[0]()
+		}
+		result.InstanceID = instance
+		result.Removing = removing
+		if running != nil {
+			result.Running = running()
+		}
 		transport.Respond(writer, result)
 	}
 }

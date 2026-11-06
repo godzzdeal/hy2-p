@@ -1,3 +1,4 @@
+import { useInstanceId, instanceKey } from "@/features/instances/model";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useUiStore } from "@/app/state";
 import { QUERY_KEYS } from "@/shared/http";
@@ -13,27 +14,29 @@ export function useReleaseVersions() {
   });
 }
 export function useUpdateStatus() {
+  const id = useInstanceId();
   return useQuery({
-    queryKey: QUERY_KEYS.coreUpdate,
-    queryFn: updateApi.status,
+    queryKey: instanceKey(QUERY_KEYS.coreUpdate, id),
+    queryFn: () => updateApi.status(id),
     refetchInterval: UPDATE_TIMING.pollMs,
     retry: false,
   });
 }
 export function useUpdateCommands() {
+  const id = useInstanceId();
   const client = useQueryClient();
   const showError = useUiStore((state) => state.showError);
   const onSuccess = (data: IUpdateStatus) => {
-    client.setQueryData(QUERY_KEYS.coreUpdate, data);
-    void client.invalidateQueries({ queryKey: QUERY_KEYS.core });
+    client.setQueryData(instanceKey(QUERY_KEYS.coreUpdate, id), data);
+    void client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.core, id) });
   };
   const install = useMutation({
-    mutationFn: updateApi.install,
+    mutationFn: (version: string) => updateApi.install(version, id),
     onSuccess,
     onError: showError,
   });
   const rollback = useMutation({
-    mutationFn: updateApi.rollback,
+    mutationFn: () => updateApi.rollback(id),
     onSuccess,
     onError: showError,
   });

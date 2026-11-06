@@ -1,3 +1,4 @@
+import { instanceRoute } from "@/features/instances/model";
 import { request, API_ROUTES } from "@/shared/http";
 export interface IDeployment {
   agentAvailable: boolean;
@@ -11,4 +12,6 @@ export interface IDeployment {
   udpRestartRequired: boolean;
   udpWarning: string;
 }
-export const deploymentApi = { read: () => request<IDeployment>(API_ROUTES.deployment) };
+export const deploymentApi = {
+  read: (id?: string) => request<IDeployment>(instanceRoute(API_ROUTES.deployment, id)),
+};

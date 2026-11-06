@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"hy2-panel/internal/records"
+	"hy2-panel/internal/traffic/sources"
 	"hy2-panel/internal/transport"
 	"net/http"
 	"os"
@@ -15,10 +16,7 @@ import (
 const PollInterval = 5 * time.Second
 const RequestTimeout = 2 * time.Second
 
-type Counter struct {
-	TX uint64 `json:"tx"`
-	RX uint64 `json:"rx"`
-}
+type Counter = sources.Counter
 type Usage struct {
 	Upload   uint64 `json:"upload"`
 	Download uint64 `json:"download"`
@@ -44,10 +42,12 @@ type Service struct {
 	generation, directory, secret, address string
 	runtime                                Runtime
 	client                                 *http.Client
+	multiple                               *sources.Collector
 }
 
 func New(data, secret string, runtime Runtime) (*Service, error) {
 	service := &Service{directory: filepath.Join(data, "traffic"), secret: secret, address: "http://127.0.0.1:9999", runtime: runtime, client: &http.Client{Timeout: RequestTimeout}, baseline: map[string]Counter{}}
+	service.multiple = sources.New(service.client)
 	err := records.Read(service.directory, "usage", &service.state)
 	if err != nil && !os.IsNotExist(err) {
 		return nil, err

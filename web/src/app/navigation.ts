@@ -1,9 +1,10 @@
-import { Settings2, FileCode2, LayoutDashboard, Terminal, Users, Rss } from "@/shared/icons";
+import { Settings2, FileCode2, LayoutDashboard, Terminal, Users, Rss, Server } from "@/shared/icons";
 export const PageEnum = {
   Overview: "overview",
   Users: "users",
   Configuration: "config",
   Core: "core",
+  Instances: "instances",
   Subscriptions: "subscriptions",
   Admin: "admin",
 } as const;
@@ -29,6 +30,13 @@ export const NAVIGATION = [
     title: "Подписки",
     description: "Название, эмодзи и объявления для пользователей Happ.",
     icon: Rss,
+  },
+  {
+    id: PageEnum.Instances,
+    label: "Ядра",
+    title: "Ядра Hysteria2",
+    description: "Отдельные конфигурации и управление ядрами.",
+    icon: Server,
   },
   {
     id: PageEnum.Configuration,

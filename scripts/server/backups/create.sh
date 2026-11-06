@@ -11,6 +11,7 @@ create_backup() {
   tar -tzf "$target/data.tar.gz" >/dev/null || return 1
   tar -C "$ROOT" -czf "$target/certs.tar.gz" certs || return 1
   cp -- "$ROOT/.env" "$target/environment" || return 1
+  extra_udp >"$target/extra-udp.json" || return 1
   jq -n --arg commit "$sha" --arg created "$(date -u +%FT%TZ)" \
     '{format:1,commit:$commit,created:$created}' >"$target/manifest.json" || return 1
   chmod 600 "$target/"* || return 1

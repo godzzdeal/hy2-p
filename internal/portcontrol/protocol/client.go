@@ -12,6 +12,18 @@ import (
 )
 
 func Call(ctx context.Context, method string, request *Request) (Status, error) {
+	return send(ctx, method, "/udp", request)
+}
+
+var ErrNotFound = errors.New("проверка не найдена")
+
+func Ticket(ctx context.Context, id string) (Status, error) {
+	if !TicketPattern.MatchString(id) {
+		return Status{}, ErrNotFound
+	}
+	return send(ctx, "GET", "/udp/"+id, nil)
+}
+func send(ctx context.Context, method, path string, request *Request) (Status, error) {
 	var result Status
 	var body io.Reader
 	if request != nil {
@@ -23,7 +35,7 @@ func Call(ctx context.Context, method string, request *Request) (Status, error) 
 	}}
 	defer transport.CloseIdleConnections()
 	client := &http.Client{Transport: transport, Timeout: 3 * time.Second}
-	req, err := http.NewRequestWithContext(ctx, method, "http://port-agent/udp", body)
+	req, err := http.NewRequestWithContext(ctx, method, "http://port-agent"+path, body)
 	if err != nil {
 		return result, err
 	}
@@ -33,6 +45,9 @@ func Call(ctx context.Context, method string, request *Request) (Status, error) 
 		return result, err
 	}
 	defer response.Body.Close()
+	if response.StatusCode == http.StatusNotFound {
+		return result, ErrNotFound
+	}
 	if err = json.NewDecoder(io.LimitReader(response.Body, 8192)).Decode(&result); err != nil {
 		return result, err
 	}

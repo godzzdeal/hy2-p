@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"hy2-panel/internal/records"
+	"hy2-panel/internal/traffic/sources"
 	"io"
 	"net/http"
 	"time"
@@ -35,6 +36,10 @@ func delta(current, previous uint64) uint64 {
 	return current - previous
 }
 func (service *Service) Collect(ctx context.Context) {
+	if provider, ok := service.runtime.(interface{ TrafficSources() []sources.Source }); ok {
+		service.collectSources(ctx, provider.TrafficSources())
+		return
+	}
 	if !service.runtime.Running() {
 		service.mu.Lock()
 		for id, usage := range service.state.Users {
@@ -90,11 +95,47 @@ func (service *Service) Collect(ctx context.Context) {
 		service.state.Error = "Не удалось сохранить трафик: " + err.Error()
 	}
 	service.mu.Unlock()
+	service.enforceQuota()
+}
+func (service *Service) enforceQuota() {
 	for id, usage := range service.Snapshot().Users {
 		if usage.Online > 0 && usage.Limit > 0 && usage.Upload+usage.Download >= usage.Limit {
 			service.runtime.Kick(id)
 		}
 	}
+}
+func (service *Service) collectSources(ctx context.Context, inputs []sources.Source) {
+	result := service.multiple.Read(ctx, inputs)
+	service.mu.Lock()
+	for id, usage := range service.state.Users {
+		usage.Online = 0
+		service.state.Users[id] = usage
+	}
+	for id, counter := range result.Counters {
+		usage := service.state.Users[id]
+		usage.Upload += counter.TX
+		usage.Download += counter.RX
+		service.state.Users[id] = usage
+	}
+	for id, count := range result.Online {
+		usage := service.state.Users[id]
+		usage.Online = count
+		if count > 0 {
+			usage.LastSeen = time.Now().UTC().Format(time.RFC3339)
+		}
+		service.state.Users[id] = usage
+	}
+	service.state.Available = result.Err == nil
+	service.state.Error = ""
+	if result.Err != nil {
+		service.state.Error = result.Err.Error()
+	}
+	service.state.Updated = time.Now().UTC().Format(time.RFC3339)
+	if err := records.Write(service.directory, "usage", service.state); err != nil {
+		service.state.Error = err.Error()
+	}
+	service.mu.Unlock()
+	service.enforceQuota()
 }
 func (service *Service) addCounter(id string, counter Counter) {
 	usage := service.state.Users[id]

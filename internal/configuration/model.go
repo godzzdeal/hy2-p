@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"gopkg.in/yaml.v3"
+	"hy2-panel/internal/configuration/profiles"
 	"io"
 	"net"
 	"net/url"
@@ -11,13 +12,7 @@ import (
 	"strings"
 )
 
-type Settings struct {
-	AuthMode string `json:"authMode,omitempty"`
-	Host     string `json:"host"`
-	Port     string `json:"port"`
-	SNI      string `json:"sni"`
-	Config   string `json:"config"`
-}
+type Settings = profiles.Settings
 
 func Validate(settings Settings) error {
 	if strings.ContainsAny(settings.Host, " /?#@\r\n") || strings.ContainsAny(settings.SNI, " /?#@\r\n") {

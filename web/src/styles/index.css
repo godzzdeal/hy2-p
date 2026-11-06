@@ -23,6 +23,7 @@
 @import "./engine/updates.css" layer(components);
 @import "./engine/logs.css" layer(components);
 @import "./features/settings.css" layer(components);
+@import "./features/instances.css" layer(components);
 @import "./layout/navigation/scroll.css" layer(components);
 @import "tailwindcss/utilities.css" layer(utilities);
 @source "../";

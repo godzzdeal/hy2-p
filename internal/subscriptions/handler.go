@@ -11,6 +11,7 @@ import (
 	"hy2-panel/internal/users"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -20,6 +21,7 @@ type Handler struct {
 	Config        *configuration.Handler
 	Announcements *announcement.Store
 	PublicURL     string
+	Sources       func() ([]Profile, error)
 }
 
 func (handler *Handler) Links(writer http.ResponseWriter, request *http.Request) {
@@ -28,17 +30,12 @@ func (handler *Handler) Links(writer http.ResponseWriter, request *http.Request)
 		transport.Fail(writer, errors.New("Пользователь не найден"), 404)
 		return
 	}
-	settings, err := handler.Config.Get()
-	if err != nil {
-		transport.Fail(writer, err, 500)
-		return
-	}
-	uri, err := ConnectionURI(settings, user)
+	connections, err := handler.connections(user)
 	if err != nil {
 		transport.Fail(writer, err, 422)
 		return
 	}
-	transport.Respond(writer, map[string]string{"uri": uri, "subscription": handler.PublicURL + "/sub/" + user.Token})
+	transport.Respond(writer, map[string]any{"uri": connections[0].URI, "connections": connections, "subscription": handler.PublicURL + "/sub/" + user.Token})
 }
 
 func (handler *Handler) Serve(writer http.ResponseWriter, request *http.Request) {
@@ -52,16 +49,16 @@ func (handler *Handler) Serve(writer http.ResponseWriter, request *http.Request)
 		http.Error(writer, "Unavailable", 503)
 		return
 	}
-	settings, err := handler.Config.Get()
-	if err != nil {
-		http.Error(writer, "Unavailable", 503)
-		return
-	}
-	uri, err := ConnectionURI(settings, user)
+	connections, err := handler.connections(user)
 	if err != nil {
 		http.Error(writer, "Server configuration does not support URI export", 503)
 		return
 	}
+	lines := make([]string, 0, len(connections))
+	for _, connection := range connections {
+		lines = append(lines, connection.URI)
+	}
+	content := strings.Join(lines, "\n") + "\n"
 	writer.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	writer.Header().Set("profile-update-interval", "6")
 	if handler.Announcements != nil {
@@ -72,8 +69,8 @@ func (handler *Handler) Serve(writer http.ResponseWriter, request *http.Request)
 		writer.Header().Set("subscription-userinfo", fmt.Sprintf("expire=%d", timestamp.Unix()))
 	}
 	if request.URL.Query().Get("format") == "uri" {
-		io.WriteString(writer, uri+"\n")
+		io.WriteString(writer, content)
 	} else {
-		io.WriteString(writer, base64.StdEncoding.EncodeToString([]byte(uri+"\n")))
+		io.WriteString(writer, base64.StdEncoding.EncodeToString([]byte(content)))
 	}
 }

@@ -2,11 +2,10 @@ package gateway
 
 import (
 	"hy2-panel/internal/acmehttp"
+	"hy2-panel/internal/acmehttp/gateway/backends"
 	"hy2-panel/internal/configuration"
 	"net"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
@@ -33,43 +32,21 @@ func (handler Handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 	}
 	buffered := newBuffer()
 	handler.Web.ServeHTTP(buffered, request)
-	if (buffered.status == http.StatusNotFound || buffered.status == http.StatusForbidden) && handler.Allowed != nil && handler.Core != nil && handler.Allowed(request.Host) {
+	if (buffered.status == http.StatusNotFound || buffered.status == http.StatusForbidden) && handler.Core != nil && (handler.Allowed == nil || handler.Allowed(request.Host)) {
 		handler.Core.ServeHTTP(writer, request)
 		return
 	}
 	buffered.flush(writer)
 }
 func Server(host string, port int, web *http.Server, config *configuration.Handler) *http.Server {
-	backend := &url.URL{Scheme: "http", Host: net.JoinHostPort("127.0.0.1", strconv.Itoa(acmehttp.CorePort))}
-	proxy := httputil.NewSingleHostReverseProxy(backend)
-	proxy.Transport = &http.Transport{DialContext: (&net.Dialer{Timeout: ProxyTimeout}).DialContext, ResponseHeaderTimeout: ProxyTimeout, MaxConnsPerHost: MaxProxyConnections, MaxResponseHeaderBytes: MaxTokenResponse}
-	proxy.ErrorHandler = func(writer http.ResponseWriter, request *http.Request, err error) {
-		http.Error(writer, "ACME challenge unavailable", http.StatusBadGateway)
-	}
+	return ServerFor(host, port, web, func() []backends.Source { return []backends.Source{{Config: config, Port: acmehttp.CorePort}} })
+}
+func ServerFor(host string, port int, web *http.Server, sources func() []backends.Source) *http.Server {
 	webHandler := http.NotFoundHandler()
 	if web != nil {
 		webHandler = web.Handler
 	}
-	allowed := func(host string) bool {
-		if name, _, err := net.SplitHostPort(host); err == nil {
-			host = name
-		}
-		settings, err := config.Get()
-		if err != nil {
-			return false
-		}
-		domains, err := acmehttp.Domains(settings.Config)
-		if err != nil {
-			return false
-		}
-		for _, domain := range domains {
-			if strings.EqualFold(strings.TrimSuffix(domain, "."), strings.TrimSuffix(host, ".")) {
-				return true
-			}
-		}
-		return false
-	}
-	handler := Handler{Web: webHandler, Core: proxy, Allowed: allowed}
+	handler := Handler{Web: webHandler, Core: backends.Handler{Sources: sources}}
 	if web != nil {
 		web.Handler = handler
 		web.ReadTimeout = RequestTimeout

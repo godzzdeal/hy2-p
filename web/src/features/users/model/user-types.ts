@@ -14,6 +14,7 @@ export interface IUserUpdate extends IUserInput {
   enabled: boolean;
 }
 export interface IConnectionLinks {
+  connections?: { instanceId: string; name: string; uri: string }[];
   uri: string;
   subscription: string;
 }

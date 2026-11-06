@@ -1,0 +1,34 @@
+import { test, expect } from "@playwright/test";
+import { mockInstances } from "./fixture";
+test("create, configure, rename and remove an independent core", async ({ page }, info) => {
+  const fixture = await mockInstances(page);
+  await page.getByRole("button", { name: "Ядра", exact: true }).click();
+  await page.getByRole("button", { name: "Добавить ядро", exact: true }).click();
+  await page.getByLabel("Название ядра", { exact: true }).fill("Второй");
+  await page.getByLabel("UDP-порт", { exact: true }).fill("8444");
+  await page.getByRole("button", { name: "Создать ядро", exact: true }).click();
+  await expect(page.getByLabel("Публичный UDP-порт", { exact: true })).toHaveValue("8444");
+  await page.getByLabel("Публичный адрес", { exact: true }).fill("new.example.org");
+  await page.getByRole("button", { name: "Сохранить конфигурацию", exact: true }).click();
+  await expect.poll(() => fixture.extra().host).toBe("new.example.org");
+  expect(fixture.panel.saved().host).toBe("vpn.example.org");
+  await page.getByRole("button", { name: "Ядра", exact: true }).click();
+  const card = page.getByRole("region", { name: "Второй", exact: true });
+  await expect(card).toBeVisible();
+  await card.getByRole("button", { name: "Запустить", exact: true }).click();
+  await expect(card.getByRole("button", { name: "Остановить", exact: true })).toBeVisible();
+  await expect(card.getByRole("button", { name: "Удалить", exact: true })).toBeDisabled();
+  await card.getByRole("button", { name: "Остановить", exact: true }).click();
+  await card.getByRole("button", { name: "Переименовать", exact: true }).click();
+  await page.getByLabel("Название ядра", { exact: true }).fill("Луна");
+  await page.getByRole("button", { name: "Сохранить", exact: true }).click();
+  const renamed = page.getByRole("region", { name: "Луна", exact: true });
+  await expect(renamed).toBeVisible();
+  if (info.project.name === "mobile")
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: info.outputPath("instances.png"), fullPage: true });
+  page.once("dialog", (dialog) => dialog.accept());
+  await renamed.getByRole("button", { name: "Удалить", exact: true }).click();
+  await expect(renamed).toHaveCount(0);
+  await expect(page.getByRole("combobox", { name: "Выбранное ядро", exact: true })).toHaveText("Основной");
+});

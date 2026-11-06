@@ -37,6 +37,9 @@ type Handler struct {
 	Binary       string
 	Updates      *update.Service
 	Watchdog     *watchdog.Monitor
+	InstanceID   string
+	StatsPort    int
+	ACMEPort     int
 }
 
 func New(db *sql.DB, config *configuration.Handler, data, secret string) (*Handler, error) {
@@ -71,14 +74,14 @@ func (handler *Handler) start() error {
 	}
 	var document map[string]any
 	yaml.Unmarshal([]byte(settings.Config), &document)
-	if os.Getenv("PANEL_CONTAINER") == "true" {
-		deployment.RuntimeListen(document, os.Getenv("HYSTERIA_LISTEN_PORT"))
+	if _, port := deployment.Published(handler.InstanceID); port != "" {
+		deployment.RuntimeListen(document, port)
 	}
-	acmehttp.Prepare(document, handler.Data, os.Getenv("PANEL_CONTAINER") == "true")
+	acmehttp.PrepareAt(document, handler.Data, os.Getenv("PANEL_CONTAINER") == "true", handler.ChallengePort())
 	if settings.AuthMode != "native" {
 		document["auth"] = map[string]any{"type": "http", "http": map[string]any{"url": "http://127.0.0.1:8081/auth"}}
 	}
-	document["trafficStats"] = map[string]any{"listen": "127.0.0.1:9999", "secret": handler.Secret}
+	document["trafficStats"] = map[string]any{"listen": handler.StatsAddress(), "secret": handler.Secret}
 	payload, err := ordering.Marshal(document)
 	if err != nil {
 		return err

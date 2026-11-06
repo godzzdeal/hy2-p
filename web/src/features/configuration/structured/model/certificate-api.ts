@@ -1,3 +1,4 @@
+import { instanceRoute } from "@/features/instances/model";
 import { request, API_ROUTES } from "@/shared/http";
 export interface ICertificateInfo {
   path: string;
@@ -16,7 +17,8 @@ export interface ICertificateUpload {
   notAfter: string;
 }
 export const certificateApi = {
-  read: () => request<ICertificateStatus>(API_ROUTES.hy2Certificates),
-  upload: (body: { certificate: string; privateKey: string }) =>
-    request<ICertificateUpload>(API_ROUTES.hy2Certificates, { method: "POST", body }),
+  read: (id?: string) =>
+    request<ICertificateStatus>(instanceRoute(instanceRoute(API_ROUTES.hy2Certificates, id), id)),
+  upload: (body: { certificate: string; privateKey: string }, id?: string) =>
+    request<ICertificateUpload>(instanceRoute(API_ROUTES.hy2Certificates, id), { method: "POST", body }),
 };

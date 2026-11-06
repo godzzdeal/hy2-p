@@ -23,4 +23,7 @@ restore_backup() {
   cp -- "$snapshot/environment" "$ROOT/.env.restoring" || return 1
   chmod 600 "$ROOT/.env.restoring" || return 1
   mv -f -- "$ROOT/.env.restoring" "$ROOT/.env"
+  if [[ -f $snapshot/extra-udp.json ]]; then cp -- "$snapshot/extra-udp.json" "$ROOT/extra-udp.json" || return 1
+  else printf '{}\n' >"$ROOT/extra-udp.json"; fi
+  extra_udp_override
 }

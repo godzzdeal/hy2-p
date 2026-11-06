@@ -17,11 +17,17 @@ export function ApplyPortProgress() {
         <div>
           <strong>
             {t(
-              isBusy
-                ? "Применяем и проверяем UDP-порт"
-                : isSuccess
-                  ? "UDP-порт применён"
-                  : "UDP-порт не применён",
+              result?.remove
+                ? isBusy
+                  ? "Удаляем UDP-порт ядра"
+                  : isSuccess
+                    ? "UDP-порт ядра удалён"
+                    : "Не удалось удалить UDP-порт ядра"
+                : isBusy
+                  ? "Применяем и проверяем UDP-порт"
+                  : isSuccess
+                    ? "UDP-порт применён"
+                    : "UDP-порт не применён",
             )}
           </strong>
           <p role="status">
@@ -35,7 +41,7 @@ export function ApplyPortProgress() {
       </div>
       {!isBusy && (
         <div className="mt-3">
-          {isSuccess && (
+          {isSuccess && !result?.remove && (
             <p>
               {t(
                 "Проверены проброс Docker, локальный UDP-ответ и работа ядра. Доступ из мобильной сети и firewall хостинга проверяются отдельно.",

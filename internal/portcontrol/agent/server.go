@@ -41,6 +41,7 @@ func (agent *Agent) Handler() http.Handler {
 		transport.Respond(w, agent.status)
 	})
 	mux.HandleFunc("POST /udp", agent.start)
+	mux.HandleFunc("GET /udp/{ticket}", agent.history)
 	return mux
 }
 func (agent *Agent) start(w http.ResponseWriter, r *http.Request) {
@@ -67,6 +68,7 @@ func (agent *Agent) start(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	agent.status = protocol.Status{ID: randomToken(), Phase: "applying", Busy: true,
+		InstanceID: request.InstanceID, Remove: request.Remove,
 		PublicPort: request.PublicPort, ListenPort: request.ListenPort, Started: time.Now().UTC().Format(time.RFC3339),
 		Message: "Применяем UDP-порты и проверяем соединение"}
 	if err := agent.persist(); err != nil {

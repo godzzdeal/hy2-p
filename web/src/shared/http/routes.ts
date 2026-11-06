@@ -1,4 +1,6 @@
 export const API_ROUTES = {
+  instances: "/instances",
+  instance: (id: string) => "/instances/" + encodeURIComponent(id),
   panelVersion: "/version",
   panelRelease: "/panel/update",
   session: "/session",
@@ -27,6 +29,7 @@ export const API_ROUTES = {
   control: (action: string) => "/core/" + action,
 } as const;
 export const QUERY_KEYS = {
+  instances: ["instances"],
   panelVersion: ["panel-version"],
   panelRelease: ["panel-release"],
   session: ["session"],

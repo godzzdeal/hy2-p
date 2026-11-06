@@ -14,7 +14,7 @@ setup_case() {
   printf '%s\n' "$OLD" >"$ROOT/current"
   printf '%s\n' "$OLD" >"$ROOT/active"
   FAIL_NEW=false; FAIL_OLD=false; BUILD_FAIL=false; BACKUP_FAIL=false; CHANGE_DATA=false
-  for file in listener backups/create backups/restore releases/source/fetch releases/update releases/rollback; do
+  for file in listener ports/mappings backups/create backups/restore releases/source/fetch releases/update releases/rollback; do
     # shellcheck source=/dev/null
     source "$TEST_SOURCE/server/$file.sh"
   done

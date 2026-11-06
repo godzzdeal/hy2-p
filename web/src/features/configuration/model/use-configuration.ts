@@ -1,37 +1,42 @@
+import { useInstanceId, instanceKey } from "@/features/instances/model";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/shared/http";
 import { useUiStore } from "@/app/state";
 import { configurationApi } from "./configuration-api";
 import { type IConfiguration } from "./configuration-types";
 export function useConfiguration() {
+  const id = useInstanceId();
   return useQuery({
-    queryKey: QUERY_KEYS.settings,
-    queryFn: configurationApi.read,
+    queryKey: instanceKey(QUERY_KEYS.settings, id),
+    queryFn: () => configurationApi.read(id),
   });
 }
 export function useSaveConfiguration() {
+  const id = useInstanceId();
   const client = useQueryClient();
   const { showError, notify } = useUiStore();
   return useMutation({
-    mutationFn: configurationApi.save,
+    mutationFn: (body: IConfiguration) => configurationApi.save(body, id),
     onMutate: async (next) => {
-      await client.cancelQueries({ queryKey: QUERY_KEYS.settings });
-      const previous = client.getQueryData<IConfiguration>(QUERY_KEYS.settings);
-      client.setQueryData(QUERY_KEYS.settings, next);
+      await client.cancelQueries({ queryKey: instanceKey(QUERY_KEYS.settings, id) });
+      const previous = client.getQueryData<IConfiguration>(instanceKey(QUERY_KEYS.settings, id));
+      client.setQueryData(instanceKey(QUERY_KEYS.settings, id), next);
       return { previous };
     },
     onError: (error, _variables, context) => {
-      if (context?.previous) client.setQueryData(QUERY_KEYS.settings, context.previous);
+      if (context?.previous) client.setQueryData(instanceKey(QUERY_KEYS.settings, id), context.previous);
       showError(error);
     },
     onSuccess: (saved) => {
-      client.setQueryData(QUERY_KEYS.settings, saved);
+      client.setQueryData(instanceKey(QUERY_KEYS.settings, id), saved);
       notify("Конфигурация сохранена.");
     },
     onSettled: () =>
       Promise.all([
-        client.invalidateQueries({ queryKey: QUERY_KEYS.history }),
-        client.invalidateQueries({ queryKey: QUERY_KEYS.deployment }),
+        client.invalidateQueries({ queryKey: QUERY_KEYS.instances }),
+        client.invalidateQueries({ queryKey: ["connection"] }),
+        client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.history, id) }),
+        client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.deployment, id) }),
       ]),
   });
 }

@@ -3,6 +3,7 @@ package probe
 import (
 	"context"
 	"hy2-panel/internal/portcontrol/protocol"
+	"hy2-panel/internal/security"
 	"net"
 	"os"
 	"time"
@@ -18,13 +19,13 @@ func Preflight() error {
 	defer cancel()
 	state, err := protocol.Call(ctx, "GET", nil)
 	// A normal restart after a completed operation must never wait for the old probe.
-	if err != nil || !state.Busy || state.ID != id {
+	if err != nil || !state.Busy || state.ID != id || state.Remove {
 		return nil
 	}
 	if !protocol.TicketPattern.MatchString(token) {
 		return os.ErrInvalid
 	}
-	socket, err := net.ListenPacket("udp", net.JoinHostPort("", os.Getenv("HYSTERIA_LISTEN_PORT")))
+	socket, err := net.ListenPacket("udp", net.JoinHostPort("", security.Env(protocol.ProbePortEnv, os.Getenv("HYSTERIA_LISTEN_PORT"))))
 	if err != nil {
 		return err
 	}

@@ -1,17 +1,41 @@
 package deployment
 
 import (
+	"encoding/json"
 	"gopkg.in/yaml.v3"
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/security"
 	"net"
+	"os"
 	"strconv"
 )
 
 const DefaultPublishedPort = "8443"
 const DefaultListen = ":443"
 
+type PortPair struct {
+	PublicPort string `json:"publicPort"`
+	ListenPort string `json:"listenPort"`
+}
+
+func Published(instance string) (string, string) {
+	if os.Getenv("PANEL_CONTAINER") != "true" {
+		return "", ""
+	}
+	if instance == "" || instance == "default" {
+		return security.Env("HYSTERIA_PUBLIC_PORT", DefaultPublishedPort), security.Env("HYSTERIA_LISTEN_PORT", DefaultPublishedPort)
+	}
+	var ports map[string]PortPair
+	if json.Unmarshal([]byte(os.Getenv("HYSTERIA_EXTRA_PORTS")), &ports) != nil {
+		return "", ""
+	}
+	return ports[instance].PublicPort, ports[instance].ListenPort
+}
+
 type Snapshot struct {
+	InstanceID             string `json:"instanceId"`
+	Removing               bool   `json:"removing"`
+	Running                bool   `json:"running"`
 	AgentAvailable         bool   `json:"agentAvailable"`
 	AgentBusy              bool   `json:"agentBusy"`
 	Container              bool   `json:"container"`

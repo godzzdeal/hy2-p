@@ -9,9 +9,11 @@ import { userApi, isUserActive } from "@/features/users/model";
 import { Modal, QueryState } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 import { useUiStore } from "@/app/state";
+import { Select, SelectOption } from "@/shared/ui/select";
 export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () => void }) {
   const { t } = useTranslation();
   const [format, setFormat] = useState<"uri" | "subscription">("uri");
+  const [instanceId, setInstanceId] = useState("");
   const client = useQueryClient();
   const { notify, showError } = useUiStore();
   const queryKey = ["connection", user.id];
@@ -28,10 +30,14 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
     },
     onError: showError,
   });
+  const connection =
+    links.data?.connections?.find((item) => item.instanceId === instanceId) ?? links.data?.connections?.[0];
+  const value =
+    (format === "subscription" ? links.data?.subscription : (connection?.uri ?? links.data?.uri)) ?? "";
   async function onCopy() {
     if (!links.data) return;
     try {
-      await navigator.clipboard.writeText(links.data[format]);
+      await navigator.clipboard.writeText(value);
       notify(t("Скопировано"));
     } catch {
       showError(new Error(t("Скопируйте ссылку вручную из поля ниже.")));
@@ -62,21 +68,28 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
               {t("Подписка")}
             </button>
           </div>
-          <ConnectionQr
-            value={links.data[format]}
-            name={user.name}
-            isSubscription={format === "subscription"}
-          />
+          {format === "uri" && (links.data.connections?.length ?? 0) > 1 && (
+            <label>
+              {t("Ядро")}
+              <Select
+                aria-label={t("Ядро подключения")}
+                value={connection?.instanceId ?? ""}
+                onValueChange={setInstanceId}
+              >
+                {links.data.connections?.map((item) => (
+                  <SelectOption key={item.instanceId} value={item.instanceId}>
+                    {item.name}
+                  </SelectOption>
+                ))}
+              </Select>
+            </label>
+          )}
+          <ConnectionQr value={value} name={user.name} isSubscription={format === "subscription"} />
           <p className="share-help">
             {t("В Happ нажмите + и импортируйте ссылку из буфера или отсканируйте QR-код.")}
           </p>
           {!isUserActive(user) && <p className="alert">{t("Доступ отключён или истёк.")}</p>}
-          <textarea
-            className="share-url"
-            readOnly
-            aria-label={t("Ссылка подключения")}
-            value={links.data[format]}
-          />
+          <textarea className="share-url" readOnly aria-label={t("Ссылка подключения")} value={value} />
           <button className="primary full" onClick={() => void onCopy()}>
             <Copy width={24} height={24} aria-hidden />
             {t("Скопировать ссылку")}

@@ -6,12 +6,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"hy2-panel/internal/acmehttp/gateway"
 	"hy2-panel/internal/auth"
-	"hy2-panel/internal/certificates"
 	"hy2-panel/internal/configuration"
-	"hy2-panel/internal/configuration/deployment"
 	"hy2-panel/internal/core"
+	"hy2-panel/internal/core/supervision"
 	"hy2-panel/internal/cryptovault"
-	portweb "hy2-panel/internal/portcontrol/web"
+	"hy2-panel/internal/instances"
+	instanceapi "hy2-panel/internal/instances/api"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/subscriptions"
 	"hy2-panel/internal/subscriptions/announcement"
@@ -55,16 +55,19 @@ func Run() error {
 	if err != nil {
 		return err
 	}
-	defer core.Stop()
 	monitorContext, cancelMonitor := context.WithCancel(context.Background())
 	defer cancelMonitor()
-	go core.Watchdog.Run(monitorContext)
-	traffic, err := traffic.New(data, core.Secret, core)
+	registry, err := instances.Open(monitorContext, data, db, vault, config, core)
+	if err != nil {
+		return err
+	}
+	defer registry.Close()
+	traffic, err := traffic.New(data, core.Secret, registry)
 	if err != nil {
 		return err
 	}
 	go traffic.Run(monitorContext)
-	users := &users.Handler{DB: db, Kick: core.Kick, Allow: traffic.Allowed, Vault: vault}
+	users := &users.Handler{DB: db, Kick: registry.Kick, Allow: traffic.Allowed, Vault: vault}
 	auth, err := auth.Open(passwordHash, security.Env("PANEL_SECURE_COOKIE", "false") == "true" || web.Active().Mode != "http", data, security.Env("PANEL_ADMIN_USERNAME", "admin"))
 	if err != nil {
 		return err
@@ -73,21 +76,19 @@ func Run() error {
 	if err != nil {
 		return err
 	}
-	subscriptions := &subscriptions.Handler{Announcements: announcements, DB: db, Users: users, Config: config, PublicURL: strings.TrimRight(web.Active().URL(), "/")}
-	certificates := &certificates.Handler{Data: data, Config: config}
-	ports := &portweb.Handler{Config: config, Core: core}
-	public := httpServer(web.Active().Address(), routes(auth, users, config, core, subscriptions, traffic, web, certificates, ports))
+	subscriptions := &subscriptions.Handler{Announcements: announcements, DB: db, Users: users, Sources: instanceapi.Profiles(registry), PublicURL: strings.TrimRight(web.Active().URL(), "/")}
+	public := httpServer(web.Active().Address(), routes(auth, users, registry, subscriptions, traffic, web))
 	tlsConfig, challenge, err := web.TLS()
 	if err != nil {
 		return err
 	}
 	if os.Getenv("PANEL_CONTAINER") == "true" {
-		challenge = gateway.Server(web.Active().Host, web.Active().ChallengePort, challenge, config)
+		challenge = gateway.ServerFor(web.Active().Host, web.Active().ChallengePort, challenge, instanceapi.ACMESources(registry))
 	}
 	public.TLSConfig = tlsConfig
 	internalMux := http.NewServeMux()
 	internalMux.HandleFunc("GET /health", func(writer http.ResponseWriter, request *http.Request) { writer.WriteHeader(http.StatusNoContent) })
-	internalMux.HandleFunc("GET /deployment", deployment.Read(config))
+	internalMux.HandleFunc("GET /deployment", instanceapi.Handler{Registry: registry}.Deployment)
 	internalMux.HandleFunc("POST /auth", users.Authenticate)
 	internal := httpServer("127.0.0.1:8081", internalMux)
 	failures := make(chan error, 3)
@@ -109,7 +110,7 @@ func Run() error {
 		}()
 	}
 	log.Printf("Panel listening on %s", public.Addr)
-	go core.ExpiryLoop(monitorContext)
+	go supervision.ExpiryLoop(monitorContext, db, registry.Running, registry.Kick)
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 	defer signal.Stop(quit)

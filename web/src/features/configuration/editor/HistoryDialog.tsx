@@ -1,3 +1,4 @@
+import { useInstanceId, instanceKey } from "@/features/instances/model";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { type IConfiguration } from "@/features/configuration/model";
@@ -12,10 +13,11 @@ export function HistoryDialog({
   onClose: () => void;
   onRestore: (value: IConfiguration) => void;
 }) {
+  const id = useInstanceId();
   const { t } = useTranslation();
   const history = useQuery({
-    queryKey: QUERY_KEYS.history,
-    queryFn: configurationApi.history,
+    queryKey: instanceKey(QUERY_KEYS.history, id),
+    queryFn: () => configurationApi.history(id),
   });
   return (
     <Modal title={t("История конфигурации")} onClose={onClose}>

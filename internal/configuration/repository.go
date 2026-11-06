@@ -4,19 +4,27 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"hy2-panel/internal/configuration/profiles"
 	"hy2-panel/internal/cryptovault"
 	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/transport"
 	"net/http"
+	"sync"
 	"time"
 )
 
 type Handler struct {
-	DB    *sql.DB
-	Vault *cryptovault.Vault
+	DB         *sql.DB
+	Vault      *cryptovault.Vault
+	Profile    *profiles.Store
+	BeforeSave func(Settings) error
+	SaveLock   sync.Locker
 }
 
 func (handler *Handler) Get() (Settings, error) {
+	if handler.Profile != nil {
+		return handler.Profile.Get()
+	}
 	var raw string
 	var settings Settings
 	if err := handler.DB.QueryRow("SELECT body FROM settings WHERE id=1").Scan(&raw); err != nil {
@@ -46,6 +54,24 @@ func (handler *Handler) Save(writer http.ResponseWriter, request *http.Request) 
 	}
 	if err := Validate(settings); err != nil {
 		transport.Fail(writer, err, 400)
+		return
+	}
+	if handler.SaveLock != nil {
+		handler.SaveLock.Lock()
+		defer handler.SaveLock.Unlock()
+	}
+	if handler.BeforeSave != nil {
+		if err := handler.BeforeSave(settings); err != nil {
+			transport.Fail(writer, err, 409)
+			return
+		}
+	}
+	if handler.Profile != nil {
+		if err := handler.Profile.Put(settings); err != nil {
+			transport.Fail(writer, err, 500)
+			return
+		}
+		transport.Respond(writer, settings)
 		return
 	}
 	tx, err := handler.DB.Begin()

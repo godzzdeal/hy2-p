@@ -120,7 +120,7 @@ func (handler *Handler) beginUpdate(writer http.ResponseWriter, version string, 
 func (handler *Handler) Kick(id string) {
 	client := http.Client{Timeout: 2 * time.Second}
 	body, _ := json.Marshal([]string{id})
-	req, _ := http.NewRequest("POST", "http://127.0.0.1:9999/kick", strings.NewReader(string(body)))
+	req, _ := http.NewRequest("POST", handler.StatsURL()+"/kick", strings.NewReader(string(body)))
 	req.Header.Set("Authorization", handler.Secret)
 	req.Header.Set("Content-Type", "application/json")
 	res, err := client.Do(req)

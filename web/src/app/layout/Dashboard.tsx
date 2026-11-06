@@ -6,6 +6,11 @@ import { useUiStore } from "@/app/state";
 import { Sidebar } from "./sidebar";
 import { SpaceScene } from "@/shared/SpaceScene";
 import { PanelFooter } from "./footer";
+import { InstanceSelector } from "@/features/instances/list/InstanceSelector";
+import { useInstanceId } from "@/features/instances/model";
+const InstancesPage = lazy(() =>
+  import("@/features/instances/list/InstancesPage").then((module) => ({ default: module.InstancesPage })),
+);
 const UsersPage = lazy(() =>
   import("@/features/users/list").then((module) => ({
     default: module.UsersPage,
@@ -39,10 +44,12 @@ const PAGES = {
   users: UsersPage,
   config: ConfigurationPage,
   core: CorePage,
+  instances: InstancesPage,
 };
 export function Dashboard() {
   const { t } = useTranslation();
   const page = useUiStore((state) => state.page);
+  const instanceId = useInstanceId();
   const Page = PAGES[page];
   const content = useRef<HTMLDivElement>(null);
   return (
@@ -55,8 +62,9 @@ export function Dashboard() {
           <span className="admin">{t("Администратор")}</span>
         </header>
         <div className="content" ref={content}>
+          <InstanceSelector />
           <Suspense fallback={<p role="status">{t("Загрузка раздела\u2026")}</p>}>
-            <Page />
+            <Page key={page === "config" || page === "core" || page === "overview" ? instanceId : page} />
           </Suspense>
           <PanelFooter />
         </div>
