@@ -1,9 +1,10 @@
-import { Settings2, FileCode2, LayoutDashboard, Terminal, Users } from "lucide-react";
+import { Settings2, FileCode2, LayoutDashboard, Terminal, Users, Rss } from "lucide-react";
 export const PageEnum = {
   Overview: "overview",
   Users: "users",
   Configuration: "config",
   Core: "core",
+  Subscriptions: "subscriptions",
   Admin: "admin",
 } as const;
 export type TPage = (typeof PageEnum)[keyof typeof PageEnum];
@@ -21,6 +22,13 @@ export const NAVIGATION = [
     title: "Пользователи",
     description: "Управляйте доступом и подключениями.",
     icon: Users,
+  },
+  {
+    id: PageEnum.Subscriptions,
+    label: "Подписки",
+    title: "Подписки",
+    description: "Название, флаг и сообщения для пользователей Happ.",
+    icon: Rss,
   },
   {
     id: PageEnum.Configuration,

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { mockPanel } from "./panel-fixture";
+import { mockPanel } from "./fixtures";
 test("login has a simple password label and accessible language choice", async ({ page }) => {
   await mockPanel(page, false);
   await expect(page.getByLabel("Пароль", { exact: true })).toBeVisible();
@@ -53,7 +53,7 @@ test("logs support Unicode, search, level filters, pause and clearing", async ({
   await expect(region).toContainText("Пока нет записей");
 });
 
-test("custom UDP ports show the Docker restart requirement after saving", async ({ page }) => {
+test("UDP application survives reload and expired login", async ({ page }) => {
   await mockPanel(page);
   await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
   await page.getByLabel("Публичный UDP-порт", { exact: true }).fill("61254");
@@ -62,11 +62,17 @@ test("custom UDP ports show the Docker restart requirement after saving", async 
   await expect(
     page.getByText("Сохранённые порты: снаружи 61254, в контейнере 61254.", { exact: true }),
   ).toBeVisible();
-  await expect(page.getByText("sudo hy2-panel restart", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Применить UDP-порт", exact: true }).click();
+  await expect(page.getByRole("complementary", { name: "Применение UDP-порта" })).toBeVisible();
+  await page.reload();
+  await expect(page.getByLabel("Пароль", { exact: true })).toBeVisible();
+  await expect(page.getByText("UDP-порт применён", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Понятно", exact: true }).click();
+  await expect(page.getByRole("complementary", { name: "Применение UDP-порта" })).toHaveCount(0);
 });
 test("subscription title and country flag are saved together", async ({ page }, info) => {
   const panel = await mockPanel(page);
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("button", { name: "Подписки", exact: true }).click();
   const title = page.getByLabel("Название подписки", { exact: true });
   await title.fill("Сервер");
   await page.getByRole("combobox", { name: "Флаг", exact: true }).click();

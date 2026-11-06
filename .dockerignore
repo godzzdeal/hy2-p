@@ -1,4 +1,6 @@
 .git
+/.ci-images/
+/hy2-panel-linux-*.tar.gz*
 data
 certs
 .env

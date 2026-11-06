@@ -3,6 +3,7 @@ package deployment
 import (
 	"hy2-panel/internal/acmehttp"
 	"hy2-panel/internal/configuration"
+	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/transport"
 	"net/http"
@@ -29,6 +30,10 @@ func Read(config *configuration.Handler) http.HandlerFunc {
 		if err != nil {
 			http.Error(writer, "Invalid configuration", 500)
 			return
+		}
+		if agent, agentError := protocol.Call(request.Context(), "GET", nil); agentError == nil {
+			result.AgentAvailable = true
+			result.AgentBusy = agent.Busy
 		}
 		result.HTTPChallenge = container && len(domains) > 0
 		transport.Respond(writer, result)

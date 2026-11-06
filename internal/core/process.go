@@ -7,6 +7,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"hy2-panel/internal/acmehttp"
 	"hy2-panel/internal/configuration"
+	"hy2-panel/internal/configuration/deployment"
 	"hy2-panel/internal/configuration/ordering"
 	"hy2-panel/internal/core/logs"
 	"hy2-panel/internal/core/supervision"
@@ -22,19 +23,20 @@ import (
 )
 
 type Handler struct {
-	DB         *sql.DB
-	Config     *configuration.Handler
-	Secret     string
-	Data       string
-	mu         sync.Mutex
-	controlMu  sync.Mutex
-	generation string
-	core       *exec.Cmd
-	done       chan struct{}
-	logs       *logs.Buffer
-	Binary     string
-	Updates    *update.Service
-	Watchdog   *watchdog.Monitor
+	DB           *sql.DB
+	Config       *configuration.Handler
+	Secret       string
+	Data         string
+	mu           sync.Mutex
+	controlMu    sync.Mutex
+	activeConfig string
+	generation   string
+	core         *exec.Cmd
+	done         chan struct{}
+	logs         *logs.Buffer
+	Binary       string
+	Updates      *update.Service
+	Watchdog     *watchdog.Monitor
 }
 
 func New(db *sql.DB, config *configuration.Handler, data, secret string) (*Handler, error) {
@@ -69,6 +71,9 @@ func (handler *Handler) start() error {
 	}
 	var document map[string]any
 	yaml.Unmarshal([]byte(settings.Config), &document)
+	if os.Getenv("PANEL_CONTAINER") == "true" {
+		deployment.RuntimeListen(document, os.Getenv("HYSTERIA_LISTEN_PORT"))
+	}
 	acmehttp.Prepare(document, handler.Data, os.Getenv("PANEL_CONTAINER") == "true")
 	if settings.AuthMode != "native" {
 		document["auth"] = map[string]any{"type": "http", "http": map[string]any{"url": "http://127.0.0.1:8081/auth"}}
@@ -88,6 +93,7 @@ func (handler *Handler) start() error {
 	if err = cmd.Start(); err != nil {
 		return err
 	}
+	handler.activeConfig = deployment.Fingerprint(settings)
 	handler.core = cmd
 	handler.generation = security.Token()
 	done := make(chan struct{})

@@ -2,6 +2,7 @@ import "@/shared/i18n/setup";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ApplyPortProgress } from "@/features/configuration/ports";
 import { App } from "@/app";
 import { ErrorBoundary } from "@/shared/ui";
 import { NETWORK } from "@/shared/http";
@@ -17,6 +18,7 @@ createRoot(root).render(
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <App />
+        <ApplyPortProgress />
       </QueryClientProvider>
     </ErrorBoundary>
   </StrictMode>,

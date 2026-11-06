@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { AnnouncementSettings } from "./announcement";
 import { AccountSettings } from "./account";
 import { WebSettings } from "./listener";
 export function AdminPage() {
@@ -15,7 +14,6 @@ export function AdminPage() {
       </div>
       <AccountSettings />
       <WebSettings />
-      <AnnouncementSettings />
     </>
   );
 }

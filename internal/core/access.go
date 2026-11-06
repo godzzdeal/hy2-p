@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"hy2-panel/internal/configuration"
+	"hy2-panel/internal/configuration/deployment"
 	"net/http"
 	"os/exec"
 	"time"
@@ -95,4 +97,25 @@ func (handler *Handler) Generation() string {
 	handler.mu.Lock()
 	defer handler.mu.Unlock()
 	return handler.generation
+}
+
+func (handler *Handler) PortChangesOnly(settings configuration.Settings) bool {
+	fingerprint := deployment.Fingerprint(settings)
+	handler.mu.Lock()
+	defer handler.mu.Unlock()
+	return handler.core != nil && fingerprint != "" && fingerprint == handler.activeConfig
+}
+func (handler *Handler) Healthy(ctx context.Context) bool {
+	request, err := http.NewRequestWithContext(ctx, "GET", "http://127.0.0.1:9999/online", nil)
+	if err != nil {
+		return false
+	}
+	request.Header.Set("Authorization", handler.Secret)
+	client := http.Client{Timeout: time.Second}
+	response, err := client.Do(request)
+	if err != nil {
+		return false
+	}
+	defer response.Body.Close()
+	return response.StatusCode == 200
 }

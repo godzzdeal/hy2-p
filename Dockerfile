@@ -13,13 +13,19 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY cmd/ cmd/
 COPY internal/ internal/
-RUN CGO_ENABLED=0 go build -trimpath -o /panel ./cmd/panel
+RUN CGO_ENABLED=0 go build -trimpath -o /panel ./cmd/panel && CGO_ENABLED=0 go build -trimpath -o /port-agent ./cmd/port-agent
 
 FROM ${HYSTERIA_IMAGE} AS core
+FROM docker:28-cli AS docker-client
 FROM alpine:3.22
-RUN apk add --no-cache ca-certificates tzdata && addgroup -g 10001 panel && adduser -D -u 10001 -G panel panel && mkdir /data && chown panel:panel /data
+ARG PANEL_REVISION=local
+LABEL io.hy2-panel.commit=${PANEL_REVISION}
+RUN apk add --no-cache bash jq coreutils util-linux ca-certificates tzdata && addgroup -g 10001 panel && adduser -D -u 10001 -G panel panel && mkdir /data && chown panel:panel /data
 COPY --from=core /usr/local/bin/hysteria /usr/local/bin/hysteria
+COPY --from=docker-client /usr/local/bin/docker /usr/local/bin/docker
+COPY --from=docker-client /usr/local/libexec/docker/cli-plugins/docker-compose /usr/local/libexec/docker/cli-plugins/docker-compose
 COPY --from=server /panel /usr/local/bin/panel
+COPY --from=server /port-agent /usr/local/bin/port-agent
 COPY --from=web /app/web/dist /app/web
 USER panel
 WORKDIR /app

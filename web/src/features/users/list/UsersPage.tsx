@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { PageEnum } from "@/app/navigation";
+import { useUiStore } from "@/app/state";
+import { Plus, Rss } from "lucide-react";
 import { UserDialogs } from "@/features/users";
 import { type TUserDialog } from "@/features/users";
 import { useConfiguration } from "@/features/configuration/model";
@@ -11,6 +13,7 @@ import { UserTable } from "./UserTable";
 export function UsersPage() {
   const { t } = useTranslation();
   const query = useUsers();
+  const selectPage = useUiStore((state) => state.selectPage);
   const configuration = useConfiguration();
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
@@ -32,10 +35,16 @@ export function UsersPage() {
           <h1>{t("Пользователи")}</h1>
           <p>{t("Доступ, подключения, потребление и квоты трафика.")}</p>
         </div>
-        <button className="primary" onClick={() => setDialog({ type: "create" })}>
-          <Plus size={20} aria-hidden />
-          {t("Добавить пользователя")}
-        </button>
+        <div className="row-actions">
+          <button className="secondary" onClick={() => selectPage(PageEnum.Subscriptions)}>
+            <Rss size={16} aria-hidden />
+            {t("Настроить подписку")}
+          </button>
+          <button className="primary" onClick={() => setDialog({ type: "create" })}>
+            <Plus size={20} aria-hidden />
+            {t("Добавить пользователя")}
+          </button>
+        </div>
       </div>
       {configuration.data?.authMode === "native" && (
         <p className="info-note">

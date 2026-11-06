@@ -33,5 +33,6 @@ fetch_release() {
   else
     mv -- "$temporary" "$destination"
   fi
+  state_write "image-version-$sha" "$version"
   printf '%s\n' "$sha"
 }

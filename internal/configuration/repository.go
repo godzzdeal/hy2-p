@@ -3,7 +3,9 @@ package configuration
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"hy2-panel/internal/cryptovault"
+	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/transport"
 	"net/http"
 	"time"
@@ -33,6 +35,10 @@ func (handler *Handler) Get() (Settings, error) {
 	return settings, nil
 }
 func (handler *Handler) Save(writer http.ResponseWriter, request *http.Request) {
+	if protocol.Busy(request.Context()) {
+		transport.Fail(writer, errors.New("Применение UDP-порта ещё выполняется"), 409)
+		return
+	}
 	var settings Settings
 	if err := transport.Decode(writer, request, &settings); err != nil {
 		transport.Fail(writer, err, 400)

@@ -22,8 +22,8 @@ update_panel() {
   local old=$1 next snapshot previous previous_backup
   next=$(fetch_release "${2:-latest}") || return 1
   if [[ $next == "$old" ]]; then log "Эта версия уже установлена."; return 0; fi
-  log "Собираем новую версию; текущая панель продолжает работать."
-  compose "$next" build --pull panel || return 1
+  log "Подготавливаем готовый образ; текущая панель продолжает работать."
+  prepare_image "$next" || return 1
   sync_listener "$old"
   compose "$old" stop panel || return 1
   if ! snapshot=$(create_backup "$old"); then

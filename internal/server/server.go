@@ -11,6 +11,7 @@ import (
 	"hy2-panel/internal/configuration/deployment"
 	"hy2-panel/internal/core"
 	"hy2-panel/internal/cryptovault"
+	portweb "hy2-panel/internal/portcontrol/web"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/subscriptions"
 	"hy2-panel/internal/subscriptions/announcement"
@@ -74,7 +75,8 @@ func Run() error {
 	}
 	subscriptions := &subscriptions.Handler{Announcements: announcements, DB: db, Users: users, Config: config, PublicURL: strings.TrimRight(web.Active().URL(), "/")}
 	certificates := &certificates.Handler{Data: data, Config: config}
-	public := httpServer(web.Active().Address(), routes(auth, users, config, core, subscriptions, traffic, web, certificates))
+	ports := &portweb.Handler{Config: config, Core: core}
+	public := httpServer(web.Active().Address(), routes(auth, users, config, core, subscriptions, traffic, web, certificates, ports))
 	tlsConfig, challenge, err := web.TLS()
 	if err != nil {
 		return err

@@ -7,6 +7,7 @@ import (
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/configuration/deployment"
 	"hy2-panel/internal/core"
+	portweb "hy2-panel/internal/portcontrol/web"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/subscriptions"
 	"hy2-panel/internal/traffic"
@@ -16,12 +17,14 @@ import (
 	"net/http"
 )
 
-func routes(auth *auth.Handler, users *users.Handler, config *configuration.Handler, core *core.Handler, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, certificates *certificates.Handler) http.Handler {
+func routes(auth *auth.Handler, users *users.Handler, config *configuration.Handler, core *core.Handler, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, certificates *certificates.Handler, ports *portweb.Handler) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /api/login", auth.Login)
+	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{
-		"GET /api/deployment": deployment.Read(config),
-		"GET /api/traffic":    traffic.Read,
+		"POST /api/deployment/udp": ports.Apply,
+		"GET /api/deployment":      deployment.Read(config),
+		"GET /api/traffic":         traffic.Read,
 		"PUT /api/users/{id}/traffic": func(writer http.ResponseWriter, request *http.Request) {
 			if _, err := users.User(request.PathValue("id")); err != nil {
 				transport.Fail(writer, errors.New("Пользователь не найден"), 404)

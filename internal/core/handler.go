@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"hy2-panel/internal/core/supervision"
+	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/transport"
 	"net/http"
 	"os/exec"
@@ -25,6 +26,10 @@ func (handler *Handler) Status(writer http.ResponseWriter, request *http.Request
 }
 
 func (handler *Handler) Control(writer http.ResponseWriter, request *http.Request) {
+	if protocol.Busy(request.Context()) {
+		transport.Fail(writer, errors.New("Применение UDP-порта ещё выполняется"), 409)
+		return
+	}
 	if !handler.controlMu.TryLock() {
 		transport.Fail(writer, errors.New("Обновление или другая операция уже выполняется"), 409)
 		return
@@ -99,6 +104,10 @@ func (handler *Handler) Rollback(writer http.ResponseWriter, request *http.Reque
 	handler.beginUpdate(writer, "", true)
 }
 func (handler *Handler) beginUpdate(writer http.ResponseWriter, version string, rollback bool) {
+	if protocol.Busy(context.Background()) {
+		transport.Fail(writer, errors.New("Применение UDP-порта ещё выполняется"), 409)
+		return
+	}
 	if err := handler.Updates.Begin(version, rollback); err != nil {
 		transport.Fail(writer, err, http.StatusConflict)
 		return

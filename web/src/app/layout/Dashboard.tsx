@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { ScrollNavigation } from "./scroll";
 import { lazy, Suspense, useRef } from "react";
-import { NAVIGATION } from "@/app/navigation";
+import { NAVIGATION, PageEnum } from "@/app/navigation";
 import { useUiStore } from "@/app/state";
 import { Sidebar } from "./Sidebar";
 const UsersPage = lazy(() =>
@@ -25,7 +25,13 @@ const OverviewPage = lazy(() =>
   })),
 );
 const AdminPage = lazy(() => import("@/features/admin").then((module) => ({ default: module.AdminPage })));
+const SubscriptionsPage = lazy(() =>
+  import("@/features/subscriptions/SubscriptionsPage").then((module) => ({
+    default: module.SubscriptionsPage,
+  })),
+);
 const PAGES = {
+  [PageEnum.Subscriptions]: SubscriptionsPage,
   admin: AdminPage,
   overview: OverviewPage,
   users: UsersPage,

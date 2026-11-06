@@ -3,6 +3,8 @@ export const API_ROUTES = {
   login: "/login",
   logout: "/logout",
   users: "/users",
+  udpApply: "/deployment/udp",
+  udpStatus: (ticket: string) => "/deployment/udp/status/" + encodeURIComponent(ticket),
   deployment: "/deployment",
   settings: "/settings",
   history: "/history",
@@ -25,6 +27,7 @@ export const API_ROUTES = {
 export const QUERY_KEYS = {
   session: ["session"],
   users: ["users"],
+  udpOperation: ["udp-operation"],
   deployment: ["deployment"],
   settings: ["settings"],
   history: ["history"],
@@ -38,6 +41,7 @@ export const QUERY_KEYS = {
   coreUpdate: ["core-update"],
 } as const;
 export const NETWORK = {
+  udpApplyPollMs: 1000,
   corePollMs: 5000,
   staleMs: 10000,
   noticeMs: 4000,

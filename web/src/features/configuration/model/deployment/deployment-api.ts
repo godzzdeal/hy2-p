@@ -1,5 +1,7 @@
 import { request, API_ROUTES } from "@/shared/http";
 export interface IDeployment {
+  agentAvailable: boolean;
+  agentBusy: boolean;
   container: boolean;
   httpChallenge: boolean;
   udpPublicPort: string;

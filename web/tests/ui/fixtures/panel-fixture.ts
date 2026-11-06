@@ -2,7 +2,8 @@ import { type IAnnouncement } from "@/features/admin/announcement/model";
 import { type Page } from "@playwright/test";
 import path from "node:path";
 import { type IConfiguration } from "@/features/configuration/model";
-const DIST = path.resolve(import.meta.dirname, "../../dist");
+import { WEB_SETTINGS } from "./data";
+const DIST = path.resolve(process.cwd(), "dist");
 export async function mockPanel(page: Page, isAuthorized = true) {
   let settings: IConfiguration = {
     host: "vpn.example.org",
@@ -13,6 +14,9 @@ export async function mockPanel(page: Page, isAuthorized = true) {
       "listen: :8443\ntls:\n  cert: /certs/server.crt\n  key: /certs/server.key\ncongestion:\n  type: bbr\n  bbrProfile: aggressive\nspeedTest: true\n",
   };
   let announcement: IAnnouncement = { enabled: false, text: "", updateInterval: 6, profileTitle: "" };
+  let published = { publicPort: "8443", listenPort: "8443" };
+  let polls = 0;
+  let operation: Record<string, unknown> | undefined;
   let logs = "2026-11-06 INFO Сертификат обновлён ✓\n2026-11-06 ERROR ACME: проверка домена не пройдена\n";
   await page.route("http://panel.test/**", async (route) => {
     const url = new URL(route.request().url());
@@ -23,6 +27,22 @@ export async function mockPanel(page: Page, isAuthorized = true) {
       return;
     }
     let response: unknown = {};
+    if (url.pathname.startsWith("/api/deployment/udp/status/")) {
+      polls++;
+      if (polls >= 2 && operation) {
+        published = { publicPort: String(operation.publicPort), listenPort: String(operation.listenPort) };
+        operation = {
+          ...operation,
+          busy: false,
+          phase: "success",
+          message: "UDP-порт применён.",
+          udpChecked: true,
+          coreChecked: true,
+        };
+      }
+      await route.fulfill({ json: operation });
+      return;
+    }
     switch (url.pathname) {
       case "/api/session":
         response = { ok: isAuthorized };
@@ -38,16 +58,33 @@ export async function mockPanel(page: Page, isAuthorized = true) {
         if (route.request().method() === "PUT") settings = route.request().postDataJSON() as IConfiguration;
         response = settings;
         break;
+      case "/api/deployment/udp":
+        operation = {
+          ...route.request().postDataJSON(),
+          id: "a".repeat(32),
+          busy: true,
+          phase: "applying",
+          message: "Проверяем UDP",
+          udpChecked: false,
+          coreChecked: false,
+        };
+        isAuthorized = false;
+        response = operation;
+        break;
       case "/api/deployment":
         response = {
           container: true,
           httpChallenge: false,
           udpPublicPort: settings.port,
           udpListenPort: settings.config.match(/^listen:.*:([0-9]+)/m)?.[1] ?? "443",
-          publishedUdpPort: "8443",
-          publishedUdpListenPort: "8443",
-          udpRestartRequired: settings.port !== "8443" || !settings.config.startsWith("listen: :8443"),
+          publishedUdpPort: published.publicPort,
+          publishedUdpListenPort: published.listenPort,
+          udpRestartRequired:
+            settings.port !== published.publicPort ||
+            !settings.config.startsWith("listen: :" + published.listenPort),
           udpWarning: "",
+          agentAvailable: true,
+          agentBusy: operation?.busy ?? false,
         };
         break;
       case "/api/core":
@@ -84,23 +121,7 @@ export async function mockPanel(page: Page, isAuthorized = true) {
         response = announcement;
         break;
       case "/api/admin/web":
-        response = {
-          container: true,
-          hasPrivateKey: false,
-          restartRequired: false,
-          activeURL: "http://panel.test",
-          config: {
-            host: "0.0.0.0",
-            port: 9443,
-            mode: "http",
-            domain: "",
-            email: "",
-            challengePort: 9080,
-            certificate: "",
-            publicURL: "http://panel.test",
-            acceptedTerms: false,
-          },
-        };
+        response = WEB_SETTINGS;
         break;
     }
     await route.fulfill({ json: response });

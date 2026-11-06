@@ -31,3 +31,5 @@
   --color-line: var(--line);
   --font-sans: var(--font-body);
 }
+
+@import "./dialogs/port-operation.css" layer(components);

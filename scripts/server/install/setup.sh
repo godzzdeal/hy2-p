@@ -13,7 +13,7 @@ install_panel() {
   fi
   ensure_docker
   check_volume
-  compose "$sha" build --pull panel
+  prepare_image "$sha"
   if ! start_release "$sha"; then
     compose "$sha" logs --tail=80 panel >&2 || true
     compose "$sha" stop panel || true

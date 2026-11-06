@@ -44,10 +44,7 @@ done
 # shellcheck disable=SC1091
 source /etc/os-release
 [[ $ID == ubuntu ]] || { printf 'This installer requires Ubuntu.\n' >&2; exit 1; }
-if [[ -f $HY2_INSTALL_DIR/current ]]; then
-  printf 'Already installed. Run: sudo hy2-panel update\n' >&2
-  exit 1
-fi
+
 missing=false
 for tool in git curl jq openssl flock; do command -v "$tool" >/dev/null || missing=true; done
 if [[ $missing == true ]]; then
@@ -79,8 +76,16 @@ if [[ -d $release ]]; then
 else
   mv -- "$temporary" "$release"
 fi
+if [[ -f $HY2_INSTALL_DIR/current ]]; then
+  printf '%s\n' "$version" >"$HY2_INSTALL_DIR/image-version-$sha"
+  flock -u 9
+  exec bash "$release/scripts/server/manage.sh" update "$version"
+fi
 # shellcheck source=/dev/null
 source "$release/scripts/server/common.sh"
+printf '%s\n' "$version" >"$ROOT/image-version-$sha"
+# shellcheck source=/dev/null
+source "$release/scripts/server/releases/source/image.sh"
 for file in docker wizard setup; do
   # shellcheck source=/dev/null
   source "$release/scripts/server/install/$file.sh"

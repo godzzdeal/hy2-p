@@ -41,7 +41,36 @@ jobs:
           find scripts -name '*.sh' -exec bash -n {} \;
           find scripts -name '*.sh' -print0 | xargs -0 shellcheck -S warning
           bash scripts/tests/run.sh
+  images:
+    if: github.event_name != 'pull_request'
+    needs: checks
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Build ready-to-load Docker image
+        run: |
+          docker build --build-arg PANEL_REVISION="$GITHUB_SHA" -t "hy2-panel:$GITHUB_SHA" .
+          docker save "hy2-panel:$GITHUB_SHA" | gzip -1 > "hy2-panel-linux-${{ matrix.arch }}.tar.gz"
+          sha256sum "hy2-panel-linux-${{ matrix.arch }}.tar.gz" > "hy2-panel-linux-${{ matrix.arch }}.tar.gz.sha256"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: image-${{ matrix.arch }}
+          path: hy2-panel-linux-${{ matrix.arch }}.tar.gz*
+          compression-level: 0
+
   docker-install:
+    needs: images
     if: github.event_name != 'pull_request' && github.repository == 'godzzdeal/hy2-p'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -49,5 +78,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: image-amd64
+          path: .ci-images
+      - run: docker load --input .ci-images/hy2-panel-linux-amd64.tar.gz
       - name: Install from GitHub, start core, restart and back up
         run: bash scripts/tests/docker/run.sh

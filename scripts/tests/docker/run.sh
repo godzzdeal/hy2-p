@@ -7,14 +7,15 @@ WORK=$(mktemp -d /tmp/hy2-docker-test.XXXXXX)
 ROOT=$WORK/install
 cleanup() {
   local result=$?
+  if [[ -n ${BLOCKER:-} ]]; then kill "$BLOCKER" 2>/dev/null || true; wait "$BLOCKER" 2>/dev/null || true; fi
   if [[ -n ${CLIENT_CONTAINER:-} ]]; then sudo docker rm -f "$CLIENT_CONTAINER" >/dev/null 2>&1 || true; fi
   if [[ $(sudo docker volume inspect --format '{{index .Labels "io.hy2-panel.install-dir"}}' hy2-panel_panel-data 2>/dev/null || true) == "$ROOT" ]]; then
-    if [[ $result != 0 ]]; then sudo docker ps -a; sudo docker logs hy2-panel-panel-1 || true; fi
+    if [[ $result != 0 ]]; then sudo docker ps -a; sudo docker logs hy2-panel-panel-1 || true; sudo docker logs hy2-panel-port-agent-1 || true; fi
     local sha
     sha=$(sudo cat "$ROOT/current" 2>/dev/null || true)
     if [[ $sha =~ ^[0-9a-f]{40}$ ]]; then
       sudo env PANEL_IMAGE="hy2-panel:$sha" PANEL_CERTS_DIR="$ROOT/certs" PANEL_INSTALL_DIR="$ROOT" \
-        docker compose -p hy2-panel --env-file "$ROOT/.env" -f "$ROOT/releases/$sha/compose.yaml" down -v
+        docker compose -p hy2-panel --env-file "$ROOT/.env" -f "$ROOT/releases/$sha/compose.yaml" -f "$ROOT/releases/$sha/compose.managed.yaml" down -v
     fi
   fi
   if [[ -L /usr/local/bin/hy2-panel && $(readlink /usr/local/bin/hy2-panel) == "$ROOT/hy2-panel" ]]; then
@@ -35,7 +36,9 @@ manager status
 URL=http://127.0.0.1:19080
 curl -fsS "$URL/" | grep -q '<html'
 # shellcheck source=/dev/null
-source "$(dirname -- "${BASH_SOURCE[0]}")/core.sh"
+source "$(dirname -- "${BASH_SOURCE[0]}")/hysteria/core.sh"
+# shellcheck source=/dev/null
+source "$(dirname -- "${BASH_SOURCE[0]}")/hysteria/ports.sh"
 manager backup
 snapshot=$(sudo find "$ROOT/backups" -name data.tar.gz -print -quit)
 sudo tar -tzf "$snapshot" | grep -q './secrets/users.key'

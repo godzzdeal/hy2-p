@@ -50,6 +50,7 @@ compose() {
   release=$(release_path "$sha")
   image=$(image_for "$sha")
   local arguments=(--project-name "$PROJECT" --project-directory "$release" --env-file "$ROOT/.env" -f "$release/compose.yaml")
+  if [[ -f $release/compose.managed.yaml ]]; then arguments+=(-f "$release/compose.managed.yaml"); fi
   if [[ $(env_read PANEL_ACME_ENABLED) == true ]]; then arguments+=(-f "$release/compose.acme.yaml"); fi
   PANEL_IMAGE=$image PANEL_CERTS_DIR=$ROOT/certs PANEL_INSTALL_DIR=$ROOT engine compose "${arguments[@]}" "$@"
 }

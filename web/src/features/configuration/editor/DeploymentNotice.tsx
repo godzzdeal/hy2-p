@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { ApplyPortButton } from "@/features/configuration/ports";
 import { Copy } from "lucide-react";
 import { useUiStore } from "@/app/state";
 import { useDeployment } from "@/features/configuration/model/deployment";
@@ -40,19 +41,21 @@ export function DeploymentNotice() {
               target: status.udpListenPort,
             })}
           </p>
-          <p>{t("Для применения выполните команду на сервере. Перезапуск ядра не меняет проброс Docker.")}</p>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
-            <code>{command}</code>
-            <button type="button" className="text-btn" onClick={() => void onCopy()}>
-              <Copy size={16} aria-hidden />
-              {t("Скопировать команду")}
-            </button>
-          </div>
-          <small>
-            {t(
-              "После команды войдите в панель заново. Публичный UDP-порт должен быть разрешён в сетевом экране сервера и хостинга.",
-            )}
-          </small>
+          {status.agentAvailable ? (
+            <ApplyPortButton status={status} />
+          ) : (
+            <div>
+              <p>{t("Помощник автоприменения не установлен. Обновите панель новым установщиком.")}</p>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <code>{command}</code>
+                <button type="button" className="text-btn" onClick={() => void onCopy()}>
+                  <Copy size={16} aria-hidden />
+                  {t("Скопировать команду")}
+                </button>
+              </div>
+            </div>
+          )}
+          <small>{t("Публичный UDP-порт должен быть разрешён в сетевом экране сервера и хостинга.")}</small>
         </div>
       )}
     </div>

@@ -7,6 +7,7 @@ import (
 	"hy2-panel/internal/users"
 	"net"
 	"net/url"
+	"os"
 	"strings"
 )
 
@@ -20,6 +21,9 @@ func ConnectionURI(settings configuration.Settings, user users.User) (string, er
 	var document map[string]any
 	if err := yaml.Unmarshal([]byte(settings.Config), &document); err != nil {
 		return "", err
+	}
+	if os.Getenv("PANEL_CONTAINER") == "true" && os.Getenv("HYSTERIA_PUBLIC_PORT") != "" {
+		settings.Port = os.Getenv("HYSTERIA_PUBLIC_PORT")
 	}
 	q := url.Values{}
 	if settings.SNI != "" {
