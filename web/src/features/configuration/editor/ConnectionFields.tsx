@@ -1,5 +1,6 @@
 import { DeploymentNotice } from "./DeploymentNotice";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 import { type IConfiguration } from "@/features/configuration/model";
 interface IConnectionFields {
   value: IConfiguration;
@@ -7,6 +8,10 @@ interface IConnectionFields {
 }
 export function ConnectionFields({ value, onChange }: IConnectionFields) {
   const { t } = useTranslation();
+  const [isSniLinked, setSniLinked] = useState(value.sni === value.host);
+  useEffect(() => {
+    if (isSniLinked && value.sni !== value.host) setSniLinked(false);
+  }, [isSniLinked, value.sni, value.host]);
   return (
     <section
       className="card form-card"
@@ -21,9 +26,16 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
         <label>
           {t("Публичный адрес")}
           <input
+            aria-label={t("Публичный адрес")}
             placeholder="vpn.example.com"
             value={value.host}
-            onChange={(event) => onChange({ ...value, host: event.target.value })}
+            onChange={(event) =>
+              onChange({
+                ...value,
+                host: event.target.value,
+                sni: isSniLinked ? event.target.value : value.sni,
+              })
+            }
           />
           <small>{t("Адрес, к которому будет подключаться Happ. Например vpn.example.com.")}</small>
         </label>
@@ -41,11 +53,29 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
             )}
           </small>
         </label>
-        <label>
-          {t("Имя в сертификате (SNI)")}
-          <input value={value.sni} onChange={(event) => onChange({ ...value, sni: event.target.value })} />
-          <small>{t("Домен, на который выпущен сертификат. Обычно совпадает с публичным адресом.")}</small>
-        </label>
+        <div className="connection-sni">
+          <label>
+            SNI
+            <input
+              aria-label="SNI"
+              disabled={isSniLinked}
+              value={isSniLinked ? value.host : value.sni}
+              onChange={(event) => onChange({ ...value, sni: event.target.value })}
+            />
+            <small>{t("Домен, на который выпущен сертификат. Обычно совпадает с публичным адресом.")}</small>
+          </label>
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              checked={isSniLinked}
+              onChange={(event) => {
+                setSniLinked(event.target.checked);
+                if (event.target.checked) onChange({ ...value, sni: value.host });
+              }}
+            />
+            {t("SNI совпадает с адресом")}
+          </label>
+        </div>
       </div>
       <DeploymentNotice />
     </section>

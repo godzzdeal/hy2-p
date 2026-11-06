@@ -22,6 +22,7 @@ export function FieldControl({
       <PasswordField
         inputId={id}
         hasLabel={false}
+        minLength={0}
         label={t(field.label)}
         value={formatted}
         onChange={onChange}
@@ -35,8 +36,8 @@ export function FieldControl({
         onValueChange={(next) => onChange(next === "" ? undefined : next === "true")}
       >
         <SelectOption value="">{t("По умолчанию")}</SelectOption>
-        <SelectOption value="true">{t("Да")}</SelectOption>
-        <SelectOption value="false">{t("Нет")}</SelectOption>
+        <SelectOption value="true">true</SelectOption>
+        <SelectOption value="false">false</SelectOption>
       </Select>
     );
   if (field.kind === "select") {

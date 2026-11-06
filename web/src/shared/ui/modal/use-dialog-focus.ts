@@ -19,7 +19,9 @@ export function useDialogFocus(onClose: () => void) {
       return;
     }
     if (event.key !== "Tab") return;
-    const nodes = ref.current?.querySelectorAll<HTMLElement>("button:not(:disabled),input,textarea,a[href]");
+    const nodes = ref.current?.querySelectorAll<HTMLElement>(
+      "button:not(:disabled),input:not(:disabled),textarea:not(:disabled),a[href],[contenteditable='true']",
+    );
     if (!nodes?.length) return;
     const first = nodes[0];
     const last = nodes[nodes.length - 1];

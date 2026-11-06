@@ -14,20 +14,38 @@
   background: var(--surface-soft);
   color: var(--accent);
 }
-.qr {
+.connection-qr {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  padding: var(--space-4);
+  margin: var(--space-6) auto;
+  border: 1px solid var(--accent);
+  background: var(--surface-soft);
+  box-shadow: var(--space-1) var(--space-1) 0 var(--shadow);
+}
+.qr-brand {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 248px;
-  padding: var(--space-3);
-  margin: var(--space-6) auto;
-  border-radius: var(--radius-md);
+  justify-content: space-between;
+  gap: var(--space-4);
+  color: var(--accent);
+  margin-bottom: var(--space-3);
+}
+.qr-canvas {
+  padding: var(--space-2);
   background: var(--qr-background);
 }
-.qr svg {
+.connection-qr svg {
+  display: block;
   width: 224px;
   max-width: 100%;
   height: auto;
+}
+.connection-qr figcaption {
+  text-align: center;
+  margin-top: var(--space-3);
+  overflow-wrap: anywhere;
 }
 .share-help {
   text-align: center;

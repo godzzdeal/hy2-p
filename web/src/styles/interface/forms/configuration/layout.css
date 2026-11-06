@@ -116,16 +116,6 @@
   font-size: var(--text-small);
 }
 
-.yaml-details summary {
-  padding: var(--space-3) var(--space-4);
-  cursor: pointer;
-  color: var(--accent);
-}
-.yaml-details summary:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
-}
-
 @media (max-width: 760px) {
   .draft-bar {
     bottom: var(--space-16);

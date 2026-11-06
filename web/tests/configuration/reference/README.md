@@ -1,0 +1,1 @@
+The property list is taken from the official Hysteria2 full server configuration examples linked in server-fields.json. It is independent of the UI schema. Dynamic keys in auth.userpass, acme.dns.config and masquerade.string.headers are treated as maps; outbounds entries use [] notation. The coverage test prevents documented properties from silently disappearing from the forms.

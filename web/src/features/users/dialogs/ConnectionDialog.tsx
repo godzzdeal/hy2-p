@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Copy, RefreshCw } from "@/shared/icons";
-import { QRCodeSVG } from "qrcode.react";
+import { ConnectionQr } from "./ConnectionQr";
 import { type IUser } from "@/features/users/model";
 import { userApi, isUserActive } from "@/features/users/model";
 import { Modal, QueryState } from "@/shared/ui";
@@ -62,15 +62,11 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
               {t("Подписка")}
             </button>
           </div>
-          <div className="qr">
-            <QRCodeSVG
-              value={links.data[format]}
-              size={224}
-              level="M"
-              marginSize={4}
-              aria-label={t("QR-код подключения")}
-            />
-          </div>
+          <ConnectionQr
+            value={links.data[format]}
+            name={user.name}
+            isSubscription={format === "subscription"}
+          />
           <p className="share-help">
             {t("В Happ нажмите + и импортируйте ссылку из буфера или отсканируйте QR-код.")}
           </p>

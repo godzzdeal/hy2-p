@@ -2,15 +2,15 @@ import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import { parseDocument } from "yaml";
 import { type IConfiguration } from "@/features/configuration/model";
-import { ConfigField } from "../controls";
-import { AuthSettings } from "./AuthSettings";
-import { ConfigNavigation } from "./navigation";
-import { readField, updateField } from "../model";
-import { TRANSPORT_SECTIONS, CERTIFICATE_SECTIONS, NETWORK_SECTIONS } from "../schema";
+import { DOCUMENTATION_SECTIONS, CONFIGURATION_DOCS } from "../schema/documentation";
+import { readField, updateField, filterProperties } from "../model";
 import { CertificateMode, CertificateUpload, CertificateStatus } from "../certificates";
 import { useWebSettings } from "@/features/admin/model";
 import { useUiStore } from "@/app/state";
-const SECTIONS = [...TRANSPORT_SECTIONS, ...CERTIFICATE_SECTIONS, ...NETWORK_SECTIONS];
+import { AuthSettings } from "./AuthSettings";
+import { ConfigNavigation } from "./navigation";
+import { PropertySearch, SectionFields } from "./fields";
+import { OutboundsEditor } from "../outbounds";
 export function ConfigurationForm({
   value,
   onChange,
@@ -20,10 +20,19 @@ export function ConfigurationForm({
 }) {
   const { t } = useTranslation();
   const web = useWebSettings();
-  const [showPath, setShowPath] = useState(false);
-  const [section, setSection] = useState("server");
+  const [showDescription, setDescription] = useState(true);
+  const [section, setSection] = useState("listen");
+  const [search, setSearch] = useState("");
   const document = useMemo(() => parseDocument(value.config), [value.config]);
   const showError = useUiStore((state) => state.showError);
+  const sections = DOCUMENTATION_SECTIONS.map((item) => ({
+    ...item,
+    fields: filterProperties(item.fields, search),
+  })).filter((item) => item.fields.length);
+  const active = sections.find((item) => item.id === section) ?? sections[0];
+  const isAcme = document.has("acme");
+  const challengeType = readField(document, "acme.type");
+  const isManagedHttp = !!web.data?.container && (!challengeType || challengeType === "http");
   function onSet(path: string, next: unknown) {
     try {
       onChange({ ...value, config: updateField(value.config, path, next) });
@@ -34,12 +43,6 @@ export function ConfigurationForm({
   function onUploaded(cert: string, key: string) {
     onChange({ ...value, config: updateField(updateField(value.config, "tls.cert", cert), "tls.key", key) });
   }
-  const isNative = value.authMode === "native";
-  const isAcme = document.has("acme");
-  const challengeType = readField(document, "acme.type");
-  const isManagedHttp = web.data?.container && (!challengeType || challengeType === "http");
-  const effectiveSection = section === "tls" || section === "acme" ? (isAcme ? "acme" : "tls") : section;
-  const active = SECTIONS.find((item) => item.id === effectiveSection);
   return (
     <section
       className="card structured-config"
@@ -48,57 +51,67 @@ export function ConfigurationForm({
       data-scroll-label={t("Параметры Hysteria2")}
     >
       <div className="config-technical-toggle">
-        <p>
-          {t("Порт, сертификат и доступ нужны для запуска. Остальные параметры можно оставить по умолчанию.")}
-        </p>
+        <PropertySearch
+          value={search}
+          onChange={setSearch}
+          count={sections.reduce((count, item) => count + item.fields.length, 0)}
+        />
         <label className="checkbox">
-          <input type="checkbox" checked={showPath} onChange={(event) => setShowPath(event.target.checked)} />
-          {t("Технические названия")}
+          <input
+            type="checkbox"
+            checked={showDescription}
+            onChange={(event) => setDescription(event.target.checked)}
+          />
+          {t("Показывать пояснения")}
         </label>
       </div>
-      <div className="configuration-layout">
-        <ConfigNavigation
-          sections={SECTIONS.filter((item) => item.id !== (isAcme ? "tls" : "acme"))}
-          value={effectiveSection}
-          onSelect={setSection}
-        />
-        <div className="configuration-fields">
-          <h2 className="configuration-section-title">{active ? t(active.title) : ""}</h2>
-          {(effectiveSection === "tls" || effectiveSection === "acme") && (
-            <CertificateMode
-              source={value.config}
-              onChange={(config) => {
-                onChange({ ...value, config });
-                setSection(parseDocument(config).has("acme") ? "acme" : "tls");
-              }}
-            />
-          )}
-          {section === "auth" && <AuthSettings value={value} onChange={onChange} />}
-          {document.errors.length > 0 ? (
-            <p className="inline-error">{t(document.errors[0].message)}</p>
-          ) : (
-            <div className="field-grid">
-              {active?.fields
-                .filter((field) => !field.when || readField(document, field.when.path) === field.when.value)
-                .filter(() => effectiveSection !== "auth" || isNative)
-                .filter(
-                  (field) => !isManagedHttp || !["acme.http.altPort", "acme.listenHost"].includes(field.path),
-                )
-                .map((field) => (
-                  <ConfigField
-                    key={field.path}
-                    field={field}
-                    showPath={showPath}
-                    value={readField(document, field.path)}
-                    onChange={(next) => onSet(field.path, next)}
-                  />
-                ))}
+      {active ? (
+        <div className="configuration-layout">
+          <ConfigNavigation sections={sections} value={active.id} onSelect={setSection} />
+          <div className="configuration-fields">
+            <div className="configuration-section-title">
+              <h2>{active.title}</h2>
+              <a href={CONFIGURATION_DOCS + "#" + active.anchor} target="_blank" rel="noreferrer">
+                {t("Документация")}
+              </a>
             </div>
-          )}
-          {effectiveSection === "tls" && <CertificateUpload onUploaded={onUploaded} />}
-          {(effectiveSection === "tls" || effectiveSection === "acme") && <CertificateStatus />}
+            {active.id === "tls" && (
+              <CertificateMode source={value.config} onChange={(config) => onChange({ ...value, config })} />
+            )}
+            {active.id === "auth" && <AuthSettings value={value} onChange={onChange} />}
+            {active.id === "mimic" && (
+              <p className="config-note">
+                {t(
+                  "Mimic требует отдельной установки программы и модуля Linux. Обычный контейнер панели не получает права root для ядра.",
+                )}
+              </p>
+            )}
+            {document.errors.length ? (
+              <p className="inline-error">{t(document.errors[0].message)}</p>
+            ) : active.id === "outbounds" ? (
+              <OutboundsEditor
+                source={value.config}
+                search={search}
+                onChange={(config) => onChange({ ...value, config })}
+              />
+            ) : (
+              <SectionFields
+                fields={active.fields}
+                document={document}
+                isNative={value.authMode === "native"}
+                isManagedHttp={isManagedHttp}
+                search={search}
+                showDescription={showDescription}
+                onSet={onSet}
+              />
+            )}
+            {active.id === "tls" && !isAcme && <CertificateUpload onUploaded={onUploaded} />}
+            {active.id === "tls" && <CertificateStatus />}
+          </div>
         </div>
-      </div>
+      ) : (
+        <p className="empty">{t("Свойства не найдены. Попробуйте имя из документации.")}</p>
+      )}
     </section>
   );
 }

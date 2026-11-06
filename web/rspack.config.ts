@@ -42,8 +42,13 @@ export default defineConfig({
     new rspack.CopyRspackPlugin({
       patterns: [
         {
-          from: path.resolve(import.meta.dirname, "node_modules/@fontsource-variable/inter/LICENSE"),
-          to: "licenses/inter.txt",
+          from: path.resolve(import.meta.dirname, "assets/pwa/manifest.webmanifest"),
+          to: "manifest.webmanifest",
+        },
+        { from: path.resolve(import.meta.dirname, "assets/pwa/icons"), to: "app-icons" },
+        {
+          from: path.resolve(import.meta.dirname, "node_modules/@fontsource/tiny5/LICENSE"),
+          to: "licenses/tiny5.txt",
         },
         {
           from: path.resolve(import.meta.dirname, "node_modules/lucide-react/LICENSE"),
@@ -70,7 +75,16 @@ export default defineConfig({
     }),
     new rspack.HtmlRspackPlugin({
       title: "HY2 / Control",
-      meta: { viewport: "width=device-width, initial-scale=1" },
+      meta: {
+        viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
+        "theme-color": "#081320",
+        "apple-mobile-web-app-capable": "yes",
+        "apple-mobile-web-app-title": "HY2 Control",
+        "apple-mobile-web-app-status-bar-style": "default",
+      },
+      templateContent:
+        '<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>HY2 Control</title><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/app-icons/apple-touch-icon.png"></head><body></body></html>',
+      favicon: path.resolve(import.meta.dirname, "assets/pwa/icons/icon.svg"),
     }),
   ],
   optimization: { splitChunks: { chunks: "all" } },

@@ -2,6 +2,7 @@ import { BuildVersion } from "@/app/layout/sidebar";
 import { useTranslation } from "react-i18next";
 import { AccountSettings } from "./account";
 import { WebSettings } from "./listener";
+import { InstallCard } from "@/app/install";
 export function AdminPage() {
   const { t } = useTranslation();
   return (
@@ -18,6 +19,7 @@ export function AdminPage() {
         <BuildVersion />
       </p>
       <WebSettings />
+      <InstallCard />
     </>
   );
 }

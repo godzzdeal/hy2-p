@@ -1,5 +1,39 @@
 import { test, expect } from "@playwright/test";
 import { mockPanel, chooseTheme } from "../fixtures";
+test("phone installation metadata and manual steps are available", async ({ page }) => {
+  await mockPanel(page);
+  await expect(page.locator('link[rel="manifest"]')).toHaveAttribute("href", "/manifest.webmanifest");
+  const manifest = await page.evaluate(async () => {
+    const response = await fetch("/manifest.webmanifest");
+    return response.json() as Promise<{ display: string; icons: { src: string; sizes: string }[] }>;
+  });
+  expect(manifest.display).toBe("standalone");
+  expect(manifest.icons.map((icon) => icon.sizes)).toContain("192x192");
+  expect(manifest.icons.map((icon) => icon.sizes)).toContain("512x512");
+  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("button", { name: "Установить панель", exact: true }).click();
+  const help = page.getByRole("dialog", { name: "Панель на главном экране", exact: true });
+  await expect(help).toContainText("Safari");
+  await expect(help).toContainText("Android");
+});
+test("the install button uses the browser prompt and installed event", async ({ page }) => {
+  await mockPanel(page);
+  await page.evaluate(() => {
+    const event = new Event("beforeinstallprompt", { cancelable: true });
+    Object.defineProperty(event, "prompt", {
+      value: async () => {
+        document.documentElement.dataset.installPromptCalled = "true";
+        return { outcome: "accepted", platform: "web" };
+      },
+    });
+    window.dispatchEvent(event);
+  });
+  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("button", { name: "Установить панель", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-install-prompt-called", "true");
+  await page.evaluate(() => window.dispatchEvent(new Event("appinstalled")));
+  await expect(page.getByText("Панель уже установлена", { exact: true })).toBeVisible();
+});
 test("login has a simple password label and accessible language choice", async ({ page }) => {
   await mockPanel(page, false);
   await expect(page.getByLabel("Пароль", { exact: true })).toBeVisible();
@@ -49,11 +83,9 @@ test("pixel themes and the emoji menu work with keyboard navigation", async ({ p
     await page.screenshot({ path: info.outputPath("pixel-" + choice.value + ".png"), fullPage: true });
   }
   expect(backgrounds[0]).not.toBe(backgrounds[1]);
-  expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain("Inter Variable");
+  expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain("Tiny5");
   for (const sample of ["Настройки сервера Ёжик", "Server settings 0123456789"]) {
-    expect(await page.evaluate((text) => document.fonts.check('16px "Inter Variable"', text), sample)).toBe(
-      true,
-    );
+    expect(await page.evaluate((text) => document.fonts.check('20px "Tiny5"', text), sample)).toBe(true);
   }
   await page.getByRole("button", { name: "Подписки", exact: true }).click();
   await page.getByRole("button", { name: "Выбрать эмодзи", exact: true }).click();

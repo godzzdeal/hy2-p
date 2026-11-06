@@ -1,0 +1,29 @@
+import { useTranslation } from "react-i18next";
+import { Modal } from "@/shared/ui";
+export function InstallHelp({ onClose }: { onClose: () => void }) {
+  const { t } = useTranslation();
+  return (
+    <Modal title="Панель на главном экране" onClose={onClose}>
+      <p className="info-note">
+        {t("Для установки откройте панель по HTTPS с действительным сертификатом.")}
+      </p>
+      <h3>iPhone / iPad</h3>
+      <ol className="install-steps">
+        <li>{t("Откройте панель в Safari и нажмите «Поделиться».")}</li>
+        <li>
+          {t(
+            "Выберите «На экран Домой». Если есть переключатель «Открывать как веб-приложение», включите его.",
+          )}
+        </li>
+        <li>{t("Нажмите «Добавить».")}</li>
+      </ol>
+      <h3>Android</h3>
+      <ol className="install-steps">
+        <li>{t("Откройте панель в Chrome.")}</li>
+        <li>{t("В меню браузера выберите «Установить приложение» или «Добавить на главный экран».")}</li>
+        <li>{t("Подтвердите установку.")}</li>
+      </ol>
+      <p className="muted">{t("Для работы панели нужен доступ к серверу через интернет.")}</p>
+    </Modal>
+  );
+}

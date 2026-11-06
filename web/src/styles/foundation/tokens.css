@@ -1,7 +1,8 @@
 :root {
   color-scheme: light dark;
-  --font-body: "Inter Variable", "Segoe UI", sans-serif;
-  --font-mono: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --font-body: "Tiny5", sans-serif;
+  --font-heading: "Tiny5", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
   --star-color: #91a8aa;
   --planet-color: #d9bda1;
   --planet-shadow: #bc9e8f;
@@ -9,6 +10,9 @@
   --surface: #fffdf4;
   --surface-soft: #dce9e6;
   --input: #eef1e8;
+  --syntax-string: #326536;
+  --syntax-number: #8c4f12;
+  --editor-selection: #c9dedb;
   --foreground: #1b303b;
   --muted: #4e6670;
   --line: #9aafad;
@@ -20,6 +24,7 @@
   --backdrop: #101510a6;
   --shadow: #b3c3bc;
   --qr-background: #ffffff;
+  --qr-foreground: #081320;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -33,10 +38,11 @@
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
-  --text-small: 14px;
-  --text-body: 16px;
-  --text-title: 24px;
-  --sidebar-width: 208px;
+  --text-small: 20px;
+  --text-code: 14px;
+  --text-body: 20px;
+  --text-title: 30px;
+  --sidebar-width: 240px;
   --control-height: 40px;
   --content-width: 1280px;
   --layer-navigation: 10;
@@ -44,7 +50,7 @@
   --layer-feedback: 50;
   --layer-dialog: 20;
   --layer-select: 60;
-  --text-control: 16px;
+  --text-control: 20px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -55,6 +61,9 @@
     --surface: #101f31;
     --surface-soft: #1b324a;
     --input: #0a192a;
+    --syntax-string: #a6d799;
+    --syntax-number: #e5bd88;
+    --editor-selection: #27445c;
     --foreground: #edf5ec;
     --muted: #b3c7d8;
     --line: #3b526b;
@@ -76,6 +85,9 @@
   --surface: #101f31;
   --surface-soft: #1b324a;
   --input: #0a192a;
+  --syntax-string: #a6d799;
+  --syntax-number: #e5bd88;
+  --editor-selection: #27445c;
   --foreground: #edf5ec;
   --muted: #b3c7d8;
   --line: #3b526b;

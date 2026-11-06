@@ -38,6 +38,9 @@ h3,
 .primary {
   border-color: var(--accent);
 }
+.select-trigger {
+  box-shadow: none;
+}
 button:active:not(:disabled) {
   transform: translateY(var(--space-1));
 }

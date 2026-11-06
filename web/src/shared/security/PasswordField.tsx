@@ -9,6 +9,7 @@ export function PasswordField({
   onChange,
   label = "Пароль",
   required = false,
+  minLength = 12,
 }: {
   inputId?: string;
   hasLabel?: boolean;
@@ -16,6 +17,7 @@ export function PasswordField({
   onChange: (value: string) => void;
   label?: string;
   required?: boolean;
+  minLength?: number;
 }) {
   const { t } = useTranslation();
   const generatedId = useId();
@@ -30,7 +32,7 @@ export function PasswordField({
           autoComplete="new-password"
           value={value}
           required={required}
-          minLength={12}
+          minLength={minLength}
           maxLength={128}
           onChange={(event) => onChange(event.target.value)}
         />

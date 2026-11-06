@@ -1,1 +1,37 @@
-@import "@fontsource-variable/inter/opsz.css";
+@import "@fontsource/tiny5/latin-400.css";
+@import "@fontsource/tiny5/cyrillic-400.css";
+body {
+  font-synthesis: none;
+  font-kerning: none;
+}
+h1,
+h2,
+.brand,
+.login-brand,
+.metric > strong,
+.core-card h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-title);
+  font-weight: 400;
+  line-height: 1.2;
+}
+h3,
+.eyebrow,
+.app-sidebar nav button {
+  font-size: var(--text-body);
+}
+.brand-sub,
+.user-name-hint,
+.emoji-menu-footer,
+.config-tabs button {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.4;
+}
+.logs,
+.code-editor,
+code,
+.structured-textarea,
+.generated-password {
+  font-size: var(--text-code);
+}

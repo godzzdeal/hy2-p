@@ -2,3 +2,4 @@ export type { IFieldCopy, IConfigField, IConfigSection, TFieldKind } from "./fie
 export { readField, updateField, parseField, formatField, certificateMode } from "./yaml";
 
 export { orderConfiguration } from "./yaml";
+export { matchesProperty, filterProperties } from "./search";

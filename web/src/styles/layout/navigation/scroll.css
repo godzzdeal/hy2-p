@@ -2,7 +2,10 @@ html:has(.shell) {
   scroll-snap-type: y proximity;
   scroll-padding-block: var(--space-4);
 }
-html:has(.overlay) {
+html:has(.overlay, .content form) {
+  scroll-snap-type: none;
+}
+html:has(input:focus, textarea:focus, [contenteditable="true"]:focus, button:focus-visible) {
   scroll-snap-type: none;
 }
 .shell {

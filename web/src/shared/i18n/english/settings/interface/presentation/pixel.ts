@@ -1,4 +1,8 @@
 export const PIXEL = {
+  "Всего пользователей: {{count}}": "Total users: {{count}}",
+  "Найдено: {{count}}": "Found: {{count}}",
+  "Список пользователей обновлён": "User list refreshed",
+  "Обновляем…": "Refreshing…",
   "Раздел конфигурации": "Configuration section",
   "Ядро остановлено.": "Engine stopped.",
   "Ядро запускается. Проверьте подключение в Happ.": "The engine is starting. Check your connection in Happ.",

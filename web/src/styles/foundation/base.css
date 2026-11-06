@@ -14,7 +14,7 @@ textarea,
 select {
   font: inherit;
   font-size: var(--text-control);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 button {
   cursor: pointer;

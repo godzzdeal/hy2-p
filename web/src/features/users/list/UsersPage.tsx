@@ -10,6 +10,7 @@ import { useUsers } from "@/features/users/model";
 import { NETWORK } from "@/shared/http";
 import { QueryState } from "@/shared/ui";
 import { UserTable } from "./UserTable";
+import { UsersToolbar } from "./toolbar";
 export function UsersPage() {
   const { t } = useTranslation();
   const query = useUsers();
@@ -62,19 +63,7 @@ export function UsersPage() {
         data-scroll-section
         data-scroll-label={t("Список пользователей")}
       >
-        <div className="card-header">
-          <h2>
-            {t("Пользователи")}
-            {query.data?.length ?? 0}
-          </h2>
-          <input
-            className="search"
-            aria-label={t("Поиск пользователей")}
-            placeholder={t("Поиск по имени\u2026")}
-            value={search}
-            onChange={(event) => onSearch(event.target.value)}
-          />
-        </div>
+        <UsersToolbar search={search} onSearch={onSearch} found={filtered.length} />
         <QueryState isLoading={query.isPending} error={query.error} />
         <UserTable
           users={visible}

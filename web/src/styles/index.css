@@ -2,13 +2,14 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "./foundation/tokens.css" layer(components);
 @import "./foundation/base.css" layer(base);
-@import "./foundation/pixel/fonts.css" layer(base);
 @import "./layout/navigation/sidebar.css" layer(components);
 @import "./layout/dashboard.css" layer(components);
 @import "./interface/cards.css" layer(components);
 @import "./interface/forms/fields.css" layer(components);
 @import "./interface/forms/select.css" layer(components);
-@import "./interface/forms/configuration.css" layer(components);
+@import "./interface/forms/configuration/layout.css" layer(components);
+@import "./interface/forms/configuration/properties.css" layer(components);
+@import "./interface/forms/configuration/outbounds.css" layer(components);
 @import "./interface/feedback.css" layer(components);
 @import "./features/users/list.css" layer(components);
 @import "./features/users/flags.css" layer(components);
@@ -40,3 +41,7 @@
 
 @import "./foundation/pixel/chrome.css" layer(components);
 @import "./foundation/pixel/starfield.css" layer(components);
+@import "./foundation/pixel/fonts.css" layer(components);
+@import "./foundation/scrollbars.css" layer(components);
+@import "./dialogs/yaml-editor.css" layer(components);
+@import "./interface/buttons.css" layer(components);
