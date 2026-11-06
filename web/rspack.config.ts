@@ -41,7 +41,7 @@ export default defineConfig({
           to: "emoji/[name][ext]",
         },
         {
-          from: path.resolve(import.meta.dirname, "node_modules/@twemoji/svg/LICENSE"),
+          from: path.resolve(import.meta.dirname, "node_modules/@twemoji/svg/license"),
           to: "licenses/twemoji-package.txt",
         },
         {
