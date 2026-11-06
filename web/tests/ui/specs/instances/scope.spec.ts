@@ -1,3 +1,4 @@
+import { chooseUserAction } from "../../fixtures";
 import { test, expect } from "@playwright/test";
 import { mockInstances, EXTRA_ID } from "./fixture";
 test("switching cores protects drafts and scopes logs and updates", async ({ page }) => {
@@ -52,7 +53,7 @@ test("connection links let the user select a core", async ({ page }) => {
   await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
   await page.getByLabel("Имя", { exact: true }).fill("Phone");
   await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();
-  await page.getByRole("button", { name: "Подключение Phone", exact: true }).click();
+  await chooseUserAction(page, "Phone", "Подключение");
   await page.getByRole("combobox", { name: "Ядро подключения", exact: true }).click();
   await page.getByRole("option", { name: "Второй", exact: true }).click();
   await expect(page.getByRole("textbox", { name: "Ссылка подключения", exact: true })).toHaveValue(

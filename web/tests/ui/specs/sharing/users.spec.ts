@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { mockInstances, EXTRA_ID } from "../instances/fixture";
 import { type IUserAccess } from "@/features/users/access/model";
-import { mockPanel } from "../../fixtures";
+import { mockPanel, chooseUserAction } from "../../fixtures";
 test("refresh updates total counts and filtering keeps the total", async ({ page }, info) => {
   await mockPanel(page);
   await page.getByRole("button", { name: "Пользователи", exact: true }).click();
@@ -57,7 +57,12 @@ test("users have a flag icon and emoji remain in their name", async ({ page }, i
   const row = page.getByRole("row").filter({ hasText: "Телефон" });
   await expect(row.locator(".avatar img")).toHaveAttribute("src", "/flags/de.svg");
   await expect(row.locator("img.emoji-image")).toHaveAttribute("src", "/emoji/1f469-1f3fd-200d-1f4bb.svg");
-  await expect(row.getByRole("button", { name: "Подключение 🇩🇪 👩🏽‍💻 Телефон", exact: true })).toBeVisible();
+  await expect(
+    row.getByRole("button", {
+      name: (info.project.name === "mobile" ? "Действия " : "Подключение ") + "🇩🇪 👩🏽‍💻 Телефон",
+      exact: true,
+    }),
+  ).toBeVisible();
   await row.locator(".user-cell").click();
   await expect(page.getByLabel("Имя", { exact: true })).toHaveValue("👩🏽‍💻 Телефон");
   await page.getByRole("combobox", { name: "Флаг", exact: true }).click();
@@ -79,7 +84,7 @@ test("user engine access is selectable and survives reopening", async ({ page },
   await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
   await page.getByLabel("Имя", { exact: true }).fill("Phone");
   await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();
-  await page.getByRole("button", { name: "Доступные ядра Phone", exact: true }).click();
+  await chooseUserAction(page, "Phone", "Доступные ядра");
   await expect(page.getByRole("checkbox", { name: /Основной/ })).toBeChecked();
   await expect(page.getByRole("checkbox", { name: /Основной/ })).toBeDisabled();
   await page.getByRole("combobox", { name: "Режим доступа к ядрам", exact: true }).click();
@@ -90,7 +95,7 @@ test("user engine access is selectable and survives reopening", async ({ page },
     .screenshot({ path: info.outputPath("user-core-access.png") });
   await page.getByRole("button", { name: "Сохранить доступ", exact: true }).click();
   await expect.poll(() => access).toEqual({ mode: "selected", instances: [EXTRA_ID] });
-  await page.getByRole("button", { name: "Доступные ядра Phone", exact: true }).click();
+  await chooseUserAction(page, "Phone", "Доступные ядра");
   await expect(page.getByRole("checkbox", { name: /Основной/ })).not.toBeChecked();
   await expect(page.getByRole("checkbox", { name: /Второй/ })).toBeChecked();
   await page.getByRole("checkbox", { name: /Второй/ }).uncheck();
@@ -99,4 +104,41 @@ test("user engine access is selectable and survives reopening", async ({ page },
   ).toBeVisible();
   await page.getByRole("button", { name: "Сохранить доступ", exact: true }).click();
   await expect.poll(() => access.instances).toEqual([]);
+});
+
+test("user actions stay compact and the mobile popup preserves dialog focus", async ({ page }, info) => {
+  await mockPanel(page);
+  if (info.project.name === "mobile") await page.setViewportSize({ width: 320, height: 844 });
+  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
+  await page.getByLabel("Имя", { exact: true }).fill("Phone");
+  await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();
+  const row = page.getByRole("row").filter({ hasText: "Phone" });
+  await expect(row).toBeVisible();
+  expect((await row.boundingBox())!.height).toBeLessThan(96);
+  if (info.project.name === "desktop") {
+    await expect(row.locator(".user-row-actions > button")).toHaveCount(5);
+    await row.screenshot({ path: info.outputPath("compact-actions.png") });
+    return;
+  }
+  const trigger = row.getByRole("button", { name: "Действия Phone", exact: true });
+  await row.locator(".user-cell").scrollIntoViewIfNeeded();
+  await expect(trigger).toBeInViewport();
+  await trigger.click();
+  const popup = page.getByRole("dialog", { name: "Действия Phone", exact: true });
+  await expect(popup.getByRole("button")).toHaveCount(5);
+  const bounds = (await popup.boundingBox())!;
+  expect(bounds.x).toBeGreaterThanOrEqual(0);
+  expect(bounds.x + bounds.width).toBeLessThanOrEqual(320);
+  await page.screenshot({ path: info.outputPath("mobile-actions.png") });
+  await page.keyboard.press("Escape");
+  await expect(popup).toBeHidden();
+  await expect(trigger).toBeFocused();
+  await chooseUserAction(page, "Phone", "Удалить");
+  const dialog = page.getByRole("dialog", { name: "Удалить пользователя?", exact: true });
+  await expect(dialog).toBeFocused();
+  await expect(popup).toBeHidden();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(trigger).toBeFocused();
 });

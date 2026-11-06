@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { PNG } from "pngjs";
 import ZXing from "@zxing/library";
-import { mockPanel } from "../../fixtures";
+import { mockPanel, chooseUserAction } from "../../fixtures";
 const { BinaryBitmap, HybridBinarizer, RGBLuminanceSource, QRCodeReader } = ZXing;
 function decodeQr(png: Buffer): string {
   const image = PNG.sync.read(png);
@@ -33,7 +33,7 @@ test("styled QR codes decode to the exact URI and subscription", async ({ page }
   await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
   await page.getByLabel("Имя", { exact: true }).fill("Player");
   await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();
-  await page.getByRole("button", { name: "Подключение Player", exact: true }).click();
+  await chooseUserAction(page, "Player", "Подключение");
   const frame = page.locator(".connection-qr");
   await expect(frame.getByRole("img", { name: "QR-код подключения", exact: true })).toBeVisible();
   expect(decodeQr(await frame.screenshot())).toBe(links.uri);

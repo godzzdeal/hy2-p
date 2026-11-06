@@ -1,1 +1,2 @@
-export { UserRow, type IUserActions } from "./UserRow";
+export { UserRow } from "./UserRow";
+export { type IUserActions } from "./actions";

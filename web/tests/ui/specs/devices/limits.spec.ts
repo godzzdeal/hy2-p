@@ -1,13 +1,14 @@
+import { chooseUserAction } from "../../fixtures";
 import { test, expect } from "@playwright/test";
 import { mockDevices } from "./fixture";
 test("device limit saves and share dialog supplies the Happ subscription", async ({ page }) => {
   const fixture = await mockDevices(page);
-  await page.getByRole("button", { name: "Устройства Phone", exact: true }).click();
+  await chooseUserAction(page, "Phone", "Устройства");
   await page.getByLabel("Лимит устройств", { exact: true }).fill("1");
   await page.getByRole("button", { name: "Сохранить лимит устройств", exact: true }).click();
   await expect.poll(() => fixture.saved().limit).toBe(1);
   await page.getByRole("button", { name: "Закрыть", exact: true }).click();
-  await page.getByRole("button", { name: "Подключение Phone", exact: true }).click();
+  await chooseUserAction(page, "Phone", "Подключение");
   await expect(page.getByRole("button", { name: "Подключение / Happ", exact: true })).toBeDisabled();
   await expect(page.getByRole("textbox", { name: "Ссылка подключения", exact: true })).toHaveValue(
     "https://panel.test/sub/fixture",
@@ -21,7 +22,7 @@ test("device limit saves and share dialog supplies the Happ subscription", async
 });
 test("device access can be revoked and restored", async ({ page }, info) => {
   const fixture = await mockDevices(page);
-  await page.getByRole("button", { name: "Устройства Phone", exact: true }).click();
+  await chooseUserAction(page, "Phone", "Устройства");
   const row = page.getByRole("region", { name: "iPhone fixture", exact: true });
   await expect(row.getByText("iOS 18", { exact: true })).toBeVisible();
   await expect(row.getByText("Happ/4.12.0", { exact: true })).toBeVisible();

@@ -5,3 +5,10 @@ export async function chooseTheme(page: Page, choice: { label: string; value: st
   await expect(page.locator("html")).toHaveAttribute("data-theme", choice.value);
   await page.evaluate(() => document.fonts.ready);
 }
+
+export async function chooseUserAction(page: Page, user: string, action: string): Promise<void> {
+  const trigger = page.getByRole("button", { name: "Действия " + user, exact: true, includeHidden: true });
+  await trigger.waitFor({ state: "attached" });
+  if (await trigger.isVisible()) await trigger.click();
+  await page.getByRole("button", { name: action + " " + user, exact: true }).click();
+}

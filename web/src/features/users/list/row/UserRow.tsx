@@ -2,36 +2,18 @@ import { UserAvatar } from "./UserAvatar";
 import { EmojiText } from "@/shared/emoji";
 import { FLAG_PREFIX } from "@/shared/flags";
 import { useTranslation } from "react-i18next";
-import { Gauge, QrCode, Trash2, Server, Monitor } from "@/shared/icons";
+import { UserActions, type IUserActions } from "./actions";
 import { type IUser } from "@/features/users/model";
 import { isUserActive } from "@/features/users/model";
 import { type IUserUsage } from "@/features/users/traffic/model";
 import { ConnectionBadge, UsageCell } from "@/features/users/traffic";
 import { cn, formatDate } from "@/shared/lib";
-export interface IUserActions {
-  onEdit: (user: IUser) => void;
-  onShare: (user: IUser) => void;
-  onDelete: (user: IUser) => void;
-  onTraffic: (user: IUser) => void;
-  onAccess: (user: IUser) => void;
-  onDevices: (user: IUser) => void;
-}
 interface IUserRow extends IUserActions {
   user: IUser;
   usage: IUserUsage;
   isTrafficAvailable: boolean;
 }
-export function UserRow({
-  user,
-  usage,
-  isTrafficAvailable,
-  onEdit,
-  onShare,
-  onDelete,
-  onTraffic,
-  onAccess,
-  onDevices,
-}: IUserRow) {
+export function UserRow({ user, usage, isTrafficAvailable, onEdit, ...actions }: IUserRow) {
   const { t } = useTranslation();
   const isQuotaExceeded = usage.limit > 0 && usage.upload + usage.download >= usage.limit;
   const hasAccess = isUserActive(user) && !isQuotaExceeded;
@@ -66,44 +48,8 @@ export function UserRow({
         <UsageCell usage={usage} />
       </td>
       <td>{formatDate(user.expires)}</td>
-      <td>
-        <div className="row-actions">
-          <button
-            className="text-btn"
-            aria-label={t("Устройства ") + user.name}
-            title={t("Устройства пользователя")}
-            onClick={() => onDevices(user)}
-          >
-            <Monitor width={24} height={24} aria-hidden />
-            {t("Устройства")}
-          </button>
-          <button
-            className="text-btn"
-            aria-label={t("Доступные ядра ") + user.name}
-            title={t("Доступные ядра")}
-            onClick={() => onAccess(user)}
-          >
-            <Server width={24} height={24} aria-hidden />
-            {t("Ядра")}
-          </button>
-          <button
-            className="icon-btn"
-            aria-label={t("Подключение ") + user.name}
-            onClick={() => onShare(user)}
-          >
-            <QrCode width={24} height={24} aria-hidden />
-          </button>
-          <button className="icon-btn" aria-label={t("Трафик ") + user.name} onClick={() => onTraffic(user)}>
-            <Gauge width={24} height={24} aria-hidden />
-          </button>
-          <button
-            className="icon-btn danger"
-            aria-label={t("Удалить ") + user.name}
-            onClick={() => onDelete(user)}
-          >
-            <Trash2 width={24} height={24} aria-hidden />
-          </button>
-        </div>
+      <td className="user-actions-cell">
+        <UserActions user={user} {...actions} />
       </td>
     </tr>
   );

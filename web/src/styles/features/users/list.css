@@ -33,6 +33,10 @@ td {
 .user-cell small {
   color: var(--muted);
 }
+.user-row-actions {
+  flex-wrap: nowrap;
+  align-items: center;
+}
 .avatar {
   display: grid;
   place-items: center;

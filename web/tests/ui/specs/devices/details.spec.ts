@@ -1,3 +1,4 @@
+import { chooseUserAction } from "../../fixtures";
 import { test, expect } from "@playwright/test";
 import { mockDevices } from "./fixture";
 test("device load failure can be retried without exposing a save form", async ({ page }) => {
@@ -7,7 +8,7 @@ test("device load failure can be retried without exposing a save form", async ({
     if (hasFailed) return route.fulfill({ status: 503, json: { error: "Устройства временно недоступны" } });
     return route.fallback();
   });
-  await page.getByRole("button", { name: "Устройства Phone", exact: true }).click();
+  await chooseUserAction(page, "Phone", "Устройства");
   await expect(page.getByRole("alert")).toContainText("Устройства временно недоступны");
   await expect(page.getByRole("button", { name: "Сохранить лимит устройств", exact: true })).toHaveCount(0);
   hasFailed = false;
@@ -17,7 +18,7 @@ test("device load failure can be retried without exposing a save form", async ({
 test("an empty device list explains how devices are discovered", async ({ page }) => {
   const fixture = await mockDevices(page);
   fixture.set({ limit: 0, devices: [] });
-  await page.getByRole("button", { name: "Устройства Phone", exact: true }).click();
+  await chooseUserAction(page, "Phone", "Устройства");
   await expect(
     page.getByText("Устройства появятся после обновления подписки в Happ.", { exact: true }),
   ).toBeVisible();
@@ -30,7 +31,7 @@ test("an empty device list explains how devices are discovered", async ({ page }
 
 test("a device record can be forgotten explicitly", async ({ page }) => {
   const fixture = await mockDevices(page);
-  await page.getByRole("button", { name: "Устройства Phone", exact: true }).click();
+  await chooseUserAction(page, "Phone", "Устройства");
   page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: "Удалить запись устройства", exact: true }).click();
   await expect.poll(() => fixture.saved().devices.length).toBe(0);

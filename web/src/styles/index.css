@@ -13,6 +13,7 @@
 @import "./interface/forms/configuration/outbounds.css" layer(components);
 @import "./interface/feedback.css" layer(components);
 @import "./features/users/list.css" layer(components);
+@import "./features/users/actions.css" layer(components);
 @import "./features/users/access/cores.css" layer(components);
 @import "./features/users/flags.css" layer(components);
 @import "./features/session.css" layer(components);

@@ -1,4 +1,5 @@
 export const DEVICES: Record<string, string> = {
+  "Действия ": "Actions ",
   "Модель и ОС сообщает приложение. Статус подключения обновляется автоматически.":
     "The app reports its model and OS. Connection status updates automatically.",
   "Удалить запись устройства": "Delete device record",
