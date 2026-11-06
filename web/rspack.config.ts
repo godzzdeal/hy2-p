@@ -15,7 +15,7 @@ export default defineConfig({
   module: {
     rules: [
       {
-        test: /\.woff2?$/,
+        test: /\.(woff2?|ttf)$/,
         type: "asset/resource",
         generator: { filename: "fonts/[name].[contenthash][ext]" },
       },
@@ -47,8 +47,8 @@ export default defineConfig({
         },
         { from: path.resolve(import.meta.dirname, "assets/pwa/icons"), to: "app-icons" },
         {
-          from: path.resolve(import.meta.dirname, "node_modules/@fontsource/tiny5/LICENSE"),
-          to: "licenses/tiny5.txt",
+          from: path.resolve(import.meta.dirname, "assets/epilepsy-sans/FreeLicense.txt"),
+          to: "licenses/epilepsy-sans.txt",
         },
         {
           from: path.resolve(import.meta.dirname, "node_modules/lucide-react/LICENSE"),

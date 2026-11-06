@@ -83,9 +83,11 @@ test("pixel themes and the emoji menu work with keyboard navigation", async ({ p
     await page.screenshot({ path: info.outputPath("pixel-" + choice.value + ".png"), fullPage: true });
   }
   expect(backgrounds[0]).not.toBe(backgrounds[1]);
-  expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain("Tiny5");
+  expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain("Epilepsy Sans");
   for (const sample of ["Настройки сервера Ёжик", "Server settings 0123456789"]) {
-    expect(await page.evaluate((text) => document.fonts.check('20px "Tiny5"', text), sample)).toBe(true);
+    expect(await page.evaluate((text) => document.fonts.check('26px "Epilepsy Sans"', text), sample)).toBe(
+      true,
+    );
   }
   await page.getByRole("button", { name: "Подписки", exact: true }).click();
   await page.getByRole("button", { name: "Выбрать эмодзи", exact: true }).click();

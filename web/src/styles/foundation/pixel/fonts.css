@@ -1,5 +1,17 @@
-@import "@fontsource/tiny5/latin-400.css";
-@import "@fontsource/tiny5/cyrillic-400.css";
+@font-face {
+  font-family: "Epilepsy Sans";
+  src: url("../../../../assets/epilepsy-sans/EpilepsySans.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Epilepsy Sans";
+  src: url("../../../../assets/epilepsy-sans/EpilepsySansBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600 900;
+  font-display: swap;
+}
 body {
   font-synthesis: none;
   font-kerning: none;
@@ -12,7 +24,7 @@ h2,
 .core-card h2 {
   font-family: var(--font-heading);
   font-size: var(--text-title);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.2;
 }
 h3,
