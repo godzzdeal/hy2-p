@@ -1,0 +1,82 @@
+@layer components {
+  .emoji-trigger {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: var(--space-2);
+  }
+  .emoji-popup {
+    z-index: var(--layer-select);
+    width: min(368px, calc(100vw - var(--space-8)));
+    max-height: var(--radix-popover-content-available-height);
+    background: var(--surface);
+    color: var(--foreground);
+    border: 1px solid var(--line);
+    box-shadow: var(--space-1) var(--space-1) 0 var(--shadow);
+    overflow: hidden;
+  }
+  .emoji-menu-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-3);
+  }
+  .emoji-menu-footer {
+    border-top: 1px solid var(--line);
+  }
+  .emoji-grid {
+    position: relative;
+    inset: auto;
+    padding: 0;
+    width: 100%;
+    min-height: 256px;
+    max-height: min(384px, calc(var(--radix-popover-content-available-height) - 64px));
+    --epr-emoji-size: 32px;
+    --epr-emoji-padding: 4px;
+    --epr-bg-color: var(--surface);
+    --epr-text-color: var(--foreground);
+    --epr-category-label-bg-color: var(--surface);
+    --epr-search-input-bg-color: var(--input);
+    --epr-search-input-text-color: var(--foreground);
+    --epr-category-icon-active-color: var(--accent);
+    --epr-highlight-color: var(--accent);
+  }
+  .emoji-grid button {
+    height: auto;
+    padding: 0;
+    min-height: 0;
+    border: 0;
+    box-shadow: none;
+    transform: none;
+    color: inherit;
+  }
+  .emoji-grid input {
+    font: inherit;
+    color: var(--foreground);
+    background: var(--input);
+    border: 1px solid var(--line);
+    border-radius: 0;
+  }
+  .emoji-grid [data-epr-part="category-label"] {
+    background: var(--surface);
+    color: var(--muted);
+    font: inherit;
+    padding: var(--space-2);
+  }
+  .emoji-grid [data-epr-part="emoji"][data-epr-active],
+  .emoji-grid [data-epr-part="category-tab"][aria-selected="true"] {
+    background: var(--surface-soft);
+    outline: 1px solid var(--accent);
+  }
+  .emoji-grid [data-epr-part="variation-picker"] {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--space-1) var(--space-1) 0 var(--shadow);
+  }
+  .emoji-grid :is(button, input):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+  html:has(.emoji-popup) {
+    scroll-snap-type: none;
+  }
+}

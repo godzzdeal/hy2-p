@@ -1,6 +1,6 @@
 # Веб-интерфейс HY2-P
 
-React, TypeScript, Bun и Rspack. Стили используют CSS, SCSS и Tailwind CSS. Состояние API хранится в TanStack Query, состояние интерфейса — в Zustand.
+React, TypeScript, Bun и Rspack. Все собственные стили написаны на SCSS и подключаются через `src/styles/index.scss`. Состояние API хранится в TanStack Query, состояние интерфейса — в Zustand.
 
 ## Структура
 
@@ -14,6 +14,8 @@ React, TypeScript, Bun и Rspack. Стили используют CSS, SCSS и T
 - `src/config` — маршруты, параметры кеша, переводы и схема свойств Hysteria2.
 - `src/utils` — обработка YAML, эмодзи, дат и другие независимые функции.
 - `src/styles` — темы и оформление.
+
+Sass собирает модули через `@use` и `@forward`, затем PostCSS обрабатывает Tailwind. Порядок слоёв задан в `layers.scss`. `tailwind.scss` подключает только CSS самого Tailwind и его директивы, код библиотеки через Sass не компилируется.
 
 Компонент вызывает хук, хук обращается к сервису. Сервис не импортирует компоненты, хуки или хранилища. Импорты внутри приложения используют `@/`.
 

@@ -1,4 +1,8 @@
 export const MEMBERSHIP = {
+  "Выберите участников. Пользователи из других групп будут перемещены.":
+    "Select members. Users from other groups will be moved here.",
+  "Снятая отметка убирает из группы. При лимите устройств обновите подписку в Happ.":
+    "Unchecking removes group membership. Refresh the Happ subscription when using device limits.",
   "Участники группы {{name}}": "Members of {{name}}",
   Участники: "Members",
   "Выбрать {{name}}": "Select {{name}}",

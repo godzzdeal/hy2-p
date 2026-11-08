@@ -1,52 +1,4 @@
 @layer components {
-  .group-members,
-  .group-members > fieldset {
-    display: grid;
-    gap: var(--space-3);
-    min-width: 0;
-  }
-  .group-members > fieldset {
-    border: 0;
-    padding: 0;
-    margin: 0;
-  }
-  .group-members label:not(.checkbox) {
-    display: grid;
-    gap: var(--space-2);
-    margin: 0;
-  }
-  .group-members label > input {
-    margin: 0;
-  }
-  .group-member-tools {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2);
-    flex-wrap: wrap;
-  }
-  .group-member-list {
-    display: grid;
-    gap: var(--space-1);
-    max-height: 320px;
-    overflow-y: auto;
-  }
-  .group-member-row {
-    margin: 0;
-    padding: var(--space-2);
-    min-width: 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .group-member-row > span {
-    min-width: 0;
-    overflow-wrap: anywhere;
-  }
-  .group-member-row small {
-    margin-top: var(--space-1);
-  }
-  .group-members .row-actions {
-    justify-content: flex-end;
-  }
   .user-group-section {
     border-top: 1px solid var(--line);
   }
@@ -64,7 +16,7 @@
     min-width: 0;
     position: sticky;
     left: 0;
-    width: 100cqw;
+    width: 100%;
     max-width: 100%;
     background: var(--surface);
   }
@@ -95,6 +47,7 @@
   @media (max-width: 760px) {
     .user-group-heading {
       flex-wrap: wrap;
+      width: calc(100cqw - var(--space-1));
     }
     .group-users td:first-child {
       padding-left: var(--space-2);

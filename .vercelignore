@@ -1,6 +1,7 @@
 /.git/
 /.vercel/
 /AGENTS.md
+/.cursor/rules/ui-layout.mdc
 /data/
 /certs/
 /.env*

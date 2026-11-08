@@ -1,22 +1,11 @@
 import { ApplyPortButton } from "@/components/configuration/ports/ApplyPortButton";
-import { Copy } from "@/components/elements/icons";
+import { CommandBlock } from "@/components/elements/CommandBlock";
 import { useDeployment } from "@/hooks/configuration/deployment/use-deployment";
-import { useUiStore } from "@/store/ui-store";
 import { useTranslation } from "react-i18next";
 export function DeploymentNotice() {
   const { t } = useTranslation();
   const query = useDeployment();
-  const { notify, showError } = useUiStore();
   const status = query.data;
-  const command = "sudo hy2-panel restart";
-  async function onCopy() {
-    try {
-      await navigator.clipboard.writeText(command);
-      notify("Скопировано");
-    } catch {
-      showError(new Error(t("Скопируйте команду вручную.")));
-    }
-  }
   if (query.error)
     return (
       <p className="config-note" role="alert">
@@ -48,13 +37,7 @@ export function DeploymentNotice() {
           ) : (
             <div>
               <p>{t("Помощник автоприменения не установлен. Обновите панель новым установщиком.")}</p>
-              <div className="mt-2 flex flex-wrap items-center gap-2">
-                <code>{command}</code>
-                <button type="button" className="text-btn" onClick={() => void onCopy()}>
-                  <Copy width={24} height={24} aria-hidden />
-                  {t("Скопировать команду")}
-                </button>
-              </div>
+              <CommandBlock command="sudo hy2-panel restart" />
             </div>
           )}
           <small>{t("Публичный UDP-порт должен быть разрешён в сетевом экране сервера и хостинга.")}</small>

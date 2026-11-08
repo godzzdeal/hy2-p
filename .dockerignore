@@ -13,3 +13,5 @@ web/dist-demo
 *.pem
 *.key
 mk-arch-demo
+.cursor/rules/ui-layout.mdc
+AGENTS.md

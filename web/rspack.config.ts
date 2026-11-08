@@ -14,6 +14,8 @@ export default defineConfig((env: { demo?: boolean }) => ({
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     alias: {
+      "@assets": path.resolve(import.meta.dirname, "assets"),
+      "@pixel-icons": path.resolve(import.meta.dirname, "node_modules/pixelarticons/svg"),
       "@panel-api": path.resolve(
         import.meta.dirname,
         env.demo ? "src/services/demo/request.ts" : "src/services/http/remote.ts",
@@ -29,8 +31,22 @@ export default defineConfig((env: { demo?: boolean }) => ({
         type: "css",
         use: [
           {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: [
+                  tailwind({ base: path.resolve(import.meta.dirname, "src"), transformAssetUrls: false }),
+                ],
+              },
+            },
+          },
+          {
             loader: "sass-loader",
-            options: { api: "modern-compiler", implementation: require.resolve("sass-embedded") },
+            options: {
+              api: "modern-compiler",
+              implementation: require.resolve("sass-embedded"),
+              sassOptions: { style: "expanded" },
+            },
           },
         ],
       },

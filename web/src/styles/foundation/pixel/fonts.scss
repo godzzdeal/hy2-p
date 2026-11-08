@@ -1,0 +1,74 @@
+@layer components {
+  .logs,
+  .code-editor,
+  code {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-variant-ligatures: none;
+  }
+  @font-face {
+    font-family: "Epilepsy Sans";
+    src: url("@assets/epilepsy-sans/EpilepsySans.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400 500;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Epilepsy Sans";
+    src: url("@assets/epilepsy-sans/EpilepsySansBold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 600 900;
+    font-display: swap;
+  }
+  body {
+    font-synthesis: none;
+    font-kerning: none;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    font-family: var(--font-body);
+    font-size: var(--text-control);
+    font-weight: 400;
+    font-style: normal;
+    color: var(--muted);
+    opacity: 1;
+  }
+  h1,
+  .brand,
+  .login-brand,
+  .metric > strong {
+    font-family: var(--font-heading);
+    font-size: var(--text-title);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  h2,
+  .core-card h2 {
+    font-family: var(--font-heading);
+    font-size: var(--text-heading);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  h3,
+  .eyebrow,
+  .app-sidebar nav button {
+    font-size: var(--text-body);
+  }
+  .brand-sub,
+  .user-name-hint,
+  .emoji-menu-footer {
+    font-family: var(--font-body);
+    font-size: var(--text-small);
+    line-height: 1.4;
+  }
+  .config-tabs button {
+    font-size: var(--text-control);
+  }
+  .logs,
+  .code-editor,
+  code,
+  .structured-textarea,
+  .generated-password {
+    font-size: var(--text-code);
+  }
+}

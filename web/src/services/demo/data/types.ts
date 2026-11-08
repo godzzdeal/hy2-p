@@ -26,6 +26,6 @@ export const DEMO = {
   groupId: "1111111111111111",
   secondGroupId: "2222222222222222",
   deviceId: "demo-phone",
-  version: "v0.7.2",
+  version: "v0.7.3",
   coreVersion: "v2.13.0",
 } as const;

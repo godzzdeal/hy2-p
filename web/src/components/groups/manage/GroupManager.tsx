@@ -11,6 +11,7 @@ import { useGroups } from "@/hooks/groups/hooks";
 import { type IGroup } from "@/services/groups/types";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { cn } from "@/utils/cn";
 export function GroupManager({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
   const query = useGroups();
@@ -22,7 +23,11 @@ export function GroupManager({ onClose }: { onClose: () => void }) {
     groupUsers(users.data ?? [], query.data ?? EMPTY_GROUPS).map((section) => [section.id, section.total]),
   );
   return (
-    <Modal title={t("Группы пользователей")} onClose={onClose}>
+    <Modal
+      className={cn({ "group-members-dialog": !!members })}
+      title={members ? t("Участники группы {{name}}", { name: members.name }) : t("Группы пользователей")}
+      onClose={onClose}
+    >
       {members ? (
         <GroupMembers group={members} onClose={() => setMembers(undefined)} />
       ) : isEditing ? (

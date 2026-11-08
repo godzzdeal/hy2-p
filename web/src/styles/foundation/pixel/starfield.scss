@@ -1,0 +1,98 @@
+@layer components {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background: var(--star-color);
+    mask-image: url("@assets/starfield.svg");
+    mask-size: 2048px 1536px;
+    opacity: 0.55;
+  }
+  .space-scene {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .space-scene > * {
+    position: absolute;
+  }
+  .space-earth {
+    top: var(--space-16);
+    right: var(--space-16);
+    width: var(--planet-size);
+    height: var(--planet-size);
+    color: var(--planet-color);
+    opacity: 0.55;
+  }
+  .space-orbit {
+    top: var(--space-4);
+    right: var(--space-4);
+    width: var(--orbit-size);
+    height: var(--orbit-size);
+    border: 1px dashed var(--star-color);
+    border-radius: 50%;
+    opacity: 0.45;
+  }
+  .space-moon {
+    left: calc(var(--sidebar-width) + var(--space-6));
+    bottom: var(--space-6);
+    width: var(--moon-size);
+    height: var(--moon-size);
+    color: var(--planet-shadow);
+  }
+  .space-sparkles {
+    right: var(--space-6);
+    bottom: var(--space-16);
+    color: var(--star-color);
+  }
+  .space-star {
+    top: 50%;
+    right: var(--space-5);
+    color: var(--accent);
+    opacity: 0.5;
+  }
+  .login .space-orbit {
+    top: 12%;
+    right: 8%;
+  }
+  .login .space-earth {
+    top: calc(12% + var(--space-12));
+    right: calc(8% + var(--space-12));
+  }
+  .login .space-moon {
+    left: 12%;
+    bottom: 12%;
+  }
+  .app-header {
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+  }
+  @media (max-width: 760px) {
+    .space-earth {
+      top: 288px;
+      right: var(--space-6);
+      opacity: 0.25;
+    }
+    .space-orbit {
+      top: 240px;
+      right: calc(-1 * var(--space-6));
+      opacity: 0.25;
+    }
+    .space-moon {
+      left: var(--space-4);
+      bottom: var(--space-4);
+      opacity: 0.4;
+    }
+    .login .space-earth {
+      top: var(--space-16);
+      right: var(--space-8);
+    }
+    .login .space-orbit {
+      top: var(--space-4);
+      right: calc(-1 * var(--space-4));
+    }
+  }
+}

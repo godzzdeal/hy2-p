@@ -34,3 +34,24 @@ test("disabling cloud password requires the current cloud password", async ({ pa
   await signIn(page);
   await expect(page.getByRole("heading", { name: "Настройки панели", exact: true })).toBeVisible();
 });
+
+test("cloud password content has padding and its reset command can be copied", async ({ page }, info) => {
+  await mockCloud(page, false, true);
+  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  const section = page.locator("#cloud-password");
+  const geometry = await section.locator(".form-body").evaluate(element => {
+    const rect = element.getBoundingClientRect();
+    const input = element.querySelector("input")!.getBoundingClientRect();
+    const button = element.querySelector(".cloud-password-form > button")!.getBoundingClientRect();
+    return { left: input.left - rect.left, right: rect.right - input.right, bottom: rect.bottom - button.bottom };
+  });
+  expect(geometry.left).toBeGreaterThanOrEqual(16);
+  expect(geometry.right).toBeGreaterThanOrEqual(16);
+  expect(geometry.bottom).toBeGreaterThanOrEqual(16);
+  await page.evaluate(() => Object.defineProperty(navigator, "clipboard", { value: { writeText: async (text: string) => { document.body.dataset.copied = text; } } }));
+  const command = section.getByRole("group", { name: "Команда для сервера", exact: true });
+  await command.getByRole("button", { name: "Скопировать команду", exact: true }).click();
+  await expect(page.getByText("Скопировано", { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.body.dataset.copied)).toBe("sudo hy2-panel cloud-password-reset");
+  await section.screenshot({ path: info.outputPath("cloud-spacing.png") });
+});

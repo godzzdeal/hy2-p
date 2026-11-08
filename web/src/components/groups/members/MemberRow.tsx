@@ -21,9 +21,11 @@ export function MemberRow({ user, groupName, isChecked, onToggle }: IMemberRow) 
         onChange={(event) => onToggle(user.id, event.target.checked)}
       />
       <UserAvatar name={user.name} />
-      <span>
-        <EmojiText value={user.name.replace(FLAG_PREFIX, "")} />
-        <small>{groupName ?? t("Без группы")}</small>
+      <span className="group-member-info">
+        <strong className="group-member-name">
+          <EmojiText value={user.name.replace(FLAG_PREFIX, "")} />
+        </strong>
+        <small className="group-member-group">{groupName ?? t("Без группы")}</small>
       </span>
     </label>
   );

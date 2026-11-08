@@ -73,3 +73,32 @@ test("quick-start content and navigation stay inside their bounds", async ({ pag
   }
   await page.screenshot({ path: info.outputPath("navigation-spacing.png"), fullPage: true });
 });
+
+test("page forms share padding and content stays inside the viewport", async ({ page }, info) => {
+  await mockPanel(page);
+  for (const title of ["Обзор", "Пользователи", "Подписки", "Ядра", "Конфигурация", "Ядро и журнал", "Настройки"]) {
+    await page.locator(".app-sidebar nav").getByRole("button", { name: title, exact: true }).click();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    if (title === "Настройки") await expect(page.locator("#cloud-password input").first()).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+    const forms = await page.locator(".form-body").evaluateAll(elements => elements.map(element => {
+      const style = getComputedStyle(element);
+      return { left: parseFloat(style.paddingLeft), right: parseFloat(style.paddingRight), top: parseFloat(style.paddingTop), bottom: parseFloat(style.paddingBottom) };
+    }));
+    for (const padding of forms) {
+      expect(Math.min(padding.left, padding.right, padding.top, padding.bottom)).toBeGreaterThanOrEqual(16);
+    }
+    await page.screenshot({ path: info.outputPath("page-" + title + ".png"), fullPage: true });
+  }
+});
+
+test("motion is short and respects the reduced-motion preference", async ({ page }) => {
+  await mockPanel(page);
+  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  expect(await dialog.evaluate(element => getComputedStyle(element).animationDuration)).toBe("0.2s");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  expect(await dialog.evaluate(element => getComputedStyle(element).animationName)).toBe("none");
+  expect(await page.locator("html").evaluate(element => getComputedStyle(element).scrollBehavior)).toBe("auto");
+});

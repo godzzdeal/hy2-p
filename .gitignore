@@ -20,5 +20,6 @@
 /.ci-images/
 /hy2-panel-linux-*.tar.gz*
 /AGENTS.md
+/.cursor/rules/ui-layout.mdc
 __pycache__/
 /mk-arch-demo/

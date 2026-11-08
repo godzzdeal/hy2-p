@@ -1,4 +1,5 @@
 import { Select } from "@/components/ui/select/Select";
+import { CommandBlock } from "@/components/elements/CommandBlock";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { certificateMode } from "@/utils/configuration/structured/yaml/fields";
 import { useTranslation } from "react-i18next";
@@ -26,9 +27,15 @@ export function CertificateMode({
       </label>
       <p>
         {t(
-          "ACME продлевает сертификаты, пока ядро работает. В Docker HTTP-проверка панели и ядра использует общий внешний TCP-порт 80. После её включения выполните sudo hy2-panel restart. TLS-проверка требует отдельного проброса TCP 443; DNS-проверка не занимает порты.",
+          "ACME продлевает сертификаты, пока ядро работает. HTTP-проверке нужен TCP 80, TLS-проверке TCP 443. DNS-проверка не требует входящих портов.",
         )}
       </p>
+      {isAcme && (
+        <div className="certificate-restart">
+          <p className="caption">{t("После включения общего HTTP-порта ACME перезапустите панель:")}</p>
+          <CommandBlock command="sudo hy2-panel restart" />
+        </div>
+      )}
     </div>
   );
 }

@@ -19,12 +19,7 @@ export function GroupMembers({ group, onClose }: { group: IGroup; onClose: () =>
   }
   return (
     <form className="group-members" onSubmit={onSubmit}>
-      <h3>{group.name}</h3>
-      <p className="caption">
-        {t(
-          "Отметьте участников группы. Пользователи из других групп будут перемещены, снятые отметки уберут пользователей из этой группы.",
-        )}
-      </p>
+      <p className="caption">{t("Выберите участников. Пользователи из других групп будут перемещены.")}</p>
       <QueryState isLoading={isLoading} error={error} />
       <fieldset disabled={isLoading || !!error || save.isPending}>
         <label>
@@ -78,9 +73,7 @@ export function GroupMembers({ group, onClose }: { group: IGroup; onClose: () =>
         )}
       </fieldset>
       <p className="caption">
-        {t(
-          "Правила доступа обновятся в течение нескольких секунд. При включении лимита устройств обновите подписку в Happ.",
-        )}
+        {t("Снятая отметка убирает из группы. При лимите устройств обновите подписку в Happ.")}
       </p>
       <div className="row-actions">
         <button type="button" className="secondary" onClick={onClose} disabled={save.isPending}>

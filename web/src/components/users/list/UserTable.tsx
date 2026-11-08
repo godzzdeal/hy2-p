@@ -8,7 +8,7 @@ export function UserTable({ children, hasStatus = true }: { children: ReactNode;
     <>
       {hasStatus && <TrafficStatus />}
       <div className="table-wrap">
-        <table>
+        <table className="users-table">
           <thead>
             <tr>
               <th>{t("Пользователь")}</th>

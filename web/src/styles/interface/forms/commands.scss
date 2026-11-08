@@ -1,0 +1,31 @@
+@layer components {
+  .command-block {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+    padding: var(--space-3);
+    border: 1px solid var(--command-border);
+    background: var(--command-background);
+    color: var(--command-foreground);
+    pre {
+      margin: 0;
+      min-width: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    code {
+      display: block;
+      user-select: all;
+      font-family: var(--font-mono);
+      line-height: 1.5;
+    }
+    .secondary {
+      background: transparent;
+      border-color: var(--command-border);
+      color: inherit;
+      box-shadow: none;
+    }
+  }
+}

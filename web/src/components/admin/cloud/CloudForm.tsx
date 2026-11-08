@@ -1,4 +1,5 @@
 import { CloudFields } from "@/components/admin/cloud/CloudFields";
+import { CommandBlock } from "@/components/elements/CommandBlock";
 import { useSaveCloudPassword } from "@/hooks/admin/use-cloud-password";
 import { type ICloudPasswordChange } from "@/services/session/cloud-password";
 import { useUiStore } from "@/store/ui-store";
@@ -49,7 +50,7 @@ export function CloudForm({ isEnabled }: { isEnabled: boolean }) {
       <p className="caption">
         {t("После сохранения все сеансы завершатся. Если забудете облачный пароль, выполните на сервере:")}
       </p>
-      <code>sudo hy2-panel cloud-password-reset</code>
+      <CommandBlock command="sudo hy2-panel cloud-password-reset" />
       <button className="primary" disabled={save.isPending}>
         {t(
           save.isPending

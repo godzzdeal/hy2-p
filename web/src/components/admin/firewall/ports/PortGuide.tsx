@@ -3,17 +3,15 @@ import { PortHelp } from "@/components/admin/firewall/ports/PortHelp";
 import { QueryState } from "@/components/ui/QueryState";
 import { useRecommendedPorts } from "@/hooks/admin/firewall/use-recommended-ports";
 import { useTranslation } from "react-i18next";
+import { groupRecommendedPorts } from "@/services/admin/firewall/recommendations";
 export function PortGuide() {
   const { t } = useTranslation();
   const query = useRecommendedPorts();
+  const ports = groupRecommendedPorts(query.data?.ports ?? []);
   return (
     <section className="firewall-guide" aria-label={t("Какие порты открыть")}>
       <h3>{t("Какие порты открыть")}</h3>
-      <p className="caption">
-        {t(
-          "Ниже порты из сохранённых настроек и текущей публикации Docker. Это рекомендации, доступность извне не проверялась.",
-        )}
-      </p>
+      <p className="caption">{t("Порты из настроек панели и ядер. Доступность извне не проверена.")}</p>
       <QueryState isLoading={query.isPending} error={query.error} />
       {query.error && (
         <button className="secondary" onClick={() => void query.refetch()}>
@@ -21,8 +19,8 @@ export function PortGuide() {
         </button>
       )}
       <ul className="firewall-ports">
-        {query.data?.ports?.map((port, index) => (
-          <PortRow key={`${port.source}-${port.purpose}-${port.port}-${index}`} port={port} />
+        {ports.map((port) => (
+          <PortRow key={`${port.port}/${port.protocol}`} port={port} />
         ))}
       </ul>
       {!!query.data?.warnings?.length && (

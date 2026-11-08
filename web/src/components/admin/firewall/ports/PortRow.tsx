@@ -1,52 +1,29 @@
-import { Copy } from "@/components/elements/icons";
-import { PORT_PURPOSES, type IRecommendedPort } from "@/services/admin/firewall/ports";
-import { useUiStore } from "@/store/ui-store";
+import { CommandBlock } from "@/components/elements/CommandBlock";
+import { PORT_PURPOSES } from "@/services/admin/firewall/ports";
+import { type IPortSummary } from "@/services/admin/firewall/recommendations";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
-export function PortRow({ port }: { port: IRecommendedPort }) {
+export function PortRow({ port }: { port: IPortSummary }) {
   const { t } = useTranslation();
-  const { notify } = useUiStore();
-  const [isManual, setManual] = useState(false);
   const command = `sudo ufw insert 1 allow ${port.port}/${port.protocol}`;
-  async function onCopy() {
-    try {
-      await navigator.clipboard.writeText(command);
-      notify("Скопировано");
-    } catch {
-      setManual(true);
-      notify("Скопируйте команду вручную");
-    }
-  }
   return (
     <li className="firewall-port-row">
-      <strong>
-        {port.port}/{port.protocol.toUpperCase()}
-      </strong>
-      <div className="firewall-port-description">
-        <span>{t(PORT_PURPOSES[port.purpose])}</span>
-        <small>{port.source}</small>
-        {port.pending && (
-          <p className="caption">{t("Изменение ещё нужно применить или опубликовать порт Docker.")}</p>
-        )}
+      <div className="firewall-port-info">
+        <strong className="firewall-port-number">
+          {port.port}/{port.protocol.toUpperCase()}
+        </strong>
+        <div className="firewall-port-description">
+          <span>{port.purposes.map((purpose) => t(PORT_PURPOSES[purpose])).join(", ")}</span>
+          <small>{port.sources.join(", ")}</small>
+          {port.pending && (
+            <p className="caption">{t("Изменение ещё нужно применить или опубликовать порт Docker.")}</p>
+          )}
+        </div>
       </div>
-      <button
-        type="button"
-        className="icon-btn secondary"
-        aria-label={t("Скопировать команду для {{port}}", { port: `${port.port}/${port.protocol}` })}
-        title={command}
-        onClick={() => void onCopy()}
-      >
-        <Copy width={24} height={24} aria-hidden />
-      </button>
-      {isManual && (
-        <input
-          className="firewall-manual-command"
-          readOnly
-          value={command}
-          aria-label={t("Команда открытия порта")}
-          onFocus={(event) => event.target.select()}
-        />
-      )}
+      <CommandBlock
+        command={command}
+        label={t("Команда открытия порта")}
+        copyLabel={t("Скопировать команду для {{port}}", { port: `${port.port}/${port.protocol}` })}
+      />
     </li>
   );
 }

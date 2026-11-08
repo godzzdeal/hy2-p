@@ -1,0 +1,47 @@
+@layer components {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) var(--input);
+  }
+  @supports selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-width: auto;
+      scrollbar-color: auto;
+    }
+    ::-webkit-scrollbar {
+      width: var(--space-3);
+      height: var(--space-3);
+    }
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+      background: var(--input);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--muted);
+      border: 2px solid var(--input);
+      border-radius: 0;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+  }
+  @media (pointer: coarse) {
+    ::-webkit-scrollbar {
+      width: var(--space-4);
+      height: var(--space-4);
+    }
+  }
+  @media (forced-colors: active) {
+    * {
+      scrollbar-color: auto;
+    }
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+      background: Canvas;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: ButtonText;
+      border-color: Canvas;
+    }
+  }
+}

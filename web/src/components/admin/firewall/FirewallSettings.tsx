@@ -1,5 +1,6 @@
 import { PortRuleForm } from "@/components/admin/firewall/PortRuleForm";
 import { PortGuide } from "@/components/admin/firewall/ports/PortGuide";
+import { CommandBlock } from "@/components/elements/CommandBlock";
 import { useFirewall } from "@/hooks/admin/firewall/use-firewall";
 import { useTranslation } from "react-i18next";
 export function FirewallSettings() {
@@ -31,9 +32,10 @@ export function FirewallSettings() {
           )}
         </p>
         {!result && (
-          <p className="caption">
-            {t("Для подключения помощника выполните на сервере: sudo hy2-panel firewall-setup")}
-          </p>
+          <div className="firewall-helper">
+            <p className="caption">{t("Для подключения помощника выполните на сервере:")}</p>
+            <CommandBlock command="sudo hy2-panel firewall-setup" />
+          </div>
         )}
         {error && (
           <p className="inline-error" role="alert">

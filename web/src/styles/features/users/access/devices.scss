@@ -1,0 +1,16 @@
+@layer components {
+  .user-devices {
+    min-width: 0;
+  }
+  .user-devices > h3 {
+    margin-block: var(--space-4);
+  }
+  .device-list {
+    display: grid;
+    gap: var(--space-3);
+    margin-block: var(--space-3);
+  }
+  .user-devices > .caption {
+    margin-block: var(--space-3);
+  }
+}

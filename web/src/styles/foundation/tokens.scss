@@ -1,0 +1,118 @@
+@layer components {
+  :root {
+    --command-background: #071320;
+    --command-foreground: #eaf6ff;
+    --command-border: #4e6d85;
+    --motion-fast: 140ms;
+    --motion-normal: 200ms;
+    --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    color-scheme: light dark;
+    --font-body: "Epilepsy Sans", sans-serif;
+    --font-heading: "Epilepsy Sans", sans-serif;
+    --font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+    --star-color: #91a8aa;
+    --planet-color: #d9bda1;
+    --planet-shadow: #bc9e8f;
+    --background: #e8e8df;
+    --surface: #fffdf4;
+    --surface-soft: #dce9e6;
+    --input: #eef1e8;
+    --syntax-string: #326536;
+    --syntax-number: #8c4f12;
+    --editor-selection: #c9dedb;
+    --foreground: #1b303b;
+    --muted: #4e6670;
+    --line: #9aafad;
+    --accent: #096d79;
+    --accent-text: #fffdf4;
+    --danger: #a52d23;
+    --danger-bg: #fff0ed;
+    --success-bg: #e3f4f8;
+    --backdrop: #101510a6;
+    --shadow: #b3c3bc;
+    --qr-background: #ffffff;
+    --qr-foreground: #081320;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --radius-sm: 0px;
+    --radius-md: 0px;
+    --radius-lg: 0px;
+    --text-small: 18px;
+    --text-code: 14px;
+    --text-body: 20px;
+    --text-title: 26px;
+    --text-heading: 24px;
+    --sidebar-width: 240px;
+    --control-height: 36px;
+    --header-height: 48px;
+    --icon-size: 24px;
+    --orbit-size: 192px;
+    --planet-size: 96px;
+    --moon-size: 48px;
+    --content-width: 1280px;
+    --layer-navigation: 10;
+    --dialog-width: 512px;
+    --layer-feedback: 50;
+    --layer-dialog: 20;
+    --layer-select: 60;
+    --text-control: 20px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --background: #081320;
+      --star-color: #304c65;
+      --planet-color: #34436b;
+      --planet-shadow: #252c4c;
+      --surface: #101f31;
+      --surface-soft: #1b324a;
+      --input: #0a192a;
+      --syntax-string: #a6d799;
+      --syntax-number: #e5bd88;
+      --editor-selection: #27445c;
+      --foreground: #edf5ec;
+      --muted: #b3c7d8;
+      --line: #3b526b;
+      --accent: #78e0d2;
+      --accent-text: #052c34;
+      --danger: #ffb4a9;
+      --danger-bg: #322321;
+      --success-bg: #172f3b;
+      --backdrop: #06090dbd;
+      --shadow: #020914;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --background: #081320;
+    --star-color: #304c65;
+    --planet-color: #34436b;
+    --planet-shadow: #252c4c;
+    --surface: #101f31;
+    --surface-soft: #1b324a;
+    --input: #0a192a;
+    --syntax-string: #a6d799;
+    --syntax-number: #e5bd88;
+    --editor-selection: #27445c;
+    --foreground: #edf5ec;
+    --muted: #b3c7d8;
+    --line: #3b526b;
+    --accent: #78e0d2;
+    --accent-text: #052c34;
+    --danger: #ffb4a9;
+    --danger-bg: #322321;
+    --success-bg: #172f3b;
+    --backdrop: #06090dbd;
+    --shadow: #020914;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+  }
+}

@@ -33,7 +33,7 @@ func Proxy(socket string) http.HandlerFunc {
 		request.Header.Set("Content-Type", "application/json")
 		response, err := client.Do(request)
 		if err != nil {
-			transport.Fail(w, errors.New("Помощник firewall недоступен. На сервере выполните sudo hy2-panel firewall-setup"), 503)
+			transport.Fail(w, errors.New("Помощник firewall недоступен"), 503)
 			return
 		}
 		defer response.Body.Close()

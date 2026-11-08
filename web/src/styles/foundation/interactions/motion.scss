@@ -1,0 +1,76 @@
+@layer components {
+  @keyframes panel-appear {
+    from {
+      opacity: 0;
+      transform: translateY(var(--space-2));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes panel-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes panel-disappear {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(var(--space-1));
+    }
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  .modal,
+  .select-popup[data-state="open"],
+  .user-action-popup[data-state="open"],
+  .emoji-popup {
+    animation: panel-appear var(--motion-normal) var(--motion-ease);
+  }
+  .overlay,
+  .page-heading,
+  .content > .card,
+  .content > .overview-grid,
+  .group-users:not([hidden]) {
+    animation: panel-fade var(--motion-normal) var(--motion-ease);
+  }
+  .select-popup[data-state="closed"],
+  .user-action-popup[data-state="closed"] {
+    animation: panel-disappear var(--motion-fast) var(--motion-ease);
+  }
+  .primary,
+  .secondary,
+  .icon-btn,
+  .select-trigger {
+    transition:
+      transform var(--motion-fast) var(--motion-ease),
+      opacity var(--motion-fast) var(--motion-ease);
+  }
+  .user-group-toggle svg,
+  .firewall-help summary svg {
+    transition: transform var(--motion-normal) var(--motion-ease);
+  }
+  input[type="checkbox"]::before {
+    transition: opacity var(--motion-fast) var(--motion-ease);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
