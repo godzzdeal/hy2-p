@@ -1,10 +1,10 @@
-import { test } from "node:test";
-import assert from "node:assert/strict";
 import {
-  parseProfileTitle,
   formatProfileTitle,
+  parseProfileTitle,
   renameProfileTitle,
-} from "@/features/admin/announcement/profile/title";
+} from "@/utils/admin/announcement/profile/title";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 test("subscription flag and emoji can be edited independently", () => {
   const value = parseProfileTitle("🇳🇱 🚀 Нидерланды");
   assert.deepEqual(value, { flag: "🇳🇱", emoji: "🚀", name: "Нидерланды" });

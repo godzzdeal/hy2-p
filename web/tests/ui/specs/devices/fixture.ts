@@ -1,6 +1,6 @@
+import { type IDevices } from "@/services/users/devices/types";
 import { type Page } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
-import { type IDevices } from "@/features/users/devices/model";
 export async function mockDevices(page: Page) {
   await mockPanel(page);
   let data: IDevices = {

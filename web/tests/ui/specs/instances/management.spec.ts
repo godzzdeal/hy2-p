@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { mockInstances } from "./fixture";
 test("create, configure, rename and remove an independent core", async ({ page }, info) => {
   const fixture = await mockInstances(page);

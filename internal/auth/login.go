@@ -15,26 +15,8 @@ func (handler *Handler) Login(writer http.ResponseWriter, request *http.Request)
 		return
 	}
 	ip, _, _ := net.SplitHostPort(request.RemoteAddr)
-	handler.mu.Lock()
 	now := time.Now()
-	recent := []time.Time{}
-	for _, sessionToken := range handler.attempts[ip] {
-		if now.Sub(sessionToken) < time.Minute {
-			recent = append(recent, sessionToken)
-		}
-	}
-	blocked := len(recent) >= 5
-	recent = append(recent, now)
-	handler.attempts[ip] = recent
-	if len(handler.attempts) > 10000 {
-		for key, value := range handler.attempts {
-			if len(value) == 0 || now.Sub(value[len(value)-1]) > time.Minute {
-				delete(handler.attempts, key)
-			}
-		}
-	}
-	handler.mu.Unlock()
-	if blocked {
+	if !handler.attempts.Allow(ip, now) {
 		transport.Fail(writer, errors.New("Слишком много попыток. Подождите минуту"), 429)
 		return
 	}

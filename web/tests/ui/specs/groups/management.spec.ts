@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { mockGroups } from "./fixture";
 test("group editor saves per-member quotas and reopens the saved policy", async ({ page }, info) => {
   const fixture = await mockGroups(page);
@@ -15,6 +15,8 @@ test("group editor saves per-member quotas and reopens the saved policy", async 
   await page.getByRole("button", { name: /^Friends/ }).click();
   await expect(page.getByLabel("Лимит устройств на участника", { exact: true })).toHaveValue("3");
   await expect(page.getByLabel("Лимит трафика на участника, ГБ", { exact: true })).toHaveValue("2");
-  await page.getByRole("dialog", { name: "Группы пользователей", exact: true }).screenshot({ path: info.outputPath("group-editor.png") });
+  await page
+    .getByRole("dialog", { name: "Группы пользователей", exact: true })
+    .screenshot({ path: info.outputPath("group-editor.png") });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

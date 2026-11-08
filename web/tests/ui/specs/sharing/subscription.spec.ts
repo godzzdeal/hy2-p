@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
 test("announcement checkbox supports its label, keyboard and saving", async ({ page }, info) => {
   const panel = await mockPanel(page);

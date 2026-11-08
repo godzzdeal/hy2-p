@@ -1,9 +1,12 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { mockPanel } from "../fixtures";
 test("sidebar collapse is saved and mobile keeps horizontal navigation", async ({ page }, info) => {
   await mockPanel(page);
   const toggle = page.getByRole("button", { name: "Свернуть меню", exact: true });
-  if (info.project.name === "mobile") { await expect(toggle).toBeHidden(); return; }
+  if (info.project.name === "mobile") {
+    await expect(toggle).toBeHidden();
+    return;
+  }
   const before = await page.locator("main").boundingBox();
   await toggle.click();
   const collapsed = await page.locator("main").boundingBox();

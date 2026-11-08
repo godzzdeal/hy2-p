@@ -1,5 +1,5 @@
+import { expect, test } from "@playwright/test";
 import { chooseUserAction } from "../../fixtures";
-import { test, expect } from "@playwright/test";
 import { mockDevices } from "./fixture";
 test("device load failure can be retried without exposing a save form", async ({ page }) => {
   await mockDevices(page);

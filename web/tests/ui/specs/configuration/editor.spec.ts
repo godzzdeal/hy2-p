@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
 test("YAML window highlights syntax, catches errors and keeps the draft", async ({ page }, info) => {
   const panel = await mockPanel(page);

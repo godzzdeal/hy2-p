@@ -1,7 +1,7 @@
-import { test } from "node:test";
+import { DOCUMENTATION_SECTIONS } from "@/config/hysteria/structured/schema/documentation/sections";
 import assert from "node:assert/strict";
+import { test } from "node:test";
 import reference from "./server-fields.json";
-import { DOCUMENTATION_SECTIONS } from "@/features/configuration/structured/schema/documentation";
 test("forms cover every property from the official configuration examples", () => {
   assert.ok(reference.fields.includes("disableUDP"));
   assert.ok(reference.fields.includes("outbounds[].direct.fastOpen"));

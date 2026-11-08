@@ -1,8 +1,10 @@
-import { useSession, LoginPage } from "@/features/session";
-import { Feedback, QueryState } from "@/shared/ui";
-import { Dashboard } from "./layout";
-import { useTheme } from "@/app/state";
-import { useInstall } from "./install";
+import { Dashboard } from "@/components/layout/Dashboard";
+import { Feedback } from "@/components/ui/Feedback";
+import { QueryState } from "@/components/ui/QueryState";
+import { useInstall } from "@/hooks/install/use-install";
+import { useSession } from "@/hooks/session/use-session";
+import { useTheme } from "@/hooks/use-theme";
+import { LoginPage } from "@/pages/panel/LoginPage";
 export function App() {
   useTheme();
   useInstall();

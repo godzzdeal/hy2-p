@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
 test("UDP application survives reload and expired login", async ({ page }) => {
   await mockPanel(page);

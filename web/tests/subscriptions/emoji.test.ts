@@ -1,8 +1,8 @@
-import { test } from "node:test";
+import { emojiAsset, leadingEmoji, replaceEmoji, stripEmoji } from "@/utils/emoji/model";
+import { emojiParts } from "@/utils/emoji/text/parts";
 import assert from "node:assert/strict";
-import { leadingEmoji, replaceEmoji, stripEmoji, emojiAsset } from "@/shared/emoji/model";
-import { emojiParts } from "@/shared/emoji/text/parts";
 import { existsSync } from "node:fs";
+import { test } from "node:test";
 test("user emoji changes preserve the name and complete Unicode sequences", () => {
   assert.equal(replaceEmoji("🇩🇪 Телефон", "🚀"), "🚀 Телефон");
   assert.equal(replaceEmoji("🚀 Телефон", "👩🏽‍💻"), "👩🏽‍💻 Телефон");

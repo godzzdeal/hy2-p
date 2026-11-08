@@ -1,1 +1,0 @@
-export { InstallCard } from "./InstallCard";

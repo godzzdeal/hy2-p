@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
 test("property names use the pixel font and neighbouring controls align", async ({ page }, info) => {
   await mockPanel(page);

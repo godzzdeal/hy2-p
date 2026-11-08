@@ -1,9 +1,11 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { chooseUserAction } from "../../fixtures";
-import { mockGroups, GROUP, GROUP_ID, USERS } from "./fixture";
+import { GROUP, GROUP_ID, mockGroups, USERS } from "./fixture";
 test("membership filters users and deleting a group keeps its users", async ({ page }, info) => {
   const fixture = await mockGroups(page, { groups: [GROUP], memberships: {} });
-  await page.getByRole("button", { name: "Изменить группу пользователя " + USERS[0].id, exact: true }).click();
+  await page
+    .getByRole("button", { name: "Изменить группу пользователя " + USERS[0].id, exact: true })
+    .click();
   await page.getByRole("combobox", { name: "Группа", exact: true }).click();
   await page.getByRole("option", { name: GROUP.name, exact: true }).click();
   await page.getByRole("button", { name: "Сохранить группу", exact: true }).click();
@@ -27,11 +29,19 @@ test("membership filters users and deleting a group keeps its users", async ({ p
 });
 test("a failed membership change rolls back the optimistic badge", async ({ page }) => {
   await mockGroups(page, { groups: [GROUP], memberships: {} });
-  await page.route(/\/api\/users\/[^/]+\/group$/, (route) => route.fulfill({ status: 409, json: { error: "Сначала отключите лишние устройства пользователя" } }));
-  await page.getByRole("button", { name: "Изменить группу пользователя " + USERS[0].id, exact: true }).click();
+  await page.route(/\/api\/users\/[^/]+\/group$/, (route) =>
+    route.fulfill({ status: 409, json: { error: "Сначала отключите лишние устройства пользователя" } }),
+  );
+  await page
+    .getByRole("button", { name: "Изменить группу пользователя " + USERS[0].id, exact: true })
+    .click();
   await page.getByRole("combobox", { name: "Группа", exact: true }).click();
   await page.getByRole("option", { name: GROUP.name, exact: true }).click();
   await page.getByRole("button", { name: "Сохранить группу", exact: true }).click();
-  await expect(page.getByText("Сначала отключите лишние устройства пользователя", { exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Изменить группу пользователя " + USERS[0].id, exact: true })).toContainText("Без группы");
+  await expect(
+    page.getByText("Сначала отключите лишние устройства пользователя", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Изменить группу пользователя " + USERS[0].id, exact: true }),
+  ).toContainText("Без группы");
 });

@@ -1,5 +1,5 @@
-import { test, expect } from "@playwright/test";
-import { mockPanel, chooseTheme } from "../fixtures";
+import { expect, test } from "@playwright/test";
+import { chooseTheme, mockPanel } from "../fixtures";
 const LATEST = {
   current: "v0.2.1",
   latest: "v0.5.0",

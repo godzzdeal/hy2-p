@@ -1,6 +1,6 @@
+import { expect, test } from "@playwright/test";
 import { chooseUserAction } from "../../fixtures";
-import { test, expect } from "@playwright/test";
-import { mockInstances, EXTRA_ID } from "./fixture";
+import { EXTRA_ID, mockInstances } from "./fixture";
 test("switching cores protects drafts and scopes logs and updates", async ({ page }) => {
   const fixture = await mockInstances(page, true);
   await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
@@ -62,5 +62,18 @@ test("connection links let the user select a core", async ({ page }) => {
   await page.getByRole("button", { name: "Подписка", exact: true }).click();
   await expect(page.getByRole("textbox", { name: "Ссылка подключения", exact: true })).toHaveValue(
     links.subscription,
+  );
+});
+
+test("certificate status belongs to the selected core", async ({ page }) => {
+  const fixture = await mockInstances(page, true);
+  await page.getByRole("combobox", { name: "Выбранное ядро", exact: true }).click();
+  await page.getByRole("option", { name: "Второй", exact: true }).click();
+  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("button", { name: "TLS / ACME", exact: true }).click();
+  await expect(page.getByText("Сертификаты пока не найдены.", { exact: false })).toBeVisible();
+  expect(fixture.requests).toContain("GET /api/instances/" + EXTRA_ID + "/certificates/hysteria");
+  expect(fixture.requests.some((request) => request.includes("/instances/" + EXTRA_ID + "/instances/"))).toBe(
+    false,
   );
 });

@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test";
-import { mockInstances, EXTRA_ID } from "../instances/fixture";
-import { type IUserAccess } from "@/features/users/access/model";
-import { mockPanel, chooseUserAction } from "../../fixtures";
+import { type IUserAccess } from "@/services/users/access/types";
+import { expect, test } from "@playwright/test";
+import { chooseUserAction, mockPanel } from "../../fixtures";
+import { EXTRA_ID, mockInstances } from "../instances/fixture";
 test("refresh updates total counts and filtering keeps the total", async ({ page }, info) => {
   await mockPanel(page);
   await page.getByRole("button", { name: "Пользователи", exact: true }).click();

@@ -1,11 +1,7 @@
-import { test } from "node:test";
+import { certificateMode, parseField, updateField } from "@/utils/configuration/structured/yaml/fields";
 import assert from "node:assert/strict";
+import { test } from "node:test";
 import { parse } from "yaml";
-import {
-  updateField,
-  parseField,
-  certificateMode,
-} from "../../src/features/configuration/structured/model/yaml/fields";
 test("reset removes empty parents and leaves unrelated settings and comments", () => {
   const result = updateField(
     "# keep\nlisten: :8443\nquic:\n  maxIncomingStreams: 32\n",

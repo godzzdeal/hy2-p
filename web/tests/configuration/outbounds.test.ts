@@ -1,7 +1,7 @@
-import { test } from "node:test";
+import { editOutbounds } from "@/utils/configuration/structured/outbounds/model";
 import assert from "node:assert/strict";
+import { test } from "node:test";
 import { parse } from "yaml";
-import { editOutbounds } from "@/features/configuration/structured/outbounds/model";
 test("outbounds can be added from an empty config and removed cleanly", () => {
   const added = editOutbounds("listen: :8443\n", { type: "add" });
   assert.equal(parse(added).outbounds[0].name, "outbound_1");

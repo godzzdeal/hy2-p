@@ -1,11 +1,18 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
 test("firewall status and port rule use the protected API", async ({ page }, info) => {
   await mockPanel(page);
-  await page.route("http://panel.test/api/firewall/ports", (route) => route.fulfill({ json: { ports: [
-    { port: 9443, protocol: "tcp", purpose: "panel", source: "HY2-P", pending: false },
-    { port: 61254, protocol: "udp", purpose: "vpn", source: "Main", pending: false },
-  ], warnings: [] } }));
+  await page.route("http://panel.test/api/firewall/ports", (route) =>
+    route.fulfill({
+      json: {
+        ports: [
+          { port: 9443, protocol: "tcp", purpose: "panel", source: "HY2-P", pending: false },
+          { port: 61254, protocol: "udp", purpose: "vpn", source: "Main", pending: false },
+        ],
+        warnings: [],
+      },
+    }),
+  );
   let applied: unknown;
   await page.route("http://panel.test/api/firewall", (route) => {
     if (route.request().method() === "POST") applied = route.request().postDataJSON();

@@ -1,8 +1,8 @@
+import { type IConfiguration } from "@/services/configuration/configuration-types";
+import { type IInstance } from "@/services/instances/types";
 import { type Page } from "@playwright/test";
-import { type IInstance } from "@/features/instances/model";
-import { type IConfiguration } from "@/features/configuration/model";
-import { INITIAL_SETTINGS } from "../../fixtures/data";
 import { mockPanel } from "../../fixtures";
+import { INITIAL_SETTINGS } from "../../fixtures/data";
 export const EXTRA_ID = "a".repeat(16);
 export async function mockInstances(page: Page, withExtra = false) {
   const panel = await mockPanel(page);

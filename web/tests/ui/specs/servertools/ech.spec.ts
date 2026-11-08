@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
 test("ECH generation changes only the draft and exposes public config", async ({ page }, info) => {
   await mockPanel(page);

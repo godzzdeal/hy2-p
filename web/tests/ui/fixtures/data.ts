@@ -1,4 +1,4 @@
-import { type IConfiguration } from "@/features/configuration/model";
+import { type IConfiguration } from "@/services/configuration/configuration-types";
 export const PANEL_METADATA: Record<string, unknown> = {
   "/api/groups": { groups: [], memberships: {} },
   "/api/instances": [

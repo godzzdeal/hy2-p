@@ -1,5 +1,5 @@
-import { test, expect } from "@playwright/test";
-import { mockPanel, chooseTheme } from "../fixtures";
+import { expect, test } from "@playwright/test";
+import { chooseTheme, mockPanel } from "../fixtures";
 test("phone installation metadata and manual steps are available", async ({ page }) => {
   await mockPanel(page);
   await expect(page.getByRole("link", { name: "GitHub", exact: true })).toHaveAttribute(

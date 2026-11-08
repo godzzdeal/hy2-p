@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
 test("runtime stats secret is fetched only on request and can be hidden", async ({ page }, info) => {
   await mockPanel(page);

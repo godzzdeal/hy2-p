@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test";
-import { PNG } from "pngjs";
+import { expect, test } from "@playwright/test";
 import ZXing from "@zxing/library";
-import { mockPanel, chooseUserAction } from "../../fixtures";
+import { PNG } from "pngjs";
+import { chooseUserAction, mockPanel } from "../../fixtures";
 const { BinaryBitmap, HybridBinarizer, RGBLuminanceSource, QRCodeReader } = ZXing;
 function decodeQr(png: Buffer): string {
   const image = PNG.sync.read(png);

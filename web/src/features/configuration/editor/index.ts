@@ -1,1 +1,0 @@
-export { ConfigurationEditor } from "./draft";

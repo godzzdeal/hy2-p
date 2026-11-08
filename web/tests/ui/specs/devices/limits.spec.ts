@@ -1,5 +1,5 @@
+import { expect, test } from "@playwright/test";
 import { chooseUserAction } from "../../fixtures";
-import { test, expect } from "@playwright/test";
 import { mockDevices } from "./fixture";
 test("device limit saves and share dialog supplies the Happ subscription", async ({ page }) => {
   const fixture = await mockDevices(page);

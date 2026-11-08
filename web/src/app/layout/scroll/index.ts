@@ -1,1 +1,0 @@
-export { ScrollNavigation } from "./ScrollNavigation";

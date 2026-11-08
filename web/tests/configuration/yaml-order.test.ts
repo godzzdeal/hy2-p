@@ -1,8 +1,8 @@
-import { test } from "node:test";
+import { updateField } from "@/utils/configuration/structured/yaml/fields";
+import { orderConfiguration } from "@/utils/configuration/structured/yaml/ordering";
 import assert from "node:assert/strict";
+import { test } from "node:test";
 import { parse } from "yaml";
-import { orderConfiguration } from "../../src/features/configuration/structured/model/yaml/ordering";
-import { updateField } from "../../src/features/configuration/structured/model/yaml/fields";
 test("documented order is stable regardless of edit order", () => {
   const first = updateField(updateField("listen: :443", "auth.type", "password"), "obfs.type", "gecko");
   const second = updateField(updateField("listen: :443", "obfs.type", "gecko"), "auth.type", "password");

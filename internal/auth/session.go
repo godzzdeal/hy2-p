@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"hy2-panel/internal/auth/attempts"
 	"hy2-panel/internal/auth/credentials"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/transport"
@@ -15,12 +16,12 @@ type Handler struct {
 	Secure      bool
 	mu          sync.Mutex
 	sessions    map[string]time.Time
-	attempts    map[string][]time.Time
+	attempts    *attempts.Limiter
 }
 
 func New(password []byte, secure bool) *Handler {
 	store, _ := credentials.New("admin", password, "")
-	return &Handler{Credentials: store, Secure: secure, sessions: map[string]time.Time{}, attempts: map[string][]time.Time{}}
+	return &Handler{Credentials: store, Secure: secure, sessions: map[string]time.Time{}, attempts: attempts.New()}
 }
 
 func (handler *Handler) Protect(next http.HandlerFunc) http.HandlerFunc {
