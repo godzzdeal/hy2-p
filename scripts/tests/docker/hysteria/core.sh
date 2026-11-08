@@ -2,6 +2,16 @@
 # Invoked in the isolated GitHub Actions test installation.
 curl -fsS -c "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
   --data '{"username":"admin","password":"integration-test-password-only"}' "$URL/api/login" >/dev/null
+# The real public router must resolve this endpoint even without the optional host helper.
+firewall_status=$(curl -sS -b "$WORK/cookies" -o "$WORK/firewall-response.json" -w '%{http_code}' "$URL/api/firewall")
+[[ $firewall_status == 503 ]] || { printf 'Unexpected firewall API status: %s\n' "$firewall_status" >&2; return 1; }
+jq -e '.error | contains("firewall-setup")' "$WORK/firewall-response.json" >/dev/null
+firewall_invalid=$(curl -sS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
+  -X POST --data '{"port":0,"protocol":"tcp","action":"allow"}' -o "$WORK/firewall-invalid.json" -w '%{http_code}' "$URL/api/firewall")
+[[ $firewall_invalid == 400 ]] || return 1
+jq -e '.error | length > 0' "$WORK/firewall-invalid.json" >/dev/null
+firewall_unauthorized=$(curl -sS -o /dev/null -w '%{http_code}' "$URL/api/firewall")
+[[ $firewall_unauthorized == 401 ]] || return 1
 openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes -days 1 \
   -subj /CN=localhost -addext subjectAltName=DNS:localhost \
   -keyout "$WORK/server.key" -out "$WORK/server.crt" 2>/dev/null

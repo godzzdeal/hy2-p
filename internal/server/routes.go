@@ -27,8 +27,8 @@ func routes(auth *auth.Handler, users *users.Handler, registry *instances.Regist
 	mux.HandleFunc("POST /api/login", auth.Login)
 	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{
-		"GET /firewall":                           firewall.Panel(),
-		"POST /firewall":                          firewall.Panel(),
+		"GET /api/firewall":                       firewall.Panel(),
+		"POST /api/firewall":                      firewall.Panel(),
 		"GET /api/users/{id}/devices":             devices.Read,
 		"PUT /api/users/{id}/devices":             devices.SetLimit,
 		"PATCH /api/users/{id}/devices/{device}":  devices.Edit,
