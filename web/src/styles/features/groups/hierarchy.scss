@@ -1,0 +1,103 @@
+@layer components {
+  .group-members,
+  .group-members > fieldset {
+    display: grid;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+  .group-members > fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .group-members label:not(.checkbox) {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+  }
+  .group-members label > input {
+    margin: 0;
+  }
+  .group-member-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .group-member-list {
+    display: grid;
+    gap: var(--space-1);
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .group-member-row {
+    margin: 0;
+    padding: var(--space-2);
+    min-width: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .group-member-row > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .group-member-row small {
+    margin-top: var(--space-1);
+  }
+  .group-members .row-actions {
+    justify-content: flex-end;
+  }
+  .user-group-section {
+    border-top: 1px solid var(--line);
+  }
+  .user-hierarchy {
+    container-type: inline-size;
+  }
+  .user-group-title {
+    padding: 0;
+  }
+  .user-group-heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    min-width: 0;
+    position: sticky;
+    left: 0;
+    width: 100cqw;
+    max-width: 100%;
+    background: var(--surface);
+  }
+  .user-group-toggle {
+    flex: 1;
+    justify-content: flex-start;
+    text-align: left;
+    min-width: 0;
+    height: auto;
+    padding-inline: 0;
+    gap: var(--space-2);
+  }
+  .user-group-toggle strong {
+    overflow-wrap: anywhere;
+    white-space: normal;
+    min-width: 0;
+  }
+  .user-group-toggle svg {
+    flex-shrink: 0;
+  }
+  .user-group-toggle[aria-expanded="true"] svg {
+    transform: rotate(90deg);
+  }
+  .group-users td:first-child {
+    padding-left: var(--space-4);
+    border-left: var(--space-1) solid var(--group-color);
+  }
+  @media (max-width: 760px) {
+    .user-group-heading {
+      flex-wrap: wrap;
+    }
+    .group-users td:first-child {
+      padding-left: var(--space-2);
+    }
+  }
+}

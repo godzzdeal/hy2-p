@@ -1,8 +1,15 @@
 import { API_ROUTES } from "@/config/network";
-import { type IGroupAssignment, type IGroups, type IGroupSave } from "@/services/groups/types";
+import {
+  type IGroupAssignment,
+  type IGroups,
+  type IGroupSave,
+  type IGroupMembersChange,
+} from "@/services/groups/types";
 import { request } from "@/services/http/client";
 export const groupsApi = {
   list: (): Promise<IGroups> => request(API_ROUTES.groups),
+  members: ({ groupId, userIds }: IGroupMembersChange): Promise<IGroups> =>
+    request(API_ROUTES.groupMembers(groupId), { method: "PUT", body: { userIds } }),
   save: ({ id, body }: IGroupSave): Promise<IGroups> =>
     request(id ? API_ROUTES.group(id) : API_ROUTES.groups, { method: id ? "PUT" : "POST", body }),
   remove: (id: string): Promise<IGroups> => request(API_ROUTES.group(id), { method: "DELETE" }),

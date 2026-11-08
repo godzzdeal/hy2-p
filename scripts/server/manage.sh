@@ -21,8 +21,9 @@ case $command in
       '  backup                 Согласованная резервная копия данных и ключей' \
       '  url                    Адрес панели или SSH-туннель'
     printf '%s\n' '  firewall-setup         Подключить помощник управления UFW'
+    printf '%s\n' '  cloud-password-reset   Отключить забытый облачный пароль'
     exit 0 ;;
-  status|logs|start|stop|restart|update|rollback|backup|url|apply-udp|remove-udp|recover-udp|firewall-setup) ;;
+  status|logs|start|stop|restart|update|rollback|backup|url|apply-udp|remove-udp|recover-udp|firewall-setup|cloud-password-reset) ;;
   *) die "Неизвестная команда: $command" ;;
 esac
 [[ -f $ROOT/.env && -f $ROOT/current ]] || die "Установка не найдена."
@@ -39,6 +40,14 @@ case $command in
     recover_pending || die "Сначала нужно восстановить прерванную операцию."
     current=$(cat "$ROOT/current")
     case $command in
+      cloud-password-reset)
+        compose "$current" stop panel
+        if ! compose "$current" run --rm --no-deps --entrypoint /usr/local/bin/panel panel --reset-cloud-password; then
+          start_release "$current" || true
+          die "Не удалось сбросить облачный пароль."
+        fi
+        start_release "$current" || die "Панель не прошла проверку после сброса."
+        printf '%s\n' 'Облачный пароль отключён. Войдите с основным паролем.' ;;
       apply-udp) apply_udp "$current" "${2:-}" "${3:-}" "${4:-}" "${5:-default}" ;;
       remove-udp) remove_udp "$current" "${2:-}" "${3:-}" "${4:-}" "${5:-}" ;;
       recover-udp)

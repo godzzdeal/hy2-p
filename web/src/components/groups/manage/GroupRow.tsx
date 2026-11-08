@@ -1,9 +1,19 @@
-import { Trash2 } from "@/components/elements/icons";
+import { Trash2, Users } from "@/components/elements/icons";
 import { useDeleteGroup } from "@/hooks/groups/hooks";
 import { type IGroup } from "@/services/groups/types";
 import { cn } from "@/utils/cn";
 import { useTranslation } from "react-i18next";
-export function GroupRow({ group, members, onEdit }: { group: IGroup; members: number; onEdit: () => void }) {
+export function GroupRow({
+  group,
+  members,
+  onEdit,
+  onMembers,
+}: {
+  group: IGroup;
+  members: number;
+  onEdit: () => void;
+  onMembers: () => void;
+}) {
   const { t } = useTranslation();
   const remove = useDeleteGroup();
   return (
@@ -12,6 +22,14 @@ export function GroupRow({ group, members, onEdit }: { group: IGroup; members: n
         <span aria-hidden className="group-swatch" />
         {group.name}
         <span className="user-count">{members}</span>
+      </button>
+      <button
+        type="button"
+        className="icon-btn secondary"
+        aria-label={t("Участники группы {{name}}", { name: group.name })}
+        onClick={onMembers}
+      >
+        <Users width={24} height={24} aria-hidden />
       </button>
       <button
         type="button"

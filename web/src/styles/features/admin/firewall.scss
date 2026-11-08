@@ -1,0 +1,80 @@
+@layer components {
+  .firewall-guide,
+  .firewall-port-row {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .firewall-guide {
+    margin-bottom: var(--space-4);
+  }
+  .firewall-ports {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .firewall-port-row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line);
+    min-width: 0;
+  }
+  .firewall-port-row strong {
+    color: var(--accent);
+  }
+  .firewall-port-description {
+    display: grid;
+    min-width: 0;
+  }
+  .firewall-port-description small {
+    color: var(--muted);
+    overflow-wrap: anywhere;
+  }
+  .firewall-manual-command {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+  .firewall-help summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    cursor: pointer;
+    list-style: none;
+  }
+  .firewall-help summary::-webkit-details-marker {
+    display: none;
+  }
+  .firewall-help[open] summary svg {
+    transform: rotate(90deg);
+  }
+  .firewall-help > div {
+    display: grid;
+    gap: var(--space-3);
+    padding-top: var(--space-3);
+  }
+  .firewall-help summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+  .firewall-command {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+  .firewall-command code {
+    flex: 1;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .firewall-example {
+    margin: 0;
+    padding: var(--space-3);
+    background: var(--input);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}

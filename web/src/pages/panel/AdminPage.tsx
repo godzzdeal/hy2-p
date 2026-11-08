@@ -1,4 +1,5 @@
 import { AccountSettings } from "@/components/admin/account/AccountSettings";
+import { CloudSettings } from "@/components/admin/cloud/CloudSettings";
 import { FirewallSettings } from "@/components/admin/firewall/FirewallSettings";
 import { WebSettings } from "@/components/admin/listener/WebSettings";
 import { InstallCard } from "@/components/elements/install/InstallCard";
@@ -16,6 +17,7 @@ export function AdminPage() {
         </div>
       </div>
       <AccountSettings />
+      <CloudSettings />
       <p className="muted">
         <BuildVersion />
       </p>

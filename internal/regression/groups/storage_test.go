@@ -90,3 +90,32 @@ func stringMustMarshal(t *testing.T, value any) string {
 	}
 	return string(encoded)
 }
+
+func TestBulkMembersMoveAtomicallyAndRejectUnknownUsers(t *testing.T) {
+	fixture := setup(t)
+	second := fixture.createUser(t)
+	other := fixture.group
+	other.ID, other.Name = "bbbbbbbbbbbbbbbb", "Other"
+	if err := fixture.groups.Store.Put(other); err != nil {
+		t.Fatal(err)
+	}
+	response := fixture.setMembers(t, other.ID, []string{fixture.user.ID, second.ID})
+	if response.Code != 200 {
+		t.Fatal(response.Body.String())
+	}
+	for _, id := range []string{fixture.user.ID, second.ID} {
+		group, exists := fixture.groups.Store.ForUser(id)
+		if !exists || group.ID != other.ID {
+			t.Fatal("selected users not moved")
+		}
+	}
+	before := stringMustMarshal(t, fixture.groups.Store.Snapshot())
+	response = fixture.setMembers(t, fixture.group.ID, []string{fixture.user.ID, "ffffffffffffffff"})
+	if response.Code != 404 || stringMustMarshal(t, fixture.groups.Store.Snapshot()) != before {
+		t.Fatal("invalid member partially changed groups")
+	}
+	response = fixture.setMembers(t, other.ID, []string{})
+	if response.Code != 200 || len(fixture.groups.Store.Snapshot().Memberships) != 0 {
+		t.Fatal("deselected members retained")
+	}
+}

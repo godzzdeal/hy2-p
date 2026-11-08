@@ -1,7 +1,8 @@
 import { NETWORK } from "@/config/network";
 import { useGroups } from "@/hooks/groups/hooks";
 import { useUsers } from "@/hooks/users/user-queries";
-import { GROUP_FILTERS } from "@/services/groups/types";
+import { GROUP_FILTERS, EMPTY_GROUPS } from "@/services/groups/types";
+import { groupUsers, paginateGroups } from "@/services/groups/membership";
 import { useState } from "react";
 export function useUsersList() {
   const query = useUsers();
@@ -19,7 +20,11 @@ export function useUsersList() {
   );
   const pageCount = Math.ceil(filtered.length / NETWORK.pageSize);
   const current = Math.min(page, Math.max(pageCount - 1, 0));
-  const visible = filtered.slice(current * NETWORK.pageSize, (current + 1) * NETWORK.pageSize);
+  const sections = paginateGroups(
+    groupUsers(filtered, groups.data ?? EMPTY_GROUPS),
+    current * NETWORK.pageSize,
+    NETWORK.pageSize,
+  );
   function onSearch(value: string) {
     setSearch(value);
     setPage(0);
@@ -28,5 +33,17 @@ export function useUsersList() {
     setGroupId(value);
     setPage(0);
   }
-  return { query, search, filtered, visible, pageCount, current, setPage, groupId, onSearch, onGroup };
+  return {
+    query,
+    groups,
+    search,
+    filtered,
+    sections,
+    pageCount,
+    current,
+    setPage,
+    groupId,
+    onSearch,
+    onGroup,
+  };
 }

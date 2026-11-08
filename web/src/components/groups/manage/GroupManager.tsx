@@ -1,6 +1,10 @@
 import { Plus } from "@/components/elements/icons";
 import { GroupEditor } from "@/components/groups/editor/GroupEditor";
 import { GroupRow } from "@/components/groups/manage/GroupRow";
+import { GroupMembers } from "@/components/groups/members/GroupMembers";
+import { useUsers } from "@/hooks/users/user-queries";
+import { groupUsers } from "@/services/groups/membership";
+import { EMPTY_GROUPS } from "@/services/groups/types";
 import { Modal } from "@/components/ui/modal/Modal";
 import { QueryState } from "@/components/ui/QueryState";
 import { useGroups } from "@/hooks/groups/hooks";
@@ -12,9 +16,16 @@ export function GroupManager({ onClose }: { onClose: () => void }) {
   const query = useGroups();
   const [isEditing, setEditing] = useState(false);
   const [group, setGroup] = useState<IGroup>();
+  const [members, setMembers] = useState<IGroup>();
+  const users = useUsers();
+  const counts = new Map(
+    groupUsers(users.data ?? [], query.data ?? EMPTY_GROUPS).map((section) => [section.id, section.total]),
+  );
   return (
     <Modal title={t("Группы пользователей")} onClose={onClose}>
-      {isEditing ? (
+      {members ? (
+        <GroupMembers group={members} onClose={() => setMembers(undefined)} />
+      ) : isEditing ? (
         <GroupEditor group={group} onClose={() => setEditing(false)} />
       ) : (
         <>
@@ -46,7 +57,8 @@ export function GroupManager({ onClose }: { onClose: () => void }) {
               <GroupRow
                 key={item.id}
                 group={item}
-                members={Object.values(query.data?.memberships ?? {}).filter((id) => id === item.id).length}
+                members={counts.get(item.id) ?? 0}
+                onMembers={() => setMembers(item)}
                 onEdit={() => {
                   setGroup(item);
                   setEditing(true);

@@ -11,8 +11,9 @@ import (
 )
 
 type Value struct {
-	Username string `json:"username"`
-	Hash     []byte `json:"hash"`
+	Username  string `json:"username"`
+	Hash      []byte `json:"hash"`
+	CloudHash []byte `json:"cloudHash,omitempty"`
 }
 type Store struct {
 	mu        sync.RWMutex
@@ -21,7 +22,7 @@ type Store struct {
 }
 
 func New(username string, hash []byte, directory string) (*Store, error) {
-	store := &Store{value: Value{username, hash}, directory: directory}
+	store := &Store{value: Value{Username: username, Hash: hash}, directory: directory}
 	if directory != "" {
 		err := records.Read(directory, "credentials", &store.value)
 		if err != nil && !os.IsNotExist(err) {
@@ -33,6 +34,11 @@ func New(username string, hash []byte, directory string) (*Store, error) {
 	}
 	if _, err := bcrypt.Cost(store.value.Hash); err != nil {
 		return nil, err
+	}
+	if len(store.value.CloudHash) > 0 {
+		if _, err := bcrypt.Cost(store.value.CloudHash); err != nil {
+			return nil, err
+		}
 	}
 	return store, nil
 }
@@ -58,7 +64,7 @@ func (store *Store) Change(currentPassword, username, password string) error {
 	if len(username) < 3 || len(username) > 64 || strings.IndexFunc(username, unicode.IsSpace) >= 0 {
 		return errors.New("логин: от 3 до 64 символов без пробелов")
 	}
-	next := Value{Username: username, Hash: store.value.Hash}
+	next := Value{Username: username, Hash: store.value.Hash, CloudHash: store.value.CloudHash}
 	if password != "" {
 		if len(password) < 16 || len(password) > 72 {
 			return errors.New("пароль: от 16 до 72 байт")

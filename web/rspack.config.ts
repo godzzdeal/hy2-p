@@ -1,7 +1,9 @@
 import tailwind from "@tailwindcss/postcss";
 import path from "node:path";
+import { createRequire } from "node:module";
 import { defineConfig } from "@rspack/cli";
 import { rspack } from "@rspack/core";
+const require = createRequire(import.meta.url);
 export default defineConfig({
   entry: "./src/main.tsx",
   output: { clean: true, publicPath: "/" },
@@ -14,6 +16,16 @@ export default defineConfig({
   },
   module: {
     rules: [
+      {
+        test: /\.(sass|scss)$/,
+        type: "css",
+        use: [
+          {
+            loader: "sass-loader",
+            options: { api: "modern-compiler", implementation: require.resolve("sass-embedded") },
+          },
+        ],
+      },
       {
         test: /\.svg$/,
         type: "asset/resource",

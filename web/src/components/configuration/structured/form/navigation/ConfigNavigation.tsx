@@ -12,16 +12,18 @@ export function ConfigNavigation({
 }) {
   const { t } = useTranslation();
   return (
-    <nav className="config-tabs" aria-label={t("Разделы конфигурации")}>
-      {sections.map((section) => (
-        <ConfigTab
-          key={section.id}
-          id={section.id}
-          title={section.title}
-          isSelected={value === section.id}
-          onSelect={onSelect}
-        />
-      ))}
-    </nav>
+    <div className="configuration-navigation">
+      <nav className="config-tabs" aria-label={t("Разделы конфигурации")}>
+        {sections.map((section) => (
+          <ConfigTab
+            key={section.id}
+            id={section.id}
+            title={section.title}
+            isSelected={value === section.id}
+            onSelect={onSelect}
+          />
+        ))}
+      </nav>
+    </div>
   );
 }

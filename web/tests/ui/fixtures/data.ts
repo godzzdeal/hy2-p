@@ -1,5 +1,7 @@
 import { type IConfiguration } from "@/services/configuration/configuration-types";
 export const PANEL_METADATA: Record<string, unknown> = {
+  "/api/admin/cloud-password": { enabled: false },
+  "/api/certificates/hysteria": { mode: "tls", automaticRenewal: false, certificates: [] },
   "/api/groups": { groups: [], memberships: {} },
   "/api/instances": [
     {

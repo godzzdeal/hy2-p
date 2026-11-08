@@ -30,22 +30,28 @@ func (handler *Handler) User(id string) (User, error) {
 }
 
 func (handler *Handler) List(writer http.ResponseWriter, request *http.Request) {
-	rows, err := handler.DB.Query("SELECT id,name,enabled,expires,created,password,token FROM users ORDER BY created DESC")
+	users, err := handler.All()
 	if err != nil {
 		transport.Fail(writer, err, 500)
 		return
+	}
+	transport.Respond(writer, users)
+}
+func (handler *Handler) All() ([]User, error) {
+	rows, err := handler.DB.Query("SELECT id,name,enabled,expires,created,password,token FROM users ORDER BY created DESC")
+	if err != nil {
+		return nil, err
 	}
 	defer rows.Close()
 	users := []User{}
 	for rows.Next() {
 		user, err := Scan(rows)
 		if err != nil {
-			transport.Fail(writer, err, 500)
-			return
+			return nil, err
 		}
 		users = append(users, user)
 	}
-	transport.Respond(writer, users)
+	return users, rows.Err()
 }
 func (handler *Handler) Create(writer http.ResponseWriter, request *http.Request) {
 	var input struct {

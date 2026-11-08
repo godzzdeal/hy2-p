@@ -1,18 +1,11 @@
-import { ArrowUpRight, ShieldCheck } from "@/components/elements/icons";
-import { LanguageSelect } from "@/components/elements/LanguageSelect";
+import { ShieldCheck } from "@/components/elements/icons";
 import { SpaceScene } from "@/components/layout/SpaceScene";
+import { CloudLogin, PasswordLogin } from "@/components/session";
 import { useSession } from "@/hooks/session/use-session";
-import { useState, type FormEvent } from "react";
-import { useTranslation } from "react-i18next";
+
 export function LoginPage() {
-  const { t } = useTranslation();
-  const [username, setUsername] = useState(localStorage.getItem("hy2.login") ?? "admin");
-  const [password, setPassword] = useState("");
   const { login } = useSession();
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    login.mutate({ username, password });
-  }
+  const challenge = login.data && "cloudPasswordRequired" in login.data ? login.data.challenge : "";
   return (
     <div className="login">
       <SpaceScene />
@@ -20,33 +13,11 @@ export function LoginPage() {
         <ShieldCheck width={24} height={24} aria-hidden />
         <span>HY2-P</span>
       </h1>
-      <form onSubmit={onSubmit}>
-        <LanguageSelect />
-        <label>
-          {t("Логин")}
-          <input
-            autoComplete="username"
-            required
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
-        <label>
-          {t("Пароль")}
-          <input
-            autoFocus
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-        <button className="primary" disabled={login.isPending}>
-          {login.isPending ? t("Входим\u2026") : t("Войти в панель")}
-          <ArrowUpRight width={24} height={24} aria-hidden />
-        </button>
-      </form>
+      {challenge ? (
+        <CloudLogin challenge={challenge} onBack={() => login.reset()} />
+      ) : (
+        <PasswordLogin isPending={login.isPending} onSubmit={(value) => login.mutate(value)} />
+      )}
       <small>Hysteria 2</small>
     </div>
   );

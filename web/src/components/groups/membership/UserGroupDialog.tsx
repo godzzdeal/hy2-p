@@ -21,7 +21,7 @@ export function UserGroupDialog({ userId, onClose }: { userId: string; onClose: 
   return (
     <Modal title={t("Группа пользователя")} onClose={onClose}>
       <QueryState isLoading={query.isPending} error={query.error} />
-      <form onSubmit={onSubmit}>
+      <form className="group-assignment" onSubmit={onSubmit}>
         <label>
           {t("Группа")}
           <Select

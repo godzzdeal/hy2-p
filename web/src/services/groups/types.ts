@@ -23,5 +23,9 @@ export interface IGroupAssignment {
   userId: string;
   groupId: string;
 }
+export interface IGroupMembersChange {
+  groupId: string;
+  userIds: string[];
+}
 export const EMPTY_GROUPS: IGroups = { groups: [], memberships: {} };
 export const GROUP_FILTERS = { all: "all", ungrouped: "ungrouped" } as const;

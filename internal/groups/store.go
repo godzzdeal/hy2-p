@@ -81,22 +81,6 @@ func (store *Store) Put(group Group) error {
 	}
 	return store.commit(next)
 }
-func (store *Store) Remove(id string) error {
-	store.mu.Lock()
-	defer store.mu.Unlock()
-	next := clone(store.state)
-	index := slices.IndexFunc(next.Groups, func(group Group) bool { return group.ID == id })
-	if index < 0 {
-		return errors.New("Группа не найдена")
-	}
-	next.Groups = slices.Delete(next.Groups, index, index+1)
-	for user, group := range next.Memberships {
-		if group == id {
-			delete(next.Memberships, user)
-		}
-	}
-	return store.commit(next)
-}
 func (store *Store) Assign(user, id string) error {
 	if !IDPattern.MatchString(user) {
 		return errors.New("Некорректный пользователь")
@@ -120,4 +104,32 @@ func (store *Store) commit(next Snapshot) error {
 	}
 	store.state = next
 	return nil
+}
+
+func (store *Store) SetMembers(id string, users []string) error {
+	if len(users) > MaxMembers {
+		return errors.New("Слишком много участников группы")
+	}
+	selected := make(map[string]bool, len(users))
+	for _, user := range users {
+		if !IDPattern.MatchString(user) {
+			return errors.New("Некорректный пользователь")
+		}
+		selected[user] = true
+	}
+	store.mu.Lock()
+	defer store.mu.Unlock()
+	next := clone(store.state)
+	if !slices.ContainsFunc(next.Groups, func(group Group) bool { return group.ID == id }) {
+		return errors.New("Группа не найдена")
+	}
+	for user, group := range next.Memberships {
+		if group == id && !selected[user] {
+			delete(next.Memberships, user)
+		}
+	}
+	for user := range selected {
+		next.Memberships[user] = id
+	}
+	return store.commit(next)
 }

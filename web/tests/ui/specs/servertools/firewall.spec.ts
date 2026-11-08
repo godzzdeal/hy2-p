@@ -19,8 +19,16 @@ test("firewall status and port rule use the protected API", async ({ page }, inf
     return route.fulfill({ json: { active: true, output: "Status: active\n8088/tcp ALLOW IN Anywhere" } });
   });
   await page.getByRole("button", { name: "Настройки", exact: true }).click();
-  await expect(page.getByText("sudo ufw insert 1 allow 61254/udp", { exact: true })).toBeVisible();
-  await expect(page.getByText("sudo ufw insert 1 allow 9443/tcp", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Скопировать команду для 61254/udp", exact: true }),
+  ).toHaveAttribute("title", "sudo ufw insert 1 allow 61254/udp");
+  await expect(
+    page.getByRole("button", { name: "Скопировать команду для 9443/tcp", exact: true }),
+  ).toHaveAttribute("title", "sudo ufw insert 1 allow 9443/tcp");
+  expect((await page.locator(".firewall-port-row").first().boundingBox())!.height).toBeLessThanOrEqual(80);
+  await expect(page.locator(".firewall-example")).toBeHidden();
+  await page.getByText("Открытие портов и отмена правил", { exact: true }).click();
+  await expect(page.locator(".firewall-example")).toBeVisible();
   await page.getByRole("button", { name: "Проверить UFW", exact: true }).click();
   await page.getByLabel("Порт", { exact: true }).fill("8088");
   await page.getByRole("button", { name: "Применить правило", exact: true }).click();

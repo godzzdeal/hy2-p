@@ -32,8 +32,12 @@ func routes(auth *auth.Handler, users *users.Handler, registry *instances.Regist
 	panelUpdates := updates.New(buildinfo.Version())
 	mux.HandleFunc("GET /api/version", buildinfo.Read)
 	mux.HandleFunc("POST /api/login", auth.Login)
+	mux.HandleFunc("POST /api/login/cloud", auth.CloudLogin)
 	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{
+		"PUT /api/groups/{group}/members":         groups.Members,
+		"GET /api/admin/cloud-password":           auth.CloudSettings,
+		"PUT /api/admin/cloud-password":           auth.CloudSettings,
 		"GET /api/groups":                         groups.Read,
 		"POST /api/groups":                        groups.Save,
 		"PUT /api/groups/{group}":                 groups.Save,

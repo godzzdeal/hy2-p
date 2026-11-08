@@ -1,23 +1,12 @@
-import { UserRow } from "@/components/users/list/row/UserRow";
-import { type IUserActions } from "@/components/users/list/row/actions/UserActions";
-import { useTraffic } from "@/hooks/users/traffic/use-traffic";
-import { EMPTY_USAGE } from "@/services/users/traffic/traffic-types";
-import { type IUser } from "@/services/users/user-types";
+import { TrafficStatus } from "@/components/users/list/hierarchy/TrafficStatus";
+import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-interface IUserTable extends IUserActions {
-  users: IUser[];
-}
-export function UserTable({ users, ...actions }: IUserTable) {
+
+export function UserTable({ children, hasStatus = true }: { children: ReactNode; hasStatus?: boolean }) {
   const { t } = useTranslation();
-  const traffic = useTraffic();
   return (
     <>
-      <p className="traffic-note caption">
-        {(traffic.error ? t(traffic.error.message) : t(traffic.data?.error ?? "")) ||
-          (traffic.data?.updated
-            ? t("Статистика: ") + new Date(traffic.data.updated).toLocaleTimeString()
-            : t("Ожидание статистики ядра"))}
-      </p>
+      {hasStatus && <TrafficStatus />}
       <div className="table-wrap">
         <table>
           <thead>
@@ -32,17 +21,7 @@ export function UserTable({ users, ...actions }: IUserTable) {
               </th>
             </tr>
           </thead>
-          <tbody>
-            {users.map((user) => (
-              <UserRow
-                key={user.id}
-                user={user}
-                usage={traffic.data?.users[user.id] ?? EMPTY_USAGE}
-                isTrafficAvailable={traffic.data?.available === true}
-                {...actions}
-              />
-            ))}
-          </tbody>
+          {children}
         </table>
       </div>
     </>

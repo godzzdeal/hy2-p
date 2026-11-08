@@ -2,7 +2,7 @@ import { Plus, Rss, Users } from "@/components/elements/icons";
 import { GroupFilter } from "@/components/groups/membership/GroupFilter";
 import { QueryState } from "@/components/ui/QueryState";
 import { UserDialogs } from "@/components/users/UserDialogs";
-import { UserTable } from "@/components/users/list/UserTable";
+import { UserHierarchy } from "@/components/users/list/hierarchy/UserHierarchy";
 import { UsersToolbar } from "@/components/users/list/toolbar/UsersToolbar";
 import { PageEnum } from "@/config/navigation";
 import { useConfiguration } from "@/hooks/configuration/use-configuration";
@@ -16,8 +16,19 @@ const GroupManager = lazy(() =>
 );
 export function UsersPage() {
   const { t } = useTranslation();
-  const { query, search, filtered, visible, pageCount, current, setPage, groupId, onSearch, onGroup } =
-    useUsersList();
+  const {
+    query,
+    groups,
+    search,
+    filtered,
+    sections,
+    pageCount,
+    current,
+    setPage,
+    groupId,
+    onSearch,
+    onGroup,
+  } = useUsersList();
   const selectPage = useUiStore((state) => state.selectPage);
   const configuration = useConfiguration();
   const [dialog, setDialog] = useState<TUserDialog>(null);
@@ -63,9 +74,9 @@ export function UsersPage() {
         <UsersToolbar search={search} onSearch={onSearch} found={filtered.length}>
           <GroupFilter value={groupId} onChange={onGroup} />
         </UsersToolbar>
-        <QueryState isLoading={query.isPending} error={query.error} />
-        <UserTable
-          users={visible}
+        <QueryState isLoading={query.isPending || groups.isPending} error={query.error || groups.error} />
+        <UserHierarchy
+          sections={sections}
           onEdit={(user) => setDialog({ type: "edit", user })}
           onShare={(user) => setDialog({ type: "share", user })}
           onDelete={(user) => setDialog({ type: "delete", user })}

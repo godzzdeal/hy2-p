@@ -12,6 +12,7 @@
 .instance-selector .select-trigger {
   width: 240px;
   max-width: 100%;
+  margin-top: 0;
 }
 .instances-grid {
   display: grid;

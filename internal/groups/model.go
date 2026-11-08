@@ -10,6 +10,7 @@ import (
 )
 
 const MaxGroups = 64
+const MaxMembers = 10000
 
 var IDPattern = regexp.MustCompile(`^[a-f0-9]{16}$`)
 var Colors = map[string]bool{"cyan": true, "blue": true, "green": true, "amber": true, "purple": true, "gray": true}

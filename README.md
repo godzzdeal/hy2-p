@@ -2,11 +2,7 @@
   <img src="web/assets/pwa/icons/icon-192.png" width="80" height="80" alt="">
   <h1>HY2-P</h1>
   <p>Панель управления Hysteria2 для вашего сервера</p>
-  <p>
-    <a href="https://github.com/godzzdeal/hy2-p/releases/latest"><img src="https://img.shields.io/github/v/release/godzzdeal/hy2-p?style=flat-square&amp;color=096d79&amp;label=release" alt="Последний релиз"></a>
-    <a href="https://github.com/godzzdeal/hy2-p/actions/workflows/ci.yml"><img src="https://github.com/godzzdeal/hy2-p/actions/workflows/ci.yml/badge.svg" alt="Проверки и сборка"></a>
-    <a href="https://github.com/godzzdeal/hy2-p/stargazers"><img src="https://img.shields.io/github/stars/godzzdeal/hy2-p?style=flat-square&amp;color=096d79" alt="Поддержать звездой"></a>
-  </p>
+  <p><a href="https://github.com/godzzdeal/hy2-p/releases/latest"><img src="https://img.shields.io/github/v/release/godzzdeal/hy2-p?style=flat-square&amp;color=096d79&amp;label=release" alt="Последний релиз"></a> <a href="https://github.com/godzzdeal/hy2-p/actions/workflows/ci.yml"><img src="https://github.com/godzzdeal/hy2-p/actions/workflows/ci.yml/badge.svg" alt="Проверки и сборка"></a> <a href="https://github.com/godzzdeal/hy2-p/stargazers"><img src="https://img.shields.io/github/stars/godzzdeal/hy2-p?style=flat-square&amp;color=096d79" alt="Поддержать звездой"></a></p>
 </div>
 
 **[Установка](docs/install.md) | [Бесплатный домен FreeDNS](docs/install.md#бесплатный-домен-freedns) | [Управление](docs/management.md) | [Релизы](https://github.com/godzzdeal/hy2-p/releases) | [Roadmap](ROADMAP.md)**
@@ -23,6 +19,10 @@
 - **Настройка сервера.** Свойства из документации Hysteria2, редактор YAML, TLS/ACME, ECH и Traffic Stats.
 - **Доступ с телефона.** Русский и английский языки, светлая и тёмная темы, установка как веб-приложения.
 - **Firewall Ubuntu.** Просмотр и изменение правил UFW через локального помощника.
+- **Облачный пароль.** Дополнительный пароль на втором шаге входа в панель.
+
+<p align="center"><a href="docs/images/overview.png"><img src="docs/images/overview.png" width="100%" alt="Главная страница HY2-P в тёмной теме"></a></p>
+<p align="center"><a href="docs/images/users.png"><img src="docs/images/users.png" width="49%" alt="Пользователи и группы"></a> <a href="docs/images/configuration.png"><img src="docs/images/configuration.png" width="49%" alt="Конфигурация Hysteria2 в светлой теме"></a></p>
 
 ## Установка
 

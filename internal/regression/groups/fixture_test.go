@@ -79,3 +79,23 @@ func setup(t *testing.T) fixture {
 	}
 	return fixture{app, handler, access, devices, stats, registry, user, group, data}
 }
+
+func (fixture fixture) createUser(t *testing.T) users.User {
+	t.Helper()
+	response := httptest.NewRecorder()
+	fixture.app.Users.Create(response, testutil.Request("POST", "/users", `{"name":"Second member"}`))
+	var user users.User
+	if response.Code != 201 || json.Unmarshal(response.Body.Bytes(), &user) != nil {
+		t.Fatal(response.Body.String())
+	}
+	return user
+}
+
+func (fixture fixture) setMembers(t *testing.T, group string, users []string) *httptest.ResponseRecorder {
+	t.Helper()
+	request := testutil.Request("PUT", "/groups/members", stringMustMarshal(t, map[string]any{"userIds": users}))
+	request.SetPathValue("group", group)
+	response := httptest.NewRecorder()
+	fixture.groups.Members(response, request)
+	return response
+}

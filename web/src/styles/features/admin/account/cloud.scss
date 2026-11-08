@@ -1,0 +1,23 @@
+@layer components {
+  .cloud-password-form,
+  .cloud-password-form > fieldset,
+  .cloud-login {
+    display: grid;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+  .cloud-password-form > fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .cloud-password-form label {
+    margin: 0;
+  }
+  .cloud-password-form code {
+    overflow-wrap: anywhere;
+  }
+  .cloud-login .primary {
+    justify-content: center;
+  }
+}

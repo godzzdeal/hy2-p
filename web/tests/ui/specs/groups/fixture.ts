@@ -21,6 +21,16 @@ export async function mockGroups(page: Page, initial: IGroups = { groups: [], me
   await page.route("http://panel.test/api/groups**", async (route) => {
     const request = route.request();
     const id = new URL(request.url()).pathname.split("/").at(-1) ?? "";
+    if (id === "members" && request.method() === "PUT") {
+      const groupId = new URL(request.url()).pathname.split("/").at(-2) ?? "";
+      const input = request.postDataJSON() as { userIds: string[] };
+      state.memberships = Object.fromEntries(
+        Object.entries(state.memberships).filter(([_user, group]) => group !== groupId),
+      );
+      for (const user of input.userIds) state.memberships[user] = groupId;
+      await route.fulfill({ json: state });
+      return;
+    }
     if (request.method() === "POST" || request.method() === "PUT") {
       const group = {
         ...(request.postDataJSON() as IGroupInput),

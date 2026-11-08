@@ -22,8 +22,9 @@ export function useSession() {
   }, [client]);
   const login = useMutation({
     mutationFn: sessionApi.login,
+    gcTime: 0,
     onSuccess: (data) => {
-      client.setQueryData(QUERY_KEYS.session, data);
+      if (data.ok) client.setQueryData(QUERY_KEYS.session, { ok: true });
     },
     onError: showError,
   });

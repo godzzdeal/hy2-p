@@ -1,5 +1,27 @@
 package groups
 
+import (
+	"errors"
+	"slices"
+)
+
+func (store *Store) Remove(id string) error {
+	store.mu.Lock()
+	defer store.mu.Unlock()
+	next := clone(store.state)
+	index := slices.IndexFunc(next.Groups, func(group Group) bool { return group.ID == id })
+	if index < 0 {
+		return errors.New("Группа не найдена")
+	}
+	next.Groups = slices.Delete(next.Groups, index, index+1)
+	for user, group := range next.Memberships {
+		if group == id {
+			delete(next.Memberships, user)
+		}
+	}
+	return store.commit(next)
+}
+
 func (store *Store) ForUser(user string) (Group, bool) {
 	store.mu.RLock()
 	defer store.mu.RUnlock()

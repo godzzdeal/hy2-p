@@ -73,6 +73,22 @@ test("configuration sections preserve edits on desktop and mobile", async ({ pag
   if (info.project.name === "mobile") {
     expect(await navigation.evaluate((element) => element.scrollHeight <= element.clientHeight)).toBe(true);
     expect(await navigation.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
+  } else {
+    const geometry = await navigation.evaluate((element) => {
+      const wrapper = element.parentElement!;
+      return {
+        height: element.clientHeight,
+        available: window.innerHeight - 32,
+        wrapperBottom: wrapper.getBoundingClientRect().bottom,
+        fieldsBottom: wrapper.nextElementSibling!.getBoundingClientRect().bottom,
+      };
+    });
+    expect(geometry.height).toBeGreaterThan(560);
+    expect(geometry.height).toBeLessThanOrEqual(geometry.available);
+    expect(Math.abs(geometry.wrapperBottom - geometry.fieldsBottom)).toBeLessThanOrEqual(1);
+    await navigation.getByRole("button", { name: "Masquerade", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "Masquerade", exact: true })).toBeVisible();
+    await navigation.getByRole("button", { name: "Listen", exact: true }).click();
   }
   await expect(page.getByLabel("listen", { exact: true })).toHaveValue(":61254");
   await expect(page.getByLabel("listen", { exact: true })).toBeVisible();

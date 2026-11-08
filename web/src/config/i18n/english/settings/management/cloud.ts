@@ -1,0 +1,36 @@
+export const CLOUD = {
+  "Облачный пароль": "Cloud password",
+  "Введите дополнительный пароль, чтобы завершить вход.":
+    "Enter your additional password to complete sign-in.",
+  "Проверяем…": "Checking…",
+  Подтвердить: "Confirm",
+  "Вернуться к входу": "Back to sign-in",
+  "Забыли пароль? Сброс доступен владельцу сервера через SSH.":
+    "Forgot your password? The server owner can reset it through SSH.",
+  "Основной пароль": "Main password",
+  "Текущий облачный пароль": "Current cloud password",
+  "Новый облачный пароль": "New cloud password",
+  "Повторите облачный пароль": "Confirm cloud password",
+  "Пароли не совпадают": "Passwords do not match",
+  "Отключить облачный пароль": "Disable cloud password",
+  "После сохранения все сеансы завершатся. Если забудете облачный пароль, выполните на сервере:":
+    "Saving signs out all sessions. If you forget your cloud password, run on your server:",
+  "Отключить пароль": "Disable password",
+  "Изменить облачный пароль": "Change cloud password",
+  "Включить облачный пароль": "Enable cloud password",
+  Включён: "Enabled",
+  "Не включён": "Not enabled",
+  "Дополнительный пароль, который запрашивается после основного пароля при каждом входе.":
+    "An additional password requested after your main password whenever you sign in.",
+  "Настройки облачного пароля сохранены. Войдите заново.": "Cloud password settings saved. Sign in again.",
+  "Здесь появится созданный пароль": "Your generated password appears here",
+  "Неверный облачный пароль": "Incorrect cloud password",
+  "Облачный пароль: от 12 до 72 байт": "Cloud password must be 12 to 72 bytes",
+  "Облачный пароль должен отличаться от основного": "Cloud password must differ from your main password",
+  "Текущий пароль неверен": "Current password is incorrect",
+  "Запрос входа истёк. Вернитесь к вводу логина и пароля":
+    "Sign-in request expired. Enter your username and password again",
+  "Запрос входа уже использован или истёк": "Sign-in request already used or expired",
+  "Настройки входа изменились. Войдите заново": "Sign-in settings changed. Sign in again",
+  "Слишком много запросов входа. Повторите позже": "Too many sign-in requests. Try again later",
+};

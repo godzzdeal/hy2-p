@@ -16,7 +16,6 @@
 @import "./features/users/list/actions.css" layer(components);
 @import "./features/users/access/cores.css" layer(components);
 @import "./features/users/flags.css" layer(components);
-@import "./features/users/list/groups.css" layer(components);
 @import "./features/session.css" layer(components);
 @import "./dialogs/modal.css" layer(components);
 @import "./dialogs/connections/sharing.css" layer(components);
@@ -25,9 +24,8 @@
 @import "./engine/status.css" layer(components);
 @import "./engine/updates.css" layer(components);
 @import "./engine/logs.css" layer(components);
-@import "./features/admin/settings.css" layer(components);
+@import "./features/admin/account/settings.css" layer(components);
 @import "./features/admin/certificates.css" layer(components);
-@import "./features/admin/firewall.css" layer(components);
 @import "./features/instances.css" layer(components);
 @import "./layout/navigation/scroll.css" layer(components);
 @import "tailwindcss/utilities.css" layer(utilities);

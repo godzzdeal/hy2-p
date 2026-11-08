@@ -52,5 +52,8 @@ manager status
 printf 'Docker installation, core autostart and consistent backup passed.\n'
 
 # shellcheck source=/dev/null
+source "$(dirname -- "${BASH_SOURCE[0]}")/auth.sh"
+
+# shellcheck source=/dev/null
 source "$(dirname -- "${BASH_SOURCE[0]}")/acme.sh"
 test_acme_gateway

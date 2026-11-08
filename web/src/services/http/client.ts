@@ -1,4 +1,5 @@
 import { ApiError } from "@/services/http/ApiError";
+import { API_ROUTES } from "@/config/network";
 
 interface IRequest {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -16,7 +17,8 @@ export async function request<T>(path: string, options: IRequest = {}): Promise<
       typeof data === "object" && data !== null && "error" in data && typeof data.error === "string"
         ? data.error
         : "Не удалось выполнить запрос";
-    if (response.status === 401 && path !== "/login") window.dispatchEvent(new Event("session-expired"));
+    if (response.status === 401 && path !== API_ROUTES.login && path !== API_ROUTES.cloudLogin)
+      window.dispatchEvent(new Event("session-expired"));
     throw new ApiError(message, response.status);
   }
   return data as T; // API responses follow the shared HTTP contracts.

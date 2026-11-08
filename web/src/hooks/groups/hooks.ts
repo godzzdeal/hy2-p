@@ -2,9 +2,13 @@ import { NETWORK, QUERY_KEYS } from "@/config/network";
 import { groupsApi } from "@/services/groups/api";
 import { EMPTY_GROUPS, type IGroupAssignment, type IGroups, type IGroupSave } from "@/services/groups/types";
 import { useUiStore } from "@/store/ui-store";
+import { replaceGroupMembers } from "@/services/groups/membership";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export function useGroups() {
   return useQuery({ queryKey: QUERY_KEYS.groups, queryFn: groupsApi.list, refetchInterval: NETWORK.staleMs });
+}
+export function useSetGroupMembers() {
+  return useGroupChange(groupsApi.members, replaceGroupMembers);
 }
 function useGroupChange<TInput>(
   send: (input: TInput) => Promise<IGroups>,

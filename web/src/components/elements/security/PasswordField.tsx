@@ -46,7 +46,7 @@ export function PasswordField({
         aria-label={t("Значение пароля для копирования")}
         readOnly
         value={value}
-        placeholder={t("Оставьте пустым, чтобы не менять")}
+        placeholder={t(required ? "Здесь появится созданный пароль" : "Оставьте пустым, чтобы не менять")}
       />
     </div>
   );

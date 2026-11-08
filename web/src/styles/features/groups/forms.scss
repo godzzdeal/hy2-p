@@ -1,0 +1,79 @@
+@layer components {
+  .group-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-4) 0 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .group-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding-block: var(--space-2);
+  }
+  .group-name {
+    min-width: 0;
+    height: auto;
+    color: var(--group-color);
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+  .group-editor fieldset {
+    min-width: 0;
+    padding: var(--space-3);
+    border: 1px solid var(--line);
+    margin: 0 0 var(--space-4);
+  }
+  .group-editor > fieldset,
+  .group-assignment {
+    display: grid;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+  .group-editor label:not(.checkbox),
+  .group-assignment > label {
+    display: grid;
+    gap: var(--space-2);
+    min-width: 0;
+    margin: 0;
+  }
+  .group-editor label > input,
+  .group-editor label > .select-trigger,
+  .group-assignment label > .select-trigger,
+  .group-filter > .select-trigger {
+    margin: 0;
+  }
+  .group-assignment > p {
+    margin: 0;
+  }
+  .group-policy {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .group-policy label {
+    margin: 0;
+  }
+  .group-filter {
+    min-width: 160px;
+    max-width: 240px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    min-height: var(--control-height);
+  }
+  @media (max-width: 760px) {
+    .group-filter {
+      max-width: none;
+      flex: 1;
+    }
+    .group-badge {
+      min-height: var(--control-height);
+    }
+  }
+
+  .group-name {
+    flex: 1;
+  }
+}
