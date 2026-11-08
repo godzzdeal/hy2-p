@@ -5,6 +5,7 @@ import "@/config/i18n/setup";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import "./styles/layers.scss";
 import "./styles/index.scss";
 const root = document.createElement("div");
 root.id = "root";

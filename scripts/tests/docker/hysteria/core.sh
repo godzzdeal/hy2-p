@@ -5,7 +5,8 @@ curl -fsS -c "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Req
 # The real public router must resolve this endpoint even without the optional host helper.
 firewall_status=$(curl -sS -b "$WORK/cookies" -o "$WORK/firewall-response.json" -w '%{http_code}' "$URL/api/firewall")
 [[ $firewall_status == 503 ]] || { printf 'Unexpected firewall API status: %s\n' "$firewall_status" >&2; return 1; }
-jq -e '.error | contains("firewall-setup")' "$WORK/firewall-response.json" >/dev/null
+# The setup command is displayed separately in the panel's copyable command block.
+jq -e '(.error | type) == "string" and (.error | length) > 0' "$WORK/firewall-response.json" >/dev/null
 firewall_invalid=$(curl -sS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
   -X POST --data '{"port":0,"protocol":"tcp","action":"allow"}' -o "$WORK/firewall-invalid.json" -w '%{http_code}' "$URL/api/firewall")
 [[ $firewall_invalid == 400 ]] || return 1

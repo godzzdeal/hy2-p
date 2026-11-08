@@ -102,3 +102,16 @@ test("motion is short and respects the reduced-motion preference", async ({ page
   expect(await dialog.evaluate(element => getComputedStyle(element).animationName)).toBe("none");
   expect(await page.locator("html").evaluate(element => getComputedStyle(element).scrollBehavior)).toBe("auto");
 });
+
+test("Tailwind utilities retain precedence over component styles after Sass", async ({ page }) => {
+  await mockPanel(page);
+  const display = await page.evaluate(() => {
+    const element = document.createElement("label");
+    element.className = "checkbox grid";
+    document.body.append(element);
+    const value = getComputedStyle(element).display;
+    element.remove();
+    return value;
+  });
+  expect(display).toBe("grid");
+});
