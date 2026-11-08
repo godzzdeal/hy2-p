@@ -49,8 +49,11 @@ export async function mockPanel(page: Page, isAuthorized = true) {
     }
     switch (url.pathname) {
       case "/api/session":
-        response = { ok: isAuthorized };
-        break;
+        await route.fulfill({
+          status: isAuthorized ? 200 : 401,
+          json: isAuthorized ? { ok: true } : { error: "Нужен вход" },
+        });
+        return;
       case "/api/login":
         isAuthorized = true;
         response = { ok: true };

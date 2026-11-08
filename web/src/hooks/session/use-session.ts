@@ -1,4 +1,5 @@
 import { QUERY_KEYS } from "@/config/network";
+import { endSession } from "@/hooks/session/end-session";
 import { ApiError } from "@/services/http/ApiError";
 import { sessionApi } from "@/services/session/session-api";
 import { useUiStore } from "@/store/ui-store";
@@ -14,8 +15,7 @@ export function useSession() {
   const showError = useUiStore((state) => state.showError);
   useEffect(() => {
     const onExpired = () => {
-      client.clear();
-      client.setQueryData(QUERY_KEYS.session, { ok: false });
+      endSession(client);
     };
     window.addEventListener("session-expired", onExpired);
     return () => window.removeEventListener("session-expired", onExpired);
@@ -30,8 +30,7 @@ export function useSession() {
   const logout = useMutation({
     mutationFn: sessionApi.logout,
     onSuccess: () => {
-      client.clear();
-      client.setQueryData(QUERY_KEYS.session, { ok: false });
+      endSession(client);
     },
     onError: showError,
   });

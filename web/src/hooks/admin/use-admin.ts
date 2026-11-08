@@ -1,4 +1,5 @@
 import { QUERY_KEYS } from "@/config/network";
+import { endSession } from "@/hooks/session/end-session";
 import { adminApi } from "@/services/admin/admin-api";
 import { useUiStore } from "@/store/ui-store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,8 +17,7 @@ export function useAccountChange() {
     onError: showError,
     onSuccess: (result) => {
       localStorage.setItem("hy2.login", result.username);
-      client.clear();
-      client.setQueryData(QUERY_KEYS.session, { ok: false });
+      endSession(client);
       notify("Данные входа изменены. Войдите заново.");
     },
   });
