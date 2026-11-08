@@ -131,6 +131,11 @@ func (handler *Handler) StatsAddress() string {
 	return net.JoinHostPort("127.0.0.1", strconv.Itoa(port))
 }
 func (handler *Handler) StatsURL() string { return "http://" + handler.StatsAddress() }
+func (handler *Handler) BinaryPath() string {
+	handler.mu.Lock()
+	defer handler.mu.Unlock()
+	return handler.Binary
+}
 func (handler *Handler) ChallengePort() int {
 	if handler.ACMEPort == 0 {
 		return security.FirstChallengePort

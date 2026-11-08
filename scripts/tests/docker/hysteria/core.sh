@@ -5,6 +5,12 @@ curl -fsS -c "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Req
 openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes -days 1 \
   -subj /CN=localhost -addext subjectAltName=DNS:localhost \
   -keyout "$WORK/server.key" -out "$WORK/server.crt" 2>/dev/null
+# Check the actual bundled Hysteria ECH CLI; generated material stays in the disposable volume.
+curl -fsS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
+  --data '{"publicName":"public.example.com"}' "$URL/api/tools/ech" >"$WORK/ech.json"
+jq -e '(.keyPath | startswith("/data/ech/")) and (.configList | length > 8) and (has("privateKey") | not)' "$WORK/ech.json" >/dev/null
+curl -fsS -b "$WORK/cookies" "$URL/api/tools/traffic-stats" |
+  jq -e '.listen == "127.0.0.1:9999" and (.secret | length >= 32)' >/dev/null
 sudo cp "$WORK/server.key" "$WORK/server.crt" "$ROOT/certs/"
 # Disposable self-signed test fixture, readable by the non-root container.
 sudo chmod 644 "$ROOT/certs/server.key" "$ROOT/certs/server.crt"

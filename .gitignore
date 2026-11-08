@@ -17,3 +17,4 @@
 /.ci-images/
 /hy2-panel-linux-*.tar.gz*
 /AGENTS.md
+__pycache__/

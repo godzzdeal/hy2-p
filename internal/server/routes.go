@@ -6,6 +6,7 @@ import (
 	"hy2-panel/internal/buildinfo"
 	"hy2-panel/internal/buildinfo/updates"
 	deviceapi "hy2-panel/internal/devices/integration"
+	"hy2-panel/internal/firewall"
 	"hy2-panel/internal/instances"
 	instanceapi "hy2-panel/internal/instances/api"
 	portweb "hy2-panel/internal/portcontrol/web"
@@ -26,6 +27,8 @@ func routes(auth *auth.Handler, users *users.Handler, registry *instances.Regist
 	mux.HandleFunc("POST /api/login", auth.Login)
 	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{
+		"GET /firewall":                           firewall.Panel(),
+		"POST /firewall":                          firewall.Panel(),
 		"GET /api/users/{id}/devices":             devices.Read,
 		"PUT /api/users/{id}/devices":             devices.SetLimit,
 		"PATCH /api/users/{id}/devices/{device}":  devices.Edit,

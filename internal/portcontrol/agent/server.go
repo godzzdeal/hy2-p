@@ -3,6 +3,7 @@ package agent
 import (
 	"encoding/json"
 	"errors"
+	"hy2-panel/internal/firewall"
 	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/transport"
 	"io"
@@ -34,6 +35,8 @@ func New(root string) (*Agent, error) {
 }
 func (agent *Agent) Handler() http.Handler {
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /firewall", firewall.Host(agent.root))
+	mux.HandleFunc("POST /firewall", firewall.Host(agent.root))
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(204) })
 	mux.HandleFunc("GET /udp", func(w http.ResponseWriter, r *http.Request) {
 		agent.mu.Lock()

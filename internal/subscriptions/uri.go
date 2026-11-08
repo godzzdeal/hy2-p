@@ -51,6 +51,6 @@ func ConnectionURI(settings configuration.Settings, user users.User) (string, er
 			return "", errors.New("Для mTLS требуется клиентский сертификат; экспорт ссылки недоступен")
 		}
 	}
-	uri := url.URL{Scheme: "hysteria2", User: url.User(user.Password), Host: net.JoinHostPort(strings.Trim(settings.Host, "[]"), settings.Port), Path: "/", RawQuery: q.Encode(), Fragment: user.Name}
+	uri := url.URL{Scheme: "hy2", User: url.User(user.Password), Host: net.JoinHostPort(strings.Trim(settings.Host, "[]"), settings.Port), Path: "/", RawQuery: q.Encode(), Fragment: user.Name}
 	return uri.String(), nil
 }

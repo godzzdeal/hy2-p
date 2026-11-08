@@ -41,6 +41,7 @@ jobs:
           find scripts -name '*.sh' -exec bash -n {} \;
           find scripts -name '*.sh' -print0 | xargs -0 shellcheck -S warning
           bash scripts/tests/run.sh
+          python3 scripts/tests/firewall_test.py
   images:
     if: github.event_name != 'pull_request'
     needs: checks

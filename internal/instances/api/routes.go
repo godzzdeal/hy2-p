@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"hy2-panel/internal/configuration/deployment"
+	"hy2-panel/internal/core/tools"
 	"hy2-panel/internal/instances"
 	"hy2-panel/internal/transport"
 	"net/http"
@@ -16,6 +17,9 @@ func Register(mux *http.ServeMux, registry *instances.Registry, protect func(htt
 	mux.HandleFunc("PATCH /api/instances/{instance}", protect(handler.Rename))
 	mux.HandleFunc("DELETE /api/instances/{instance}", protect(handler.Remove))
 	endpoints := map[string]func(*instances.Instance) http.HandlerFunc{
+		"GET /tools/ech":              func(instance *instances.Instance) http.HandlerFunc { return coreTools(instance).Read },
+		"POST /tools/ech":             func(instance *instances.Instance) http.HandlerFunc { return coreTools(instance).Create },
+		"GET /tools/traffic-stats":    func(instance *instances.Instance) http.HandlerFunc { return coreTools(instance).Stats },
 		"GET /settings":               readSettings,
 		"GET /history":                func(instance *instances.Instance) http.HandlerFunc { return instance.Config.History },
 		"GET /core":                   func(instance *instances.Instance) http.HandlerFunc { return instance.Core.Status },
@@ -54,6 +58,9 @@ func Register(mux *http.ServeMux, registry *instances.Registry, protect func(htt
 	mux.HandleFunc("PUT /api/instances/{instance}/settings", save)
 	mux.HandleFunc("GET /api/deployment", protect(handler.Deployment))
 	mux.HandleFunc("GET /api/instances/{instance}/deployment", protect(handler.Deployment))
+}
+func coreTools(instance *instances.Instance) tools.Handler {
+	return tools.Handler{Config: instance.Config, Binary: instance.Core.BinaryPath, Data: instance.Core.Data, Address: instance.Core.StatsAddress(), Secret: instance.Core.Secret, Running: instance.Core.Running}
 }
 func readSettings(instance *instances.Instance) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

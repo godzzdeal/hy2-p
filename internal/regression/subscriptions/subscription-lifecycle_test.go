@@ -40,7 +40,7 @@ func TestSubscriptionLifecycle(t *testing.T) {
 		t.Fatal(sub.Body.String())
 	}
 	decoded, e := base64.StdEncoding.DecodeString(sub.Body.String())
-	if e != nil || !strings.HasPrefix(string(decoded), "hysteria2://") {
+	if e != nil || !strings.HasPrefix(string(decoded), "hy2://") {
 		t.Fatal("invalid subscription")
 	}
 	auth := httptest.NewRecorder()

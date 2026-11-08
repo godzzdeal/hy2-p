@@ -11,6 +11,8 @@ import { AuthSettings } from "./AuthSettings";
 import { ConfigNavigation } from "./navigation";
 import { PropertySearch, SectionFields } from "./fields";
 import { OutboundsEditor } from "../outbounds";
+import { EchTools, StatsSecret } from "../tools";
+import { useInstanceId } from "@/features/instances/model";
 export function ConfigurationForm({
   value,
   onChange,
@@ -19,6 +21,7 @@ export function ConfigurationForm({
   onChange: (value: IConfiguration) => void;
 }) {
   const { t } = useTranslation();
+  const instanceId = useInstanceId();
   const web = useWebSettings();
   const [showDescription, setDescription] = useState(true);
   const [section, setSection] = useState("listen");
@@ -79,6 +82,8 @@ export function ConfigurationForm({
               <CertificateMode source={value.config} onChange={(config) => onChange({ ...value, config })} />
             )}
             {active.id === "auth" && <AuthSettings value={value} onChange={onChange} />}
+            {active.id === "ech" && <EchTools key={instanceId} onSet={onSet} />}
+            {active.id === "trafficStats" && <StatsSecret key={instanceId} />}
             {active.id === "mimic" && (
               <p className="config-note">
                 {t(

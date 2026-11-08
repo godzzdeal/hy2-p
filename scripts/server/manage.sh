@@ -20,14 +20,16 @@ case $command in
       '  rollback [--yes]       Предыдущая версия и данные из её копии' \
       '  backup                 Согласованная резервная копия данных и ключей' \
       '  url                    Адрес панели или SSH-туннель'
+    printf '%s\n' '  firewall-setup         Подключить помощник управления UFW'
     exit 0 ;;
-  status|logs|start|stop|restart|update|rollback|backup|url|apply-udp|remove-udp|recover-udp) ;;
+  status|logs|start|stop|restart|update|rollback|backup|url|apply-udp|remove-udp|recover-udp|firewall-setup) ;;
   *) die "Неизвестная команда: $command" ;;
 esac
 [[ -f $ROOT/.env && -f $ROOT/current ]] || die "Установка не найдена."
 current=$(cat "$ROOT/current")
 valid_sha "$current" || die "Повреждён файл текущей версии."
 case $command in
+  firewall-setup) bash "$SCRIPT_DIR/../firewall/setup.sh"; exit ;;
   status) compose "$current" ps; printf 'Commit: %s\n' "$current" ;;
   logs) compose "$current" logs --follow --tail=100 panel ;;
   url) show_access ;;

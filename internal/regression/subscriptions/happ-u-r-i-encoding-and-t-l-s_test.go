@@ -19,7 +19,7 @@ func TestHappURIEncodingAndTLS(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	if uri.Scheme != "hysteria2" || uri.User.Username() != u.Password || uri.Host != "[2001:db8::1]:8443" || uri.Fragment != u.Name {
+	if uri.Scheme != "hy2" || uri.User.Username() != u.Password || uri.Host != "[2001:db8::1]:8443" || uri.Fragment != u.Name {
 		t.Fatal(raw)
 	}
 	if uri.Query().Get("obfs-password") != "a & b" || uri.Query().Get("sni") != s.SNI || uri.Query().Get("insecure") != "" {
