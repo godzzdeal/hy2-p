@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "installCommand": "cd web && bun install --frozen-lockfile",
-  "buildCommand": "cd web && bun run build:demo",
+  "installCommand": "cd web && bunx bun@1.4.3 install --frozen-lockfile",
+  "buildCommand": "cd web && bunx bun@1.4.3 run build:demo",
   "outputDirectory": "web/dist-demo",
   "headers": [{ "source": "/(.*)", "headers": [
     { "key": "X-Content-Type-Options", "value": "nosniff" },
