@@ -7,6 +7,9 @@ export const API_ROUTES = {
   login: "/login",
   logout: "/logout",
   users: "/users",
+  groups: "/groups",
+  group: (id: string) => "/groups/" + encodeURIComponent(id),
+  userGroup: (id: string) => "/users/" + encodeURIComponent(id) + "/group",
   userCores: (id: string) => "/users/" + encodeURIComponent(id) + "/cores",
   userDevices: (id: string) => "/users/" + encodeURIComponent(id) + "/devices",
   userDevice: (id: string, device: string) =>
@@ -23,6 +26,7 @@ export const API_ROUTES = {
   ech: "/tools/ech",
   statsSecret: "/tools/traffic-stats",
   firewall: "/firewall",
+  firewallPorts: "/firewall/ports",
   traffic: "/traffic",
   userTraffic: (id: string) => "/users/" + encodeURIComponent(id) + "/traffic",
   logs: "/logs",
@@ -37,10 +41,12 @@ export const API_ROUTES = {
 } as const;
 export const QUERY_KEYS = {
   instances: ["instances"],
+  firewallPorts: ["firewall-ports"],
   panelVersion: ["panel-version"],
   panelRelease: ["panel-release"],
   session: ["session"],
   users: ["users"],
+  groups: ["groups"],
   userAccess: ["user-access"],
   devices: ["user-devices"],
   udpOperation: ["udp-operation"],

@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
-test("ECH generation changes only the draft and exposes public config", async ({ page }) => {
+test("ECH generation changes only the draft and exposes public config", async ({ page }, info) => {
   await mockPanel(page);
   await page.route("http://panel.test/api/tools/ech", (route) =>
     route.fulfill({ json: { keyPath: "/data/ech/test/ech.pem", configList: "PUBLIC-CONFIG-ONLY" } }),
@@ -16,4 +16,5 @@ test("ECH generation changes only the draft and exposes public config", async ({
   await expect(
     page.getByText("Ключ ECH создан. Сохраните конфигурацию и перезапустите ядро.", { exact: true }),
   ).toBeVisible();
+  await page.screenshot({ path: info.outputPath("ech-tools.png"), fullPage: true });
 });

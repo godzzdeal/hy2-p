@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { request, API_ROUTES } from "@/shared/http";
 export interface IFirewall {
+  protectedPorts?: number[];
   active: boolean;
   output: string;
 }

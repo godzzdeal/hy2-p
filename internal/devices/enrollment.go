@@ -12,8 +12,9 @@ func (store *Store) Admit(user, password string, request *http.Request) (string,
 	store.mu.Lock()
 	defer store.mu.Unlock()
 	state := store.clone(user)
+	limit := store.effectiveLimit(user, state.Limit)
 	if !model.HWIDPattern.MatchString(hwid) {
-		if state.Limit > 0 {
+		if limit > 0 {
 			return "", model.ErrMissingHWID
 		}
 		return password, nil
@@ -23,12 +24,15 @@ func (store *Store) Admit(user, password string, request *http.Request) (string,
 	if exists && entry.Blocked {
 		return "", model.ErrBlocked
 	}
+	if exists && !store.permitted(user, id, state) {
+		return "", model.ErrLimitReached
+	}
 	if !exists {
-		if state.Limit > 0 && active(state) >= state.Limit {
+		if limit > 0 && active(state) >= limit {
 			return "", model.ErrLimitReached
 		}
 		if len(state.Devices) >= model.MaxDevices {
-			if state.Limit > 0 {
+			if limit > 0 {
 				return "", model.ErrRegistryFull
 			}
 			return password, nil
@@ -78,7 +82,7 @@ func (store *Store) Resolve(password string) (model.Reference, bool) {
 		return model.Reference{}, false
 	}
 	entry := store.users[reference.User].Devices[reference.Device]
-	return reference, !entry.Blocked
+	return reference, !entry.Blocked && store.permitted(reference.User, reference.Device, store.users[reference.User])
 }
 func (store *Store) Identity(value string) (model.Reference, bool) {
 	parsed, ok := security.ParseIdentity(value)
@@ -88,7 +92,7 @@ func (store *Store) Identity(value string) (model.Reference, bool) {
 	store.mu.RLock()
 	defer store.mu.RUnlock()
 	entry, exists := store.users[parsed.User].Devices[parsed.Device]
-	if !exists || entry.Blocked || security.IdentityStamp(entry.Digest) != parsed.Version {
+	if !exists || entry.Blocked || !store.permitted(parsed.User, parsed.Device, store.users[parsed.User]) || security.IdentityStamp(entry.Digest) != parsed.Version {
 		return model.Reference{}, false
 	}
 	return model.Reference{User: parsed.User, Device: parsed.Device, Parent: entry.Parent, Version: parsed.Version}, true

@@ -27,7 +27,8 @@ type User struct {
 	Devices map[string]Entry `json:"devices"`
 }
 type Summary struct {
-	Limit   int      `json:"limit"`
-	Devices []Device `json:"devices"`
+	EffectiveLimit int      `json:"effectiveLimit"`
+	Limit          int      `json:"limit"`
+	Devices        []Device `json:"devices"`
 }
 type Reference struct{ User, Device, Parent, Version string }

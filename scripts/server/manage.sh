@@ -29,7 +29,7 @@ esac
 current=$(cat "$ROOT/current")
 valid_sha "$current" || die "Повреждён файл текущей версии."
 case $command in
-  firewall-setup) bash "$SCRIPT_DIR/../firewall/setup.sh"; exit ;;
+  firewall-setup) bash "$SCRIPT_DIR/../firewall-setup.sh"; exit ;;
   status) compose "$current" ps; printf 'Commit: %s\n' "$current" ;;
   logs) compose "$current" logs --follow --tail=100 panel ;;
   url) show_access ;;

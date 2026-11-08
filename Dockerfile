@@ -15,6 +15,7 @@ RUN go mod download
 COPY cmd/ cmd/
 COPY internal/ internal/
 RUN CGO_ENABLED=0 go build -trimpath -ldflags "-X hy2-panel/internal/buildinfo.Revision=${PANEL_REVISION}" -o /panel ./cmd/panel && CGO_ENABLED=0 go build -trimpath -o /port-agent ./cmd/port-agent
+RUN CGO_ENABLED=0 go build -trimpath -o /firewall-agent ./cmd/firewall-agent
 
 FROM ${HYSTERIA_IMAGE} AS core
 FROM docker:28-cli AS docker-client
@@ -27,6 +28,7 @@ COPY --from=docker-client /usr/local/bin/docker /usr/local/bin/docker
 COPY --from=docker-client /usr/local/libexec/docker/cli-plugins/docker-compose /usr/local/libexec/docker/cli-plugins/docker-compose
 COPY --from=server /panel /usr/local/bin/panel
 COPY --from=server /port-agent /usr/local/bin/port-agent
+COPY --from=server /firewall-agent /usr/local/bin/firewall-agent
 COPY --from=web /app/web/dist /app/web
 USER panel
 WORKDIR /app

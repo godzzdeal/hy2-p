@@ -8,6 +8,7 @@ import { SpaceScene } from "@/shared/SpaceScene";
 import { PanelFooter } from "./footer";
 import { InstanceSelector } from "@/features/instances/list/InstanceSelector";
 import { useInstanceId } from "@/features/instances/model";
+import { cn } from "@/shared/lib";
 const InstancesPage = lazy(() =>
   import("@/features/instances/list/InstancesPage").then((module) => ({ default: module.InstancesPage })),
 );
@@ -49,11 +50,12 @@ const PAGES = {
 export function Dashboard() {
   const { t } = useTranslation();
   const page = useUiStore((state) => state.page);
+  const isSidebarCollapsed = useUiStore((state) => state.isSidebarCollapsed);
   const instanceId = useInstanceId();
   const Page = PAGES[page];
   const content = useRef<HTMLDivElement>(null);
   return (
-    <div className="shell">
+    <div className={cn("shell", { "sidebar-collapsed": isSidebarCollapsed })}>
       <SpaceScene />
       <Sidebar />
       <main>

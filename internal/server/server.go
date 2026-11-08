@@ -11,6 +11,7 @@ import (
 	"hy2-panel/internal/core/supervision"
 	"hy2-panel/internal/cryptovault"
 	deviceapi "hy2-panel/internal/devices/integration"
+	groupapi "hy2-panel/internal/groups/integration"
 	"hy2-panel/internal/instances"
 	instanceapi "hy2-panel/internal/instances/api"
 	"hy2-panel/internal/security"
@@ -23,9 +24,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/signal"
 	"strings"
-	"syscall"
 	"time"
 )
 
@@ -68,7 +67,6 @@ func Run() error {
 	if err != nil {
 		return err
 	}
-	go traffic.Run(monitorContext)
 	users := &users.Handler{DB: db, Kick: registry.Kick, Allow: traffic.Allowed, Vault: vault}
 	access, err := useraccess.Open(data, registry, users)
 	if err != nil {
@@ -78,6 +76,11 @@ func Run() error {
 	if err != nil {
 		return err
 	}
+	groups, err := groupapi.Open(data, registry, users, access, devices, traffic)
+	if err != nil {
+		return err
+	}
+	go traffic.Run(monitorContext)
 	go devices.Store.Run(monitorContext)
 	access.AllowIdentity = devices.AllowedIdentity
 	access.Sources, access.Observe = devices.Store.Sources, devices.Store.Observe
@@ -91,8 +94,8 @@ func Run() error {
 	if err != nil {
 		return err
 	}
-	subscriptions := &subscriptions.Handler{Announcements: announcements, DB: db, Users: users, Sources: instanceapi.Profiles(registry), AllowCore: access.Store.Allows, DeviceLimit: devices.Store.Limit, PrepareSubscription: devices.Prepare, PublicURL: strings.TrimRight(web.Active().URL(), "/")}
-	public := httpServer(web.Active().Address(), routes(auth, users, registry, subscriptions, traffic, web, access, devices))
+	subscriptions := &subscriptions.Handler{Announcements: announcements, DB: db, Users: users, Sources: instanceapi.Profiles(registry), AllowCore: access.Allows, DeviceLimit: devices.Store.Limit, PrepareSubscription: devices.Prepare, PublicURL: strings.TrimRight(web.Active().URL(), "/")}
+	public := httpServer(web.Active().Address(), routes(auth, users, registry, subscriptions, traffic, web, access, devices, groups))
 	tlsConfig, challenge, err := web.TLS()
 	if err != nil {
 		return err
@@ -127,21 +130,7 @@ func Run() error {
 	}
 	log.Printf("Panel listening on %s", public.Addr)
 	go supervision.ExpiryLoop(monitorContext, db, registry.Running, registry.Kick)
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
-	defer signal.Stop(quit)
-	select {
-	case <-quit:
-	case err = <-failures:
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	public.Shutdown(ctx)
-	internal.Shutdown(ctx)
-	if challenge != nil {
-		challenge.Shutdown(ctx)
-	}
-	return err
+	return awaitShutdown(failures, servers)
 }
 func httpServer(address string, handler http.Handler) *http.Server {
 	return &http.Server{Addr: address, Handler: handler, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}

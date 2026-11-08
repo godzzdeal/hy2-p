@@ -16,6 +16,7 @@ export interface IDevice {
   blocked: boolean;
 }
 export interface IDevices {
+  effectiveLimit?: number;
   limit: number;
   devices: IDevice[];
 }

@@ -39,6 +39,7 @@ curl -fsS "$URL/api/version" | jq -e --arg commit "$GITHUB_SHA" --arg version "$
   '.revision == $commit and .version == $version' >/dev/null
 # shellcheck source=/dev/null
 source "$(dirname -- "${BASH_SOURCE[0]}")/hysteria/core.sh"
+CGO_ENABLED=0 go build -o "$WORK/net-fixture" ./scripts/tests/fixtures
 # shellcheck source=/dev/null
 source "$(dirname -- "${BASH_SOURCE[0]}")/hysteria/ports.sh"
 # shellcheck source=/dev/null

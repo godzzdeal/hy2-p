@@ -2,14 +2,17 @@ import { useTranslation } from "react-i18next";
 import { RefreshCw } from "@/shared/icons";
 import { UserCount } from "./UserCount";
 import { useUsersRefresh } from "./use-users-refresh";
+import { type ReactNode } from "react";
 export function UsersToolbar({
   search,
   onSearch,
   found,
+  children,
 }: {
   search: string;
   onSearch: (value: string) => void;
   found: number;
+  children?: ReactNode;
 }) {
   const { t } = useTranslation();
   const refresh = useUsersRefresh();
@@ -20,6 +23,7 @@ export function UsersToolbar({
         <UserCount />
       </h2>
       <div className="users-list-actions">
+        {children}
         <label className="users-search">
           <span className="sr-only">{t("Поиск пользователей")}</span>
           <input

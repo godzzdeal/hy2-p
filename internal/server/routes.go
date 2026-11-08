@@ -1,12 +1,15 @@
 package server
 
 import (
+	"context"
 	"errors"
 	"hy2-panel/internal/auth"
 	"hy2-panel/internal/buildinfo"
 	"hy2-panel/internal/buildinfo/updates"
 	deviceapi "hy2-panel/internal/devices/integration"
 	"hy2-panel/internal/firewall"
+	"hy2-panel/internal/firewall/recommendations"
+	groupapi "hy2-panel/internal/groups/integration"
 	"hy2-panel/internal/instances"
 	instanceapi "hy2-panel/internal/instances/api"
 	portweb "hy2-panel/internal/portcontrol/web"
@@ -18,15 +21,25 @@ import (
 	"hy2-panel/internal/users"
 	"hy2-panel/internal/websettings"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
-func routes(auth *auth.Handler, users *users.Handler, registry *instances.Registry, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, access *useraccess.Handler, devices *deviceapi.Handler) http.Handler {
+func routes(auth *auth.Handler, users *users.Handler, registry *instances.Registry, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, access *useraccess.Handler, devices *deviceapi.Handler, groups *groupapi.Handler) http.Handler {
 	mux := http.NewServeMux()
 	panelUpdates := updates.New(buildinfo.Version())
 	mux.HandleFunc("GET /api/version", buildinfo.Read)
 	mux.HandleFunc("POST /api/login", auth.Login)
 	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{
+		"GET /api/groups":                         groups.Read,
+		"POST /api/groups":                        groups.Save,
+		"PUT /api/groups/{group}":                 groups.Save,
+		"DELETE /api/groups/{group}":              groups.Remove,
+		"PUT /api/users/{id}/group":               groups.Assign,
+		"GET /api/firewall/ports":                 recommendations.Handler(web, registry),
 		"GET /api/firewall":                       firewall.Panel(),
 		"POST /api/firewall":                      firewall.Panel(),
 		"GET /api/users/{id}/devices":             devices.Read,
@@ -36,7 +49,7 @@ func routes(auth *auth.Handler, users *users.Handler, registry *instances.Regist
 		"GET /api/users/{id}/cores":               access.Read,
 		"PUT /api/users/{id}/cores":               access.Save,
 		"GET /api/panel/update":                   panelUpdates.Read,
-		"GET /api/traffic":                        traffic.Read,
+		"GET /api/traffic":                        groups.ReadTraffic,
 		"PUT /api/users/{id}/traffic": func(writer http.ResponseWriter, request *http.Request) {
 			if _, err := users.User(request.PathValue("id")); err != nil {
 				transport.Fail(writer, errors.New("Пользователь не найден"), 404)
@@ -66,4 +79,20 @@ func routes(auth *auth.Handler, users *users.Handler, registry *instances.Regist
 	})
 	mux.Handle("/", http.FileServer(http.Dir(security.Env("PANEL_WEB", "web/dist"))))
 	return transport.Headers(mux)
+}
+func awaitShutdown(failures <-chan error, servers []*http.Server) error {
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
+	defer signal.Stop(quit)
+	var err error
+	select {
+	case <-quit:
+	case err = <-failures:
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	for _, server := range servers {
+		server.Shutdown(ctx)
+	}
+	return err
 }

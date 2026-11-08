@@ -2,6 +2,8 @@ import { i18n } from "@/shared/i18n/setup";
 import { create } from "zustand";
 import { type TPage } from "@/app/navigation";
 interface IUiState {
+  isSidebarCollapsed: boolean;
+  toggleSidebar: () => void;
   theme: "system" | "light" | "dark";
   setTheme: (theme: "system" | "light" | "dark") => void;
   page: TPage;
@@ -16,6 +18,12 @@ interface IUiState {
   clearNotice: () => void;
 }
 export const useUiStore = create<IUiState>((set, get) => ({
+  isSidebarCollapsed: localStorage.getItem("hy2.sidebar-collapsed") === "true",
+  toggleSidebar: () => {
+    const isSidebarCollapsed = !get().isSidebarCollapsed;
+    set({ isSidebarCollapsed });
+    localStorage.setItem("hy2.sidebar-collapsed", String(isSidebarCollapsed));
+  },
   theme: "system",
   setTheme: (theme) => set({ theme }),
   page: "overview",

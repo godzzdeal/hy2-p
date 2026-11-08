@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { type FormEvent } from "react";
 import { type IUser } from "@/features/users/model";
-import { formatBytes, useAdjustTraffic } from "../model";
+import { BYTE_UNITS, formatBytes, useAdjustTraffic } from "../model";
 import { type IUserUsage } from "../model";
 export function TrafficForm({
   user,
@@ -15,7 +15,7 @@ export function TrafficForm({
   onClose: () => void;
 }) {
   const { t } = useTranslation();
-  const [unit, setUnit] = useState(1024 ** 3);
+  const [unit, setUnit] = useState<number>(BYTE_UNITS.gigabyte);
   const [upload, setUpload] = useState<number>();
   const [download, setDownload] = useState<number>();
   const [limit, setLimit] = useState(usage.limit);
@@ -27,15 +27,23 @@ export function TrafficForm({
   return (
     <form onSubmit={onSubmit}>
       <p className="config-note">
-        {t("Использовано:")} {formatBytes(usage.upload + usage.download)}
+        {t("Использовано:")} {formatBytes(usage.upload + usage.download, t)}
         {t(". При исчерпании квоты доступ блокируется до её увеличения или сброса счётчиков.")}
       </p>
+      {!!usage.groupLimit && (
+        <p className="config-note">
+          {t("Лимит группы:")} {formatBytes(usage.groupLimit, t)}.{" "}
+          {t("Личный лимит может быть только строже.")}
+        </p>
+      )}
       <label>
         {t("Единица измерения")}
         <Select value={unit} onValueChange={(nextValue) => setUnit(Number(nextValue))}>
-          <SelectOption value={1}>B</SelectOption>
-          <SelectOption value={1024 ** 2}>MiB</SelectOption>
-          <SelectOption value={1024 ** 3}>GiB</SelectOption>
+          <SelectOption value={BYTE_UNITS.byte}>{t("Б")}</SelectOption>
+          <SelectOption value={BYTE_UNITS.kilobyte}>{t("КБ")}</SelectOption>
+          <SelectOption value={BYTE_UNITS.megabyte}>{t("МБ")}</SelectOption>
+          <SelectOption value={BYTE_UNITS.gigabyte}>{t("ГБ")}</SelectOption>
+          <SelectOption value={BYTE_UNITS.terabyte}>{t("ТБ")}</SelectOption>
         </Select>
       </label>
       <label>

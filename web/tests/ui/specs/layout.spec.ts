@@ -1,5 +1,21 @@
 import { test, expect } from "@playwright/test";
 import { mockPanel } from "../fixtures";
+test("sidebar collapse is saved and mobile keeps horizontal navigation", async ({ page }, info) => {
+  await mockPanel(page);
+  const toggle = page.getByRole("button", { name: "Свернуть меню", exact: true });
+  if (info.project.name === "mobile") { await expect(toggle).toBeHidden(); return; }
+  const before = await page.locator("main").boundingBox();
+  await toggle.click();
+  const collapsed = await page.locator("main").boundingBox();
+  expect(collapsed!.width).toBeGreaterThan(before!.width);
+  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Пользователи", exact: true })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Развернуть меню", exact: true })).toBeVisible();
+  await page.screenshot({ path: info.outputPath("collapsed-sidebar.png") });
+  await page.getByRole("button", { name: "Развернуть меню", exact: true }).click();
+  await expect(page.locator(".nav-item-label").first()).toBeVisible();
+});
 test("quick-start content and navigation stay inside their bounds", async ({ page }, info) => {
   await mockPanel(page);
   const step = page.locator(".steps .step").first();

@@ -39,13 +39,7 @@ login_panel
 curl -fsS -b "$WORK/cookies" "$URL/api/deployment" |
   jq -e '.publishedUdpPort == "61256" and .publishedUdpListenPort == "61254" and (.udpRestartRequired | not)' >/dev/null
 # Occupy only the disposable test port. Its PID is tracked by the parent cleanup trap.
-python3 - "$WORK/udp-ready" <<'PY' &
-import socket, sys, time
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind(("0.0.0.0", 61257))
-open(sys.argv[1], "w").close()
-time.sleep(240)
-PY
+"$WORK/net-fixture" udp 0.0.0.0:61257 "$WORK/udp-ready" &
 BLOCKER=$!
 for ((attempt=0; attempt<30; attempt++)); do [[ -f $WORK/udp-ready ]] && break; sleep 0.1; done
 [[ -f $WORK/udp-ready ]] || return 1

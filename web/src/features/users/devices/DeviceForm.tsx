@@ -6,6 +6,7 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
   const { t } = useTranslation();
   const [limit, setLimit] = useState(String(data.limit));
   const commands = useDeviceCommands(userId);
+  const effectiveLimit = data.effectiveLimit ?? data.limit;
   const isPending = commands.limit.isPending || commands.edit.isPending || commands.remove.isPending;
   function onSubmit(event: FormEvent) {
     event.preventDefault();
@@ -13,6 +14,11 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
   }
   return (
     <div className="user-devices">
+      {effectiveLimit !== data.limit && (
+        <p className="config-note">
+          {t("Действующий лимит с учётом группы:")} {effectiveLimit}
+        </p>
+      )}
       <form onSubmit={onSubmit}>
         <label>
           {t("Лимит устройств")}
@@ -57,7 +63,7 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
       <p className="caption">
         {t("Модель и ОС сообщает приложение. Статус подключения обновляется автоматически.")}
       </p>
-      {data.limit === 0 && (
+      {effectiveLimit === 0 && (
         <p className="caption">{t("Без лимита одиночные ссылки работают без определения устройства.")}</p>
       )}
     </div>

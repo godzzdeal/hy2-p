@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
-test("runtime stats secret is fetched only on request and can be hidden", async ({ page }) => {
+test("runtime stats secret is fetched only on request and can be hidden", async ({ page }, info) => {
   await mockPanel(page);
   let reads = 0;
   await page.route("http://panel.test/api/tools/traffic-stats", (route) => {
@@ -16,6 +16,7 @@ test("runtime stats secret is fetched only on request and can be hidden", async 
   await expect(
     page.getByRole("textbox", { name: "Фактический секрет Traffic Stats", exact: true }),
   ).toHaveValue("runtime-fixture-secret");
+  await page.screenshot({ path: info.outputPath("stats-tools.png"), fullPage: true });
   await page.getByRole("button", { name: "Скрыть секрет", exact: true }).click();
   await expect(page.locator('input[value="runtime-fixture-secret"]')).toHaveCount(0);
 });

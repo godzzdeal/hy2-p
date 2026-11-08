@@ -15,14 +15,16 @@ import (
 
 const PollInterval = 5 * time.Second
 const RequestTimeout = 2 * time.Second
+const MaxSafeBytes = uint64(9007199254740991)
 
 type Counter = sources.Counter
 type Usage struct {
-	Upload   uint64 `json:"upload"`
-	Download uint64 `json:"download"`
-	Limit    uint64 `json:"limit"`
-	Online   int    `json:"online"`
-	LastSeen string `json:"lastSeen"`
+	GroupLimit uint64 `json:"groupLimit,omitempty"`
+	Upload     uint64 `json:"upload"`
+	Download   uint64 `json:"download"`
+	Limit      uint64 `json:"limit"`
+	Online     int    `json:"online"`
+	LastSeen   string `json:"lastSeen"`
 }
 type Snapshot struct {
 	Users     map[string]Usage `json:"users"`
@@ -36,6 +38,7 @@ type Runtime interface {
 	Kick(string)
 }
 type Service struct {
+	GroupLimit                             func(string) uint64
 	mu                                     sync.Mutex
 	state                                  Snapshot
 	baseline                               map[string]Counter
@@ -68,6 +71,9 @@ func (service *Service) Snapshot() Snapshot {
 	snapshot := service.state
 	snapshot.Users = make(map[string]Usage, len(service.state.Users))
 	for id, usage := range service.state.Users {
+		if service.GroupLimit != nil {
+			usage.GroupLimit = service.GroupLimit(id)
+		}
 		snapshot.Users[id] = usage
 	}
 	return snapshot
@@ -76,6 +82,12 @@ func (service *Service) Allowed(id string) bool {
 	service.mu.Lock()
 	defer service.mu.Unlock()
 	usage := service.state.Users[id]
+	if service.GroupLimit != nil {
+		group := service.GroupLimit(id)
+		if group > 0 && (usage.Limit == 0 || group < usage.Limit) {
+			usage.Limit = group
+		}
+	}
 	return usage.Limit == 0 || usage.Upload+usage.Download < usage.Limit
 }
 func (service *Service) Run(ctx context.Context) {
@@ -91,11 +103,6 @@ func (service *Service) Run(ctx context.Context) {
 	}
 }
 
-const MaxSafeBytes = uint64(9007199254740991)
-
-func (service *Service) Read(writer http.ResponseWriter, request *http.Request) {
-	transport.Respond(writer, service.Snapshot())
-}
 func (service *Service) Adjust(writer http.ResponseWriter, request *http.Request) {
 	var input struct {
 		Upload   *uint64 `json:"upload"`

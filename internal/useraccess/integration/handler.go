@@ -16,6 +16,11 @@ type Handler struct {
 	AllowIdentity func(string) bool
 	Sources       func([]string)
 	Observe       func(string, map[string]int, bool)
+	GroupAllows   func(string, string) bool
+}
+
+func (handler *Handler) Allows(user, instance string) bool {
+	return handler.Store.Allows(user, instance) && (handler.GroupAllows == nil || handler.GroupAllows(user, instance))
 }
 
 func Open(data string, registry *instances.Registry, users *users.Handler) (*Handler, error) {

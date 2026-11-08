@@ -18,3 +18,4 @@
 /hy2-panel-linux-*.tar.gz*
 /AGENTS.md
 __pycache__/
+/mk-arch-demo/

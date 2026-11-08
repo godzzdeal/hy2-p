@@ -42,24 +42,6 @@
 .pair-editor {
   margin-top: var(--space-2);
 }
-.certificate-upload {
-  padding: var(--space-4);
-  border-top: 1px solid var(--line);
-}
-.certificate-upload > button {
-  margin-bottom: var(--space-4);
-}
-.certificate-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  justify-content: space-between;
-  padding: var(--space-4) var(--space-6);
-  font-size: var(--text-small);
-}
-.certificate-row span {
-  color: var(--muted);
-}
 .watchdog-status {
   display: flex;
   align-items: flex-start;

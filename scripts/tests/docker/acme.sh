@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 test_acme_gateway() {
+  local panel_image=${panel_image:?Run core.sh first}
   # backup restarts the panel and invalidates the previous session.
   curl -fsS -c "$WORK/cookies" -H "Content-Type: application/json" -H "X-Panel-Request: 1" \
     --data '{"username":"admin","password":"integration-test-password-only"}' "$URL/api/login" >/dev/null
@@ -20,8 +21,8 @@ acme:
   mkdir -p "$WORK/challenges/.well-known/acme-challenge"
   printf 'core-token-proof' >"$WORK/challenges/.well-known/acme-challenge/test-token"
   sudo docker run -d --rm --name "$backend_name" --network "container:$identifier" \
-    -v "$WORK/challenges:/files:ro" python:3.12-alpine \
-    python -m http.server 9090 --bind 127.0.0.1 --directory /files >/dev/null
+    --entrypoint /net-fixture -v "$WORK/net-fixture:/net-fixture:ro" \
+    -v "$WORK/challenges:/files:ro" "$panel_image" http 127.0.0.1:9090 /files >/dev/null
   proof=
   for ((attempt=0; attempt<30; attempt++)); do
     proof=$(curl --noproxy '*' -sS -H 'Host: core.invalid' http://127.0.0.1/.well-known/acme-challenge/test-token || true)

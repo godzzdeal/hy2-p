@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { type IDevice } from "./model";
 import { formatDateTime } from "@/shared/lib";
 import { cn } from "@/shared/lib";
+import { ConnectionBadge } from "@/features/users/traffic";
 import { Trash2 } from "@/shared/icons";
 export function DeviceRow({
   device,
@@ -19,17 +20,11 @@ export function DeviceRow({
     <section className="device-row" aria-label={device.model || device.id}>
       <div className="device-heading">
         <strong>{device.model || device.os || t("Неизвестное устройство")}</strong>
-        <span className={cn("badge", { green: !device.blocked && (device.online ?? 0) > 0 })}>
-          {t(
-            device.blocked
-              ? "Отключено"
-              : (device.online ?? 0) > 0
-                ? "В сети"
-                : device.statusAvailable
-                  ? "Не в сети"
-                  : "Статус недоступен",
-          )}
-        </span>
+        <ConnectionBadge
+          online={device.online ?? 0}
+          isAvailable={!!device.statusAvailable}
+          isBlocked={device.blocked}
+        />
       </div>
       <p className="caption">
         {device.os} {device.osVersion}

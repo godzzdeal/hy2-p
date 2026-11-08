@@ -15,7 +15,7 @@ export function EchTools({ onSet }: { onSet: (path: string, value: unknown) => v
     notify("Ключ ECH создан. Сохраните конфигурацию и перезапустите ядро.");
   }
   return (
-    <section className="certificate-status">
+    <section className="configuration-tools">
       <p className="config-note">
         {t(
           "ACME обновляет TLS-сертификат. ECH создаётся отдельно; клиентам передаётся только публичный tls.ech.",

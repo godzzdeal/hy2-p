@@ -1,5 +1,6 @@
 import { type IConfiguration } from "@/features/configuration/model";
 export const PANEL_METADATA: Record<string, unknown> = {
+  "/api/groups": { groups: [], memberships: {} },
   "/api/instances": [
     {
       id: "default",

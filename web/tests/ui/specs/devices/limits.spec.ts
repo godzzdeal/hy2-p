@@ -28,10 +28,10 @@ test("device access can be revoked and restored", async ({ page }, info) => {
   await expect(row.getByText("Happ/4.12.0", { exact: true })).toBeVisible();
   await row.getByRole("button", { name: "Отключить устройство", exact: true }).click();
   await expect.poll(() => fixture.saved().devices[0]?.blocked).toBe(true);
-  await expect(row.getByText("Отключено", { exact: true })).toBeVisible();
+  await expect(row.getByRole("img", { name: "Отключено", exact: true })).toBeVisible();
   await row.getByRole("button", { name: "Разрешить устройство", exact: true }).click();
   await expect.poll(() => fixture.saved().devices[0]?.blocked).toBe(false);
-  await expect(row.getByText("В сети", { exact: true })).toBeVisible();
+  await expect(row.getByRole("img", { name: "В сети", exact: true })).toBeVisible();
   await page
     .getByRole("dialog", { name: "Устройства пользователя", exact: true })
     .screenshot({ path: info.outputPath("devices.png") });

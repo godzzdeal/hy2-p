@@ -10,3 +10,4 @@ web/dist
 *.exe
 *.pem
 *.key
+mk-arch-demo

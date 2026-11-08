@@ -1,4 +1,47 @@
+.sidebar-toggle {
+  margin-left: auto;
+}
+.sidebar-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+@media (width > 760px) {
+  .sidebar-collapsed {
+    --sidebar-width: var(--space-16);
+  }
+  .sidebar-collapsed .brand > span,
+  .sidebar-collapsed .workspace,
+  .sidebar-collapsed .nav-label,
+  .sidebar-collapsed .nav-item-label,
+  .sidebar-collapsed .aside-bottom > label,
+  .sidebar-collapsed .logout-label {
+    display: none;
+  }
+  .sidebar-collapsed .brand {
+    justify-content: center;
+  }
+  .sidebar-collapsed .sidebar-toggle {
+    margin: 0;
+  }
+  .sidebar-collapsed nav button,
+  .sidebar-collapsed .aside-bottom > button {
+    justify-content: center;
+    padding-inline: var(--space-2);
+    position: relative;
+  }
+  .sidebar-collapsed nav .user-count {
+    position: absolute;
+    right: 0;
+    top: 0;
+    min-width: var(--space-3);
+    height: var(--space-3);
+    padding: 0;
+    font-size: 13px;
+  }
+}
 @media (max-width: 760px) {
+  .sidebar-toggle {
+    display: none;
+  }
   .app-sidebar {
     position: relative;
     width: 100%;

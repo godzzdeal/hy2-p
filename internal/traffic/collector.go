@@ -99,7 +99,7 @@ func (service *Service) Collect(ctx context.Context) {
 }
 func (service *Service) enforceQuota() {
 	for id, usage := range service.Snapshot().Users {
-		if usage.Online > 0 && usage.Limit > 0 && usage.Upload+usage.Download >= usage.Limit {
+		if usage.Online > 0 && !service.Allowed(id) {
 			service.runtime.Kick(id)
 		}
 	}

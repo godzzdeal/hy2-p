@@ -58,7 +58,7 @@ func (handler *Handler) enforce(ctx context.Context, instance *instances.Instanc
 	}
 	valid := map[string]int{}
 	for identity, count := range online {
-		if count > 0 && (!handler.Store.Allows(security.ParentUser(identity), instance.ID) || (handler.AllowIdentity != nil && !handler.AllowIdentity(identity))) {
+		if count > 0 && (!handler.Allows(security.ParentUser(identity), instance.ID) || (handler.AllowIdentity != nil && !handler.AllowIdentity(identity))) {
 			instance.Core.KickIdentity(identity)
 		} else {
 			valid[identity] = count

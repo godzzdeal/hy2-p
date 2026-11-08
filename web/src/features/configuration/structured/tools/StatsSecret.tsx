@@ -6,7 +6,7 @@ export function StatsSecret() {
   const { stats } = useCoreTools();
   const { notify, showError } = useUiStore();
   return (
-    <section className="certificate-status">
+    <section className="configuration-tools">
       <p className="config-note">
         {t(
           "Панель задаёт trafficStats.listen и trafficStats.secret при запуске ядра. Ниже можно получить фактические значения панели.",

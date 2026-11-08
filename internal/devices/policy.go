@@ -73,7 +73,8 @@ func (store *Store) SetBlocked(user, id string, blocked bool) error {
 	if !exists {
 		return errors.New("Устройство не найдено")
 	}
-	if entry.Blocked && !blocked && state.Limit > 0 && active(state) >= state.Limit {
+	limit := store.effectiveLimit(user, state.Limit)
+	if entry.Blocked && !blocked && limit > 0 && active(state) >= limit {
 		return model.ErrLimitReached
 	}
 	entry.Blocked = blocked
@@ -85,6 +86,29 @@ func (store *Store) SetBlocked(user, id string, blocked bool) error {
 		store.clearOnline(user + "." + id)
 	}
 	return nil
+}
+func (store *Store) effectiveLimit(user string, personal int) int {
+	if store.GroupLimit == nil {
+		return personal
+	}
+	group := store.GroupLimit(user)
+	if group > 0 && (personal == 0 || group < personal) {
+		return group
+	}
+	return personal
+}
+func (store *Store) permitted(user, id string, state model.User) bool {
+	limit := store.effectiveLimit(user, state.Limit)
+	if limit == 0 {
+		return true
+	}
+	position := 0
+	for current, entry := range state.Devices {
+		if !entry.Blocked && current <= id {
+			position++
+		}
+	}
+	return position <= limit
 }
 func (store *Store) clearOnline(target string) {
 	for _, online := range store.online {

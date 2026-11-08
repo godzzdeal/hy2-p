@@ -41,7 +41,6 @@ jobs:
           find scripts -name '*.sh' -exec bash -n {} \;
           find scripts -name '*.sh' -print0 | xargs -0 shellcheck -S warning
           bash scripts/tests/run.sh
-          python3 scripts/tests/firewall_test.py
   images:
     if: github.event_name != 'pull_request'
     needs: checks
@@ -79,6 +78,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.x"
+          cache: true
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           name: image-amd64

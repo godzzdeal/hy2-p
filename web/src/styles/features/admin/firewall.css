@@ -1,0 +1,42 @@
+.firewall-guide,
+.firewall-port-row {
+  display: grid;
+  gap: var(--space-3);
+}
+.firewall-guide {
+  margin-bottom: var(--space-6);
+}
+.firewall-ports {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.firewall-port-row {
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  min-width: 0;
+}
+.firewall-port-row strong {
+  margin-right: var(--space-3);
+  color: var(--accent);
+}
+.firewall-command {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.firewall-command code {
+  flex: 1;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.firewall-example {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--input);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

@@ -1,34 +1,27 @@
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { PageEnum } from "@/app/navigation";
 import { useUiStore } from "@/app/state";
-import { Plus, Rss } from "@/shared/icons";
+import { Plus, Rss, Users } from "@/shared/icons";
 import { UserDialogs } from "@/features/users";
 import { type TUserDialog } from "@/features/users";
 import { useConfiguration } from "@/features/configuration/model";
-import { useUsers } from "@/features/users/model";
-import { NETWORK } from "@/shared/http";
 import { QueryState } from "@/shared/ui";
 import { UserTable } from "./UserTable";
 import { UsersToolbar } from "./toolbar";
+import { GroupFilter } from "@/features/groups";
+import { useUsersList } from "./use-users-list";
+const GroupManager = lazy(() =>
+  import("@/features/groups/manage").then((module) => ({ default: module.GroupManager })),
+);
 export function UsersPage() {
   const { t } = useTranslation();
-  const query = useUsers();
+  const { query, search, filtered, visible, pageCount, current, setPage, groupId, onSearch, onGroup } =
+    useUsersList();
   const selectPage = useUiStore((state) => state.selectPage);
   const configuration = useConfiguration();
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(0);
   const [dialog, setDialog] = useState<TUserDialog>(null);
-  const filtered = (query.data ?? []).filter((user) =>
-    user.name.toLowerCase().includes(search.toLowerCase()),
-  );
-  const pageCount = Math.ceil(filtered.length / NETWORK.pageSize);
-  const current = Math.min(page, Math.max(pageCount - 1, 0));
-  const visible = filtered.slice(current * NETWORK.pageSize, (current + 1) * NETWORK.pageSize);
-  function onSearch(value: string) {
-    setSearch(value);
-    setPage(0);
-  }
+  const [isGroupsOpen, setGroupsOpen] = useState(false);
   return (
     <>
       <div className="page-heading" id="users-top" data-scroll-section data-scroll-label={t("Пользователи")}>
@@ -37,6 +30,10 @@ export function UsersPage() {
           <p>{t("Доступ, подключения, потребление и квоты трафика.")}</p>
         </div>
         <div className="row-actions">
+          <button className="secondary" onClick={() => setGroupsOpen(true)}>
+            <Users width={24} height={24} aria-hidden />
+            {t("Группы")}
+          </button>
           <button className="secondary" onClick={() => selectPage(PageEnum.Subscriptions)}>
             <Rss width={24} height={24} aria-hidden />
             {t("Настроить подписку")}
@@ -63,7 +60,9 @@ export function UsersPage() {
         data-scroll-section
         data-scroll-label={t("Список пользователей")}
       >
-        <UsersToolbar search={search} onSearch={onSearch} found={filtered.length} />
+        <UsersToolbar search={search} onSearch={onSearch} found={filtered.length}>
+          <GroupFilter value={groupId} onChange={onGroup} />
+        </UsersToolbar>
         <QueryState isLoading={query.isPending} error={query.error} />
         <UserTable
           users={visible}
@@ -100,6 +99,9 @@ export function UsersPage() {
         )}
       </section>
       <UserDialogs dialog={dialog} onClose={() => setDialog(null)} />
+      <Suspense fallback={<p role="status">{t("Загрузка формы…")}</p>}>
+        {isGroupsOpen && <GroupManager onClose={() => setGroupsOpen(false)} />}
+      </Suspense>
     </>
   );
 }

@@ -12,6 +12,7 @@ export function NavigationItem({ item }: INavigationItem) {
   return (
     <button
       aria-label={t(item.label)}
+      title={t(item.label)}
       className={cn({ selected: page === item.id })}
       onClick={() => selectPage(item.id)}
     >

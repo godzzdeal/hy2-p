@@ -99,6 +99,30 @@ td {
 .users-found {
   color: var(--muted);
 }
+.connection-indicator {
+  display: inline-grid;
+  place-items: center;
+  width: var(--space-6);
+  height: var(--space-6);
+  vertical-align: middle;
+}
+.connection-indicator::before {
+  content: "";
+  width: var(--space-3);
+  height: var(--space-3);
+  border: 1px solid var(--muted);
+  background: var(--input);
+}
+.connection-indicator.is-online::before {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.connection-indicator.is-unknown::before {
+  border-style: dashed;
+}
+.connection-indicator:focus-visible {
+  outline: 2px solid var(--accent);
+}
 @media (max-width: 760px) {
   .users-toolbar {
     align-items: stretch;

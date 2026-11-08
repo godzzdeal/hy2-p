@@ -12,6 +12,7 @@ firewall_invalid=$(curl -sS -b "$WORK/cookies" -H 'Content-Type: application/jso
 jq -e '.error | length > 0' "$WORK/firewall-invalid.json" >/dev/null
 firewall_unauthorized=$(curl -sS -o /dev/null -w '%{http_code}' "$URL/api/firewall")
 [[ $firewall_unauthorized == 401 ]] || return 1
+curl -fsS -b "$WORK/cookies" "$URL/api/firewall/ports" | jq -e '.ports | any(.purpose == "panel" and .protocol == "tcp")' >/dev/null
 openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes -days 1 \
   -subj /CN=localhost -addext subjectAltName=DNS:localhost \
   -keyout "$WORK/server.key" -out "$WORK/server.crt" 2>/dev/null

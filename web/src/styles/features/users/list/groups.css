@@ -1,0 +1,104 @@
+:root {
+  --group-cyan: var(--accent);
+  --group-blue: light-dark(#245ea8, #8bb8ff);
+  --group-green: light-dark(#297146, #9bdaa7);
+  --group-amber: light-dark(#8b600b, #e7c57b);
+  --group-purple: light-dark(#75469b, #cfaff1);
+  --group-gray: var(--muted);
+}
+.group-cyan {
+  --group-color: var(--group-cyan);
+}
+.group-blue {
+  --group-color: var(--group-blue);
+}
+.group-green {
+  --group-color: var(--group-green);
+}
+.group-amber {
+  --group-color: var(--group-amber);
+}
+.group-purple {
+  --group-color: var(--group-purple);
+}
+.group-gray {
+  --group-color: var(--group-gray);
+}
+.user-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.user-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.user-meta small {
+  color: var(--muted);
+}
+.user-identity .user-cell {
+  padding: 0;
+  font-weight: 700;
+  min-height: var(--space-6);
+}
+.group-badge {
+  color: var(--group-color);
+  min-height: var(--space-6);
+  height: auto;
+  padding: 0 var(--space-1);
+}
+.group-swatch {
+  width: var(--space-2);
+  height: var(--space-2);
+  background: var(--group-color);
+  flex-shrink: 0;
+}
+.group-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-4) 0 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.group-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+}
+.group-name {
+  min-width: 0;
+  height: auto;
+  color: var(--group-color);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.group-editor fieldset {
+  min-width: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  margin: 0 0 var(--space-4);
+}
+.group-policy {
+  display: grid;
+  gap: var(--space-3);
+}
+.group-policy label {
+  margin: 0;
+}
+.group-filter {
+  min-width: 160px;
+  max-width: 240px;
+  margin: 0;
+}
+@media (max-width: 760px) {
+  .group-filter {
+    max-width: none;
+    flex: 1;
+  }
+  .group-badge {
+    min-height: var(--control-height);
+  }
+}

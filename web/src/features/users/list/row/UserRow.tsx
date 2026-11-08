@@ -8,6 +8,8 @@ import { isUserActive } from "@/features/users/model";
 import { type IUserUsage } from "@/features/users/traffic/model";
 import { ConnectionBadge, UsageCell } from "@/features/users/traffic";
 import { cn, formatDate } from "@/shared/lib";
+import { UserGroupBadge } from "@/features/groups";
+import { trafficLimit } from "@/features/users/traffic/model";
 interface IUserRow extends IUserActions {
   user: IUser;
   usage: IUserUsage;
@@ -15,20 +17,24 @@ interface IUserRow extends IUserActions {
 }
 export function UserRow({ user, usage, isTrafficAvailable, onEdit, ...actions }: IUserRow) {
   const { t } = useTranslation();
-  const isQuotaExceeded = usage.limit > 0 && usage.upload + usage.download >= usage.limit;
+  const limit = trafficLimit(usage);
+  const isQuotaExceeded = limit > 0 && usage.upload + usage.download >= limit;
   const hasAccess = isUserActive(user) && !isQuotaExceeded;
   return (
     <tr>
       <td>
-        <button className="user-cell" onClick={() => onEdit(user)}>
+        <div className="user-identity">
           <UserAvatar name={user.name} />
-          <span>
-            <strong>
+          <div>
+            <button className="user-cell" onClick={() => onEdit(user)}>
               <EmojiText value={user.name.replace(FLAG_PREFIX, "")} />
-            </strong>
-            <small>{user.id.slice(0, 8)}</small>
-          </span>
-        </button>
+            </button>
+            <div className="user-meta">
+              <small>{user.id.slice(0, 8)}</small>
+              <UserGroupBadge userId={user.id} />
+            </div>
+          </div>
+        </div>
       </td>
       <td>
         <span className={cn("badge", hasAccess ? "green" : "gray")}>

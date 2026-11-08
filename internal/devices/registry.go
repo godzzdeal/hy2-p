@@ -14,15 +14,16 @@ import (
 )
 
 type Store struct {
-	mu        sync.RWMutex
-	directory string
-	vault     *cryptovault.Vault
-	users     map[string]model.User
-	keys      map[string]model.Reference
-	dirty     bool
-	online    map[string]map[string]int
-	available map[string]bool
-	sampled   bool
+	mu         sync.RWMutex
+	directory  string
+	vault      *cryptovault.Vault
+	users      map[string]model.User
+	keys       map[string]model.Reference
+	dirty      bool
+	online     map[string]map[string]int
+	available  map[string]bool
+	sampled    bool
+	GroupLimit func(string) int
 }
 
 func Open(data string, vault *cryptovault.Vault) (*Store, error) {
@@ -59,7 +60,7 @@ func (store *Store) Snapshot(user string) model.Summary {
 	store.mu.RLock()
 	defer store.mu.RUnlock()
 	state := store.users[user]
-	result := model.Summary{Limit: state.Limit, Devices: []model.Device{}}
+	result := model.Summary{Limit: state.Limit, EffectiveLimit: store.effectiveLimit(user, state.Limit), Devices: []model.Device{}}
 	counts, known := store.counts(user, state)
 	for _, entry := range state.Devices {
 		device := entry.Device
@@ -97,7 +98,7 @@ func (store *Store) counts(user string, state model.User) (map[string]int, bool)
 func (store *Store) Limit(user string) int {
 	store.mu.RLock()
 	defer store.mu.RUnlock()
-	return store.users[user].Limit
+	return store.effectiveLimit(user, store.users[user].Limit)
 }
 func (store *Store) clone(user string) model.User {
 	state := store.users[user]

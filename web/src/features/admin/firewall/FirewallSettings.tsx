@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useFirewall } from "./model";
 import { PortRuleForm } from "./PortRuleForm";
+import { PortGuide } from "./ports";
 export function FirewallSettings() {
   const { t } = useTranslation();
   const { read, change } = useFirewall();
@@ -20,6 +21,7 @@ export function FirewallSettings() {
         </button>
       </div>
       <div className="form-body">
+        <PortGuide />
         <p className="caption">
           {t("Правила UFW для входящих TCP/UDP-портов Ubuntu. Порты SSH и панели защищены от закрытия.")}
         </p>
@@ -42,6 +44,11 @@ export function FirewallSettings() {
           <>
             <p>{t(result.active ? "UFW включён" : "UFW выключен. Изменение правил недоступно.")}</p>
             <pre className="logs">{result.output}</pre>
+            {!!result.protectedPorts?.length && (
+              <p className="caption">
+                {t("Защищённые TCP-порты:")} {result.protectedPorts.join(", ")}
+              </p>
+            )}
           </>
         )}
         {result?.active && (
