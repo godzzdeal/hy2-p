@@ -114,6 +114,8 @@ masquerade:
 
 `minPacketSize` и `maxPacketSize` относятся к Gecko, а не Salamander. `keepAlivePeriod` и `disableChromeParrot` относятся к клиентской конфигурации. В серверный пример они не включены. [Документация сервера](https://v2.hysteria.network/docs/advanced/Full-Server-Config/) · [Документация клиента](https://v2.hysteria.network/docs/advanced/Full-Client-Config/)
 
+Salamander превращает пакеты в случайно выглядящие данные и не делает соединение обычным HTTPS. При включённой обфускации ECH не даёт дополнительного скрытия QUIC/SNI. [Как работает ECH](https://v2.hysteria.network/docs/advanced/ECH/)
+
 ## Управление и обновление
 
 ```bash

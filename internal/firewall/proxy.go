@@ -24,7 +24,7 @@ func Proxy(socket string) http.HandlerFunc {
 			return (&net.Dialer{}).DialContext(ctx, "unix", socket)
 		}}
 		defer connection.CloseIdleConnections()
-		client := &http.Client{Transport: connection, Timeout: 20 * time.Second}
+		client := &http.Client{Transport: connection, Timeout: 25 * time.Second}
 		request, err := http.NewRequestWithContext(r.Context(), r.Method, "http://local/firewall", payload)
 		if err != nil {
 			transport.Fail(w, err, 400)

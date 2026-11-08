@@ -109,6 +109,6 @@ func (agent *Agent) Serve() error {
 	if agent.status.Busy {
 		go agent.recover()
 	}
-	server := &http.Server{Handler: agent.Handler(), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 5 * time.Second, WriteTimeout: 5 * time.Second}
+	server := &http.Server{Handler: agent.Handler(), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 5 * time.Second, WriteTimeout: 30 * time.Second}
 	return server.Serve(listener)
 }
