@@ -7,6 +7,8 @@ certs
 .env.*
 web/node_modules
 web/dist
+web/dist-demo
+.vercel
 *.exe
 *.pem
 *.key

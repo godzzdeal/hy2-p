@@ -8,6 +8,7 @@ export function LoginPage() {
   const challenge = login.data && "cloudPasswordRequired" in login.data ? login.data.challenge : "";
   return (
     <div className="login">
+      {IS_DEMO && <DemoNotice />}
       <SpaceScene />
       <h1 className="login-brand">
         <ShieldCheck width={24} height={24} aria-hidden />
@@ -22,3 +23,5 @@ export function LoginPage() {
     </div>
   );
 }
+import { DemoNotice } from "@/components/demo/DemoNotice";
+import { IS_DEMO } from "@/config/build";

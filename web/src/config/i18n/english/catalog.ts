@@ -1,4 +1,5 @@
 import { COMMON } from "@/config/i18n/english/general/common";
+import { DEMO_TRANSLATIONS } from "@/config/i18n/english/demo";
 import { ENGINE } from "@/config/i18n/english/general/engine";
 import { ERRORS } from "@/config/i18n/english/general/errors";
 import { HELP } from "@/config/i18n/english/help";
@@ -8,6 +9,7 @@ import { INTERFACE } from "@/config/i18n/english/settings/interface";
 import { ADMINISTRATION } from "@/config/i18n/english/settings/panel/administration";
 import { INSTANCES } from "@/config/i18n/english/settings/panel/instances";
 export const ENGLISH = {
+  ...DEMO_TRANSLATIONS,
   ...PANEL,
   ...HELP,
   ...INTERFACE,

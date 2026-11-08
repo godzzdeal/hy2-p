@@ -1,6 +1,8 @@
 /data/
 /web/node_modules/
 /web/dist/
+/web/dist-demo/
+/.vercel/
 /certs/
 *.exe
 /hy2-panel
@@ -13,6 +15,7 @@
 *.key
 *.crt
 /web/test-results/
+/web/tests/test-results/
 /web/playwright-report/
 /.ci-images/
 /hy2-panel-linux-*.tar.gz*

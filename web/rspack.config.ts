@@ -4,12 +4,20 @@ import { createRequire } from "node:module";
 import { defineConfig } from "@rspack/cli";
 import { rspack } from "@rspack/core";
 const require = createRequire(import.meta.url);
-export default defineConfig({
+export default defineConfig((env: { demo?: boolean }) => ({
   entry: "./src/main.tsx",
-  output: { clean: true, publicPath: "/" },
+  output: {
+    clean: true,
+    publicPath: "/",
+    path: path.resolve(import.meta.dirname, env.demo ? "dist-demo" : "dist"),
+  },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     alias: {
+      "@panel-api": path.resolve(
+        import.meta.dirname,
+        env.demo ? "src/services/demo/request.ts" : "src/services/http/remote.ts",
+      ),
       "@": path.resolve(import.meta.dirname, "src"),
       "@config-schema": path.resolve(import.meta.dirname, "../internal/configuration/ordering/order.json"),
     },
@@ -56,6 +64,7 @@ export default defineConfig({
   },
   experiments: { css: true },
   plugins: [
+    new rspack.DefinePlugin({ __HY2_DEMO__: JSON.stringify(env.demo === true) }),
     new rspack.CopyRspackPlugin({
       patterns: [
         {
@@ -111,4 +120,4 @@ export default defineConfig({
     historyApiFallback: true,
     proxy: [{ context: ["/api", "/sub"], target: "http://127.0.0.1:8080" }],
   },
-});
+}));

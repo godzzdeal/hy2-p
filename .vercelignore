@@ -1,0 +1,16 @@
+.git
+.vercel
+AGENTS.md
+data
+certs
+.env*
+web/node_modules
+web/dist
+web/dist-demo
+web/test-results
+web/playwright-report
+mk-arch-demo
+*.exe
+*.pem
+*.key
+*.crt

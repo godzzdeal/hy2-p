@@ -34,6 +34,9 @@ jobs:
         working-directory: web
       - run: bun run test:ui
         working-directory: web
+      - name: Check browser-only demo
+        run: bun run build:demo && bunx playwright test --config tests/demo/playwright.config.ts
+        working-directory: web
       - name: Check deployment scripts
         run: |
           sudo apt-get update -qq

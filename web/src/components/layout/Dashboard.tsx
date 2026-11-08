@@ -1,4 +1,6 @@
 import { InstanceSelector } from "@/components/instances/list/InstanceSelector";
+import { DemoNotice } from "@/components/demo/DemoNotice";
+import { IS_DEMO } from "@/config/build";
 import { PanelFooter } from "@/components/layout/footer/PanelFooter";
 import { ScrollNavigation } from "@/components/layout/scroll/ScrollNavigation";
 import { Sidebar } from "@/components/layout/sidebar/Sidebar";
@@ -66,6 +68,7 @@ export function Dashboard() {
           <span className="admin">{t("Администратор")}</span>
         </header>
         <div className="content" ref={content}>
+          {IS_DEMO && <DemoNotice />}
           <InstanceSelector />
           <Suspense fallback={<p role="status">{t("Загрузка раздела\u2026")}</p>}>
             <Page key={page === "config" || page === "core" || page === "overview" ? instanceId : page} />
