@@ -1,0 +1,43 @@
+@layer components {
+  .notifications {
+    position: fixed;
+    inset: var(--space-4) var(--space-4) auto auto;
+    width: min(480px, calc(100vw - var(--space-8)));
+    display: grid;
+    gap: var(--space-3);
+    z-index: var(--layer-feedback);
+    pointer-events: none;
+  }
+  .notification {
+    pointer-events: auto;
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr) 40px;
+    gap: var(--space-3);
+    align-items: start;
+    padding: var(--space-4);
+    background: var(--surface);
+    color: var(--foreground);
+    border: 1px solid var(--accent);
+    box-shadow: 0 var(--space-2) var(--space-8) var(--shadow);
+    overflow-wrap: anywhere;
+  }
+  .notification-error {
+    border-color: var(--danger);
+  }
+  .notification > svg {
+    margin-top: var(--space-2);
+    color: var(--accent);
+  }
+  .notification-error > svg {
+    color: var(--danger);
+  }
+  .notification .icon-button {
+    width: 40px;
+    height: 40px;
+  }
+  .port-operation {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+  }
+}

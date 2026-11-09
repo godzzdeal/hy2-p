@@ -15,7 +15,6 @@ export function WatchdogStatus({ watchdog }: { watchdog?: IWatchdog }) {
             {watchdog.attempt} / {watchdog.maxAttempts}
           </small>
         )}
-        {watchdog.lastError && <p className="inline-error">{t(watchdog.lastError)}</p>}
       </div>
     </div>
   );

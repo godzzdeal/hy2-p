@@ -59,18 +59,12 @@ export function UpdateCard() {
           </p>
         )}
         {versions.error && (
-          <div className="inline-error" role="alert">
-            <p>{t(versions.error.message)}</p>
+          <div>
             <button className="text-btn" onClick={() => void versions.refetch()}>
               <RefreshCw width={24} height={24} aria-hidden />
               {t("Повторить")}
             </button>
           </div>
-        )}
-        {status.error && (
-          <p className="inline-error" role="alert">
-            {t(status.error.message)}
-          </p>
         )}
         {!versions.isPending && !versions.error && versions.data?.length === 0 && (
           <p className="muted">{t("Стабильных релизов пока нет.")}</p>

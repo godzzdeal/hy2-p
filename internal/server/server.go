@@ -18,6 +18,8 @@ import (
 	"hy2-panel/internal/subscriptions"
 	"hy2-panel/internal/subscriptions/announcement"
 	"hy2-panel/internal/traffic"
+	"hy2-panel/internal/transfer"
+	"hy2-panel/internal/transfer/local"
 	useraccess "hy2-panel/internal/useraccess/integration"
 	"hy2-panel/internal/users"
 	"hy2-panel/internal/websettings"
@@ -95,7 +97,8 @@ func Run() error {
 		return err
 	}
 	subscriptions := &subscriptions.Handler{Announcements: announcements, DB: db, Users: users, Sources: instanceapi.Profiles(registry), AllowCore: access.Allows, DeviceLimit: devices.Store.Limit, PrepareSubscription: devices.Prepare, PublicURL: strings.TrimRight(web.Active().URL(), "/")}
-	public := httpServer(web.Active().Address(), routes(auth, users, registry, subscriptions, traffic, web, access, devices, groups))
+	transfer := &transfer.Service{Users: users, Registry: registry, Groups: groups.Store, Access: access.Store, Devices: devices.Store, Traffic: traffic}
+	public := httpServer(web.Active().Address(), routes(auth, users, registry, subscriptions, traffic, web, access, devices, groups, transfer))
 	tlsConfig, challenge, err := web.TLS()
 	if err != nil {
 		return err
@@ -105,6 +108,12 @@ func Run() error {
 	}
 	public.TLSConfig = tlsConfig
 	internalMux := http.NewServeMux()
+	localTransfer, err := local.New(data, transfer.Download, transfer.Import)
+	if err != nil {
+		return err
+	}
+	internalMux.Handle("/transfer", localTransfer)
+	internalMux.Handle("/transfer/", localTransfer)
 	internalMux.HandleFunc("GET /health", func(writer http.ResponseWriter, request *http.Request) { writer.WriteHeader(http.StatusNoContent) })
 	internalMux.HandleFunc("GET /deployment", instanceapi.Handler{Registry: registry}.Deployment)
 	internalMux.HandleFunc("POST /auth", access.Authenticate)

@@ -38,8 +38,11 @@ func (handler *Handler) Apply(w http.ResponseWriter, r *http.Request) {
 		transport.Fail(w, errors.New("Сначала сохраните выбранные UDP-порты"), 409)
 		return
 	}
-	if !handler.Core.PortChangesOnly(settings) || !handler.Core.Healthy(r.Context()) {
-		transport.Fail(w, errors.New("Сначала запустите ядро и примените остальные настройки его перезапуском"), 409)
+	// A deliberately stopped core has nothing to verify. Docker's authenticated
+	// UDP preflight still checks the mapping before normal startup is allowed.
+	if (handler.Core.Running() || handler.Core.Watchdog.Snapshot().DesiredRunning) &&
+		(!handler.Core.PortChangesOnly(settings) || !handler.Core.Healthy(r.Context())) {
+		transport.Fail(w, errors.New("Остановите ядро или примените остальные настройки его перезапуском"), 409)
 		return
 	}
 	input.InstanceID = handler.InstanceID

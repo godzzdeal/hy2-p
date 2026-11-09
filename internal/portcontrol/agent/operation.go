@@ -51,7 +51,7 @@ func (agent *Agent) finish(err error) {
 	switch {
 	case err == nil:
 		agent.status.Phase = "success"
-		agent.status.Message = "UDP-порт применён. Локальная проверка UDP и ядра пройдена."
+		agent.status.Message = "UDP-порт применён. Проверка Docker и локального UDP пройдена."
 		agent.status.UDPChecked = true
 		agent.status.CoreChecked = true
 		if agent.status.Remove {

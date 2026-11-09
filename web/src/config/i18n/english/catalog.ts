@@ -8,7 +8,9 @@ import { CONFIGURATION } from "@/config/i18n/english/settings/configuration";
 import { INTERFACE } from "@/config/i18n/english/settings/interface";
 import { ADMINISTRATION } from "@/config/i18n/english/settings/panel/administration";
 import { INSTANCES } from "@/config/i18n/english/settings/panel/instances";
+import { TRANSFER } from "@/config/i18n/english/settings/panel/transfer";
 export const ENGLISH = {
+  ...TRANSFER,
   ...DEMO_TRANSLATIONS,
   ...PANEL,
   ...HELP,

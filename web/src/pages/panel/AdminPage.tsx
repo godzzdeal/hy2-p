@@ -1,4 +1,5 @@
 import { AccountSettings } from "@/components/admin/account/AccountSettings";
+import { TransferSettings } from "@/components/admin/transfer";
 import { CloudSettings } from "@/components/admin/cloud/CloudSettings";
 import { FirewallSettings } from "@/components/admin/firewall/FirewallSettings";
 import { WebSettings } from "@/components/admin/listener/WebSettings";
@@ -18,6 +19,7 @@ export function AdminPage() {
       </div>
       <AccountSettings />
       <CloudSettings />
+      <TransferSettings />
       <p className="muted">
         <BuildVersion />
       </p>

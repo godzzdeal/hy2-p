@@ -86,3 +86,5 @@ assert_equal "$(env_read PANEL_TLS_MODE)" acme
 if (HY2_NONINTERACTIVE=true HY2_DOMAIN='../invalid' HY2_ACCEPT_ACME_TERMS=true configure_installation); then exit 1; fi
 if (HY2_INSTALL_DIR=/ source "$TEST_SOURCE/server/common.sh"); then exit 1; fi
 printf 'Deployment lifecycle tests passed.\n'
+bash "$(dirname -- "${BASH_SOURCE[0]}")/transfer.sh"
+bash "$(dirname -- "${BASH_SOURCE[0]}")/account/password.sh"

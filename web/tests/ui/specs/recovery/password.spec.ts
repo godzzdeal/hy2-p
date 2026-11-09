@@ -1,0 +1,31 @@
+import {expect,test} from "@playwright/test";
+import {mockPanel} from "../../fixtures";
+test("forgotten password help is available before login and copies a server-only command",async({page},info)=>{
+ await mockPanel(page,false);
+ let loginCalls=0;
+ await page.route("http://panel.test/api/login",route=>{loginCalls++;return route.fulfill({json:{ok:true}})});
+ await page.evaluate(()=>Object.defineProperty(navigator,"clipboard",{configurable:true,value:{writeText:async(value:string)=>{document.documentElement.dataset.copiedCommand=value}}}));
+ const summary=page.getByText("Забыли пароль?",{exact:true});
+ await summary.focus(); await summary.press("Enter");
+ const form=page.locator(".login form");
+ const block=form.getByRole("group",{name:"Команда для сервера"});
+ await expect(block).toContainText("sudo hy2-panel password-reset");
+ await block.getByRole("button",{name:"Скопировать команду",exact:true}).click();
+ expect(await page.evaluate(()=>document.documentElement.dataset.copiedCommand)).toBe("sudo hy2-panel password-reset");
+ expect(loginCalls).toBe(0);
+ await expect(page.getByLabel("Пароль",{exact:true})).toHaveValue("");
+ await expect(form).toContainText("Логин и облачный пароль сохранятся");
+ const bounds=await form.boundingBox();
+ const command=await block.boundingBox();
+ expect(command!.x).toBeGreaterThanOrEqual(bounds!.x+16);
+ expect(command!.x+command!.width).toBeLessThanOrEqual(bounds!.x+bounds!.width-16);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);
+ await page.screenshot({path:info.outputPath("password-recovery.png"),fullPage:true});
+});
+test("account settings show the same recovery instruction",async({page})=>{
+ await mockPanel(page);
+ await page.getByRole("button",{name:"Настройки",exact:true}).click();
+ const account=page.locator("#panel-account");
+ await account.getByText("Забыли пароль?",{exact:true}).click();
+ await expect(account.getByRole("group",{name:"Команда для сервера"})).toContainText("sudo hy2-panel password-reset");
+});

@@ -1,6 +1,7 @@
 import { App } from "@/app/App";
 import { ApplyPortProgress } from "@/components/configuration/ports/ApplyPortProgress";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { Feedback } from "@/components/ui/feedback/Feedback";
 import "@/config/i18n/setup";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { StrictMode } from "react";
@@ -16,6 +17,7 @@ createRoot(root).render(
       <QueryProvider>
         <App />
         <ApplyPortProgress />
+        <Feedback />
       </QueryProvider>
     </ErrorBoundary>
   </StrictMode>,

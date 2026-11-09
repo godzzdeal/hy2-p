@@ -16,6 +16,7 @@ import (
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/subscriptions"
 	"hy2-panel/internal/traffic"
+	"hy2-panel/internal/transfer"
 	"hy2-panel/internal/transport"
 	useraccess "hy2-panel/internal/useraccess/integration"
 	"hy2-panel/internal/users"
@@ -27,7 +28,7 @@ import (
 	"time"
 )
 
-func routes(auth *auth.Handler, users *users.Handler, registry *instances.Registry, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, access *useraccess.Handler, devices *deviceapi.Handler, groups *groupapi.Handler) http.Handler {
+func routes(auth *auth.Handler, users *users.Handler, registry *instances.Registry, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, access *useraccess.Handler, devices *deviceapi.Handler, groups *groupapi.Handler, transfer *transfer.Service) http.Handler {
 	mux := http.NewServeMux()
 	panelUpdates := updates.New(buildinfo.Version())
 	mux.HandleFunc("GET /api/version", buildinfo.Read)
@@ -35,6 +36,8 @@ func routes(auth *auth.Handler, users *users.Handler, registry *instances.Regist
 	mux.HandleFunc("POST /api/login/cloud", auth.CloudLogin)
 	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{
+		"GET /api/admin/transfer":                 transfer.Download,
+		"POST /api/admin/transfer/{mode}":         transfer.Import,
 		"PUT /api/groups/{group}/members":         groups.Members,
 		"GET /api/admin/cloud-password":           auth.CloudSettings,
 		"PUT /api/admin/cloud-password":           auth.CloudSettings,

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/configuration/deployment"
+	"hy2-panel/internal/core/watchdog"
 	"hy2-panel/internal/instances"
 	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/transport"
@@ -14,17 +15,18 @@ import (
 type Handler struct{ Registry *instances.Registry }
 type Summary struct {
 	instances.Definition
-	Running            bool   `json:"running"`
-	DesiredRunning     bool   `json:"desiredRunning"`
-	Version            string `json:"version"`
-	Updating           bool   `json:"updating"`
-	Host               string `json:"host"`
-	Port               string `json:"port"`
-	ListenPort         string `json:"listenPort"`
-	PublishedPort      string `json:"publishedPort"`
-	PortChangeRequired bool   `json:"portChangeRequired"`
-	AuthMode           string `json:"authMode"`
-	Error              string `json:"error,omitempty"`
+	Watchdog           watchdog.Snapshot `json:"watchdog"`
+	Running            bool              `json:"running"`
+	DesiredRunning     bool              `json:"desiredRunning"`
+	Version            string            `json:"version"`
+	Updating           bool              `json:"updating"`
+	Host               string            `json:"host"`
+	Port               string            `json:"port"`
+	ListenPort         string            `json:"listenPort"`
+	PublishedPort      string            `json:"publishedPort"`
+	PortChangeRequired bool              `json:"portChangeRequired"`
+	AuthMode           string            `json:"authMode"`
+	Error              string            `json:"error,omitempty"`
 }
 
 func (handler Handler) networkReady(w http.ResponseWriter, r *http.Request) bool {
@@ -48,6 +50,7 @@ func (handler Handler) List(w http.ResponseWriter, r *http.Request) {
 		update := instance.Core.Updates.Snapshot()
 		item := Summary{Definition: definition, Running: instance.Core.Running(), Version: update.Current, Updating: update.Busy}
 		item.DesiredRunning = instance.Core.Watchdog.Snapshot().DesiredRunning
+		item.Watchdog = instance.Core.Watchdog.Snapshot()
 		settings, err := instance.Config.Get()
 		if err == nil {
 			item.Host, item.Port, item.AuthMode = settings.Host, settings.Port, settings.AuthMode

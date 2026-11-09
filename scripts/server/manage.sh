@@ -5,7 +5,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 # shellcheck source=/dev/null
 source "$SCRIPT_DIR/common.sh"
 require_root
-for file in listener ports/mappings ports/transaction/verify ports/transaction/recover ports/transaction/apply backups/create backups/restore releases/source/fetch releases/source/image releases/update releases/rollback; do
+for file in listener transfer account/index ports/mappings ports/transaction/verify ports/transaction/recover ports/transaction/apply backups/create backups/restore releases/source/fetch releases/source/image releases/update releases/rollback; do
   # shellcheck source=/dev/null
   source "$SCRIPT_DIR/$file.sh"
 done
@@ -22,14 +22,17 @@ case $command in
       '  url                    Адрес панели или SSH-туннель'
     printf '%s\n' '  firewall-setup         Подключить помощник управления UFW'
     printf '%s\n' '  cloud-password-reset   Отключить забытый облачный пароль'
+    printf '%s\n' '  password-reset         Создать новый пароль администратора'
+    printf '%s\n' '  export <файл.json>     Экспорт ядер, групп и пользователей' '  import <файл.json> [--apply] Просмотр совпадений или добавление записей'
     exit 0 ;;
-  status|logs|start|stop|restart|update|rollback|backup|url|apply-udp|remove-udp|recover-udp|firewall-setup|cloud-password-reset) ;;
+  status|logs|start|stop|restart|update|rollback|backup|url|apply-udp|remove-udp|recover-udp|firewall-setup|cloud-password-reset|password-reset|import|export) ;;
   *) die "Неизвестная команда: $command" ;;
 esac
 [[ -f $ROOT/.env && -f $ROOT/current ]] || die "Установка не найдена."
 current=$(cat "$ROOT/current")
 valid_sha "$current" || die "Повреждён файл текущей версии."
 case $command in
+  import|export) transfer_panel "$current" "$command" "${@:2}"; exit ;;
   firewall-setup) bash "$SCRIPT_DIR/../firewall-setup.sh"; exit ;;
   status) compose "$current" ps; printf 'Commit: %s\n' "$current" ;;
   logs) compose "$current" logs --follow --tail=100 panel ;;
@@ -40,14 +43,8 @@ case $command in
     recover_pending || die "Сначала нужно восстановить прерванную операцию."
     current=$(cat "$ROOT/current")
     case $command in
-      cloud-password-reset)
-        compose "$current" stop panel
-        if ! compose "$current" run --rm --no-deps --entrypoint /usr/local/bin/panel panel --reset-cloud-password; then
-          start_release "$current" || true
-          die "Не удалось сбросить облачный пароль."
-        fi
-        start_release "$current" || die "Панель не прошла проверку после сброса."
-        printf '%s\n' 'Облачный пароль отключён. Войдите с основным паролем.' ;;
+      password-reset) reset_admin_password "$current" ;;
+      cloud-password-reset) cloud_password_reset "$current" ;;
       apply-udp) apply_udp "$current" "${2:-}" "${3:-}" "${4:-}" "${5:-default}" ;;
       remove-udp) remove_udp "$current" "${2:-}" "${3:-}" "${4:-}" "${5:-}" ;;
       recover-udp)

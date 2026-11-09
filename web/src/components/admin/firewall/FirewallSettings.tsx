@@ -7,7 +7,6 @@ export function FirewallSettings() {
   const { t } = useTranslation();
   const { read, change } = useFirewall();
   const result = read.data;
-  const error = read.error ?? change.error;
   return (
     <section className="card settings-form">
       <div className="card-header">
@@ -36,11 +35,6 @@ export function FirewallSettings() {
             <p className="caption">{t("Для подключения помощника выполните на сервере:")}</p>
             <CommandBlock command="sudo hy2-panel firewall-setup" />
           </div>
-        )}
-        {error && (
-          <p className="inline-error" role="alert">
-            {t(error.message)}
-          </p>
         )}
         {result && (
           <>

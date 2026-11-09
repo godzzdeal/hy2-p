@@ -21,11 +21,6 @@ export function StatsSecret() {
       >
         {t(stats.data ? "Скрыть секрет" : "Показать секрет Traffic Stats")}
       </button>
-      {stats.error && (
-        <p role="alert" className="inline-error">
-          {t(stats.error.message)}
-        </p>
-      )}
       {stats.data && (
         <>
           <p>

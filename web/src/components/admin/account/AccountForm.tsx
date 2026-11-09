@@ -1,4 +1,5 @@
 import { PasswordField } from "@/components/elements/security/PasswordField";
+import { AccountRecovery } from "@/components/admin/account/AccountRecovery";
 import { useAccountChange } from "@/hooks/admin/use-admin";
 import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
@@ -58,6 +59,7 @@ export function AccountForm({ username }: { username: string }) {
         <button className="primary" disabled={mutation.isPending}>
           {t("Изменить данные входа")}
         </button>
+        <AccountRecovery />
       </div>
     </form>
   );

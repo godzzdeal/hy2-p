@@ -1,3 +1,3 @@
 export * from "./ErrorBoundary";
-export * from "./Feedback";
+export * from "./feedback/Feedback";
 export * from "./QueryState";

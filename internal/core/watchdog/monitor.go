@@ -9,6 +9,15 @@ import (
 func (monitor *Monitor) check(ctx context.Context, now time.Time) {
 	version := monitor.runtime.Version()
 	running := monitor.runtime.Running()
+	// A planned stop during restart/update is not a crash. Recheck the process
+	// under its operation lock before recording an unexpected exit.
+	if !running {
+		if !monitor.runtime.TryLock() {
+			return
+		}
+		defer monitor.runtime.Unlock()
+		running = monitor.runtime.Running()
+	}
 	monitor.mu.Lock()
 	if version != monitor.version {
 		monitor.version = version
@@ -46,10 +55,6 @@ func (monitor *Monitor) check(ctx context.Context, now time.Time) {
 		return
 	}
 	monitor.mu.Unlock()
-	if !monitor.runtime.TryLock() {
-		return
-	}
-	defer monitor.runtime.Unlock()
 	monitor.mu.Lock()
 	wanted := monitor.snapshot.DesiredRunning
 	monitor.mu.Unlock()

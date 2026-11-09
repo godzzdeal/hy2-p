@@ -11,7 +11,6 @@ export function EchTools({ onSet }: { onSet: (path: string, value: unknown) => v
   const notify = useUiStore((state) => state.notify);
   const showError = useUiStore((state) => state.showError);
   const result = generate.data ?? read.data;
-  const error = generate.error ?? read.error;
   function onGenerated(value: IEch) {
     onSet("ech.keyPath", value.keyPath);
     notify("Ключ ECH создан. Сохраните конфигурацию и перезапустите ядро.");
@@ -55,11 +54,6 @@ export function EchTools({ onSet }: { onSet: (path: string, value: unknown) => v
           {t("Получить публичный ECH")}
         </button>
       </div>
-      {error && (
-        <p role="alert" className="inline-error">
-          {t(error.message)}
-        </p>
-      )}
       {read.isSuccess && !result?.configList && (
         <p className="caption">{t("ECH ещё не настроен в сохранённой конфигурации.")}</p>
       )}

@@ -66,7 +66,7 @@ func (store *Store) Change(currentPassword, username, password string) error {
 	}
 	next := Value{Username: username, Hash: store.value.Hash, CloudHash: store.value.CloudHash}
 	if password != "" {
-		if len(password) < 16 || len(password) > 72 {
+		if len(password) < MinAdminPassword || len(password) > MaxPasswordBytes {
 			return errors.New("пароль: от 16 до 72 байт")
 		}
 		hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)

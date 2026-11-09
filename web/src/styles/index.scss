@@ -46,3 +46,6 @@
 @use "./features/groups/members" as *;
 @use "./features/groups/forms" as *;
 @use "./features/groups/identity" as *;
+@use "./interface/feedback/notifications" as *;
+@use "./features/admin/transfer" as *;
+@use "./features/admin/transfer-inputs" as *;

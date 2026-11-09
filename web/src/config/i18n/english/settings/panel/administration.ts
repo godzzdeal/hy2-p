@@ -1,4 +1,9 @@
 export const ADMINISTRATION: Record<string, string> = {
+  "Забыли пароль?": "Forgot your password?",
+  "Выполните команду на сервере через SSH. Она создаст новый пароль и завершит сеансы панели. Подключения VPN кратковременно прервутся.":
+    "Run this command on the server over SSH. It creates a new password and ends panel sessions. VPN connections will briefly disconnect.",
+  "Логин и облачный пароль сохранятся. Новый пароль будет показан в терминале.":
+    "Your username and cloud password stay unchanged. The new password is displayed in the terminal.",
   "Проверяем состояние…": "Checking status…",
   "Произошла ошибка": "An error occurred",
   "Профиль BBR": "BBR profile",

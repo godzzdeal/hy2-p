@@ -1,4 +1,6 @@
 export const API_ROUTES = {
+  transfer: "/admin/transfer",
+  transferMode: (mode: "preview" | "apply") => "/admin/transfer/" + mode,
   instances: "/instances",
   instance: (id: string) => "/instances/" + encodeURIComponent(id),
   panelVersion: "/version",

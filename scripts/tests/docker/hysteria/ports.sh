@@ -67,3 +67,15 @@ CLIENT_CONTAINER=
 # Do not let later manager operations retry the intentionally occupied target.
 save_port 61256
 printf 'UDP application, occupied-port rollback and proxy traffic after rollback passed.\n'
+curl -fsS -b "$WORK/cookies" -H 'X-Panel-Request: 1' -X POST "$URL/api/core/stop" >/dev/null
+save_port 61257
+apply_port 61257
+jq -e '.phase == "success" and .udpChecked' "$WORK/port-result.json" >/dev/null
+login_panel
+curl -fsS -b "$WORK/cookies" "$URL/api/core" | jq -e '(.running | not) and (.watchdog.desiredRunning | not)' >/dev/null
+save_port 61256
+apply_port 61256
+login_panel
+curl -fsS -b "$WORK/cookies" -H 'X-Panel-Request: 1' -X POST "$URL/api/core/start" >/dev/null
+wait_core
+printf 'Stopped cores publish UDP ports without being started.\n'

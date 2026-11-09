@@ -1,5 +1,4 @@
 import { Dashboard } from "@/components/layout/Dashboard";
-import { Feedback } from "@/components/ui/Feedback";
 import { QueryState } from "@/components/ui/QueryState";
 import { useInstall } from "@/hooks/install/use-install";
 import { useSession } from "@/hooks/session/use-session";
@@ -11,10 +10,5 @@ export function App() {
   const session = useSession();
   if (session.isLoading) return <QueryState isLoading />;
   if (session.error) return <QueryState isLoading={false} error={session.error} />;
-  return (
-    <>
-      {session.isAuthorized ? <Dashboard /> : <LoginPage />}
-      <Feedback />
-    </>
-  );
+  return <>{session.isAuthorized ? <Dashboard /> : <LoginPage />}</>;
 }

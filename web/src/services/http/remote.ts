@@ -2,12 +2,22 @@ import { ApiError } from "@/services/http/ApiError";
 import { API_ROUTES } from "@/config/network";
 import { type IRequest } from "@/services/http/client";
 export async function request<T>(path: string, options: IRequest = {}): Promise<T> {
-  const response = await fetch("/api" + path, {
-    method: options.method ?? "GET",
-    headers: { "Content-Type": "application/json", "X-Panel-Request": "1" },
-    body: options.body === undefined ? undefined : JSON.stringify(options.body),
-  });
-  const data: unknown = await response.json();
+  let response: Response;
+  try {
+    response = await fetch("/api" + path, {
+      method: options.method ?? "GET",
+      headers: { "Content-Type": "application/json", "X-Panel-Request": "1" },
+      body: options.body === undefined ? undefined : JSON.stringify(options.body),
+    });
+  } catch {
+    throw new ApiError("Панель недоступна. Проверьте соединение и повторите действие.", 0);
+  }
+  let data: unknown;
+  try {
+    data = await response.json();
+  } catch {
+    throw new ApiError("Панель вернула некорректный ответ. Повторите действие позже.", response.status);
+  }
   if (!response.ok) {
     const message =
       typeof data === "object" && data !== null && "error" in data && typeof data.error === "string"

@@ -1,4 +1,5 @@
 import { ConnectionFields } from "@/components/configuration/editor/ConnectionFields";
+import { ConfigurationFile } from "@/components/configuration/editor/files";
 import { DraftBar } from "@/components/configuration/editor/draft/status/DraftBar";
 import { SavedConfiguration } from "@/components/configuration/editor/draft/status/SavedConfiguration";
 import { HistoryDialog } from "@/components/configuration/editor/HistoryDialog";
@@ -34,6 +35,7 @@ export function ConfigurationEditor({ initial }: { initial: IConfiguration }) {
         <SavedConfiguration sequence={savedSequence} isDirty={isDirty} onApplied={onApplied} />
         <ConfigurationForm value={draft} onChange={setDraft} />
         <YamlLauncher onOpen={() => setYamlOpen(true)} onHistory={() => setHistoryOpen(true)} />
+        <ConfigurationFile value={draft} onChange={setDraft} />
         <DraftBar isDirty={isDirty} isPending={isPending} onReset={onReset} />
       </form>
       {isHistoryOpen && <HistoryDialog onClose={() => setHistoryOpen(false)} onRestore={onRestore} />}

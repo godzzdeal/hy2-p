@@ -11,11 +11,6 @@ export function QueryState({ isLoading, error }: IQueryState) {
         {t("Загрузка\u2026")}
       </p>
     );
-  if (error)
-    return (
-      <div className="alert" role="alert">
-        {t(error.message)}
-      </div>
-    );
+  if (error) return <p className="empty">{t("Не удалось загрузить данные.")}</p>;
   return null;
 }

@@ -53,6 +53,12 @@ manager restart
 curl -fsS -c "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
   --data '{"username":"admin","password":"integration-test-password-only"}' "$URL/api/login" >/dev/null
 wait_core
+manager export "$WORK/portable.json"
+manager import "$WORK/portable.json" >"$WORK/import-preview.json"
+jq -e '.rows | all(.action == "skip")' "$WORK/import-preview.json" >/dev/null
+manager import "$WORK/portable.json" --apply >"$WORK/import-result.json"
+jq -e '.rows | all(.action == "skip")' "$WORK/import-result.json" >/dev/null
+[[ $(curl -sS -o /dev/null -w '%{http_code}' "$URL/api/admin/transfer") == 401 ]]
 
 
 # A user created while the core is running must authenticate from the exported subscription.
@@ -95,6 +101,8 @@ wait_online 1
 # Verify an actual proxy request before disabling access.
 curl -fsS --max-time 10 --noproxy "" --socks5-hostname "$socks_host:11080" \
   http://127.0.0.1:8081/health >/dev/null
+[[ $(curl -sS --max-time 10 --noproxy "" --socks5-hostname "$socks_host:11080" \
+  -o /dev/null -w '%{http_code}' http://127.0.0.1:8081/transfer) == 401 ]]
 curl -fsS -b "$WORK/cookies" -H 'Content-Type: application/json' -H 'X-Panel-Request: 1' \
   -X PATCH --data '{"name":"Subscription test","enabled":false}' "$URL/api/users/$user_id" >/dev/null
 wait_online 0
