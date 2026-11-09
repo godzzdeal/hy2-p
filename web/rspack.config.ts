@@ -1,9 +1,14 @@
 import tailwind from "@tailwindcss/postcss";
 import path from "node:path";
+import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { defineConfig } from "@rspack/cli";
 import { rspack } from "@rspack/core";
 const require = createRequire(import.meta.url);
+const PANEL_VERSION = readFileSync(
+  path.resolve(import.meta.dirname, "../internal/buildinfo/VERSION"),
+  "utf8",
+).trim();
 export default defineConfig((env: { demo?: boolean }) => ({
   entry: "./src/main.tsx",
   output: {
@@ -80,7 +85,10 @@ export default defineConfig((env: { demo?: boolean }) => ({
   },
   experiments: { css: true },
   plugins: [
-    new rspack.DefinePlugin({ __HY2_DEMO__: JSON.stringify(env.demo === true) }),
+    new rspack.DefinePlugin({
+      __HY2_DEMO__: JSON.stringify(env.demo === true),
+      __HY2_PANEL_VERSION__: JSON.stringify(PANEL_VERSION),
+    }),
     new rspack.CopyRspackPlugin({
       patterns: [
         {

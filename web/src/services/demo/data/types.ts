@@ -1,4 +1,5 @@
 import { type IAnnouncement } from "@/services/admin/announcement";
+import { PANEL_VERSION } from "@/config/build";
 import { type IConfiguration, type IRevision } from "@/services/configuration/configuration-types";
 import { type IGroups } from "@/services/groups/types";
 import { type IInstance } from "@/services/instances/types";
@@ -26,6 +27,6 @@ export const DEMO = {
   groupId: "1111111111111111",
   secondGroupId: "2222222222222222",
   deviceId: "demo-phone",
-  version: "v0.7.3",
+  version: PANEL_VERSION,
   coreVersion: "v2.13.0",
 } as const;

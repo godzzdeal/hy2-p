@@ -97,10 +97,6 @@ congestion:
 disableUDP: false
 udpIdleTimeout: 60s
 
-trafficStats:
-  listen: 127.0.0.1:9999
-  secret: REPLACE_WITH_YOUR_RANDOM_STATS_SECRET
-
 masquerade:
   type: proxy
   proxy:
