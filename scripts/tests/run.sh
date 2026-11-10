@@ -104,4 +104,5 @@ if (HY2_INSTALL_DIR=/ source "$TEST_SOURCE/server/common.sh"); then exit 1; fi
 printf 'Deployment lifecycle tests passed.\n'
 bash "$(dirname -- "${BASH_SOURCE[0]}")/transfer.sh"
 bash "$(dirname -- "${BASH_SOURCE[0]}")/account/password.sh"
+bash "$(dirname -- "${BASH_SOURCE[0]}")/images/run.sh"
 source "$(dirname -- "${BASH_SOURCE[0]}")/install/index.sh"

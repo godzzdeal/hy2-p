@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
+# shellcheck source=../images/archive.sh
+source "$(dirname -- "${BASH_SOURCE[0]}")/../images/archive.sh"
 prepare_image() {
   local sha=$1 arch version image directory expected actual archive
   image=$(image_for "$sha")
   if [[ $(engine image inspect --format '{{index .Config.Labels "io.hy2-panel.commit"}}' "$image" 2>/dev/null || true) == "$sha" ]]; then return 0; fi
+  if [[ -d $ROOT/image-archives/$sha ]]; then restore_image "$sha"; return; fi
   if [[ ${HY2_BUILD_FROM_SOURCE:-false} == true ]]; then compose "$sha" build --pull panel; return; fi
   case $(uname -m) in
     x86_64) arch=amd64 ;;

@@ -13,6 +13,7 @@ export interface ISystemStorage {
   releases: number;
   other: number;
   images: number;
+  archives?: number;
   imageCount: number;
   updated: number;
   complete: boolean;

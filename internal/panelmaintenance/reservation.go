@@ -18,7 +18,7 @@ func (service *Service) reserve(input protocol.PanelRequest) (protocol.PanelOper
 	if err != nil {
 		return protocol.PanelOperation{}, err
 	}
-	if (input.Action == "rollback" || input.Action == "cleanup") && !info.RollbackAvailable {
+	if input.Action == "rollback" && !info.RollbackAvailable {
 		return protocol.PanelOperation{}, errors.New("Предыдущая версия отсутствует")
 	}
 	if input.Action == "update" && input.Version == info.Current {

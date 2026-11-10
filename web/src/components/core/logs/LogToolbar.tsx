@@ -14,6 +14,7 @@ export function LogToolbar({
   isFollowing,
   onFollow,
   onDownload,
+  isDownloading,
   onClear,
   canClear,
   users,
@@ -27,6 +28,7 @@ export function LogToolbar({
   isFollowing: boolean;
   onFollow: () => void;
   onDownload: () => void;
+  isDownloading: boolean;
   onClear: () => void;
   canClear: boolean;
 } & ILogUserFilter) {
@@ -63,7 +65,13 @@ export function LogToolbar({
         <ArrowDownToLine width={24} height={24} aria-hidden />
         {t("Автопрокрутка")}
       </Button>
-      <Button type="button" variant="outline" onClick={onDownload} disabled={!canClear}>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={onDownload}
+        disabled={!canClear || isDownloading}
+        aria-busy={isDownloading}
+      >
         <Download width={24} height={24} aria-hidden />
         {t("Скачать")}
       </Button>

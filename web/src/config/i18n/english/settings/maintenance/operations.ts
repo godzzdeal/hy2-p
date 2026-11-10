@@ -1,8 +1,8 @@
 export const PANEL_OPERATIONS: Record<string, string> = {
   "Удалить старые образы": "Remove old images",
   "Удалить старые образы?": "Remove old images?",
-  "Останутся текущий образ, предыдущий для отката и образы, используемые контейнерами. Данные и резервные копии сохранятся.":
-    "The current image, the previous rollback image and images used by containers will be kept. Data and backups will be preserved.",
+  "Предыдущий образ сохранится в сжатом архиве. Старые образы и завершённые задачи HY2-P будут удалены. Данные и резервные копии сохранятся.":
+    "The previous image will be archived. Old images and completed HY2-P jobs will be removed. Data and backups will be preserved.",
   "Удаляем старые образы. Текущая версия и откат сохраняются":
     "Removing old images. The current version and rollback are preserved",
   "Старые образы удалены. Текущая версия и откат сохранены.":

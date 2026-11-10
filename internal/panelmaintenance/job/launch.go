@@ -6,7 +6,9 @@ import (
 	"hy2-panel/internal/portcontrol/agent/commands"
 	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/security"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"time"
@@ -17,6 +19,13 @@ const DockerTimeout = 10 * time.Second
 var containerIDPattern = regexp.MustCompile(`^(?:[a-f0-9]{12}|[a-f0-9]{64})$`)
 
 func containerName(id string) string { return "hy2-panel-maintenance-" + id }
+func Running(id string) bool {
+	if !protocol.TicketPattern.MatchString(id) {
+		return false
+	}
+	value, err := docker("inspect", "--format", "{{.State.Running}}", containerName(id))
+	return err == nil && strings.TrimSpace(string(value)) == "true"
+}
 func docker(arguments ...string) ([]byte, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), DockerTimeout)
 	defer cancel()
@@ -37,7 +46,7 @@ func Launch(root string, operation protocol.PanelOperation) error {
 			return err
 		}
 	}
-	cleanup(root)
+	PruneCompleted(root)
 	arguments := []string{"run", "--detach", "--pull", "never", "--restart", "always", "--name", name,
 		"--label", "io.hy2-panel.maintenance=" + security.Hash(root), "--user", "0:0",
 		"--log-opt", "max-size=1m", "--log-opt", "max-file=2",
@@ -56,13 +65,16 @@ func Launch(root string, operation protocol.PanelOperation) error {
 	}
 	return nil
 }
-func cleanup(root string) {
+func PruneCompleted(root string) {
 	payload, err := docker("ps", "-aq", "--filter", "label=io.hy2-panel.maintenance="+security.Hash(root), "--filter", "status=exited")
 	if err != nil {
 		return
 	}
 	for _, id := range strings.Fields(string(payload)) {
 		if containerIDPattern.MatchString(id) {
+			if output, logErr := docker("logs", "--tail", "150", id); logErr == nil {
+				_ = os.WriteFile(filepath.Join(root, "last-maintenance.log"), output, 0600)
+			}
 			_, _ = docker("rm", id)
 		}
 	}

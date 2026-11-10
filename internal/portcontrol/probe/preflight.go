@@ -19,7 +19,7 @@ func Preflight() error {
 	defer cancel()
 	state, err := protocol.Call(ctx, "GET", nil)
 	// A normal restart after a completed operation must never wait for the old probe.
-	if err != nil || !state.Busy || state.ID != id || state.Remove {
+	if err != nil || !requiresUDPProbe(state, id) {
 		return nil
 	}
 	if !protocol.TicketPattern.MatchString(token) {
@@ -43,4 +43,11 @@ func Preflight() error {
 		_, err = socket.WriteTo([]byte("hy2:"+token), address)
 		return err
 	}
+}
+
+func requiresUDPProbe(state protocol.Status, id string) bool {
+	// Older workers also pass probe tokens during updates, rollbacks and restarts.
+	// UDP application is the original operation without an Operation discriminator.
+	return state.Busy && state.ID == id && !state.Remove && state.Operation == "" &&
+		state.PublicPort != "" && state.ListenPort != ""
 }

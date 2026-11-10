@@ -8,13 +8,26 @@ import { RefreshCw } from "@/components/elements/icons";
 import { QueryState } from "@/components/ui/loading";
 import { useLogEntries } from "@/hooks/core/logs";
 import { cn } from "@/utils/cn";
-import { downloadLogs, LOG_VIEW } from "@/utils/core/logs";
+import { LOG_VIEW } from "@/utils/core/logs";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 export function CoreLog() {
   const { t } = useTranslation();
-  const { query, users, clear, search, setSearch, level, setLevel, userId, setUserId, text, visible, total } =
-    useLogEntries();
+  const {
+    query,
+    users,
+    clear,
+    download,
+    search,
+    setSearch,
+    level,
+    setLevel,
+    userId,
+    setUserId,
+    text,
+    visible,
+    total,
+  } = useLogEntries();
   const [isExpanded, setExpanded] = useState(false);
   const [isFollowing, setFollowing] = useState(true);
   const viewport = useRef<HTMLDivElement>(null);
@@ -62,7 +75,8 @@ export function CoreLog() {
         onLevel={setLevel}
         isFollowing={isFollowing}
         onFollow={() => setFollowing(!isFollowing)}
-        onDownload={() => downloadLogs(text)}
+        onDownload={() => download.mutate()}
+        isDownloading={download.isPending}
         onClear={() => clear.mutate()}
         canClear={!!text && !clear.isPending}
       />

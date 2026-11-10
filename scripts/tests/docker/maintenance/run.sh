@@ -9,14 +9,17 @@ old_panel=$(sudo cat "$ROOT/current")
 [[ $old_panel != "$GITHUB_SHA" ]] || return 1
 manager update "$GITHUB_SHA"
 login_panel
+wait_image_archive "$old_panel"
 test_image_cleanup
 panel_maintenance '{"action":"rollback","restoreData":true}'
 [[ $(sudo cat "$ROOT/current") == "$old_panel" ]] || return 1
 manager update "$GITHUB_SHA"
 login_panel
+wait_image_archive "$old_panel"
 panel_maintenance '{"action":"update","version":"v0.7.5"}'
 [[ $(sudo cat "$ROOT/current") == "$old_panel" ]] || return 1
 manager update "$GITHUB_SHA"
 login_panel
+wait_image_archive "$old_panel"
 wait_core
 printf 'Web panel update, rollback and legacy progress polling passed.\n'

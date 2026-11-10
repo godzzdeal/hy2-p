@@ -7,6 +7,7 @@ type Usage struct {
 	Releases   uint64 `json:"releases"`
 	Other      uint64 `json:"other"`
 	Images     uint64 `json:"images"`
+	Archives   uint64 `json:"archives"`
 	ImageCount int    `json:"imageCount"`
 	Updated    int64  `json:"updated"`
 	Complete   bool   `json:"complete"`
