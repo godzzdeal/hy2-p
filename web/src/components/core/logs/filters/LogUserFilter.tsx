@@ -21,6 +21,7 @@ export function LogUserFilter({ users, userId, onUser }: ILogUserFilter) {
   const [isOpen, setOpen] = useState(false);
   const model = useLogUsers(users);
   const selected = users.find((user) => user.id === userId);
+  const label = selected ? (selected.displayName ?? selected.name) : t("Все пользователи");
   function onSelect(value: string) {
     onUser(value);
     setOpen(false);
@@ -32,11 +33,12 @@ export function LogUserFilter({ users, userId, onUser }: ILogUserFilter) {
       trigger={
         <Button
           type="button"
-          className="log-user-trigger max-w-full gap-2"
+          className="log-user-trigger max-w-full justify-between gap-2 text-left max-phone:col-span-2"
           variant="secondary"
           aria-label={t("Пользователь в журнале")}
+          title={label}
         >
-          <EmojiText value={selected ? (selected.displayName ?? selected.name) : t("Все пользователи")} />
+          <EmojiText value={label} isTruncated className="max-w-48" />
           <ChevronDown width={24} height={24} aria-hidden />
         </Button>
       }

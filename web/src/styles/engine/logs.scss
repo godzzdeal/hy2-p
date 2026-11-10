@@ -32,11 +32,8 @@
     @apply bg-accent text-accent-text rounded;
   }
   @variant max-phone {
-    .log-toolbar .log-search {
-      @apply basis-full;
-    }
-    .log-toolbar .select-trigger {
-      @apply flex-1;
+    .log-toolbar > button {
+      @apply w-full;
     }
   }
 }

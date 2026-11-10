@@ -32,9 +32,9 @@ export function LogToolbar({
 } & ILogUserFilter) {
   const { t } = useTranslation();
   return (
-    <div className="log-toolbar flex flex-wrap items-center gap-2 border-b border-line p-3">
+    <div className="log-toolbar flex flex-wrap items-center gap-2 border-b border-line p-3 max-phone:grid max-phone:grid-cols-2">
       <Input
-        className="log-search"
+        className="log-search max-phone:col-span-2"
         type="search"
         aria-label={t("Поиск в журнале")}
         placeholder={t("Найти в журнале")}
@@ -42,7 +42,7 @@ export function LogToolbar({
         onChange={(event) => onSearch(event.target.value)}
       />
       <Select
-        className="w-48 max-phone:flex-1"
+        className="w-48 max-phone:w-full max-phone:col-span-2"
         aria-label={t("Уровень сообщений")}
         value={level}
         onValueChange={(value) => onLevel(value as TLogLevel)}
@@ -53,7 +53,13 @@ export function LogToolbar({
         <SelectOption value="info">{t("Информация")}</SelectOption>
       </Select>
       <LogUserFilter users={users} userId={userId} onUser={onUser} />
-      <Button type="button" variant="secondary" aria-pressed={isFollowing} onClick={onFollow}>
+      <Button
+        className="max-phone:col-span-2"
+        type="button"
+        variant="secondary"
+        aria-pressed={isFollowing}
+        onClick={onFollow}
+      >
         <ArrowDownToLine width={24} height={24} aria-hidden />
         {t("Автопрокрутка")}
       </Button>
