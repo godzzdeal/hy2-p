@@ -9,11 +9,13 @@ cleanup() {
   local result=$?
   if [[ -n ${BLOCKER:-} ]]; then kill "$BLOCKER" 2>/dev/null || true; wait "$BLOCKER" 2>/dev/null || true; fi
   if [[ -n ${CLIENT_CONTAINER:-} ]]; then sudo docker rm -f "$CLIENT_CONTAINER" >/dev/null 2>&1 || true; fi
-  local worker
+  local worker maintenance_label
+  maintenance_label=$(printf '%s' "$ROOT" | sha256sum)
+  maintenance_label=${maintenance_label%% *}
   while read -r worker; do
     [[ $worker =~ ^[a-f0-9]{12,64}$ ]] || continue
     sudo docker rm -f "$worker" >/dev/null 2>&1 || true
-  done < <(sudo docker ps -aq --filter name=hy2-panel-maintenance-)
+  done < <(sudo docker ps -aq --filter "label=io.hy2-panel.maintenance=$maintenance_label")
   if [[ $(sudo docker volume inspect --format '{{index .Labels "io.hy2-panel.install-dir"}}' hy2-panel_panel-data 2>/dev/null || true) == "$ROOT" ]]; then
     if [[ $result != 0 ]]; then sudo docker ps -a; sudo docker logs hy2-panel-panel-1 || true; sudo docker logs hy2-panel-port-agent-1 || true; fi
     local sha
