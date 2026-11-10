@@ -1,5 +1,5 @@
 import { GroupMembers } from "@/components/groups/members/GroupMembers";
-import { Modal } from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { type IGroup } from "@/services/groups/types";
 import { useTranslation } from "react-i18next";
 
@@ -7,7 +7,7 @@ export function GroupMembersDialog({ group, onClose }: { group: IGroup; onClose:
   const { t } = useTranslation();
   return (
     <Modal
-      className="group-members-dialog"
+      className="group-members-dialog flex flex-col w-160 shrink-0"
       title={t("Участники группы {{name}}", { name: group.name })}
       onClose={onClose}
     >

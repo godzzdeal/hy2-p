@@ -12,8 +12,11 @@ export function ConfigNavigation({
 }) {
   const { t } = useTranslation();
   return (
-    <div className="configuration-navigation">
-      <nav className="config-tabs" aria-label={t("Разделы конфигурации")}>
+    <div className="configuration-navigation min-w-0 self-stretch bg-surface">
+      <nav
+        className="config-tabs flex flex-col self-start sticky top-4 overflow-y-auto gap-1 scrollbar-stable max-desktop:static max-desktop:flex-row max-desktop:min-w-0 max-desktop:max-w-full max-desktop:py-1 max-desktop:px-2 max-desktop:overflow-x-auto max-desktop:overflow-y-hidden max-desktop:scrollbar-thin max-desktop:border-b max-desktop:border-line"
+        aria-label={t("Разделы конфигурации")}
+      >
         {sections.map((section) => (
           <ConfigTab
             key={section.id}

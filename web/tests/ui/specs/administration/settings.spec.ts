@@ -28,7 +28,7 @@ test("settings collapse keeps drafts, remembers state and leaves room for fixed 
     const style = getComputedStyle(element);
     return [style.borderTopWidth, style.borderRightWidth, style.borderBottomWidth, style.borderLeftWidth];
   });
-  expect(borders).toEqual(["1px", "0px", "0px", "0px"]);
+  expect(borders).toEqual(["2px", "0px", "0px", "0px"]);
   const last = await page.locator("#panel-firewall").boundingBox();
   expect(last!.y + last!.height).toBeLessThanOrEqual(footer!.y);
   expect(footer!.y + footer!.height).toBeLessThanOrEqual(page.viewportSize()!.height);

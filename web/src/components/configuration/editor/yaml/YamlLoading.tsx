@@ -1,4 +1,4 @@
-import { Modal } from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { Loader } from "@/components/ui/loading";
 export function YamlLoading({ onClose }: { onClose: () => void }) {
   return (

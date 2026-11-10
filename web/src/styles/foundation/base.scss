@@ -1,144 +1,60 @@
 @layer base {
-  * {
-    box-sizing: border-box;
-  }
   body {
-    margin: 0;
-    background: var(--background);
-    color: var(--foreground);
-    font: var(--text-body)/1.4 var(--font-body);
-    font-optical-sizing: auto;
+    @apply m-0 isolate bg-background font-sans text-xl leading-snug text-foreground;
+  }
+  button {
+    @apply cursor-pointer;
+  }
+  button:disabled {
+    @apply cursor-not-allowed;
   }
   button,
   input,
   textarea,
-  select:not([aria-hidden="true"]) {
+  select {
     font: inherit;
-    font-size: var(--text-control);
-    line-height: 1.2;
-  }
-  button {
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-    border: 0;
-    border-radius: var(--radius-sm);
-    min-height: var(--control-height);
-    height: var(--control-height);
-    padding: 0 var(--space-3);
-    color: inherit;
-    background: transparent;
-  }
-  button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  button:focus-visible,
-  a:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: var(--space-1);
-  }
-  input,
-  textarea,
-  select:not([aria-hidden="true"]) {
-    width: 100%;
-    min-height: var(--control-height);
-    color: var(--foreground);
-    background: var(--input);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    padding: 0 var(--space-3);
-    outline: none;
-  }
-  input:focus,
-  textarea:focus,
-  select:focus {
-    border-color: var(--accent);
-  }
-  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
-  select:not([aria-hidden="true"]) {
-    height: var(--control-height);
-  }
-  textarea {
-    min-width: 0;
-    max-width: 100%;
-    resize: vertical;
-    padding-block: var(--space-2);
-    line-height: 1.4;
   }
   button > svg {
-    flex-shrink: 0;
+    @apply shrink-0;
+  }
+  a {
+    @apply text-accent no-underline hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent;
   }
   h1,
   h2,
   h3,
   p {
-    margin: 0;
-    text-wrap: pretty;
+    @apply m-0 text-pretty;
   }
-  h1 {
-    font-size: var(--text-title);
-    line-height: 1.2;
-    letter-spacing: -0.8px;
-    text-wrap: balance;
-  }
+  h1,
   h2 {
-    font-size: 20px;
-    line-height: 1.4;
+    @apply font-sans text-2xl leading-tight font-bold text-balance;
   }
   h3 {
-    font-size: 18px;
+    @apply text-xl font-semibold;
   }
-  small,
-  .small {
-    font-size: var(--text-small);
+  small {
+    @apply text-lg leading-snug;
   }
-  .muted {
-    color: var(--muted);
+  label small {
+    @apply block text-lg leading-snug text-muted;
   }
-  .eyebrow {
-    color: var(--muted);
-    font-size: var(--text-small);
-    letter-spacing: 1px;
-  }
-  .primary {
-    background: var(--accent);
-    color: var(--accent-text);
-    font-weight: 600;
-  }
-  .secondary {
-    background: var(--surface-soft);
-    border: 1px solid var(--line);
-  }
-  .text-btn {
-    color: var(--muted);
-  }
-  .full {
-    width: 100%;
-  }
-  .icon-btn {
-    width: var(--control-height);
-    padding: var(--space-1);
-    flex-shrink: 0;
-  }
-  .danger {
-    color: var(--danger);
-  }
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-  }
-  @media (prefers-reduced-motion: reduce) {
+  @variant motion-reduce {
     *,
     *::before,
     *::after {
       animation: none !important;
       transition: none !important;
     }
+  }
+}
+@layer components {
+  .small,
+  .caption {
+    @apply text-lg leading-snug text-muted;
+  }
+  .muted,
+  .eyebrow {
+    @apply text-muted;
   }
 }

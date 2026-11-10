@@ -1,3 +1,7 @@
+import { Caption } from "@/components/elements/Caption";
+import { Actions } from "@/components/ui/Actions";
+import { Button } from "@/components/ui/button/Button";
+import { Field } from "@/components/ui/fields/Field";
 import { PanelConfirmation } from "@/components/panel/maintenance/PanelConfirmation";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
@@ -15,22 +19,22 @@ export function PanelMaintenance() {
   if (!installation?.available)
     return <Notice>{t("Обновление из панели доступно при установке через установщик HY2-P.")}</Notice>;
   return (
-    <div className="panel-maintenance">
-      <div className="row-actions">
+    <div className="panel-maintenance grid gap-3 min-w-0">
+      <Actions>
         <span>
           {t("Установлено")}: <strong>{installation.current.replace(/^v/, "")}</strong>
         </span>
-        <button
+        <Button
           type="button"
-          className="text-btn"
+          variant="outline"
           disabled={model.versions.isFetching}
           onClick={() => void model.versions.refetch()}
         >
           {t("Проверить версии панели")}
-        </button>
-      </div>
+        </Button>
+      </Actions>
       <QueryState isLoading={model.versions.isPending} error={model.versions.error} />
-      <label>
+      <Field>
         {t("Версия панели")}
         <Select
           aria-label={t("Версия панели")}
@@ -44,40 +48,40 @@ export function PanelMaintenance() {
             </SelectOption>
           ))}
         </Select>
-      </label>
+      </Field>
       {model.versions.data?.length === 0 && (
-        <p className="caption">{t("Версии с готовым образом пока не найдены.")}</p>
+        <Caption>{t("Версии с готовым образом пока не найдены.")}</Caption>
       )}
-      <div className="row-actions">
-        <button
+      <Actions>
+        <Button
           type="button"
-          className="primary"
+          variant="primary"
           disabled={!model.canUpdate}
           onClick={() => model.setConfirmation({ action: "update", version: model.version })}
         >
           {t("Обновить панель")}
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
-          className="secondary"
+          variant="secondary"
           disabled={!model.canRollback}
           onClick={() => model.setConfirmation({ action: "rollback", restoreData: true })}
         >
           {t("Откатить панель")}
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
-          className="secondary"
+          variant="secondary"
           disabled={!model.canRollback}
           onClick={() => model.setConfirmation({ action: "cleanup" })}
         >
           {t("Удалить старые образы")}
-        </button>
-      </div>
+        </Button>
+      </Actions>
       {installation.previous && (
-        <p className="caption">
+        <Caption>
           {t("Предыдущая версия")}: {installation.previous.replace(/^v/, "")}
-        </p>
+        </Caption>
       )}
       {model.confirmation && (
         <PanelConfirmation

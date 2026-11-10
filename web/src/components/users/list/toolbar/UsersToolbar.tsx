@@ -1,3 +1,7 @@
+import { CardHeader } from "@/components/ui/cards/CardHeader";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Button } from "@/components/ui/button/Button";
 import { RefreshCw } from "@/components/elements/icons";
 import { UserCount } from "@/components/users/list/toolbar/UserCount";
 import { useUsersRefresh } from "@/hooks/users/list/toolbar/use-users-refresh";
@@ -17,36 +21,36 @@ export function UsersToolbar({
   const { t } = useTranslation();
   const refresh = useUsersRefresh();
   return (
-    <div className="card-header users-toolbar">
+    <CardHeader className="users-toolbar flex-wrap max-tablet:items-stretch max-tablet:flex-col">
       <h2>
         {t("Пользователи")}
         <UserCount />
       </h2>
-      <div className="users-list-actions">
+      <div className="users-list-actions flex items-center justify-end flex-1 flex-wrap gap-3 min-w-0 max-tablet:justify-start">
         {children}
-        <label className="users-search">
+        <Field className="users-search m-0 flex-1 min-w-40 max-w-60 max-tablet:basis-full max-tablet:max-w-none">
           <span className="sr-only">{t("Поиск пользователей")}</span>
-          <input
+          <Input
             type="search"
             value={search}
             placeholder={t("Поиск по имени…")}
             onChange={(event) => onSearch(event.target.value)}
           />
-        </label>
-        <button
+        </Field>
+        <Button
           type="button"
-          className="secondary"
+          variant="secondary"
           disabled={refresh.isPending}
           aria-busy={refresh.isPending}
           onClick={() => refresh.mutate()}
         >
           <RefreshCw width={24} height={24} aria-hidden />
           {t(refresh.isPending ? "Обновляем…" : "Обновить")}
-        </button>
-        <span className="users-found" role="status">
+        </Button>
+        <span className="users-found text-muted" role="status">
           {t("Найдено: {{count}}", { count: found })}
         </span>
       </div>
-    </div>
+    </CardHeader>
   );
 }

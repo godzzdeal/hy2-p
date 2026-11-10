@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/button/Button";
 import { Check, Copy } from "@/components/elements/icons";
 import { useCopy } from "@/components/elements/copy/use-copy";
-import { cn } from "@/utils/cn";
 import { useTranslation } from "react-i18next";
 import { type ComponentProps } from "react";
 
@@ -27,10 +27,12 @@ export function CopyButton({
   const copy = useCopy(value, fallback);
   const Icon = copy.isCopied ? Check : Copy;
   return (
-    <button
+    <Button
       {...props}
       type="button"
-      className={cn(variant, { "icon-btn": isIconOnly }, className)}
+      variant={variant}
+      size={isIconOnly ? "icon" : "default"}
+      className={className}
       aria-label={t(label)}
       title={title}
       disabled={disabled || copy.isPending || !value}
@@ -38,6 +40,6 @@ export function CopyButton({
     >
       <Icon width={24} height={24} aria-hidden />
       {!isIconOnly && t(label)}
-    </button>
+    </Button>
   );
 }

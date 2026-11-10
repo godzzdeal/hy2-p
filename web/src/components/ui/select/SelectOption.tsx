@@ -1,20 +1,24 @@
 import { Check } from "@/components/elements/icons";
 import { encodeSelectValue } from "@/components/ui/select/select-value";
 import * as Primitive from "@radix-ui/react-select";
-import { type ReactNode } from "react";
-export function SelectOption({
-  value,
-  children,
-  disabled,
-}: {
+import { type ComponentProps } from "react";
+import { cn } from "@/utils/cn";
+interface ISelectOption extends Omit<ComponentProps<typeof Primitive.Item>, "value"> {
   value: string | number;
-  children: ReactNode;
-  disabled?: boolean;
-}) {
+}
+export function SelectOption({ value, children, disabled, className, ...props }: ISelectOption) {
   return (
-    <Primitive.Item className="select-option" value={encodeSelectValue(value)} disabled={disabled}>
+    <Primitive.Item
+      {...props}
+      className={cn(
+        "select-option flex min-h-control cursor-pointer items-center justify-between gap-4 px-3 py-2 text-xl outline-none data-highlighted:bg-surface-soft data-disabled:pointer-events-none data-disabled:opacity-50 selected-option:font-semibold selected-option:text-accent",
+        className,
+      )}
+      value={encodeSelectValue(value)}
+      disabled={disabled}
+    >
       <Primitive.ItemText>{children}</Primitive.ItemText>
-      <Primitive.ItemIndicator className="select-check">
+      <Primitive.ItemIndicator className="flex w-6 shrink-0">
         <Check width={24} height={24} aria-hidden />
       </Primitive.ItemIndicator>
     </Primitive.Item>

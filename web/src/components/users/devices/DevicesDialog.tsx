@@ -1,5 +1,6 @@
+import { Button } from "@/components/ui/button/Button";
 import { EmojiText } from "@/components/elements/emoji/text/EmojiText";
-import { Modal } from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { QueryState } from "@/components/ui/loading";
 import { DeviceForm } from "@/components/users/devices/DeviceForm";
 import { useDevices } from "@/hooks/users/devices/hooks";
@@ -14,7 +15,7 @@ export function DevicesDialog({ user, onClose }: { user: IUser; onClose: () => v
         <EmojiText value={t("Пользователь: {{name}}", { name: user.displayName ?? user.name })} />
       </p>
       <QueryState isLoading={query.isPending} error={query.error} />
-      {query.error && <button onClick={() => void query.refetch()}>{t("Повторить")}</button>}
+      {query.error && <Button onClick={() => void query.refetch()}>{t("Повторить")}</Button>}
       {query.data && <DeviceForm userId={user.id} data={query.data} />}
     </Modal>
   );

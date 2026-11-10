@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 export function StorageRow({ label, bytes }: { label: string; bytes: number }) {
   const { t } = useTranslation();
   return (
-    <div className="system-storage-row">
+    <div className="system-storage-row flex items-baseline justify-between gap-3 min-w-0">
       <span>{t(label)}</span>
       <strong>{formatBytes(bytes, t)}</strong>
     </div>

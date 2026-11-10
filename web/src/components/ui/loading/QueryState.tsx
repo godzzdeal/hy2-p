@@ -1,5 +1,5 @@
 import { Loader } from "@/components/ui/loading/Loader";
-import { cn } from "@/utils/cn";
+import { EmptyState } from "@/components/ui/status/EmptyState";
 import { type ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -11,6 +11,6 @@ interface IQueryState extends Pick<ComponentProps<"div">, "className"> {
 export function QueryState({ isLoading, error, className }: IQueryState) {
   const { t } = useTranslation();
   if (isLoading) return <Loader className={className} />;
-  if (error) return <p className={cn("empty", className)}>{t("Не удалось загрузить данные.")}</p>;
+  if (error) return <EmptyState className={className}>{t("Не удалось загрузить данные.")}</EmptyState>;
   return null;
 }

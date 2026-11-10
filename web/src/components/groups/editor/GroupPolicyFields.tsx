@@ -1,3 +1,7 @@
+import { Fieldset } from "@/components/ui/fields/Fieldset";
+import { Caption } from "@/components/elements/Caption";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
 import { QueryState } from "@/components/ui/loading";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
@@ -11,16 +15,16 @@ export function GroupPolicyFields({ policy }: { policy: ReturnType<typeof useGro
   const { t } = useTranslation();
   const { access, eligible, isAll, isLoading, error, onMode, onToggle } = policy;
   return (
-    <div className="group-policy">
-      <label>
+    <div className="group-policy grid gap-3">
+      <Field>
         {t("Режим доступа к экземплярам")}
         <Select value={access.mode} onValueChange={onMode}>
           <SelectOption value={AccessMode.All}>{t("Все экземпляры, включая новые")}</SelectOption>
           <SelectOption value={AccessMode.Selected}>{t("Только выбранные экземпляры")}</SelectOption>
         </Select>
-      </label>
+      </Field>
       <QueryState isLoading={isLoading} error={error} />
-      <fieldset>
+      <Fieldset>
         <legend>{t("Доступные экземпляры группы")}</legend>
         {eligible.map((instance) => (
           <CoreOption
@@ -31,10 +35,10 @@ export function GroupPolicyFields({ policy }: { policy: ReturnType<typeof useGro
             onToggle={onToggle}
           />
         ))}
-      </fieldset>
-      <label>
+      </Fieldset>
+      <Field>
         {t("Лимит трафика на участника, ГБ")}
-        <input
+        <Input
           type="number"
           min={0}
           max={Number.MAX_SAFE_INTEGER / BYTE_UNITS.gigabyte}
@@ -42,16 +46,16 @@ export function GroupPolicyFields({ policy }: { policy: ReturnType<typeof useGro
           required
           {...policy.traffic}
         />
-      </label>
-      <label>
+      </Field>
+      <Field>
         {t("Лимит устройств на участника")}
-        <input type="number" min={0} max={MAX_USER_DEVICES} required {...policy.devices} />
-      </label>
-      <p className="caption">
+        <Input type="number" min={0} max={MAX_USER_DEVICES} required {...policy.devices} />
+      </Field>
+      <Caption>
         {t(
           "0 отключает лимит группы. Личные ограничения продолжают действовать: применяется более строгий лимит и пересечение доступных экземпляров. Трафик участников не сбрасывается.",
         )}
-      </p>
+      </Caption>
     </div>
   );
 }

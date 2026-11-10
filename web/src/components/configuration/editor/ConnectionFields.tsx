@@ -1,3 +1,9 @@
+import { FieldGrid } from "@/components/ui/fields/FieldGrid";
+import { Card } from "@/components/ui/cards/Card";
+import { CardHeader } from "@/components/ui/cards/CardHeader";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Button } from "@/components/ui/button/Button";
 import { DeploymentNotice } from "@/components/configuration/editor/DeploymentNotice";
 import { CertificatePin } from "@/components/configuration/editor/connection";
 import { useWebSettings } from "@/hooks/admin/use-admin";
@@ -25,19 +31,19 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
     if (isSniLinked && value.sni !== value.host) setSniLinked(false);
   }, [isSniLinked, value.sni, value.host]);
   return (
-    <section
-      className="card form-card"
+    <Card
+      className="form-card"
       id="config-connection"
       data-scroll-section
       data-scroll-label={t("Параметры подключения")}
     >
-      <div className="card-header">
+      <CardHeader>
         <h2>{t("Параметры подключения")}</h2>
-      </div>
-      <div className="field-grid">
-        <label>
+      </CardHeader>
+      <FieldGrid>
+        <Field>
           {t("Публичный адрес")}
-          <input
+          <Input
             aria-label={t("Публичный адрес")}
             placeholder="vpn.example.com"
             value={value.host}
@@ -45,18 +51,18 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
           />
           <small>{t("Адрес, к которому будет подключаться Happ. Например vpn.example.com.")}</small>
           {sharedAddress && value.host !== sharedAddress && (
-            <button
+            <Button
               type="button"
-              className="text-btn"
+              variant="outline"
               onClick={() => onChange(setConnectionAddress(value, sharedAddress, isSniLinked))}
             >
               {t("Использовать адрес панели")}
-            </button>
+            </Button>
           )}
-        </label>
-        <label>
+        </Field>
+        <Field>
           {t("Публичный UDP-порт")}
-          <input
+          <Input
             aria-label={t("Публичный UDP-порт")}
             required
             value={value.port}
@@ -67,20 +73,20 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
               "Порт, к которому подключается Happ. После изменения сохраните и нажмите «Применить UDP-порт».",
             )}
           </small>
-        </label>
+        </Field>
         <div className="connection-sni">
-          <label>
+          <Field>
             SNI
-            <input
+            <Input
               aria-label="SNI"
               disabled={isSniLinked}
               value={isSniLinked ? value.host : value.sni}
               onChange={(event) => onChange({ ...value, sni: event.target.value })}
             />
             <small>{t("Домен, на который выпущен сертификат. Обычно совпадает с публичным адресом.")}</small>
-          </label>
-          <label className="checkbox">
-            <input
+          </Field>
+          <Field isInline>
+            <Input
               type="checkbox"
               checked={isSniLinked}
               onChange={(event) => {
@@ -89,11 +95,11 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
               }}
             />
             {t("SNI совпадает с адресом")}
-          </label>
+          </Field>
         </div>
         <CertificatePin value={value} onChange={onChange} />
-      </div>
+      </FieldGrid>
       <DeploymentNotice />
-    </section>
+    </Card>
   );
 }

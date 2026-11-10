@@ -1,3 +1,6 @@
+import { QuickStart } from "@/components/overview/start/QuickStart";
+import { Metric } from "@/components/ui/status/Metric";
+import { Button } from "@/components/ui/button/Button";
 import { QueryState } from "@/components/ui/loading";
 import { SystemOverview } from "@/components/overview/system";
 import { useConfiguration } from "@/hooks/configuration/use-configuration";
@@ -14,7 +17,7 @@ export function OverviewPage() {
   const selectPage = useUiStore((state) => state.selectPage);
   return (
     <>
-      <div className="page-heading">
+      <div className="page-heading flex justify-between items-start gap-4 mb-5 max-tablet:flex-col max-tablet:items-start">
         <div>
           <h1>{t("Ваш сервер")}</h1>
         </div>
@@ -24,79 +27,43 @@ export function OverviewPage() {
         error={users.error || config.error || core.error}
       />
       <div
-        className="metrics"
+        className="metrics grid gap-3 mb-4"
         id="overview-status"
         data-scroll-section
         data-scroll-label={t("Состояние экземпляра")}
       >
-        <section className="metric">
-          <div>{t("Состояние экземпляра")}</div>
-          <strong>{core.data?.running ? t("Запущено") : t("Остановлено")}</strong>
-          <small>
-            {core.data?.available
-              ? t("Hysteria2 установлен")
-              : t("Установите HY2 в разделе «Управление HY2».")}
-          </small>
-        </section>
-        <section className="metric">
-          <div>{t("Пользователи")}</div>
-          <strong>{users.data?.length ?? 0}</strong>
-          <small>
-            {users.data?.filter(isUserActive).length ?? 0} {t("с активным доступом")}
-          </small>
-        </section>
-        <section className="metric">
-          <div>{t("Адрес подключения")}</div>
-          <strong className="host-value">{config.data?.host || t("Не настроен")}</strong>
-          <small>UDP / {config.data?.port || "8443"}</small>
-        </section>
+        <Metric
+          label={t("Состояние экземпляра")}
+          value={core.data?.running ? t("Запущено") : t("Остановлено")}
+        >
+          {core.data?.available ? t("Hysteria2 установлен") : t("Установите HY2 в разделе «Управление HY2».")}
+        </Metric>
+        <Metric label={t("Пользователи")} value={users.data?.length ?? 0}>
+          {users.data?.filter(isUserActive).length ?? 0} {t("с активным доступом")}
+        </Metric>
+        <Metric label={t("Адрес подключения")} value={config.data?.host || t("Не настроен")}>
+          UDP / {config.data?.port || "8443"}
+        </Metric>
       </div>
       <SystemOverview />
       <div
-        className="overview-grid"
+        className="overview-grid grid grid-cols-2 gap-4 max-tablet:grid-cols-1 max-tablet:gap-0"
         id="overview-start"
         data-scroll-section
         data-scroll-label={t("Быстрый старт")}
       >
-        <section className="card">
-          <div className="card-header">
-            <h2>{t("Быстрый старт")}</h2>
-          </div>
-          <div className="steps">
-            <button className="step" onClick={() => selectPage("config")}>
-              <span className="step-number">01</span>
-              <span>
-                <strong>{t("Настройте сервер")}</strong>
-                <small>{t("Публичный адрес, порт и TLS-сертификат.")}</small>
-              </span>
-            </button>
-            <button className="step" onClick={() => selectPage("core")}>
-              <span className="step-number">02</span>
-              <span>
-                <strong>{t("Запустите Hysteria2")}</strong>
-                <small>{t("Проверьте журнал запуска.")}</small>
-              </span>
-            </button>
-            <button className="step" onClick={() => selectPage("users")}>
-              <span className="step-number">03</span>
-              <span>
-                <strong>{t("Подключите устройство")}</strong>
-                <small>{t("Создайте пользователя и получите QR-код.")}</small>
-              </span>
-            </button>
-          </div>
-        </section>
-        <section className="connect-card">
-          <span className="eyebrow">{t("ПРОСТОЕ ПОДКЛЮЧЕНИЕ")}</span>
+        <QuickStart onSelect={selectPage} />
+        <section className="connect-card flex flex-col items-start gap-4 p-5 border border-line rounded-none bg-surface-soft mb-4">
+          <span className="eyebrow tracking-normal">{t("ПРОСТОЕ ПОДКЛЮЧЕНИЕ")}</span>
           <h2>
             {t("Одна ссылка.")}
             <br />
             {t("И вы в сети.")}
           </h2>
           <p>{t("Персональные URL и QR-коды для Happ.")}</p>
-          <button className="secondary" onClick={() => selectPage("users")}>
+          <Button variant="secondary" onClick={() => selectPage("users")}>
             {t("К пользователям")}
-          </button>
+          </Button>
         </section>
       </div>
     </>

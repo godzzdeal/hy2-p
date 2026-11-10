@@ -1,5 +1,5 @@
 import { RevisionRow } from "@/components/configuration/RevisionRow";
-import { Modal } from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { QueryState } from "@/components/ui/loading";
 import { useHistory } from "@/hooks/configuration/use-history";
 import { type IConfiguration } from "@/services/configuration/configuration-types";

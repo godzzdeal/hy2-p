@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button/Button";
+import { Input } from "@/components/ui/fields/controls/Input";
 import { useFileDrop, type IFileDropOptions } from "@/components/elements/upload/use-file-drop";
 import { cn } from "@/utils/cn";
 import { Upload } from "pixelarticons/react/Upload.js";
@@ -17,11 +19,14 @@ export function FileDropzone({ label, hint, ...options }: IFileDropzone) {
   const drop = useFileDrop(options);
   const Icon = drop.isReading ? Spinner : Upload;
   return (
-    <div className="file-upload">
+    <div className="file-upload grid gap-2 min-w-0">
       <span className="file-upload-label">{label}</span>
-      <button
+      <Button
         type="button"
-        className={cn("file-dropzone", { "file-dropzone-active": drop.isDragging })}
+        className={cn(
+          "file-dropzone w-full min-w-0 min-h-26 h-auto p-4 gap-4 border-line border-dashed bg-input text-left",
+          { "file-dropzone-active": drop.isDragging },
+        )}
         aria-label={t("Выбрать файл: {{label}}", { label })}
         aria-describedby={hintId}
         aria-busy={drop.isReading}
@@ -33,7 +38,7 @@ export function FileDropzone({ label, hint, ...options }: IFileDropzone) {
         onDrop={drop.onDrop}
       >
         <Icon width={32} height={32} aria-hidden="true" />
-        <span className="file-dropzone-content">
+        <span className="file-dropzone-content grid gap-1 min-w-0 wrap-anywhere">
           <strong>
             {t(
               drop.isReading
@@ -48,8 +53,8 @@ export function FileDropzone({ label, hint, ...options }: IFileDropzone) {
           </span>
           <small id={hintId}>{hint}</small>
         </span>
-      </button>
-      <input
+      </Button>
+      <Input
         ref={input}
         hidden
         type="file"

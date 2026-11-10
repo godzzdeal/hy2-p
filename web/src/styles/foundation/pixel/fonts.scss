@@ -1,9 +1,7 @@
 @layer components {
   .logs,
-  .code-editor,
   code {
-    font-family: var(--font-mono);
-    font-size: var(--text-small);
+    @apply font-mono text-lg;
     font-variant-ligatures: none;
   }
   @font-face {
@@ -26,48 +24,32 @@
   }
   input::placeholder,
   textarea::placeholder {
-    font-family: var(--font-body);
-    font-size: var(--text-control);
-    font-weight: 400;
-    font-style: normal;
-    color: var(--muted);
-    opacity: 1;
+    @apply font-sans text-xl font-normal not-italic text-muted opacity-100;
   }
   h1,
   .brand,
   .login-brand,
   .metric > strong {
-    font-family: var(--font-heading);
-    font-size: var(--text-title);
-    font-weight: 700;
-    line-height: 1.2;
+    @apply font-sans text-2xl font-bold leading-tight;
   }
-  h2,
-  .core-card h2 {
-    font-family: var(--font-heading);
-    font-size: var(--text-heading);
-    font-weight: 700;
-    line-height: 1.2;
+  h2 {
+    @apply font-sans text-2xl font-bold leading-tight;
   }
   h3,
   .eyebrow,
   .app-sidebar nav button {
-    font-size: var(--text-body);
+    @apply text-xl;
   }
-  .brand-sub,
   .user-name-hint,
   .emoji-menu-footer {
-    font-family: var(--font-body);
-    font-size: var(--text-small);
-    line-height: 1.4;
+    @apply font-sans text-lg leading-snug;
   }
   .config-tabs button {
-    font-size: var(--text-control);
+    @apply text-xl;
   }
   .logs,
-  .code-editor,
   code,
   .structured-textarea {
-    font-size: var(--text-code);
+    @apply text-sm;
   }
 }

@@ -1,4 +1,7 @@
-import { Modal } from "@/components/ui/modal/Modal";
+import { Caption } from "@/components/elements/Caption";
+import { Field } from "@/components/ui/fields/Field";
+import { Button } from "@/components/ui/button/Button";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { QueryState } from "@/components/ui/loading";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
@@ -22,7 +25,7 @@ export function UserGroupDialog({ userId, onClose }: { userId: string; onClose: 
     <Modal title={t("Группа пользователя")} onClose={onClose}>
       <QueryState isLoading={query.isPending} error={query.error} />
       <form className="group-assignment" onSubmit={onSubmit}>
-        <label>
+        <Field>
           {t("Группа")}
           <Select
             value={groupId}
@@ -36,15 +39,19 @@ export function UserGroupDialog({ userId, onClose }: { userId: string; onClose: 
               </SelectOption>
             ))}
           </Select>
-        </label>
-        <p className="caption">
+        </Field>
+        <Caption>
           {t(
             "Лимиты группы дополняют личные. После смены группы подключение перезапустится; при включённом лимите устройств обновите подписку в Happ.",
           )}
-        </p>
-        <button className="primary full" disabled={!query.data || !!query.error || assign.isPending}>
+        </Caption>
+        <Button
+          className="full w-full"
+          variant="primary"
+          disabled={!query.data || !!query.error || assign.isPending}
+        >
           {t(assign.isPending ? "Сохраняем…" : "Сохранить группу")}
-        </button>
+        </Button>
       </form>
     </Modal>
   );

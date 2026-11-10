@@ -1,3 +1,7 @@
+import { Caption } from "@/components/elements/Caption";
+import { Card } from "@/components/ui/cards/Card";
+import { CardHeader } from "@/components/ui/cards/CardHeader";
+import { CardBody } from "@/components/ui/cards/CardBody";
 import { StorageRow } from "@/components/overview/system/storage/StorageRow";
 import { storageItems } from "@/components/overview/system/storage/storage-items";
 import { type ISystemStorage } from "@/services/admin/maintenance";
@@ -9,12 +13,12 @@ export function StorageCard({ value, isHost }: { value: ISystemStorage; isHost: 
   const items = storageItems(value);
   const total = items.reduce((sum, item) => sum + item.bytes, 0);
   return (
-    <section className="card system-storage">
-      <div className="card-header">
+    <Card className="system-storage">
+      <CardHeader>
         <h3>{t("Место на диске")}</h3>
         <strong>{value.updated ? "≈ " + formatBytes(total, t) : t("Подсчёт…")}</strong>
-      </div>
-      <div className="form-body">
+      </CardHeader>
+      <CardBody className="gap-1">
         {items.map((item) => (
           <StorageRow key={item.label} {...item} />
         ))}
@@ -23,8 +27,8 @@ export function StorageCard({ value, isHost }: { value: ISystemStorage; isHost: 
             {t("Показан каталог данных панели. Для размеров бэкапов и образов нужен помощник Docker.")}
           </small>
         )}
-        {value.message && <p className="caption">{t(value.message)}</p>}
-      </div>
-    </section>
+        {value.message && <Caption>{t(value.message)}</Caption>}
+      </CardBody>
+    </Card>
   );
 }

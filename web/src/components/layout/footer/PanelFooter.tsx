@@ -1,4 +1,5 @@
 import { Earth, Github } from "@/components/elements/icons";
+import { ButtonLink } from "@/components/ui/button/ButtonLink";
 import { ReleaseStatus } from "@/components/layout/footer/ReleaseStatus";
 import { BuildVersion } from "@/components/layout/sidebar/BuildVersion";
 import { InstallButton } from "@/components/elements/install/InstallButton";
@@ -8,15 +9,18 @@ export function PanelFooter() {
   const [isHelpOpen, setHelpOpen] = useState(false);
   return (
     <>
-      <footer className="panel-footer" role="contentinfo">
-        <div className="footer-identity">
-          <span className="footer-mark">
+      <footer
+        className="panel-footer shrink-0 z-10 grid grid-cols-toolbar items-center gap-4 p-3 border-0 border-t-2 border-line bg-surface text-muted text-lg shadow-none max-desktop:grid-cols-action max-tablet:gap-2 max-tablet:px-4"
+        role="contentinfo"
+      >
+        <div className="footer-identity flex items-center gap-3 min-w-0 max-tablet:gap-2">
+          <span className="footer-mark grid place-items-center w-8 h-8 shrink-0 bg-surface-soft text-accent max-tablet:hidden">
             <Earth width={24} height={24} aria-hidden />
           </span>
           <div>
-            <div className="footer-name">
-              <strong>HY2-P</strong>
-              <BuildVersion />
+            <div className="footer-name flex items-baseline flex-wrap gap-2">
+              <strong className="max-tablet:text-xl">HY2-P</strong>
+              <BuildVersion className="max-tablet:text-sm" />
             </div>
             <small>
               by{" "}
@@ -27,17 +31,17 @@ export function PanelFooter() {
           </div>
         </div>
         <ReleaseStatus />
-        <div className="footer-actions">
+        <div className="footer-actions flex items-center gap-2 max-desktop:col-start-2 max-desktop:row-start-1">
           <InstallButton isCompact onHelp={() => setHelpOpen(true)} />
-          <a
-            className="footer-github secondary"
+          <ButtonLink
+            className="footer-github inline-flex items-center justify-center gap-2 min-h-control px-3 max-tablet:px-2"
             href="https://github.com/godzzdeal/hy2-p"
             target="_blank"
             rel="noreferrer"
           >
             <Github width={24} height={24} aria-hidden />
             GitHub
-          </a>
+          </ButtonLink>
         </div>
       </footer>
       {isHelpOpen && <InstallHelp onClose={() => setHelpOpen(false)} />}

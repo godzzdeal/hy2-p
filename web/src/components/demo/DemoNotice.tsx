@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button/Button";
 import { RefreshCw } from "@/components/elements/icons";
 import { DEFAULT_INSTANCE } from "@/services/instances/types";
 import { useInstanceStore } from "@/store/core/instance-store";
@@ -9,7 +10,10 @@ export function DemoNotice() {
     window.location.reload();
   }
   return (
-    <aside className="demo-notice" aria-label={t("Демоверсия")}>
+    <aside
+      className="demo-notice flex items-center justify-between gap-4 p-4 border border-l-4 border-accent bg-surface-soft flex-wrap min-w-0 my-2 mx-0 text-pretty text-muted shrink-0"
+      aria-label={t("Демоверсия")}
+    >
       <div>
         <strong>{t("HY2-P Demo")}</strong>
         <p>
@@ -19,10 +23,10 @@ export function DemoNotice() {
         </p>
         <small>{t("Вход: demo / demo. Перезагрузка сбрасывает пример.")}</small>
       </div>
-      <button type="button" className="secondary" onClick={onReset}>
+      <Button type="button" variant="secondary" onClick={onReset}>
         <RefreshCw width={24} height={24} aria-hidden />
         {t("Сбросить пример")}
-      </button>
+      </Button>
     </aside>
   );
 }

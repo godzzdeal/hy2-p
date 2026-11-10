@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button/Button";
 import { Loader } from "@/components/ui/loading";
 import { usePanelProgress } from "@/hooks/panel/maintenance";
 import { useTranslation } from "react-i18next";
@@ -12,12 +13,15 @@ export function PanelProgress() {
     ? "Восстанавливаем связь с панелью. Проверка продолжается."
     : result?.message || "Подготавливаем обслуживание панели";
   return (
-    <aside className="port-operation panel-operation" aria-label={t("Обслуживание панели")}>
+    <aside
+      className="port-operation fixed p-4 border border-line rounded-none bg-surface text-foreground shadow-popup z-20 text-xl max-tablet:bottom-16 items-center panel-operation grid gap-3"
+      aria-label={t("Обслуживание панели")}
+    >
       {isBusy ? <Loader label={message} isInline /> : <p role="status">{t(message)}</p>}
       {!isBusy && (
-        <button type="button" className="primary" onClick={onReload}>
+        <Button type="button" variant="primary" onClick={onReload}>
           {t("Открыть панель")}
-        </button>
+        </Button>
       )}
     </aside>
   );

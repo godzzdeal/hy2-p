@@ -1,3 +1,6 @@
+import { Caption } from "@/components/elements/Caption";
+import { CardBody } from "@/components/ui/cards/CardBody";
+import { Button } from "@/components/ui/button/Button";
 import { CloudForm } from "@/components/admin/cloud/CloudForm";
 import { SettingsSection } from "@/components/admin/SettingsSection";
 import { QueryState } from "@/components/ui/loading";
@@ -13,20 +16,20 @@ export function CloudSettings() {
       title={t("Облачный пароль")}
       action={<span>{t(query.data?.enabled ? "Включён" : "Выключен")}</span>}
     >
-      <div className="form-body">
-        <p className="caption">
+      <CardBody>
+        <Caption>
           {t("Дополнительный пароль, который запрашивается после основного пароля при каждом входе.")}
-        </p>
+        </Caption>
         <QueryState isLoading={query.isPending} error={query.error} />
         {query.error && (
-          <button type="button" className="secondary" onClick={() => void query.refetch()}>
+          <Button type="button" variant="secondary" onClick={() => void query.refetch()}>
             {t("Повторить")}
-          </button>
+          </Button>
         )}
         {query.data && !query.error && (
           <CloudForm key={String(query.data.enabled)} isEnabled={query.data.enabled} />
         )}
-      </div>
+      </CardBody>
     </SettingsSection>
   );
 }

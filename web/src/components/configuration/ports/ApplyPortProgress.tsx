@@ -24,7 +24,10 @@ export function ApplyPortProgress() {
   }, [result, query.ticket, query.isMissing, query.error, notify, showError, clear]);
   if (!query.ticket) return null;
   return (
-    <aside className="port-operation" role="status">
+    <aside
+      className="port-operation fixed p-4 border border-line rounded-none bg-surface text-foreground shadow-popup z-20 text-xl max-tablet:bottom-16 flex gap-3 items-center"
+      role="status"
+    >
       <LoaderCircle width={24} height={24} aria-hidden />
       <span>
         {t(

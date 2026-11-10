@@ -1,3 +1,7 @@
+import { Caption } from "@/components/elements/Caption";
+import { Button } from "@/components/ui/button/Button";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
 import { Notice } from "@/components/ui/feedback";
 import { useCoreTools } from "@/hooks/configuration/tools/use-core-tools";
 import { CopyButton } from "@/components/elements/copy";
@@ -6,50 +10,50 @@ export function StatsSecret() {
   const { t } = useTranslation();
   const { stats } = useCoreTools();
   return (
-    <section className="configuration-tools">
+    <section className="configuration-tools grid gap-4 p-4 min-w-0">
       <Notice>
         {t(
           "Панель задаёт trafficStats.listen и trafficStats.secret при запуске экземпляра. Ниже можно получить фактические значения панели.",
         )}
       </Notice>
-      <button
+      <Button
         type="button"
-        className="secondary"
+        variant="secondary"
         disabled={stats.isPending}
         onClick={() => (stats.data ? stats.reset() : stats.mutate())}
       >
         {t(stats.data ? "Скрыть секрет" : "Показать секрет Traffic Stats")}
-      </button>
+      </Button>
       {stats.data && (
         <>
           <p>
             {t("Адрес статистики")}: {stats.data.listen}
           </p>
-          <p className="caption">
+          <Caption>
             {t(
               stats.data.running
                 ? "Экземпляр запущен"
                 : "Экземпляр остановлен. Значения применятся при запуске.",
             )}
-          </p>
-          <label>
+          </Caption>
+          <Field>
             trafficStats.secret
-            <input
+            <Input
               aria-label={t("Фактический секрет Traffic Stats")}
               readOnly
               value={stats.data.secret}
               autoComplete="off"
               spellCheck={false}
             />
-          </label>
+          </Field>
           <CopyButton value={stats.data.secret} label="Скопировать секрет" />
         </>
       )}
-      <p className="caption">
+      <Caption>
         {t(
           "Секрет может измениться после перезапуска панели. API статистики слушает loopback и не публикуется в интернет.",
         )}
-      </p>
+      </Caption>
     </section>
   );
 }

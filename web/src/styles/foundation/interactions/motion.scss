@@ -47,22 +47,11 @@
   .user-action-popup[data-state="closed"] {
     animation: panel-disappear var(--motion-fast) var(--motion-ease);
   }
-  .primary,
-  .secondary,
-  .icon-btn,
-  .select-trigger {
-    transition:
-      transform var(--motion-fast) var(--motion-ease),
-      opacity var(--motion-fast) var(--motion-ease);
-  }
   .user-group-toggle svg,
   .firewall-help summary svg {
     transition: transform var(--motion-normal) var(--motion-ease);
   }
-  input[type="checkbox"]::before {
-    transition: opacity var(--motion-fast) var(--motion-ease);
-  }
-  @media (prefers-reduced-motion: reduce) {
+  @variant motion-reduce {
     html {
       scroll-behavior: auto;
     }

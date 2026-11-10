@@ -1,4 +1,5 @@
 import { useUiStore } from "@/store/ui-store";
+import { cn } from "@/utils/cn";
 import { type ComponentProps } from "react";
 import { type FieldErrors, type FieldValues, type SubmitHandler, type UseFormReturn } from "react-hook-form";
 
@@ -7,7 +8,7 @@ interface IForm<T extends FieldValues> extends Omit<ComponentProps<"form">, "onS
   onSubmit: SubmitHandler<T>;
 }
 
-export function Form<T extends FieldValues>({ form, onSubmit, children, ...props }: IForm<T>) {
+export function Form<T extends FieldValues>({ form, onSubmit, children, className, ...props }: IForm<T>) {
   const showError = useUiStore((state) => state.showError);
   function onInvalid(errors: FieldErrors<T>) {
     const first = Object.values(errors).find((error) => error?.message);
@@ -21,7 +22,12 @@ export function Form<T extends FieldValues>({ form, onSubmit, children, ...props
     }
   };
   return (
-    <form {...props} noValidate onSubmit={form.handleSubmit(onValid, onInvalid)}>
+    <form
+      {...props}
+      className={cn("grid min-w-0 gap-3", className)}
+      noValidate
+      onSubmit={form.handleSubmit(onValid, onInvalid)}
+    >
       {children}
     </form>
   );

@@ -25,34 +25,10 @@
   .group-gray {
     --group-color: var(--group-gray);
   }
-  .user-identity {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-  }
-  .user-meta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-  }
   .user-meta small {
-    color: var(--muted);
+    @apply text-muted;
   }
   .user-identity .user-cell {
-    padding: 0;
-    font-weight: 700;
-    min-height: var(--space-6);
-  }
-  .group-badge {
-    color: var(--group-color);
-    min-height: var(--space-6);
-    height: auto;
-    padding: 0 var(--space-1);
-  }
-  .group-swatch {
-    width: var(--space-2);
-    height: var(--space-2);
-    background: var(--group-color);
-    flex-shrink: 0;
+    @apply p-0 font-bold min-h-6;
   }
 }

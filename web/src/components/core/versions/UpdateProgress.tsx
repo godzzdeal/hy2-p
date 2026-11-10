@@ -5,7 +5,11 @@ export function UpdateProgress({ status }: { status: IUpdateStatus }) {
   const { t } = useTranslation();
   if (!status.busy) return null;
   return (
-    <div className="update-progress" role="status" aria-live="polite">
+    <div
+      className="update-progress flex items-center gap-3 p-3 border border-line bg-input"
+      role="status"
+      aria-live="polite"
+    >
       <ShieldCheck width={24} height={24} aria-hidden />
       <div>
         <strong>{t(UPDATE_LABELS[status.result.phase])}</strong>

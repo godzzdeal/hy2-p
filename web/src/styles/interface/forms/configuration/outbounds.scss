@@ -1,21 +1,8 @@
 @layer components {
   .outbounds-editor > button {
-    margin: var(--space-4);
-  }
-  .outbound-entry {
-    border-bottom: 1px solid var(--line);
-  }
-  .outbound-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-4);
-    background: var(--surface-soft);
-    flex-wrap: wrap;
+    @apply m-4;
   }
   .outbound-heading h3 {
-    font-family: var(--font-mono);
-    font-size: var(--text-code);
+    @apply font-mono text-sm;
   }
 }

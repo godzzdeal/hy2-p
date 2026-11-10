@@ -1,9 +1,10 @@
+import { Button } from "@/components/ui/button/Button";
 import { Download } from "@/components/elements/icons";
 import { useInstallStore } from "@/store/install-store";
 import { useUiStore } from "@/store/ui-store";
 import { useState } from "react";
-import { cn } from "@/utils/cn";
 import { useTranslation } from "react-i18next";
+import { cn } from "@/utils/cn";
 export function InstallButton({ onHelp, isCompact = false }: { onHelp: () => void; isCompact?: boolean }) {
   const { t } = useTranslation();
   const { prompt, isInstalled, setPrompt } = useInstallStore();
@@ -26,16 +27,17 @@ export function InstallButton({ onHelp, isCompact = false }: { onHelp: () => voi
   }
   if (isInstalled) return isCompact ? null : <p role="status">{t("Панель уже установлена")}</p>;
   return (
-    <button
+    <Button
       type="button"
-      className={cn("install-button", isCompact ? "secondary" : "primary")}
+      className={cn("install-button", isCompact && "max-tablet:px-2")}
+      variant={isCompact ? "secondary" : "primary"}
       aria-label={t("Установить панель")}
       title={t("Установить панель")}
       disabled={isOpening}
       onClick={() => void onInstall()}
     >
-      <Download width={24} height={24} aria-hidden />
-      <span>{t(isOpening ? "Открываем…" : isCompact ? "Установить" : "Установить панель")}</span>
-    </button>
+      <Download width={24} height={24} className={cn(isCompact && "hidden")} aria-hidden />
+      <span>{t(isOpening ? "Открываем…" : isCompact ? "PWA" : "Установить панель")}</span>
+    </Button>
   );
 }

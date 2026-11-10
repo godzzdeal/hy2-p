@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button/Button";
 import { PlugZap } from "@/components/elements/icons";
 import { useApplyPort } from "@/hooks/configuration/deployment/operation/hooks";
 import { type IDeployment } from "@/services/configuration/deployment/deployment-api";
@@ -12,9 +13,9 @@ export function ApplyPortButton({ status }: { status: IDeployment }) {
   const canApply = !ticket && !isDirty && !status.agentBusy && !mutation.isPending && !status.udpWarning;
   return (
     <div className="mt-3">
-      <button
+      <Button
         type="button"
-        className="primary"
+        variant="primary"
         disabled={!canApply}
         onClick={() =>
           mutation.mutate({ publicPort: status.udpPublicPort, listenPort: status.udpListenPort })
@@ -22,7 +23,7 @@ export function ApplyPortButton({ status }: { status: IDeployment }) {
       >
         <PlugZap width={24} height={24} aria-hidden />
         {t(mutation.isPending ? "Запускаем проверку…" : "Применить UDP-порт")}
-      </button>
+      </Button>
       <small className="mt-2 block">
         {t(
           "Панель кратковременно перезапустится. Результат проверки появится здесь; затем может потребоваться вход.",

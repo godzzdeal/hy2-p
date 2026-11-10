@@ -1,7 +1,8 @@
+import { Button } from "@/components/ui/button/Button";
 import { MoreHorizontal } from "@/components/elements/icons";
 import { UserActionButton } from "@/components/users/list/row/actions/UserActionButton";
 import { type IUserAction } from "@/components/users/list/row/actions/UserActions";
-import * as Popover from "@radix-ui/react-popover";
+import { Popover } from "@/components/ui/overlays/Popover";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 export function UserActionMenu({ actions, name }: { actions: IUserAction[]; name: string }) {
@@ -15,41 +16,36 @@ export function UserActionMenu({ actions, name }: { actions: IUserAction[]; name
     setOpen(false);
   }
   return (
-    <Popover.Root
+    <Popover
       open={isOpen}
       onOpenChange={(next) => {
         if (next) didSelect.current = false;
         setOpen(next);
       }}
-    >
-      <Popover.Trigger asChild>
-        <button
+      trigger={
+        <Button
           ref={trigger}
           type="button"
-          className="icon-btn user-menu-trigger"
+          className="user-menu-trigger hidden max-tablet:inline-flex"
+          size="icon"
           aria-label={t("Действия ") + name}
           title={t("Действия")}
         >
           <MoreHorizontal width={24} height={24} aria-hidden />
-        </button>
-      </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content
-          className="user-action-popup"
-          aria-label={t("Действия ") + name}
-          align="end"
-          sideOffset={8}
-          collisionPadding={16}
-          onCloseAutoFocus={(event) => {
-            if (didSelect.current) event.preventDefault();
-          }}
-        >
-          <strong className="user-action-title">{name}</strong>
-          {actions.map((action) => (
-            <UserActionButton key={action.accessibleName} action={action} onSelected={onSelected} />
-          ))}
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
+        </Button>
+      }
+      contentProps={{
+        className: "user-action-popup",
+        "aria-label": t("Действия ") + name,
+        onCloseAutoFocus: (event) => {
+          if (didSelect.current) event.preventDefault();
+        },
+      }}
+    >
+      <strong className="user-action-title block p-2 wrap-anywhere text-lg text-muted">{name}</strong>
+      {actions.map((action) => (
+        <UserActionButton key={action.accessibleName} action={action} onSelected={onSelected} />
+      ))}
+    </Popover>
   );
 }

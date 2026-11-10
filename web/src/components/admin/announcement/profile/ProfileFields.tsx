@@ -1,3 +1,5 @@
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
 import { EmojiPicker } from "@/components/elements/emoji/picker/EmojiPicker";
 import { EmojiText } from "@/components/elements/emoji/text/EmojiText";
 import { PROFILE_TITLE_LIMIT } from "@/utils/admin/announcement/profile/title";
@@ -10,9 +12,9 @@ export function ProfileFields({ value, onChange }: { value: string; onChange: (v
   const count = Array.from(value).length;
   return (
     <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-      <label htmlFor={id}>
+      <Field htmlFor={id}>
         {t("Название подписки")}
-        <input
+        <Input
           id={id}
           aria-label={t("Название подписки")}
           aria-invalid={count > PROFILE_TITLE_LIMIT}
@@ -25,9 +27,9 @@ export function ProfileFields({ value, onChange }: { value: string; onChange: (v
           {count} / {PROFILE_TITLE_LIMIT}
         </small>
         <small>{t("Название появится в приложении после обновления подписки. Можно добавить эмодзи.")}</small>
-      </label>
+      </Field>
       <EmojiPicker value={leadingEmoji(value)} onChange={(emoji) => onChange(replaceEmoji(value, emoji))} />
-      <div className="subscription-preview md:col-span-2">
+      <div className="subscription-preview p-3 border border-line rounded-none bg-input md:col-span-2">
         <small>{t("Предпросмотр названия подписки")}</small>
         <output aria-label={t("Предпросмотр названия подписки")}>
           <EmojiText value={value || t("Название подписки")} />

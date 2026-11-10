@@ -1,3 +1,5 @@
+import { Textarea } from "@/components/ui/fields/controls/Textarea";
+import { Input } from "@/components/ui/fields/controls/Input";
 import { FieldOption } from "@/components/configuration/structured/controls/FieldOption";
 import { JsonField } from "@/components/configuration/structured/fields/JsonField";
 import { PairEditor } from "@/components/configuration/structured/fields/PairEditor";
@@ -65,14 +67,14 @@ export function FieldControl({
     return <JsonField id={id} value={formatted} onChange={onChange} multiline={field.kind === "multiline"} />;
   if (field.kind === "lines")
     return (
-      <textarea
+      <Textarea
         id={id}
         value={formatted}
         onChange={(event) => onChange(parseField(event.target.value, field.kind))}
       />
     );
   return (
-    <input
+    <Input
       id={id}
       type={field.kind === "number" ? "number" : "text"}
       value={formatted}

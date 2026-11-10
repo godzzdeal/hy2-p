@@ -1,3 +1,7 @@
+import { FieldGrid } from "@/components/ui/fields/FieldGrid";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Button } from "@/components/ui/button/Button";
 import { Form, FormSelect } from "@/components/ui/forms";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { type IPortRule } from "@/services/admin/firewall/api";
@@ -14,10 +18,10 @@ export function PortRuleForm({
   const { form, onSubmit } = useRuleForm(onApply);
   return (
     <Form form={form} onSubmit={onSubmit}>
-      <div className="field-grid">
-        <label>
+      <FieldGrid>
+        <Field>
           {t("Порт")}
-          <input
+          <Input
             type="number"
             min={1}
             max={65535}
@@ -25,25 +29,25 @@ export function PortRuleForm({
             {...form.register("port", { valueAsNumber: true, required: true, min: 1, max: 65535 })}
             disabled={isPending}
           />
-        </label>
-        <label>
+        </Field>
+        <Field>
           {t("Протокол")}
           <FormSelect control={form.control} name="protocol" label={t("Протокол")} disabled={isPending}>
             <SelectOption value="tcp">TCP</SelectOption>
             <SelectOption value="udp">UDP</SelectOption>
           </FormSelect>
-        </label>
-        <label>
+        </Field>
+        <Field>
           {t("Действие")}
           <FormSelect control={form.control} name="action" label={t("Действие")} disabled={isPending}>
             <SelectOption value="allow">{t("Открыть порт")}</SelectOption>
             <SelectOption value="deny">{t("Закрыть порт")}</SelectOption>
           </FormSelect>
-        </label>
-      </div>
-      <button className="primary" disabled={isPending}>
+        </Field>
+      </FieldGrid>
+      <Button variant="primary" disabled={isPending}>
         {t(isPending ? "Применяем…" : "Применить правило")}
-      </button>
+      </Button>
     </Form>
   );
 }

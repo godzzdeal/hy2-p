@@ -1,7 +1,8 @@
+import { Caption } from "@/components/elements/Caption";
+import { Button } from "@/components/ui/button/Button";
 import { Trash2 } from "@/components/elements/icons";
 import { ConnectionBadge } from "@/components/users/traffic/ConnectionBadge";
 import { type IDevice } from "@/services/users/devices/types";
-import { cn } from "@/utils/cn";
 import { formatDateTime } from "@/utils/format-date";
 import { useTranslation } from "react-i18next";
 export function DeviceRow({
@@ -17,8 +18,8 @@ export function DeviceRow({
 }) {
   const { t } = useTranslation();
   return (
-    <section className="device-row" aria-label={device.model || device.id}>
-      <div className="device-heading">
+    <section className="device-row border border-line p-3 min-w-0" aria-label={device.model || device.id}>
+      <div className="device-heading flex flex-wrap gap-2 justify-between">
         <strong>{device.model || device.os || t("Неизвестное устройство")}</strong>
         <ConnectionBadge
           online={device.online ?? 0}
@@ -26,9 +27,9 @@ export function DeviceRow({
           isBlocked={device.blocked}
         />
       </div>
-      <p className="caption">
+      <Caption>
         {device.os} {device.osVersion}
-      </p>
+      </Caption>
       <dl>
         <div>
           <dt>{t("Приложение")}</dt>
@@ -47,17 +48,20 @@ export function DeviceRow({
           <dd>{formatDateTime(device.lastSeen)}</dd>
         </div>
       </dl>
-      <div className="device-actions">
-        <button
+      <div className="device-actions flex items-stretch gap-2">
+        <Button
+          className="h-auto min-w-0 flex-1 py-2 whitespace-normal"
           type="button"
-          className={cn(device.blocked ? "secondary" : "danger")}
+          variant={device.blocked ? "secondary" : "danger"}
           disabled={isPending}
           onClick={() => onBlocked(!device.blocked)}
         >
           {t(device.blocked ? "Разрешить устройство" : "Отключить устройство")}
-        </button>
-        <button
-          className="icon-btn danger"
+        </Button>
+        <Button
+          className="h-auto"
+          variant="danger"
+          size="icon"
           aria-label={t("Удалить запись устройства")}
           title={t("Удалить запись устройства")}
           disabled={isPending}
@@ -73,7 +77,7 @@ export function DeviceRow({
           }}
         >
           <Trash2 width={24} height={24} aria-hidden />
-        </button>
+        </Button>
       </div>
     </section>
   );

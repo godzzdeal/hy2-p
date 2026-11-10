@@ -13,12 +13,12 @@ export function ConnectionQr({
   const { t } = useTranslation();
   const label = t(isSubscription ? "QR-код подписки" : "QR-код подключения");
   return (
-    <figure className="connection-qr">
-      <div className="qr-brand">
+    <figure className="connection-qr relative w-fit max-w-full p-4 my-6 mx-auto border border-accent bg-surface-soft shadow-pixel">
+      <div className="qr-brand flex items-center justify-between gap-4 text-accent mb-3">
         <span>HY2-P</span>
         <span>{t(isSubscription ? "Подписка" : "Подключение")}</span>
       </div>
-      <div className="qr-canvas">
+      <div className="qr-canvas p-2 bg-qr-background">
         <QRCodeSVG
           value={value}
           size={224}

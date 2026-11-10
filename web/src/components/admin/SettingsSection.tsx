@@ -1,3 +1,6 @@
+import { Card } from "@/components/ui/cards/Card";
+import { CardHeader } from "@/components/ui/cards/CardHeader";
+import { Button } from "@/components/ui/button/Button";
 import { ChevronRight } from "pixelarticons/react/ChevronRight.js";
 import { useSettingsSection } from "@/hooks/layout/use-settings-section";
 import { cn } from "@/utils/cn";
@@ -13,25 +16,28 @@ interface ISettingsSection {
 export function SettingsSection({ id, title, action, children }: ISettingsSection) {
   const { isOpen, onToggle } = useSettingsSection(id);
   return (
-    <section className="card settings-section" id={id} data-scroll-section data-scroll-label={title}>
-      <div className="card-header">
+    <Card className="settings-section" id={id} data-scroll-section data-scroll-label={title}>
+      <CardHeader>
         <h2>
-          <button
+          <Button
             type="button"
-            className="settings-toggle"
+            className="settings-toggle flex items-center justify-start gap-3 min-h-12 h-auto py-2 px-0 w-full border-0 bg-transparent shadow-none text-start"
             aria-expanded={isOpen}
             aria-controls={id + "-content"}
             onClick={onToggle}
           >
-            <ChevronRight className={cn("settings-chevron", isOpen && "is-expanded")} aria-hidden="true" />
+            <ChevronRight
+              className={cn("settings-chevron w-6 h-6 shrink-0", isOpen && "is-expanded")}
+              aria-hidden="true"
+            />
             <span>{title}</span>
-          </button>
+          </Button>
         </h2>
         {action}
-      </div>
+      </CardHeader>
       <div id={id + "-content"} hidden={!isOpen}>
         {children}
       </div>
-    </section>
+    </Card>
   );
 }

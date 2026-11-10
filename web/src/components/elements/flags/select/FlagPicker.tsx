@@ -1,3 +1,4 @@
+import { Field } from "@/components/ui/fields/Field";
 import { FlagOption } from "@/components/elements/flags/select/FlagOption";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
@@ -21,7 +22,7 @@ export function FlagPicker({
   const countries = new Intl.DisplayNames(i18n.language, { type: "region" });
   const region = regionFromFlag(flag);
   return (
-    <label htmlFor={id}>
+    <Field htmlFor={id}>
       {t(label)}
       <Select id={id} value={flag} onValueChange={onChange}>
         <SelectOption value="">{t(emptyLabel)}</SelectOption>
@@ -36,6 +37,6 @@ export function FlagPicker({
           />
         ))}
       </Select>
-    </label>
+    </Field>
   );
 }

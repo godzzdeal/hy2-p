@@ -1,3 +1,5 @@
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
 import { useTranslation } from "react-i18next";
 export function PropertySearch({
   value,
@@ -10,9 +12,9 @@ export function PropertySearch({
 }) {
   const { t } = useTranslation();
   return (
-    <label className="property-search">
+    <Field className="property-search m-0 flex-1 max-w-140">
       {t("Найти свойство")}
-      <input
+      <Input
         aria-label={t("Найти свойство")}
         type="search"
         value={value}
@@ -20,6 +22,6 @@ export function PropertySearch({
         placeholder="disableUDP, quic, auth…"
       />
       <small role="status">{t("Найдено свойств: {{count}}", { count })}</small>
-    </label>
+    </Field>
   );
 }

@@ -1,83 +1,37 @@
 @layer components {
   .version-card .card-header {
-    gap: var(--space-3);
+    @apply gap-3;
   }
   .version-card h2 {
-    flex: 1;
-    min-width: 0;
-  }
-  .version-current {
-    color: var(--accent);
-    font-weight: 700;
-  }
-  .version-body {
-    padding: var(--space-4);
-    display: grid;
-    gap: var(--space-3);
-  }
-  .version-controls {
-    display: flex;
-    align-items: flex-end;
-    gap: var(--space-3);
-    flex-wrap: wrap;
+    @apply flex-1 min-w-0;
   }
   .version-controls label {
-    flex: 1;
-    min-width: 192px;
-    margin: 0;
+    @apply flex-1 min-w-48 m-0;
   }
   .version-controls button {
-    flex-shrink: 0;
-  }
-  .update-progress {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-3);
-    border: 1px solid var(--line);
-    background: var(--input);
+    @apply shrink-0;
   }
   .update-progress > svg {
-    color: var(--accent);
-    flex-shrink: 0;
+    @apply text-accent shrink-0;
   }
   .update-progress > div {
-    flex: 1;
-    min-width: 0;
+    @apply flex-1 min-w-0;
   }
   .update-progress strong {
-    font-size: var(--text-small);
+    @apply text-lg;
   }
   .update-progress progress {
-    display: block;
-    accent-color: var(--accent);
-    width: 100%;
-    height: var(--space-1);
-    margin-top: var(--space-2);
+    @apply block accent-accent w-full h-1 mt-2;
   }
-  .inline-error {
-    color: var(--danger);
-    font-size: var(--text-small);
-    padding: var(--space-3) 0;
-    overflow-wrap: anywhere;
-  }
-  .dialog-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--space-3);
-    margin-top: var(--space-3);
-    flex-wrap: wrap;
-  }
-  @media (max-width: 760px) {
+  @variant max-tablet {
     .version-controls label {
-      flex-basis: 100%;
-      min-width: 0;
+      @apply basis-full min-w-0;
     }
     .version-controls > button {
-      flex: 1;
+      @apply flex-1;
     }
     .dialog-actions > button {
-      flex: 1;
+      @apply flex-1;
     }
   }
 }

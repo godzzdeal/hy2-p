@@ -1,3 +1,6 @@
+import { CardHeader } from "@/components/ui/cards/CardHeader";
+import { Card } from "@/components/ui/cards/Card";
+import { Button } from "@/components/ui/button/Button";
 import { useInstanceCommands } from "@/hooks/instances/use-commands";
 import { useInstanceSelection } from "@/hooks/instances/use-instances";
 import { DEFAULT_INSTANCE, type IInstance } from "@/services/instances/types";
@@ -34,13 +37,13 @@ export function InstanceCard({
       remove.mutate(instance.id);
   }
   return (
-    <section
-      className={cn("card instance-card", { "is-selected": id === instance.id })}
+    <Card
+      className={cn("instance-card", { "is-selected border-accent": id === instance.id })}
       aria-label={instance.name}
     >
-      <div className="card-header">
+      <CardHeader>
         <h2>{instance.name}</h2>
-        <span className={cn("badge", { "badge-success": instance.running })}>
+        <span className={cn("badge py-1 px-2", { "badge-success": instance.running })}>
           {t(
             instance.removing
               ? "Удаление порта"
@@ -53,8 +56,8 @@ export function InstanceCard({
                     : "Остановлено",
           )}
         </span>
-      </div>
-      <dl className="instance-details">
+      </CardHeader>
+      <dl className="instance-details p-4 m-0 grid grid-cols-2 gap-3 max-tablet:grid-cols-2">
         <div>
           <dt>{t("Адрес подключения")}</dt>
           <dd>{instance.host || t("Не настроен")}</dd>
@@ -75,39 +78,39 @@ export function InstanceCard({
           <dd>{t(instance.authMode === "native" ? "Из конфигурации" : "Пользователи панели")}</dd>
         </div>
       </dl>
-      {instance.error && <p className="alert">{t(instance.error)}</p>}
-      <div className="instance-actions">
-        <button className="primary" disabled={isBusy} onClick={onConfigure}>
+      {instance.error && (
+        <p className="alert bg-danger-bg text-danger border border-danger p-4 rounded-none flex justify-between items-center gap-4 mb-5">
+          {t(instance.error)}
+        </p>
+      )}
+      <div className="instance-actions flex flex-wrap gap-2">
+        <Button variant="primary" disabled={isBusy} onClick={onConfigure}>
           {t("Конфигурация")}
-        </button>
-        <button disabled={isPending || !!instance.removing} onClick={onLogs}>
+        </Button>
+        <Button disabled={isPending || !!instance.removing} onClick={onLogs}>
           {t("Управление HY2")}
-        </button>
-        <button
+        </Button>
+        <Button
           disabled={isBusy}
           onClick={() => control.mutate({ id: instance.id, action: isStarted ? "stop" : "start" })}
         >
           {t(isStarted ? "Остановить" : "Запустить")}
-        </button>
-        <button
+        </Button>
+        <Button
           disabled={isBusy || !instance.running}
           onClick={() => control.mutate({ id: instance.id, action: "restart" })}
         >
           {t("Перезапустить")}
-        </button>
-        <button disabled={isBusy} onClick={() => onRename(instance)}>
+        </Button>
+        <Button disabled={isBusy} onClick={() => onRename(instance)}>
           {t("Переименовать")}
-        </button>
+        </Button>
         {instance.id !== DEFAULT_INSTANCE && (
-          <button
-            className="danger"
-            disabled={isPending || isStarted || instance.updating}
-            onClick={onRemove}
-          >
+          <Button variant="danger" disabled={isPending || isStarted || instance.updating} onClick={onRemove}>
             {t(instance.removing ? "Повторить удаление" : "Удалить")}
-          </button>
+          </Button>
         )}
       </div>
-    </section>
+    </Card>
   );
 }

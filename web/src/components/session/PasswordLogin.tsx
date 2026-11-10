@@ -1,3 +1,6 @@
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Button } from "@/components/ui/button/Button";
 import { ArrowUpRight } from "@/components/elements/icons";
 import { AccountRecovery } from "@/components/admin/account/AccountRecovery";
 import { Form, FormPassword } from "@/components/ui/forms";
@@ -18,14 +21,14 @@ export function PasswordLogin({ isPending, onSubmit }: IPasswordLogin) {
   return (
     <Form form={form} onSubmit={onSubmit}>
       <LanguageSelect />
-      <label>
+      <Field>
         {t("Логин")}
-        <input
+        <Input
           autoComplete="username"
           required
           {...form.register("username", { required: t("Заполните это поле") })}
         />
-      </label>
+      </Field>
       <FormPassword
         control={form.control}
         name="password"
@@ -35,10 +38,10 @@ export function PasswordLogin({ isPending, onSubmit }: IPasswordLogin) {
         minLength={0}
         autoComplete="current-password"
       />
-      <button className="primary" disabled={isPending}>
+      <Button className="w-full justify-between" variant="primary" disabled={isPending}>
         {t(isPending ? "Входим…" : "Войти в панель")}
         <ArrowUpRight width={24} height={24} aria-hidden />
-      </button>
+      </Button>
       <AccountRecovery />
     </Form>
   );

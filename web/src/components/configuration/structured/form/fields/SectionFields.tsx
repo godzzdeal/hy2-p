@@ -1,3 +1,4 @@
+import { FieldGrid } from "@/components/ui/fields/FieldGrid";
 import { ConfigField } from "@/components/configuration/structured/controls/ConfigField";
 import { type IConfigField } from "@/services/configuration/structured/field-types";
 import { fieldAvailability } from "@/utils/configuration/structured/form/fields/availability";
@@ -21,7 +22,7 @@ export function SectionFields({
   onSet: (path: string, value: unknown) => void;
 }) {
   return (
-    <div className="field-grid">
+    <FieldGrid columns={2}>
       {fields
         .filter((field) => search || fieldAvailability(field, document, isNative, isManagedHttp).isVisible)
         .map((field) => (
@@ -34,6 +35,6 @@ export function SectionFields({
             onChange={(value) => onSet(field.path, value)}
           />
         ))}
-    </div>
+    </FieldGrid>
   );
 }

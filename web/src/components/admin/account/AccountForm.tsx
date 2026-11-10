@@ -1,3 +1,8 @@
+import { Caption } from "@/components/elements/Caption";
+import { CardBody } from "@/components/ui/cards/CardBody";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Button } from "@/components/ui/button/Button";
 import { Form, FormPassword } from "@/components/ui/forms";
 import { SettingsSection } from "@/components/admin/SettingsSection";
 import { AccountRecovery } from "@/components/admin/account/AccountRecovery";
@@ -9,10 +14,10 @@ export function AccountForm({ username }: { username: string }) {
   return (
     <SettingsSection id="panel-account" title={t("Учётная запись администратора")}>
       <Form form={form} className="settings-form" onSubmit={onSubmit}>
-        <div className="form-body">
-          <label>
+        <CardBody>
+          <Field>
             {t("Логин")}
-            <input
+            <Input
               required
               autoComplete="username"
               minLength={3}
@@ -23,7 +28,7 @@ export function AccountForm({ username }: { username: string }) {
                 maxLength: 64,
               })}
             />
-          </label>
+          </Field>
           <FormPassword
             control={form.control}
             name="currentPassword"
@@ -40,16 +45,16 @@ export function AccountForm({ username }: { username: string }) {
             minLength={16}
             placeholder="Без изменений"
           />
-          <p className="caption">
+          <Caption>
             {t(
               "Оставьте новый пароль пустым, чтобы изменить только логин. После сохранения все сессии будут завершены.",
             )}
-          </p>
-          <button className="primary" disabled={isPending}>
+          </Caption>
+          <Button variant="primary" disabled={isPending}>
             {t("Изменить данные входа")}
-          </button>
+          </Button>
           <AccountRecovery />
-        </div>
+        </CardBody>
       </Form>
     </SettingsSection>
   );

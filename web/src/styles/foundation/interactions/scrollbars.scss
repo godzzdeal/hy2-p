@@ -1,6 +1,6 @@
 @layer components {
   * {
-    scrollbar-width: thin;
+    @apply scrollbar-thin;
     scrollbar-color: var(--muted) var(--input);
   }
   @supports selector(::-webkit-scrollbar) {
@@ -14,15 +14,13 @@
     }
     ::-webkit-scrollbar-track,
     ::-webkit-scrollbar-corner {
-      background: var(--input);
+      @apply bg-input;
     }
     ::-webkit-scrollbar-thumb {
-      background: var(--muted);
-      border: 2px solid var(--input);
-      border-radius: 0;
+      @apply bg-muted border-2 border-input rounded-none;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--accent);
+      @apply bg-accent;
     }
   }
   @media (pointer: coarse) {

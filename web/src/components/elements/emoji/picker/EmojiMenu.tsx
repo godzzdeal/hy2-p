@@ -26,7 +26,7 @@ export function EmojiMenu({ onSelect }: { onSelect: (emoji: string) => void }) {
   return (
     <Picker
       unstyled
-      className="emoji-grid"
+      className="emoji-grid relative inset-auto p-0 w-full min-h-64"
       width="100%"
       height="100%"
       emojiStyle="twitter"

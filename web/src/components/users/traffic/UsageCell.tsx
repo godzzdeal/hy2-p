@@ -4,7 +4,7 @@ export function UsageCell({ usage }: { usage: IUserUsage }) {
   const { t } = useTranslation();
   const limit = trafficLimit(usage);
   return (
-    <div className="usage-cell">
+    <div className="usage-cell grid gap-1 min-w-32">
       <strong>{formatBytes(usage.upload + usage.download, t)}</strong>
       <small>{limit > 0 ? "/ " + formatBytes(limit, t) : t("Без лимита")}</small>
       {limit > 0 && (

@@ -1,3 +1,5 @@
+import { Caption } from "@/components/elements/Caption";
+import { Field } from "@/components/ui/fields/Field";
 import { Select } from "@/components/ui/select/Select";
 import { CommandBlock } from "@/components/elements/copy";
 import { SelectOption } from "@/components/ui/select/SelectOption";
@@ -18,8 +20,8 @@ export function CertificateMode({
   const { t } = useTranslation();
   const isAcme = parseDocument(source).has("acme");
   return (
-    <div className="config-note">
-      <label>
+    <div className="config-note border-l-4 border-accent text-muted py-3 px-4 bg-surface-soft">
+      <Field>
         {t("Сертификат Hysteria2")}
         <Select
           value={isAcme ? "acme" : "tls"}
@@ -30,15 +32,15 @@ export function CertificateMode({
           <SelectOption value="tls">{t("Собственный TLS-сертификат")}</SelectOption>
           <SelectOption value="acme">{t("Автоматический сертификат ACME")}</SelectOption>
         </Select>
-      </label>
+      </Field>
       <p>
         {t(
           "ACME продлевает сертификаты, пока экземпляр работает. HTTP-проверке нужен TCP 80, TLS-проверке TCP 443. DNS-проверка не требует входящих портов.",
         )}
       </p>
       {isAcme && (
-        <div className="certificate-restart">
-          <p className="caption">{t("После включения общего HTTP-порта ACME перезапустите панель:")}</p>
+        <div className="certificate-restart grid gap-2 mt-3">
+          <Caption>{t("После включения общего HTTP-порта ACME перезапустите панель:")}</Caption>
           <CommandBlock command="sudo hy2-panel restart" />
         </div>
       )}

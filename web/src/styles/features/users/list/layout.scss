@@ -1,118 +1,41 @@
 @layer components {
-  .user-cell {
-    height: auto;
-    padding: var(--space-1) var(--space-2);
-    gap: var(--space-3);
-    text-align: left;
-  }
   .user-cell strong,
   .user-cell small {
-    display: block;
+    @apply block;
   }
   .user-cell small {
-    color: var(--muted);
-  }
-  .user-row-actions {
-    flex-wrap: nowrap;
-    align-items: center;
-  }
-  .avatar {
-    display: grid;
-    place-items: center;
-    width: var(--space-8);
-    height: var(--space-8);
-    background: var(--surface-soft);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
+    @apply text-muted;
   }
   .badge {
-    padding: var(--space-1) var(--space-2);
-    border-radius: var(--radius-sm);
-  }
-  .badge.green {
-    background: var(--success-bg);
+    @apply rounded-none;
   }
   .badge.gray {
-    color: var(--muted);
-    background: var(--input);
+    @apply text-muted bg-input;
   }
   .user-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    min-width: var(--space-6);
-    height: var(--space-6);
-    padding-inline: var(--space-2);
-    border: 1px solid var(--line);
-    background: var(--surface-soft);
-    color: var(--accent);
+    @apply min-w-6 h-6 px-2;
     font: var(--text-body)/1 var(--font-body);
   }
   .app-sidebar nav .user-count {
-    margin-left: auto;
-  }
-  .users-toolbar {
-    flex-wrap: wrap;
-  }
-  .users-list-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex: 1;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    min-width: 0;
-  }
-  .users-search {
-    margin: 0;
-    flex: 1;
-    min-width: 160px;
-    max-width: 240px;
+    @apply ml-auto;
   }
   .users-search input {
-    margin: 0;
-    height: var(--control-height);
-    padding-block: 0;
-  }
-  .users-found {
-    color: var(--muted);
+    @apply m-0 h-control py-0;
   }
   .connection-indicator {
-    display: inline-grid;
-    place-items: center;
-    width: var(--space-6);
-    height: var(--space-6);
-    vertical-align: middle;
+    @apply w-6 h-6;
   }
   .connection-indicator::before {
+    @apply w-3 h-3 border border-muted bg-input;
     content: "";
-    width: var(--space-3);
-    height: var(--space-3);
-    border: 1px solid var(--muted);
-    background: var(--input);
   }
   .connection-indicator.is-online::before {
-    border-color: var(--accent);
-    background: var(--accent);
+    @apply border-accent bg-accent;
   }
   .connection-indicator.is-unknown::before {
     border-style: dashed;
   }
   .connection-indicator:focus-visible {
-    outline: 2px solid var(--accent);
-  }
-  @media (max-width: 760px) {
-    .users-toolbar {
-      align-items: stretch;
-      flex-direction: column;
-    }
-    .users-list-actions {
-      justify-content: flex-start;
-    }
-    .users-search {
-      flex-basis: 100%;
-      max-width: none;
-    }
+    @apply outline-2 outline-accent;
   }
 }

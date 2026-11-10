@@ -1,4 +1,4 @@
-import { Modal } from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { PanelMaintenance } from "@/components/panel/maintenance/PanelMaintenance";
 export function PanelUpdateDialog({ onClose }: { onClose: () => void }) {
   return (

@@ -1,3 +1,4 @@
+import { Field } from "@/components/ui/fields/Field";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { useGroups } from "@/hooks/groups/hooks";
@@ -7,7 +8,7 @@ export function GroupFilter({ value, onChange }: { value: string; onChange: (val
   const { t } = useTranslation();
   const query = useGroups();
   return (
-    <label className="group-filter">
+    <Field className="group-filter min-w-40 max-w-60 m-0 flex items-center min-h-control max-tablet:max-w-none max-tablet:flex-1">
       <span className="sr-only">{t("Фильтр по группе")}</span>
       <Select
         aria-label={t("Фильтр по группе")}
@@ -23,6 +24,6 @@ export function GroupFilter({ value, onChange }: { value: string; onChange: (val
           </SelectOption>
         ))}
       </Select>
-    </label>
+    </Field>
   );
 }

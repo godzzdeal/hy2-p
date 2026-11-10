@@ -1,3 +1,7 @@
+import { Fieldset } from "@/components/ui/fields/Fieldset";
+import { Caption } from "@/components/elements/Caption";
+import { Field } from "@/components/ui/fields/Field";
+import { Button } from "@/components/ui/button/Button";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { CoreOption } from "@/components/users/access/CoreOption";
@@ -40,7 +44,7 @@ export function AccessForm({
   }
   return (
     <form className="user-core-access" onSubmit={onSubmit}>
-      <label>
+      <Field>
         {t("Режим доступа к экземплярам")}
         <Select
           aria-label={t("Режим доступа к экземплярам")}
@@ -51,8 +55,8 @@ export function AccessForm({
           <SelectOption value={AccessMode.All}>{t("Все экземпляры, включая новые")}</SelectOption>
           <SelectOption value={AccessMode.Selected}>{t("Только выбранные экземпляры")}</SelectOption>
         </Select>
-      </label>
-      <fieldset disabled={save.isPending}>
+      </Field>
+      <Fieldset disabled={save.isPending}>
         <legend>{t("Экземпляры в подписке пользователя")}</legend>
         {available.map((instance) => (
           <CoreOption
@@ -66,23 +70,25 @@ export function AccessForm({
             onToggle={onToggle}
           />
         ))}
-      </fieldset>
+      </Fieldset>
       {mode === AccessMode.Selected && ids.length === 0 && (
-        <p className="alert">{t("Ни один экземпляр не выбран. Подключения пользователя будут запрещены.")}</p>
+        <p className="alert bg-danger-bg text-danger border border-danger p-4 rounded-none flex justify-between items-center gap-4 mb-5">
+          {t("Ни один экземпляр не выбран. Подключения пользователя будут запрещены.")}
+        </p>
       )}
-      <p className="caption">
+      <Caption>
         {t(
           "В подписке будут только разрешённые опубликованные экземпляры. При снятии доступа активное подключение к этому экземпляру отключается.",
         )}
-      </p>
+      </Caption>
       {available.some((item) => item.authMode === "native") && (
-        <p className="caption">
+        <Caption>
           {t("Экземпляры с собственной аутентификацией управляют доступом через свою конфигурацию.")}
-        </p>
+        </Caption>
       )}
-      <button className="primary full" disabled={save.isPending}>
+      <Button className="full w-full" variant="primary" disabled={save.isPending}>
         {t(save.isPending ? "Сохраняем…" : "Сохранить доступ")}
-      </button>
+      </Button>
     </form>
   );
 }

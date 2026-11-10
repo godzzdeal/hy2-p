@@ -1,8 +1,10 @@
+import { Field } from "@/components/ui/fields/Field";
+import { Button } from "@/components/ui/button/Button";
 import { Emoji } from "@/components/elements/emoji/Emoji";
 import { Sparkles, X } from "@/components/elements/icons";
 import { leadingEmoji } from "@/utils/emoji/model";
 import { Loader } from "@/components/ui/loading";
-import * as Popover from "@radix-ui/react-popover";
+import { Popover } from "@/components/ui/overlays/Popover";
 import { lazy, Suspense, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 const EmojiMenu = lazy(() =>
@@ -18,37 +20,45 @@ export function EmojiPicker({ value, onChange }: { value: string; onChange: (emo
     setOpen(false);
   }
   return (
-    <div className="emoji-picker">
-      <label htmlFor={id}>{t("Эмодзи")}</label>
-      <Popover.Root open={isOpen} onOpenChange={setOpen} modal>
-        <Popover.Trigger asChild>
-          <button id={id} type="button" className="secondary emoji-trigger" aria-label={t("Выбрать эмодзи")}>
+    <div className="emoji-picker self-start">
+      <Field htmlFor={id} className="mb-2">
+        {t("Эмодзи")}
+      </Field>
+      <Popover
+        open={isOpen}
+        onOpenChange={setOpen}
+        modal
+        trigger={
+          <Button
+            id={id}
+            type="button"
+            className="emoji-trigger w-full justify-start"
+            variant="secondary"
+            aria-label={t("Выбрать эмодзи")}
+          >
             {emoji ? <Emoji value={emoji} /> : <Sparkles width={24} height={24} aria-hidden />}
             <span>{t(emoji ? "Изменить эмодзи" : "Выбрать эмодзи")}</span>
-          </button>
-        </Popover.Trigger>
-        <Popover.Portal>
-          <Popover.Content
-            className="emoji-popup"
-            aria-label={t("Меню эмодзи")}
-            align="end"
-            sideOffset={8}
-            collisionPadding={16}
+          </Button>
+        }
+        contentProps={{ className: "emoji-popup", "aria-label": t("Меню эмодзи") }}
+      >
+        <Suspense fallback={<Loader label="Загружаем эмодзи…" />}>
+          <EmojiMenu onSelect={onSelect} />
+        </Suspense>
+        <div className="emoji-menu-footer flex items-center justify-between py-2 px-3 border-line">
+          <Button type="button" variant="outline" disabled={!emoji} onClick={() => onSelect("")}>
+            {t("Убрать эмодзи")}
+          </Button>
+          <Button
+            type="button"
+            size="icon"
+            aria-label={t("Закрыть меню эмодзи")}
+            onClick={() => setOpen(false)}
           >
-            <Suspense fallback={<Loader label="Загружаем эмодзи…" />}>
-              <EmojiMenu onSelect={onSelect} />
-            </Suspense>
-            <div className="emoji-menu-footer">
-              <button type="button" className="text-btn" disabled={!emoji} onClick={() => onSelect("")}>
-                {t("Убрать эмодзи")}
-              </button>
-              <Popover.Close className="icon-btn" aria-label={t("Закрыть меню эмодзи")}>
-                <X width={24} height={24} aria-hidden />
-              </Popover.Close>
-            </div>
-          </Popover.Content>
-        </Popover.Portal>
-      </Popover.Root>
+            <X width={24} height={24} aria-hidden />
+          </Button>
+        </div>
+      </Popover>
     </div>
   );
 }

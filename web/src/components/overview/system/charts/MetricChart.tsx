@@ -1,4 +1,5 @@
 import { ChartPlot } from "@/components/overview/system/charts/plot";
+import { Card } from "@/components/ui/cards/Card";
 import { chartMaximum, type TChartUnit } from "@/components/overview/system/charts/axes";
 import { type ISystemSample } from "@/services/admin/maintenance";
 import { useTranslation } from "react-i18next";
@@ -28,7 +29,7 @@ export function MetricChart({
   const other = secondary ? samples.map((sample) => sample[secondary]) : [];
   const ceiling = chartMaximum([...primary, ...other], unit, maximum);
   return (
-    <figure className="card system-chart">
+    <Card as="figure" className="system-chart m-0 flex flex-col p-4">
       <figcaption>
         <h3>{t(title)}</h3>
         <strong>{value}</strong>
@@ -42,6 +43,6 @@ export function MetricChart({
         times={samples.map((sample) => sample.time)}
       />
       <small>{samples.length > 1 ? t("Последние 10 минут") : t("Собираем данные…")}</small>
-    </figure>
+    </Card>
   );
 }

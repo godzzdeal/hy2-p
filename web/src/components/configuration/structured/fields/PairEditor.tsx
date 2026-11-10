@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button/Button";
 import { PairRow } from "@/components/configuration/structured/fields/PairRow";
 import { useUiStore } from "@/store/ui-store";
 import { useTranslation } from "react-i18next";
@@ -31,7 +32,7 @@ export function PairEditor({
     onChange(Object.fromEntries([...entries, ["user" + index, ""]]));
   }
   return (
-    <div className="pair-editor">
+    <div className="pair-editor mt-2">
       {entries.map(([name, current], index) => (
         <PairRow
           key={index}
@@ -46,9 +47,9 @@ export function PairEditor({
           }
         />
       ))}
-      <button type="button" className="secondary" onClick={onAdd}>
+      <Button type="button" variant="secondary" onClick={onAdd}>
         {t("Добавить параметр")}
-      </button>
+      </Button>
     </div>
   );
 }

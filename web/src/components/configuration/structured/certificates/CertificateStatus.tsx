@@ -1,3 +1,5 @@
+import { CardHeader } from "@/components/ui/cards/CardHeader";
+import { Button } from "@/components/ui/button/Button";
 import { Notice } from "@/components/ui/feedback";
 import { CertificateRow } from "@/components/configuration/structured/CertificateRow";
 import { QueryState } from "@/components/ui/loading";
@@ -8,12 +10,12 @@ export function CertificateStatus() {
   const query = useCertificates();
   return (
     <section className="certificate-status">
-      <div className="card-header">
+      <CardHeader>
         <h3>{t("Состояние сертификатов Hysteria2")}</h3>
-        <button type="button" className="text-btn" onClick={() => void query.refetch()}>
+        <Button type="button" variant="outline" onClick={() => void query.refetch()}>
           {t("Проверить сертификаты")}
-        </button>
-      </div>
+        </Button>
+      </CardHeader>
       <QueryState isLoading={query.isPending} error={query.error} />
       {query.data?.certificates.map((certificate) => (
         <CertificateRow key={certificate.path} certificate={certificate} />

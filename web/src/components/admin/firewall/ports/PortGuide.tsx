@@ -1,3 +1,5 @@
+import { Caption } from "@/components/elements/Caption";
+import { Button } from "@/components/ui/button/Button";
 import { PortRow } from "@/components/admin/firewall/ports/PortRow";
 import { PortHelp } from "@/components/admin/firewall/ports/PortHelp";
 import { QueryState } from "@/components/ui/loading";
@@ -9,24 +11,22 @@ export function PortGuide() {
   const query = useRecommendedPorts();
   const ports = groupRecommendedPorts(query.data?.ports ?? []);
   return (
-    <section className="firewall-guide" aria-label={t("Какие порты открыть")}>
+    <section className="firewall-guide mb-4 pb-4 border-b border-line" aria-label={t("Какие порты открыть")}>
       <h3>{t("Какие порты открыть")}</h3>
-      <p className="caption">
-        {t("Порты из настроек панели и экземпляров. Доступность извне не проверена.")}
-      </p>
+      <Caption>{t("Порты из настроек панели и экземпляров. Доступность извне не проверена.")}</Caption>
       <QueryState isLoading={query.isPending} error={query.error} />
       {query.error && (
-        <button className="secondary" onClick={() => void query.refetch()}>
+        <Button variant="secondary" onClick={() => void query.refetch()}>
           {t("Повторить")}
-        </button>
+        </Button>
       )}
-      <ul className="firewall-ports">
+      <ul className="firewall-ports list-none p-0 m-0 grid gap-2">
         {ports.map((port) => (
           <PortRow key={`${port.port}/${port.protocol}`} port={port} />
         ))}
       </ul>
       {!!query.data?.warnings?.length && (
-        <p className="inline-error">
+        <p className="inline-error text-danger text-lg py-3 px-0 wrap-anywhere">
           {t("Не удалось прочитать настройки экземпляров:")} {query.data.warnings.join(", ")}
         </p>
       )}

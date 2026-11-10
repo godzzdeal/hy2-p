@@ -10,7 +10,12 @@ export function ChartAxis({
   return (
     <div
       aria-hidden="true"
-      className={cn("chart-axis", isHorizontal ? "chart-axis-time" : "chart-axis-values")}
+      className={cn(
+        "chart-axis flex text-muted text-lg justify-between leading-none",
+        isHorizontal
+          ? "chart-axis-time col-start-2 gap-2 px-2"
+          : "chart-axis-values flex-col text-right h-32 whitespace-nowrap",
+      )}
     >
       {labels.map((label, index) => (
         <AxisTick key={index} label={label} />

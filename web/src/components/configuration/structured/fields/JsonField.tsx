@@ -1,3 +1,4 @@
+import { Textarea } from "@/components/ui/fields/controls/Textarea";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 export function JsonField({
@@ -26,6 +27,12 @@ export function JsonField({
     }
   }
   return (
-    <textarea id={id} className="structured-textarea" value={draft} spellCheck={false} onChange={onInput} />
+    <Textarea
+      id={id}
+      className="structured-textarea min-h-48 font-mono"
+      value={draft}
+      spellCheck={false}
+      onChange={onInput}
+    />
   );
 }

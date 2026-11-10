@@ -7,9 +7,9 @@ export function LogLine({ text, client, search }: ILogEntry & { search: string }
   const level = logLevel(text);
   return (
     <div
-      className={cn("log-line", {
-        "log-error": level === "error",
-        "log-warning": level === "warn",
+      className={cn("log-line py-1 px-2 whitespace-pre-wrap wrap-anywhere", {
+        "log-error text-danger": level === "error",
+        "log-warning bg-surface-soft": level === "warn",
       })}
     >
       {client && <LogClient client={client} />}

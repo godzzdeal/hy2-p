@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button/Button";
 import { type IUserAction } from "@/components/users/list/row/actions/UserActions";
 import { cn } from "@/utils/cn";
 export function UserActionButton({
@@ -11,9 +12,13 @@ export function UserActionButton({
 }) {
   const Icon = action.icon;
   return (
-    <button
+    <Button
       type="button"
-      className={cn(isCompact ? "icon-btn" : "user-menu-action", { danger: action.isDanger })}
+      className={cn(
+        !isCompact && "user-menu-action w-full h-auto min-h-12 justify-start p-2 text-left text-lg",
+      )}
+      size={isCompact ? "icon" : "default"}
+      variant={action.isDanger ? "danger" : "ghost"}
       aria-label={action.accessibleName}
       title={action.label}
       onClick={() => {
@@ -23,6 +28,6 @@ export function UserActionButton({
     >
       <Icon width={24} height={24} aria-hidden />
       {!isCompact && <span>{action.label}</span>}
-    </button>
+    </Button>
   );
 }

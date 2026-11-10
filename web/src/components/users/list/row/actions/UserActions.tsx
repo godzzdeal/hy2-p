@@ -1,3 +1,4 @@
+import { Actions } from "@/components/ui/Actions";
 import { Gauge, Monitor, QrCode, Server, Trash2 } from "@/components/elements/icons";
 import { UserActionButton } from "@/components/users/list/row/actions/UserActionButton";
 import { UserActionMenu } from "@/components/users/list/row/actions/UserActionMenu";
@@ -58,11 +59,11 @@ export function UserActions({ user, onShare, onDelete, onTraffic, onAccess, onDe
   ];
   return (
     <div className="user-actions">
-      <div className="row-actions user-row-actions">
+      <Actions className="user-row-actions flex-nowrap items-center max-tablet:hidden">
         {actions.map((action) => (
           <UserActionButton key={action.accessibleName} action={action} isCompact />
         ))}
-      </div>
+      </Actions>
       <UserActionMenu actions={actions} name={user.displayName ?? user.name} />
     </div>
   );

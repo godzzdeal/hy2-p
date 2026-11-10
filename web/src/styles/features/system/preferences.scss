@@ -1,15 +1,9 @@
 @layer components {
   .chart-preferences {
-    z-index: var(--layer-dialog);
-    width: 240px;
+    @apply z-20 w-60 p-3 bg-surface border border-line shadow-pixel;
     max-width: calc(100vw - var(--space-8));
-    padding: var(--space-3);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    box-shadow: var(--space-1) var(--space-1) var(--shadow);
   }
   .chart-preferences .checkbox {
-    margin: 0;
-    padding: var(--space-2);
+    @apply m-0 p-2;
   }
 }

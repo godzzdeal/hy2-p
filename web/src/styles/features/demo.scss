@@ -1,32 +1,7 @@
 @layer components {
   .demo-notice {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
-    padding: var(--space-4);
-    margin-bottom: var(--space-4);
-    border: 1px solid var(--line);
-    border-left: var(--space-1) solid var(--accent);
-    background: var(--surface-soft);
-    flex-wrap: wrap;
-    min-width: 0;
-    strong {
-      color: var(--accent);
-    }
-    p {
-      margin: var(--space-2) 0;
-      text-wrap: pretty;
-    }
-    small {
-      color: var(--muted);
-    }
-    button {
-      flex-shrink: 0;
-    }
   }
   .login .demo-notice {
-    width: 100%;
-    max-width: 640px;
+    @apply w-full max-w-160;
   }
 }

@@ -1,3 +1,6 @@
+import { Caption } from "@/components/elements/Caption";
+import { EmptyState } from "@/components/ui/status/EmptyState";
+import { Button } from "@/components/ui/button/Button";
 import { Plus } from "@/components/elements/icons";
 import { GroupEditor } from "@/components/groups/editor/GroupEditor";
 import { GroupRow } from "@/components/groups/manage/GroupRow";
@@ -5,7 +8,7 @@ import { GroupMembers } from "@/components/groups/members/GroupMembers";
 import { useUsers } from "@/hooks/users/user-queries";
 import { groupUsers } from "@/services/groups/membership";
 import { EMPTY_GROUPS } from "@/services/groups/types";
-import { Modal } from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { QueryState } from "@/components/ui/loading";
 import { useGroups } from "@/hooks/groups/hooks";
 import { type IGroup } from "@/services/groups/types";
@@ -24,7 +27,7 @@ export function GroupManager({ onClose }: { onClose: () => void }) {
   );
   return (
     <Modal
-      className={cn({ "group-members-dialog": !!members })}
+      className={cn({ "group-members-dialog flex flex-col w-160 shrink-0": !!members })}
       title={members ? t("Участники группы {{name}}", { name: members.name }) : t("Группы пользователей")}
       onClose={onClose}
     >
@@ -34,20 +37,20 @@ export function GroupManager({ onClose }: { onClose: () => void }) {
         <GroupEditor group={group} onClose={() => setEditing(false)} />
       ) : (
         <>
-          <p className="caption">
+          <Caption>
             {t(
               "Объединяйте пользователей и задавайте общие экземпляры, лимиты трафика и устройств. Каждый пользователь может состоять в одной группе.",
             )}
-          </p>
+          </Caption>
           <QueryState isLoading={query.isPending} error={query.error} />
           {query.error && (
-            <button className="secondary" onClick={() => void query.refetch()}>
+            <Button variant="secondary" onClick={() => void query.refetch()}>
               {t("Повторить")}
-            </button>
+            </Button>
           )}
-          <button
+          <Button
             type="button"
-            className="primary"
+            variant="primary"
             disabled={!query.data || !!query.error}
             onClick={() => {
               setGroup(undefined);
@@ -56,8 +59,8 @@ export function GroupManager({ onClose }: { onClose: () => void }) {
           >
             <Plus width={24} height={24} aria-hidden />
             {t("Создать группу")}
-          </button>
-          <ul className="group-list">
+          </Button>
+          <ul className="group-list list-none p-0 grid gap-2">
             {query.data?.groups?.map((item) => (
               <GroupRow
                 key={item.id}
@@ -72,7 +75,7 @@ export function GroupManager({ onClose }: { onClose: () => void }) {
             ))}
           </ul>
           {query.data?.groups?.length === 0 && (
-            <p className="empty">{t("Групп пока нет. Создайте первую и добавьте в неё пользователей.")}</p>
+            <EmptyState>{t("Групп пока нет. Создайте первую и добавьте в неё пользователей.")}</EmptyState>
           )}
         </>
       )}

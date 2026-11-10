@@ -11,7 +11,7 @@ export function HysteriaMark({ width = 24, height = 24 }: { width?: number; heig
       focusable="false"
     >
       <path d={HY2_MARK} fill="currentColor" />
-      <path d={HY2_ACCENT} className="hysteria-mark-accent" />
+      <path d={HY2_ACCENT} className="hysteria-mark-accent fill-hy2-logo-accent" />
     </svg>
   );
 }

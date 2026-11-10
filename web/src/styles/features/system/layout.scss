@@ -1,37 +1,11 @@
 @layer components {
-  .system-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
-    margin-bottom: var(--space-4);
-    flex-wrap: wrap;
-  }
   .system-heading small {
-    color: var(--muted);
-  }
-  .system-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-4);
-    margin-bottom: var(--space-4);
-  }
-  .system-storage-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-3);
-    min-width: 0;
+    @apply text-muted;
   }
   .system-storage-row strong {
-    white-space: nowrap;
+    @apply whitespace-nowrap;
   }
   .system-storage .card-header strong {
-    color: var(--accent);
-  }
-  @media (max-width: 760px) {
-    .system-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
+    @apply text-accent;
   }
 }
