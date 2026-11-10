@@ -38,6 +38,7 @@ export function useSaveConfiguration() {
         client.invalidateQueries({ queryKey: ["connection"] }),
         client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.history, id) }),
         client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.hy2Certificates, id) }),
+        client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.ech, id) }),
         client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.deployment, id) }),
       ]),
   });

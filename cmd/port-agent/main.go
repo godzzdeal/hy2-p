@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"hy2-panel/internal/panelmaintenance/job"
 	"hy2-panel/internal/portcontrol/agent"
 	"hy2-panel/internal/portcontrol/probe"
 	"hy2-panel/internal/portcontrol/protocol"
@@ -17,6 +18,11 @@ func main() {
 		mode = os.Args[1]
 	}
 	switch mode {
+	case "maintenance":
+		if len(os.Args) != 3 {
+			log.Fatal("expected maintenance ticket")
+		}
+		err = job.Run(os.Getenv("HY2_INSTALL_DIR"), os.Args[2])
 	case "serve":
 		var server *agent.Agent
 		server, err = agent.New(os.Getenv("HY2_INSTALL_DIR"))

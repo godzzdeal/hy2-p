@@ -6,11 +6,12 @@ import { useInstanceId, useInstanceStore } from "@/store/core/instance-store";
 import { useUiStore } from "@/store/ui-store";
 import { useIsMutating, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-export function useInstances() {
+export function useInstances(isEnabled = true) {
   return useQuery({
     queryKey: QUERY_KEYS.instances,
     queryFn: instancesApi.list,
-    refetchInterval: NETWORK.corePollMs,
+    enabled: isEnabled,
+    refetchInterval: isEnabled ? NETWORK.corePollMs : false,
   });
 }
 export function useInstanceSelection() {

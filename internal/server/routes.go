@@ -6,6 +6,7 @@ import (
 	"hy2-panel/internal/auth"
 	"hy2-panel/internal/buildinfo"
 	"hy2-panel/internal/buildinfo/updates"
+	"hy2-panel/internal/buildinfo/updates/catalog"
 	deviceapi "hy2-panel/internal/devices/integration"
 	"hy2-panel/internal/firewall"
 	"hy2-panel/internal/firewall/recommendations"
@@ -33,12 +34,16 @@ import (
 func routes(auth *auth.Handler, users *users.Handler, registry *instances.Registry, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, access *useraccess.Handler, devices *deviceapi.Handler, groups *groupapi.Handler, transfer *transfer.Service, metrics *systemmetrics.Service) http.Handler {
 	mux := http.NewServeMux()
 	panelUpdates := updates.New(buildinfo.Version())
+	panelVersions := catalog.New()
 	mux.HandleFunc("GET /api/version", buildinfo.Read)
 	mux.HandleFunc("POST /api/login", auth.Login)
 	mux.HandleFunc("POST /api/login/cloud", auth.CloudLogin)
 	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
 	mux.HandleFunc("GET /api/panel/restart/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{
+		"GET /api/panel/maintenance":              portweb.Maintenance,
+		"POST /api/panel/maintenance":             portweb.Maintenance,
+		"GET /api/panel/versions":                 panelVersions.Read,
 		"GET /api/system":                         metrics.Read,
 		"POST /api/panel/restart":                 portweb.Restart,
 		"GET /api/admin/transfer":                 transfer.Download,

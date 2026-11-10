@@ -10,6 +10,10 @@ export interface ICore {
   logs: string;
 }
 export type TCoreAction = "start" | "stop" | "restart";
+export interface ICoreControlInput {
+  id: string;
+  action: TCoreAction;
+}
 export const coreApi = {
   clearLogs: (id?: string) =>
     request<{ logs: string }>(instanceRoute(API_ROUTES.logs, id), { method: "DELETE" }),

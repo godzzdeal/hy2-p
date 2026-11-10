@@ -1,3 +1,3 @@
 export * from "./CoreLog";
-export * from "./LogLine";
+export * from "./lines";
 export * from "./LogToolbar";

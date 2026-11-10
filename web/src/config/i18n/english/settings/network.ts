@@ -1,6 +1,4 @@
 export const NETWORK = {
-  "Happ для Windows 4.7.2 не сохраняет ECH из HY2-ссылок. Соединение может работать без ECH. pinSHA256 импортируется.":
-    "Happ for Windows 4.7.2 drops ECH when importing HY2 links. A connection may work without ECH. pinSHA256 is imported.",
   "До 8 экземпляров на одном сервере.": "Up to 8 instances per server.",
   "Вычислять по сертификату": "Calculate from certificate",
   "После получения сертификата": "After the certificate is issued",

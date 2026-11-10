@@ -58,6 +58,9 @@ func Generate(ctx context.Context, binaryPath, data, name string) (ECH, error) {
 		return ECH{}, err
 	}
 	result.KeyPath = filepath.ToSlash(path)
+	if result.PublicName == "" {
+		result.PublicName = name
+	}
 	succeeded = true
 	return result, nil
 }

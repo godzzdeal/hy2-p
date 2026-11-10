@@ -139,7 +139,7 @@ test("shared page notices have space before the following card", async ({ page }
   await mockPanel(page);
   for (const section of ["Пользователи", "Экземпляры"]) {
     await page.getByRole("button", { name: section, exact: true }).click();
-    const notice = page.locator(".content > .notice");
+    const notice = page.locator(".page-content > .notice");
     await expect(notice).toBeVisible();
     const box = (await notice.boundingBox())!;
     const following = (await notice.locator("xpath=following-sibling::*[1]").boundingBox())!;

@@ -1,6 +1,12 @@
 export const LOG_VIEW = { maxLines: 500, bottomThreshold: 24 } as const;
 export type TLogLevel = "" | "error" | "warn" | "info";
-const LEVELS = { error: /\b(ERROR|FATAL|PANIC)\b/i, warn: /\bWARN(?:ING)?\b/i, info: /\bINFO\b/i };
+const LEVEL_TOKEN = /\b(INFO|WARN(?:ING)?|ERROR|FATAL|PANIC)\b/i;
+export function logLevel(text: string): TLogLevel {
+  const token = LEVEL_TOKEN.exec(text)?.[1].toUpperCase();
+  if (token === "INFO") return "info";
+  if (token === "WARN" || token === "WARNING") return "warn";
+  return token ? "error" : "";
+}
 export function filterLogs(text: string, search: string, level: TLogLevel): string[] {
   const query = search.toLocaleLowerCase();
   return text
@@ -9,7 +15,7 @@ export function filterLogs(text: string, search: string, level: TLogLevel): stri
       (line) =>
         line.trim() &&
         (!query || line.toLocaleLowerCase().includes(query)) &&
-        (!level || LEVELS[level].test(line)),
+        (!level || logLevel(line) === level),
     );
 }
 export function downloadLogs(text: string) {

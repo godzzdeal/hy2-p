@@ -9,6 +9,18 @@ export function demoAdmin(path: string, { method = "GET", body }: IRequest): unk
     return demoState.announcement;
   }
   if (path === API_ROUTES.panelVersion) return { version: DEMO.version, revision: "demo" };
+  if (path === API_ROUTES.panelMaintenance) {
+    if (method !== "GET") return unavailable();
+    return {
+      available: true,
+      current: DEMO.version,
+      previous: "",
+      backupCreated: "",
+      rollbackAvailable: false,
+      operation: { busy: false, phase: "idle" },
+    };
+  }
+  if (path === API_ROUTES.panelVersions) return [{ version: DEMO.version, published: DEMO.timestamp }];
   if (path === API_ROUTES.panelRelease)
     return {
       current: DEMO.version,

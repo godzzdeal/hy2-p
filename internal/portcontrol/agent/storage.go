@@ -4,12 +4,12 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
+	"hy2-panel/internal/portcontrol/history"
 	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/transport"
 	"net/http"
 	"os"
 	"path/filepath"
-	"sort"
 )
 
 func (agent *Agent) persist() error {
@@ -18,7 +18,7 @@ func (agent *Agent) persist() error {
 		return err
 	}
 	path := filepath.Join(agent.root, "udp-operation.json")
-	if err = atomicJSON(path, data); err != nil {
+	if err = history.Atomic(path, data); err != nil {
 		return err
 	}
 	directory := filepath.Join(agent.root, "udp-history")
@@ -28,29 +28,11 @@ func (agent *Agent) persist() error {
 	if err = os.MkdirAll(directory, 0700); err != nil {
 		return err
 	}
-	if err = atomicJSON(filepath.Join(directory, agent.status.ID+".json"), data); err != nil {
+	if err = history.Atomic(filepath.Join(directory, agent.status.ID+".json"), data); err != nil {
 		return err
 	}
-	prune(directory)
+	history.Prune(directory)
 	return nil
-}
-func atomicJSON(path string, data []byte) error {
-	temporary, err := os.CreateTemp(filepath.Dir(path), ".udp-operation-")
-	if err != nil {
-		return err
-	}
-	defer os.Remove(temporary.Name())
-	if _, err = temporary.Write(data); err == nil {
-		err = temporary.Sync()
-	}
-	closeError := temporary.Close()
-	if err != nil {
-		return err
-	}
-	if closeError != nil {
-		return closeError
-	}
-	return os.Rename(temporary.Name(), path)
 }
 func (agent *Agent) read() {
 	data, err := os.ReadFile(filepath.Join(agent.root, "udp-operation.json"))
@@ -81,23 +63,6 @@ func (agent *Agent) history(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 	transport.Respond(writer, status)
-}
-
-const retainedOperations = 64
-
-func prune(directory string) {
-	entries, err := os.ReadDir(directory)
-	if err != nil || len(entries) <= retainedOperations {
-		return
-	}
-	sort.Slice(entries, func(first, second int) bool {
-		left, leftErr := entries[first].Info()
-		right, rightErr := entries[second].Info()
-		return leftErr == nil && (rightErr != nil || left.ModTime().Before(right.ModTime()))
-	})
-	for _, entry := range entries[:len(entries)-retainedOperations] {
-		os.Remove(filepath.Join(directory, entry.Name()))
-	}
 }
 
 func randomToken() string {

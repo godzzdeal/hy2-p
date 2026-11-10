@@ -69,11 +69,13 @@ export function Dashboard() {
           <span className="admin">{t("Администратор")}</span>
         </header>
         <div className="content" ref={content}>
-          {IS_DEMO && <DemoNotice />}
-          <InstanceSelector />
-          <Suspense fallback={<Loader label="Загрузка раздела…" />}>
-            <Page key={page === "config" || page === "core" || page === "overview" ? instanceId : page} />
-          </Suspense>
+          <div className="page-content">
+            {IS_DEMO && <DemoNotice />}
+            <InstanceSelector />
+            <Suspense fallback={<Loader label="Загрузка раздела…" />}>
+              <Page key={page === "config" || page === "core" || page === "overview" ? instanceId : page} />
+            </Suspense>
+          </div>
         </div>
         <ScrollNavigation root={content} page={page} />
         <PanelFooter />

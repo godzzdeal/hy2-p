@@ -23,7 +23,7 @@ FROM docker:28-cli AS docker-client
 FROM alpine:3.22
 ARG PANEL_REVISION=local
 LABEL io.hy2-panel.commit=${PANEL_REVISION}
-RUN apk add --no-cache bash jq coreutils util-linux ca-certificates tzdata && addgroup -g 10001 panel && adduser -D -u 10001 -G panel panel && mkdir /data && chown panel:panel /data
+RUN apk add --no-cache bash curl git jq coreutils util-linux ca-certificates tzdata && addgroup -g 10001 panel && adduser -D -u 10001 -G panel panel && mkdir /data && chown panel:panel /data
 COPY --from=core /usr/local/bin/hysteria /usr/local/bin/hysteria
 COPY --from=docker-client /usr/local/bin/docker /usr/local/bin/docker
 COPY --from=docker-client /usr/local/libexec/docker/cli-plugins/docker-compose /usr/local/libexec/docker/cli-plugins/docker-compose
