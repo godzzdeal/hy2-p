@@ -5,7 +5,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 # shellcheck source=/dev/null
 source "$SCRIPT_DIR/common.sh"
 require_root
-for file in listener transfer account/index ports/mappings ports/transaction/verify ports/transaction/recover ports/transaction/apply backups/create backups/restore releases/source/fetch releases/source/image releases/update releases/rollback; do
+for file in listener transfer account/index ports/mappings ports/transaction/verify ports/transaction/recover ports/transaction/apply backups/create backups/restore releases/source/fetch releases/source/image releases/source/cleanup releases/update releases/rollback; do
   # shellcheck source=/dev/null
   source "$SCRIPT_DIR/$file.sh"
 done
@@ -21,11 +21,12 @@ case $command in
       '  backup                 Согласованная резервная копия данных и ключей' \
       '  url                    Адрес панели или SSH-туннель'
     printf '%s\n' '  firewall-setup         Подключить помощник управления UFW'
+    printf '%s\n' '  cleanup-images         Удалить старые образы, сохранив откат'
     printf '%s\n' '  cloud-password-reset   Отключить забытый облачный пароль'
     printf '%s\n' '  password-reset         Создать новый пароль администратора'
     printf '%s\n' '  export <файл.json>     Экспорт экземпляров, групп и пользователей' '  import <файл.json> [--apply] Просмотр совпадений или добавление записей'
     exit 0 ;;
-  status|logs|start|stop|restart|start-panel|restart-panel|update|rollback|backup|url|apply-udp|remove-udp|recover-udp|firewall-setup|cloud-password-reset|password-reset|import|export) ;;
+  status|logs|start|stop|restart|start-panel|restart-panel|update|rollback|backup|url|apply-udp|remove-udp|recover-udp|firewall-setup|cloud-password-reset|password-reset|import|export|cleanup-images) ;;
   *) die "Неизвестная команда: $command" ;;
 esac
 [[ -f $ROOT/.env && -f $ROOT/current ]] || die "Установка не найдена."
@@ -39,10 +40,13 @@ case $command in
   url) show_access ;;
   *)
     lock_deployment
-    if [[ $command != recover-udp ]]; then recover_udp || die "Не удалось восстановить UDP-порты."; fi
-    recover_pending || die "Сначала нужно восстановить прерванную операцию."
+    if [[ $command != cleanup-images ]]; then
+      if [[ $command != recover-udp ]]; then recover_udp || die "Не удалось восстановить UDP-порты."; fi
+      recover_pending || die "Сначала нужно восстановить прерванную операцию."
+    fi
     current=$(cat "$ROOT/current")
     case $command in
+      cleanup-images) cleanup_images "$current" ;;
       password-reset) reset_admin_password "$current" ;;
       cloud-password-reset) cloud_password_reset "$current" ;;
       apply-udp) apply_udp "$current" "${2:-}" "${3:-}" "${4:-}" "${5:-default}" ;;

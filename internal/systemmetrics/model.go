@@ -39,8 +39,9 @@ type counters struct {
 	at                                 time.Time
 }
 type Service struct {
-	mu       sync.RWMutex
-	options  Options
-	previous counters
-	snapshot Snapshot
+	mu        sync.RWMutex
+	storageMu sync.Mutex
+	options   Options
+	previous  counters
+	snapshot  Snapshot
 }

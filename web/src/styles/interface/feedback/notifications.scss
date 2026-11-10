@@ -24,6 +24,10 @@
   .notification-error {
     border-color: var(--danger);
   }
+  .notification-progress {
+    display: block;
+    pointer-events: none;
+  }
   .notification > svg {
     margin-top: var(--space-2);
     color: var(--accent);

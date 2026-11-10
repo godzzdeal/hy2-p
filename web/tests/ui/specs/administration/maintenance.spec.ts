@@ -12,7 +12,7 @@ test("panel restart requires confirmation and survives the expected outage", asy
       json: { id: "a".repeat(32), busy: true, phase: "restarting", message: "Перезапуск" },
     });
   });
-  await page.route("http://panel.test/api/panel/restart/*", async (route) => {
+  await page.route("http://panel.test/api/deployment/udp/status/*", async (route) => {
     polls++;
     if (polls === 1) {
       await page.evaluate(() => window.dispatchEvent(new Event("session-expired")));
@@ -30,12 +30,8 @@ test("panel restart requires confirmation and survives the expected outage", asy
   expect(starts).toBe(0);
   await dialog.screenshot({ path: info.outputPath("restart-confirmation.png") });
   await dialog.getByRole("button", { name: "Перезапустить", exact: true }).click();
-  await expect(dialog.getByRole("button", { name: "Перезапустить", exact: true })).toBeDisabled();
-  await expect(dialog.getByText("Панель перезапускается…", { exact: true })).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(dialog).toBeVisible();
-  await expect(dialog.getByRole("button", { name: "Закрыть", exact: true })).toBeDisabled();
   await expect(dialog).not.toBeVisible();
+  await expect(page.getByLabel("Обслуживание панели", { exact: true })).toBeVisible();
   await expect(page.getByText("Панель перезапущена. Войдите снова.", { exact: true })).toBeVisible();
   await expect(page.getByLabel("Пароль", { exact: true })).toBeVisible();
   expect(starts).toBe(1);

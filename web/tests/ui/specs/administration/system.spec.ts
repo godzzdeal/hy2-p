@@ -5,17 +5,17 @@ import { demoSystem } from "@/services/demo/routes/system";
 test("overview refreshes server charts and reports panel storage", async ({ page }, info) => {
   if (info.project.name === "desktop") await page.setViewportSize({ width: 900, height: 1000 });
   await mockPanel(page);
-  let reads = 0;
+  let cpu = 12.5;
   await page.route("http://panel.test/api/system", (route) => {
-    reads++;
     const data = demoSystem();
-    data.samples.at(-1)!.cpu = reads === 1 ? 12.5 : 25;
+    data.samples.at(-1)!.cpu = cpu;
     return route.fulfill({ json: data });
   });
   await page.reload();
   const section = page.locator("#overview-system");
   await expect(section.getByRole("img")).toHaveCount(4);
   await expect(section.getByText("12.5%", { exact: true })).toBeVisible();
+  cpu = 25;
   await expect(section.getByText("25.0%", { exact: true })).toBeVisible({ timeout: 10000 });
   await expect(section.getByText("Резервные копии", { exact: true })).toBeVisible();
   await expect(section.getByText("Образы Docker", { exact: true })).toBeVisible();

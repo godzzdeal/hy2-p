@@ -35,6 +35,50 @@
   .log-line + .log-line {
     border-top: 1px solid var(--line);
   }
+  .log-client {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-1);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .log-client small {
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .log-user-trigger {
+    max-width: 100%;
+    gap: var(--space-2);
+  }
+  .log-user-trigger .emoji-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .log-user-picker {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    width: 320px;
+    max-width: calc(100vw - var(--space-8));
+    background: var(--surface);
+    border: 1px solid var(--line);
+    z-index: var(--layer-dialog);
+  }
+  .log-user-options {
+    max-height: 320px;
+    overflow-y: auto;
+    display: grid;
+  }
+  .log-user-option {
+    justify-content: flex-start;
+    text-align: left;
+    height: auto;
+    min-height: var(--control-height);
+    padding: var(--space-2);
+    overflow-wrap: anywhere;
+  }
   .log-error {
     color: var(--danger);
   }

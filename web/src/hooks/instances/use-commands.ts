@@ -1,5 +1,5 @@
 import { QUERY_KEYS } from "@/config/network";
-import { coreApi, type TCoreAction } from "@/services/core/core-api";
+import { useControlMutation } from "@/hooks/core/control";
 import { instancesApi } from "@/services/instances/api";
 import { usePortOperationStore } from "@/store/core/port-operation-store";
 import { useUiStore } from "@/store/ui-store";
@@ -28,10 +28,6 @@ export function useInstanceCommands() {
     },
     onError: showError,
   });
-  const control = useMutation({
-    mutationFn: (input: { id: string; action: TCoreAction }) => coreApi.control(input.action, input.id),
-    onSuccess: refresh,
-    onError: showError,
-  });
+  const control = useControlMutation();
   return { create, rename, remove, control };
 }

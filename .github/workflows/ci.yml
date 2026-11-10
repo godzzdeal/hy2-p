@@ -1,7 +1,7 @@
 name: Checks
 on:
   push:
-    branches: [main]
+    branches: [main, feature, bugfix]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -51,7 +51,7 @@ jobs:
           find scripts -name '*.sh' -print0 | xargs -0 shellcheck -S warning
           bash scripts/tests/run.sh
   images:
-    if: github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: checks
     strategy:
       fail-fast: false
@@ -80,7 +80,7 @@ jobs:
 
   docker-install:
     needs: images
-    if: github.event_name != 'pull_request' && github.repository == 'godzzdeal/hy2-p'
+    if: (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') && github.repository == 'godzzdeal/hy2-p'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:

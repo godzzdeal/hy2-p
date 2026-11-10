@@ -61,7 +61,7 @@ func (agent *Agent) recover() {
 func (agent *Agent) restartPanel(writer http.ResponseWriter, request *http.Request) {
 	agent.mu.Lock()
 	defer agent.mu.Unlock()
-	if agent.status.Busy {
+	if agent.status.Busy || agent.panel.Busy() {
 		transport.Fail(writer, errBusy, http.StatusConflict)
 		return
 	}

@@ -32,6 +32,9 @@ func send(ctx context.Context, method, path string, request *Request) (Status, e
 }
 
 func Exchange[T any](ctx context.Context, method, path string, request any) (T, error) {
+	return ExchangeWithTimeout[T](ctx, method, path, request, 3*time.Second)
+}
+func ExchangeWithTimeout[T any](ctx context.Context, method, path string, request any, timeout time.Duration) (T, error) {
 	var result T
 	var body io.Reader
 	if request != nil {
@@ -45,7 +48,7 @@ func Exchange[T any](ctx context.Context, method, path string, request any) (T, 
 		return (&net.Dialer{}).DialContext(ctx, "unix", Socket)
 	}}
 	defer transport.CloseIdleConnections()
-	client := &http.Client{Transport: transport, Timeout: 3 * time.Second}
+	client := &http.Client{Transport: transport, Timeout: timeout}
 	req, err := http.NewRequestWithContext(ctx, method, "http://port-agent"+path, body)
 	if err != nil {
 		return result, err

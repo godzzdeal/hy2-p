@@ -1,4 +1,6 @@
 import { App } from "@/app/App";
+import { PanelProgress } from "@/components/panel/maintenance/progress/PanelProgress";
+import { CoreProgress } from "@/components/core/progress";
 import { ApplyPortProgress } from "@/components/configuration/ports/ApplyPortProgress";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { Feedback } from "@/components/ui/feedback/Feedback";
@@ -17,7 +19,10 @@ createRoot(root).render(
       <QueryProvider>
         <App />
         <ApplyPortProgress />
-        <Feedback />
+        <PanelProgress />
+        <Feedback>
+          <CoreProgress />
+        </Feedback>
       </QueryProvider>
     </ErrorBoundary>
   </StrictMode>,

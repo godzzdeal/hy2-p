@@ -1,17 +1,19 @@
 import { Notice } from "@/components/ui/feedback";
-import { CompatibilityNotice } from "@/components/elements/CompatibilityNotice";
-import { useCoreTools } from "@/hooks/configuration/tools/use-core-tools";
+import { useEchFields } from "@/hooks/configuration/tools";
 import { type IEch } from "@/services/configuration/tools/api";
 import { useUiStore } from "@/store/ui-store";
 import { CopyButton } from "@/components/elements/copy";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
-export function EchTools({ onSet }: { onSet: (path: string, value: unknown) => void }) {
+export function EchTools({
+  keyPath,
+  onSet,
+}: {
+  keyPath: string;
+  onSet: (path: string, value: unknown) => void;
+}) {
   const { t } = useTranslation();
-  const [name, setName] = useState("");
-  const { read, generate } = useCoreTools();
+  const { read, generate, result, name, onName } = useEchFields(keyPath);
   const notify = useUiStore((state) => state.notify);
-  const result = generate.data ?? read.data;
   function onGenerated(value: IEch) {
     onSet("ech.keyPath", value.keyPath);
     notify("Ключ ECH создан. Сохраните конфигурацию и перезапустите экземпляр.");
@@ -27,7 +29,7 @@ export function EchTools({ onSet }: { onSet: (path: string, value: unknown) => v
         {t("Внешнее имя SNI для ECH")}
         <input
           value={name}
-          onChange={(event) => setName(event.target.value)}
+          onChange={(event) => onName(event.target.value)}
           placeholder="public.example.com"
         />
       </label>
@@ -37,7 +39,6 @@ export function EchTools({ onSet }: { onSet: (path: string, value: unknown) => v
           className="secondary"
           disabled={!name || generate.isPending}
           onClick={() => {
-            read.reset();
             generate.mutate(name, { onSuccess: onGenerated });
           }}
         >
@@ -46,11 +47,8 @@ export function EchTools({ onSet }: { onSet: (path: string, value: unknown) => v
         <button
           type="button"
           className="secondary"
-          disabled={read.isPending || generate.isPending}
-          onClick={() => {
-            generate.reset();
-            read.mutate();
-          }}
+          disabled={read.isFetching || generate.isPending || !keyPath}
+          onClick={() => void read.refetch()}
         >
           {t("Получить публичный ECH")}
         </button>
@@ -70,7 +68,6 @@ export function EchTools({ onSet }: { onSet: (path: string, value: unknown) => v
           "Публичный ECH добавляется в ссылку подключения. После замены ключа обновите подписку. Клиент должен поддерживать ECH для Hysteria2.",
         )}
       </p>
-      <CompatibilityNotice />
     </section>
   );
 }

@@ -44,3 +44,18 @@ func TestGenerationKeepsExistingKeyAndValidatesNames(t *testing.T) {
 		t.Fatal("missing binary accepted")
 	}
 }
+
+func TestPublicNameFromActualHysteriaKey(t *testing.T) {
+	binary := os.Getenv("HY2_ECH_BINARY")
+	if binary == "" {
+		t.Skip("set HY2_ECH_BINARY to test the real Hysteria ECH generator")
+	}
+	result, err := tools.Generate(context.Background(), binary, t.TempDir(), "public.example.com")
+	if err != nil {
+		t.Fatal(err)
+	}
+	read, err := tools.Inspect(result.KeyPath)
+	if err != nil || read.PublicName != "public.example.com" || read.ConfigList != result.ConfigList {
+		t.Fatalf("public metadata mismatch: %q %v", read.PublicName, err)
+	}
+}

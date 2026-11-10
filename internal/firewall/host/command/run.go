@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	processcontrol "hy2-panel/internal/process"
 	"log"
 	"os/exec"
 	"time"
@@ -30,7 +31,7 @@ func Run(ctx context.Context, program string, args ...string) (string, error) {
 	process := exec.CommandContext(ctx, program, args...)
 	process.Env = []string{"PATH=/usr/sbin:/usr/bin:/sbin:/bin", "LC_ALL=C", "LANG=C", "HOME=/nonexistent", "DOCKER_CONFIG=/nonexistent", "DOCKER_HOST=unix:///var/run/docker.sock"}
 	process.WaitDelay = time.Second
-	configure(process)
+	processcontrol.Configure(process)
 	return run(process)
 }
 

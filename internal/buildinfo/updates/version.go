@@ -1,11 +1,11 @@
 package updates
 
 import (
-	"regexp"
+	"hy2-panel/internal/portcontrol/protocol"
 	"strings"
 )
 
-var stableVersion = regexp.MustCompile(`^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$`)
+var stableVersion = protocol.PanelVersionPattern
 
 func versionState(current, latest string) string {
 	if !stableVersion.MatchString(current) {

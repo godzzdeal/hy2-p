@@ -6,7 +6,9 @@ export function endSession(client: QueryClient): void {
   // Keep active session and public port-progress observers attached to their queries.
   client.removeQueries({
     predicate: (query) =>
-      query.queryKey[0] !== QUERY_KEYS.session[0] && query.queryKey[0] !== QUERY_KEYS.udpOperation[0],
+      query.queryKey[0] !== QUERY_KEYS.session[0] &&
+      query.queryKey[0] !== QUERY_KEYS.udpOperation[0] &&
+      query.queryKey[0] !== QUERY_KEYS.panelOperation[0],
   });
   client.getMutationCache().clear();
 }

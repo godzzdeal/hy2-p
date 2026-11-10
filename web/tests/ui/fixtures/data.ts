@@ -1,6 +1,14 @@
 import { type IConfiguration } from "@/services/configuration/configuration-types";
 import { demoSystem } from "@/services/demo/routes/system";
 export const PANEL_METADATA: Record<string, unknown> = {
+  "/api/panel/maintenance": {
+    available: false,
+    current: "",
+    previous: "",
+    rollbackAvailable: false,
+    backupCreated: "",
+    operation: { busy: false, phase: "idle" },
+  },
   "/api/system": demoSystem(),
   "/api/admin/cloud-password": { enabled: false },
   "/api/certificates/hysteria": { mode: "tls", automaticRenewal: false, certificates: [] },

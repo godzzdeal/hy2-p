@@ -3,6 +3,7 @@ import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { type TLogLevel } from "@/utils/core/logs/log-text";
 import { useTranslation } from "react-i18next";
+import { LogUserFilter, type ILogUserFilter } from "@/components/core/logs/filters";
 export function LogToolbar({
   search,
   onSearch,
@@ -13,6 +14,9 @@ export function LogToolbar({
   onDownload,
   onClear,
   canClear,
+  users,
+  userId,
+  onUser,
 }: {
   search: string;
   onSearch: (value: string) => void;
@@ -23,7 +27,7 @@ export function LogToolbar({
   onDownload: () => void;
   onClear: () => void;
   canClear: boolean;
-}) {
+} & ILogUserFilter) {
   const { t } = useTranslation();
   return (
     <div className="log-toolbar flex flex-wrap items-center gap-2 border-b border-line p-3">
@@ -45,6 +49,7 @@ export function LogToolbar({
         <SelectOption value="warn">{t("Предупреждения")}</SelectOption>
         <SelectOption value="info">{t("Информация")}</SelectOption>
       </Select>
+      <LogUserFilter users={users} userId={userId} onUser={onUser} />
       <button type="button" className="secondary" aria-pressed={isFollowing} onClick={onFollow}>
         <ArrowDownToLine width={24} height={24} aria-hidden />
         {t("Автопрокрутка")}

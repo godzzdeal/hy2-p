@@ -20,6 +20,7 @@
 @use "./features/users/access/cores" as *;
 @use "./features/users/flags" as *;
 @use "./features/system" as *;
+@use "./features/panel-maintenance" as *;
 @use "./features/session" as *;
 @use "./dialogs/modal" as *;
 @use "./dialogs/connections/sharing" as *;
