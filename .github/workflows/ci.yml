@@ -1,7 +1,7 @@
 name: Checks
 on:
   push:
-    branches: [main, feature, bugfix]
+    branches: [main, 'feature/**', 'bugfix/**']
   pull_request:
   workflow_dispatch:
 permissions:
