@@ -3,32 +3,30 @@
 ## Ветки
 
 - `main`: стабильная версия. Релизы выпускаются из этой ветки.
-- `feature`: подготовка новых возможностей.
-- `bugfix`: база для срочных исправлений текущего релиза. Pull Request задачи направляется сразу в `main`.
+- `feature/<задача>`: новые возможности.
+- `bugfix/<задача>`: исправления ошибок.
 
 Для каждой задачи создавайте отдельную ветку:
 
 ```bash
-git switch feature
+git switch main
 git pull --ff-only
-git switch -c codex/feature-panel-updates
+git switch -c feature/panel-updates
 ```
 
 Для срочного исправления:
 
 ```bash
-git switch bugfix
+git switch main
 git pull --ff-only
-git switch -c codex/bugfix-watchdog
+git switch -c bugfix/watchdog
 ```
 
-Не используйте имена `feature/задача` и `bugfix/задача`: Git не позволяет сочетать их с ветками `feature` и `bugfix`.
+`feature/` и `bugfix/` обозначают группы веток. Отдельные ветки с именами `feature` и `bugfix` не создаются.
 
 ## Pull Request
 
-Новые возможности проходят путь `ветка задачи → feature → main`. Ветка срочной задачи создаётся от `bugfix`, а её Pull Request направляется сразу в `main`.
-
-После исправления в `main` перенесите его в `feature` через отдельный Pull Request. Перед следующей срочной задачей синхронизируйте `bugfix` с `main`.
+Ветки задач создаются от актуальной `main`. Pull Request из `feature/<задача>` или `bugfix/<задача>` направляется в `main`. Срочные исправления попадают в `main` без промежуточной ветки.
 
 В описании укажите, что изменилось для пользователя и как это проверено. Для изменений интерфейса приложите снимки на компьютере и телефоне. Дождитесь успешных проверок перед слиянием.
 
@@ -52,4 +50,4 @@ bun run build
 bun run test:ui
 ```
 
-GitHub Actions выполняет проверки для Pull Request и веток `main`, `feature`, `bugfix`. Готовые Docker-образы собираются для `main` или при ручном запуске сборки.
+GitHub Actions выполняет проверки для Pull Request и веток `main`, `feature/**`, `bugfix/**`. Готовые Docker-образы собираются для `main` или при ручном запуске сборки.
