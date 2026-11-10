@@ -1,3 +1,4 @@
+import { styleClass } from "@/styles/runtime";
 import { Emoji } from "@/components/elements/emoji/Emoji";
 import { useUiStore } from "@/store/ui-store";
 import { emojiAsset, leadingEmoji } from "@/utils/emoji/model";
@@ -26,7 +27,7 @@ export function EmojiMenu({ onSelect }: { onSelect: (emoji: string) => void }) {
   return (
     <Picker
       unstyled
-      className="emoji-grid relative inset-auto p-0 w-full min-h-64"
+      className={styleClass("emoji-grid relative inset-auto p-0 w-full min-h-64")}
       width="100%"
       height="100%"
       emojiStyle="twitter"

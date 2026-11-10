@@ -48,8 +48,13 @@ export function UserEditor({ user, onClose }: IUserEditor) {
           placeholder={user ? "Без изменений" : "Автоматически"}
           label={user ? t("Новый пароль подключения") : t("Пароль подключения (или автоматический)")}
         />
-        <Button disabled={isPending} className="full w-full" variant="primary">
-          {isPending ? t("Сохраняем\u2026") : t("Сохранить пользователя")}
+        <Button
+          aria-label={t("Сохранить пользователя")}
+          disabled={isPending}
+          className="full w-full"
+          variant="primary"
+        >
+          {isPending ? t("Сохраняем\u2026") : t("Сохранить")}
         </Button>
       </Form>
     </Modal>

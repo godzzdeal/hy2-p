@@ -10,6 +10,7 @@ test("settings collapse keeps drafts, remembers state and leaves room for fixed 
   const account = page.locator("#panel-account");
   const toggle = account.getByRole("button", { name: "Учётная запись администратора", exact: true });
   await expect(page.locator('.settings-toggle[aria-expanded="true"]')).toHaveCount(0);
+  await expect(account.locator("form")).toHaveCount(0);
   await toggle.click();
   await account.getByLabel("Логин", { exact: true }).fill("draft-name");
   await toggle.click();

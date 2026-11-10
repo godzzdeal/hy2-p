@@ -45,8 +45,8 @@ export function PortRuleForm({
           </FormSelect>
         </Field>
       </FieldGrid>
-      <Button variant="primary" disabled={isPending}>
-        {t(isPending ? "Применяем…" : "Применить правило")}
+      <Button aria-label={t("Применить правило")} variant="primary" disabled={isPending}>
+        {t(isPending ? "Применяем…" : "Применить")}
       </Button>
     </Form>
   );

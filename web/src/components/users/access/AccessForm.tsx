@@ -86,8 +86,13 @@ export function AccessForm({
           {t("Экземпляры с собственной аутентификацией управляют доступом через свою конфигурацию.")}
         </Caption>
       )}
-      <Button className="full w-full" variant="primary" disabled={save.isPending}>
-        {t(save.isPending ? "Сохраняем…" : "Сохранить доступ")}
+      <Button
+        aria-label={t("Сохранить доступ")}
+        className="full w-full"
+        variant="primary"
+        disabled={save.isPending}
+      >
+        {t(save.isPending ? "Сохраняем…" : "Сохранить")}
       </Button>
     </form>
   );

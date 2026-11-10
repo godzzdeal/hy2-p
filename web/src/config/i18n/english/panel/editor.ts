@@ -7,7 +7,6 @@ export const EDITOR = {
     "Edits stay in the draft. Closing this window does not save them to the server.",
   "Ошибок YAML: {{count}}": "YAML errors: {{count}}",
   "Без ошибок": "No errors",
-  "К конфигурации": "Back to configuration",
   Найти: "Find",
   Заменить: "Replace",
   Все: "All",

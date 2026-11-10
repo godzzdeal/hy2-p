@@ -44,8 +44,13 @@ export function OutboundsEditor({
       {entries.map((entry, index) => (
         <OutboundRow key={index} value={entry} index={index} search={search} onEdit={onEdit} />
       ))}
-      <Button type="button" variant="secondary" onClick={() => onEdit({ type: "add" })}>
-        {t("Добавить исходящее подключение")}
+      <Button
+        aria-label={t("Добавить исходящее подключение")}
+        type="button"
+        variant="secondary"
+        onClick={() => onEdit({ type: "add" })}
+      >
+        {t("Добавить")}
       </Button>
     </div>
   );

@@ -2,6 +2,7 @@ import { Caption } from "@/components/elements/Caption";
 import { Field } from "@/components/ui/fields/Field";
 import { Input } from "@/components/ui/fields/controls/Input";
 import { Button } from "@/components/ui/button/Button";
+import { Badge } from "@/components/ui/status/Badge";
 import { Notice } from "@/components/ui/feedback";
 import { DeviceRow } from "@/components/users/devices/DeviceRow";
 import { useDeviceCommands } from "@/hooks/users/devices/hooks";
@@ -41,8 +42,13 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
           />
           <small id="device-limit-help">{t("0 отключает лимит. Учитываются устройства с подпиской.")}</small>
         </Field>
-        <Button className="full w-full" variant="primary" disabled={isPending}>
-          {t(commands.limit.isPending ? "Сохраняем…" : "Сохранить лимит устройств")}
+        <Button
+          aria-label={t("Сохранить лимит устройств")}
+          className="full w-full"
+          variant="primary"
+          disabled={isPending}
+        >
+          {t(commands.limit.isPending ? "Сохраняем…" : "Сохранить")}
         </Button>
       </form>
       <Notice>
@@ -50,9 +56,11 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
       </Notice>
       <h3>
         {t("Зарегистрированные устройства")}{" "}
-        <span className="user-count inline-flex items-center justify-center flex-none border border-line bg-surface-soft text-accent">
-          {data.devices.filter((item) => !item.blocked).length}
-        </span>
+        <Badge
+          className="user-count"
+          count={data.devices.filter((item) => !item.blocked).length}
+          variant="accent"
+        />
       </h3>
       {data.devices.length === 0 && (
         <p className="muted">{t("Устройства появятся после обновления подписки в Happ.")}</p>

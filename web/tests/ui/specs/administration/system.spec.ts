@@ -14,9 +14,11 @@ test("overview refreshes server charts and reports panel storage", async ({ page
   await page.reload();
   const section = page.locator("#overview-system");
   await expect(section.getByRole("img")).toHaveCount(4);
+  await section.locator(".system-chart").first().scrollIntoViewIfNeeded();
   await expect(section.getByText("12.5%", { exact: true })).toBeVisible();
   cpu = 25;
-  await expect(section.getByText("25.0%", { exact: true })).toBeVisible({ timeout: 10000 });
+  await expect(section.getByText("25.0%", { exact: true })).toBeVisible({ timeout: 4500 });
+  await expect(section.getByText("Обновление каждые 3 секунды", { exact: true })).toBeVisible();
   await expect(section.getByText("Резервные копии", { exact: true })).toBeVisible();
   await expect(section.getByText("Образы Docker", { exact: true })).toBeVisible();
   await section.scrollIntoViewIfNeeded();

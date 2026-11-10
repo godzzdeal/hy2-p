@@ -37,7 +37,7 @@ export function EmojiPicker({ value, onChange }: { value: string; onChange: (emo
             aria-label={t("Выбрать эмодзи")}
           >
             {emoji ? <Emoji value={emoji} /> : <Sparkles width={24} height={24} aria-hidden />}
-            <span>{t(emoji ? "Изменить эмодзи" : "Выбрать эмодзи")}</span>
+            <span>{t(emoji ? "Изменить" : "Выбрать")}</span>
           </Button>
         }
         contentProps={{ className: "emoji-popup", "aria-label": t("Меню эмодзи") }}

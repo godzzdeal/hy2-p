@@ -1,4 +1,5 @@
-import { ChevronDown, ChevronUp } from "@/components/elements/icons";
+import { styleClass } from "@/styles/runtime";
+import { ChevronDown } from "@/components/elements/icons";
 import { EMPTY_SELECT_VALUE, encodeSelectValue } from "@/components/ui/select/select-value";
 import { cn } from "@/utils/cn";
 import { CONTROL_STYLES } from "@/components/ui/fields/controls/control-styles";
@@ -42,31 +43,33 @@ export function Select({
     >
       <Primitive.Trigger
         {...triggerProps}
-        className={cn(
-          "select-trigger inline-flex h-control items-center justify-between gap-3 py-0 text-left font-normal aria-expanded:border-accent",
-          CONTROL_STYLES,
-          className,
+        className={styleClass(
+          cn(
+            "select-trigger inline-flex h-control items-center justify-between gap-3 py-0 text-left font-normal aria-expanded:border-accent",
+            CONTROL_STYLES,
+            className,
+          ),
         )}
       >
-        <Primitive.Value className="min-w-0 truncate" />
+        <span data-select-value className="min-w-0 flex-1 truncate">
+          <Primitive.Value />
+        </span>
         <Primitive.Icon asChild>
-          <ChevronDown width={24} height={24} className="shrink-0 text-muted" aria-hidden />
+          <ChevronDown width={24} height={24} className={styleClass("shrink-0 text-muted")} aria-hidden />
         </Primitive.Icon>
       </Primitive.Trigger>
       <Primitive.Portal>
         <Primitive.Content
-          className="select-popup z-60 overflow-hidden border border-line bg-surface text-foreground shadow-popup"
+          className={styleClass(
+            "select-popup z-60 overflow-hidden border-2 border-line bg-surface text-foreground shadow-pixel",
+          )}
           position="popper"
           sideOffset={4}
           collisionPadding={8}
         >
-          <Primitive.ScrollUpButton className="grid h-6 place-items-center bg-surface text-muted">
-            <ChevronUp width={24} height={24} aria-hidden />
-          </Primitive.ScrollUpButton>
-          <Primitive.Viewport className="p-1">{children}</Primitive.Viewport>
-          <Primitive.ScrollDownButton className="grid h-6 place-items-center bg-surface text-muted">
-            <ChevronDown width={24} height={24} aria-hidden />
-          </Primitive.ScrollDownButton>
+          <Primitive.Viewport className={styleClass("min-h-0 overscroll-contain scroll-auto p-1")}>
+            {children}
+          </Primitive.Viewport>
         </Primitive.Content>
       </Primitive.Portal>
     </Primitive.Root>

@@ -15,6 +15,7 @@
 *.key
 *.crt
 /web/test-results/
+/web/.cache/
 /web/tests/test-results/
 /web/playwright-report/
 /.ci-images/

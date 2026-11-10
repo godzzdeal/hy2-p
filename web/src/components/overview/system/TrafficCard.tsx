@@ -21,19 +21,19 @@ export function TrafficCard({ upload, download, received, transmitted, isAvailab
       </CardHeader>
       <CardBody className="gap-1">
         <div className="system-storage-row flex items-baseline justify-between gap-3 min-w-0">
-          <span>{t("VPN, отправлено пользователями")}</span>
+          <span>{t("Отправлено пользователями")}</span>
           <strong>{isAvailable ? "↑ " + formatBytes(upload, t) : t("Недоступно")}</strong>
         </div>
         <div className="system-storage-row flex items-baseline justify-between gap-3 min-w-0">
-          <span>{t("VPN, получено пользователями")}</span>
+          <span>{t("Получено пользователями")}</span>
           <strong>{isAvailable ? "↓ " + formatBytes(download, t) : t("Недоступно")}</strong>
         </div>
         <div className="system-storage-row flex items-baseline justify-between gap-3 min-w-0">
-          <span>{t("Сеть, получено с запуска")}</span>
+          <span>{t("Получено с запуска")}</span>
           <strong>↓ {formatBytes(received, t)}</strong>
         </div>
         <div className="system-storage-row flex items-baseline justify-between gap-3 min-w-0">
-          <span>{t("Сеть, отправлено с запуска")}</span>
+          <span>{t("Отправлено с запуска")}</span>
           <strong>↑ {formatBytes(transmitted, t)}</strong>
         </div>
       </CardBody>

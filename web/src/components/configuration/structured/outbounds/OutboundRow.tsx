@@ -26,9 +26,14 @@ export function OutboundRow({
     <div className="outbound-entry border-b border-line">
       <div className="outbound-heading flex justify-between items-center gap-3 p-4 bg-surface-soft flex-wrap">
         <h3>outbounds[{index}]</h3>
-        <Button type="button" variant="secondary" onClick={() => onEdit({ type: "remove", index })}>
+        <Button
+          aria-label={t("Удалить подключение")}
+          type="button"
+          variant="secondary"
+          onClick={() => onEdit({ type: "remove", index })}
+        >
           <Trash2 width={24} height={24} aria-hidden />
-          {t("Удалить подключение")}
+          {t("Удалить")}
         </Button>
       </div>
       <FieldGrid columns={2}>

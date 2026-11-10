@@ -1,6 +1,6 @@
 import { defineConfig } from "@playwright/test";
 export default defineConfig({
-  testDir: ".", testMatch: "*.spec.ts", fullyParallel: true, timeout: 30000,
+  testDir: "../../.cache/tests/demo", testMatch: "*.spec.ts", fullyParallel: true, timeout: 30000,
   forbidOnly: !!process.env.CI, retries: 0, outputDir: "../../test-results/demo",
   use: { headless: true, screenshot: "only-on-failure", trace: "retain-on-failure" },
   projects: [

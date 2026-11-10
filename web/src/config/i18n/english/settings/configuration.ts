@@ -65,7 +65,6 @@ export const CONFIGURATION: Record<string, string> = {
   "Источник аутентификации": "Authentication source",
   Истёк: "Expired",
   "Исходящие подключения: direct / socks5 / http (JSON)": "Outbounds: direct / socks5 / http (JSON)",
-  "К пользователям": "Manage users",
   "Каталог ACME на постоянном томе": "ACME directory on persistent storage",
   "Каталог файлов маскировки": "Masquerade files directory",
   "Ключ или логин": "Key or username",

@@ -50,8 +50,8 @@ export function AccountForm({ username }: { username: string }) {
               "Оставьте новый пароль пустым, чтобы изменить только логин. После сохранения все сессии будут завершены.",
             )}
           </Caption>
-          <Button variant="primary" disabled={isPending}>
-            {t("Изменить данные входа")}
+          <Button aria-label={t("Изменить данные входа")} variant="primary" disabled={isPending}>
+            {t("Изменить")}
           </Button>
           <AccountRecovery />
         </CardBody>

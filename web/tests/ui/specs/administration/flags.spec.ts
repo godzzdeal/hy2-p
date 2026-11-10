@@ -14,7 +14,7 @@ test("default user flag can be saved and individual names remain editable", asyn
   const picker = page.getByRole("combobox", { name: "Общий флаг пользователей", exact: true });
   await picker.click();
   await page.getByRole("option", { name: "Нидерланды", exact: true }).click();
-  await page.getByRole("button", { name: "Сохранить настройки подписки", exact: true }).click();
+  await page.getByRole("button", { name: "Сохранить", exact: true }).click();
   await expect.poll(() => settings.defaultUserFlag).toBe("🇳🇱");
   await page.getByRole("button", { name: "Пользователи", exact: true }).click();
   await page.getByRole("button", { name: "Добавить", exact: true }).click();

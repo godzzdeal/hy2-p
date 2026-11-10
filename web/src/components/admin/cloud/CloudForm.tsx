@@ -33,15 +33,7 @@ export function CloudForm({ isEnabled }: { isEnabled: boolean }) {
       </Caption>
       <CommandBlock command="sudo hy2-panel cloud-password-reset" />
       <Button variant="primary" disabled={isPending}>
-        {t(
-          isPending
-            ? "Сохраняем…"
-            : isDisabling
-              ? "Отключить пароль"
-              : isEnabled
-                ? "Изменить облачный пароль"
-                : "Включить облачный пароль",
-        )}
+        {t(isPending ? "Сохраняем…" : isDisabling ? "Отключить" : isEnabled ? "Изменить" : "Включить")}
       </Button>
     </Form>
   );

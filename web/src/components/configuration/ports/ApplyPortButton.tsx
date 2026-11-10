@@ -14,6 +14,7 @@ export function ApplyPortButton({ status }: { status: IDeployment }) {
   return (
     <div className="mt-3">
       <Button
+        aria-label={t("Применить UDP-порт")}
         type="button"
         variant="primary"
         disabled={!canApply}
@@ -22,7 +23,7 @@ export function ApplyPortButton({ status }: { status: IDeployment }) {
         }
       >
         <PlugZap width={24} height={24} aria-hidden />
-        {t(mutation.isPending ? "Запускаем проверку…" : "Применить UDP-порт")}
+        {t(mutation.isPending ? "Запускаем проверку…" : "Применить")}
       </Button>
       <small className="mt-2 block">
         {t(

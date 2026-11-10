@@ -44,7 +44,7 @@ export function GroupMembers({ group, onClose }: { group: IGroup; onClose: () =>
             {t(selection.isFoundSelected ? "Снять найденные" : "Выбрать найденных")}
           </Button>
         </div>
-        <div className="group-member-list grid gap-2 flex-1 min-h-0 overflow-y-auto overscroll-contain scrollbar-stable p-1">
+        <div className="group-member-list grid gap-2 flex-1 min-h-0 overflow-y-auto overscroll-contain">
           {selection.visible.map((user) => (
             <MemberRow
               key={user.id}
@@ -65,8 +65,12 @@ export function GroupMembers({ group, onClose }: { group: IGroup; onClose: () =>
         <Button type="button" variant="secondary" onClick={onClose} disabled={save.isPending}>
           {t("Назад")}
         </Button>
-        <Button variant="primary" disabled={isLoading || !!error || save.isPending}>
-          {t(save.isPending ? "Сохраняем…" : "Сохранить участников")}
+        <Button
+          aria-label={t("Сохранить участников")}
+          variant="primary"
+          disabled={isLoading || !!error || save.isPending}
+        >
+          {t(save.isPending ? "Сохраняем…" : "Сохранить")}
         </Button>
       </Actions>
     </form>

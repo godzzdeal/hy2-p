@@ -25,12 +25,13 @@ export function PanelMaintenance() {
           {t("Установлено")}: <strong>{installation.current.replace(/^v/, "")}</strong>
         </span>
         <Button
+          aria-label={t("Проверить версии панели")}
           type="button"
           variant="outline"
           disabled={model.versions.isFetching}
           onClick={() => void model.versions.refetch()}
         >
-          {t("Проверить версии панели")}
+          {t("Проверить")}
         </Button>
       </Actions>
       <QueryState isLoading={model.versions.isPending} error={model.versions.error} />
@@ -54,20 +55,22 @@ export function PanelMaintenance() {
       )}
       <Actions>
         <Button
+          aria-label={t("Обновить панель")}
           type="button"
           variant="primary"
           disabled={!model.canUpdate}
           onClick={() => model.setConfirmation({ action: "update", version: model.version })}
         >
-          {t("Обновить панель")}
+          {t("Обновить")}
         </Button>
         <Button
+          aria-label={t("Откатить панель")}
           type="button"
           variant="secondary"
           disabled={!model.canRollback}
           onClick={() => model.setConfirmation({ action: "rollback", restoreData: true })}
         >
-          {t("Откатить панель")}
+          {t("Откатить")}
         </Button>
         <Button
           type="button"

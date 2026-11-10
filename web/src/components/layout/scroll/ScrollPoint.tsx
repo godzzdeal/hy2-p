@@ -11,7 +11,7 @@ export function ScrollPoint({ section, isActive }: IScrollPoint) {
   function onSelect() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const target = document.getElementById(section.id);
-    const content = target?.closest<HTMLElement>(".content");
+    const content = target?.closest<HTMLElement>("[data-page-content]");
     if (!target || !content) return;
     const top = target.getBoundingClientRect().top - content.getBoundingClientRect().top + content.scrollTop;
     content.scrollTo({ top, behavior: reduced ? "instant" : "smooth" });

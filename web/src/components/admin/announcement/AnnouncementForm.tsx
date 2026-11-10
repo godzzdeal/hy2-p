@@ -80,7 +80,7 @@ export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
           </Caption>
           <Caption>{t("При добавлении только отдельной ссылки сервера сообщение не передаётся.")}</Caption>
           <Button variant="primary" disabled={isPending || isTooLong}>
-            {t("Сохранить настройки подписки")}
+            {t("Сохранить")}
           </Button>
         </CardBody>
       </Form>

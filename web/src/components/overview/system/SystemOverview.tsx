@@ -13,8 +13,8 @@ export function SystemOverview() {
     <section id="overview-system" data-scroll-section data-scroll-label={t("Состояние сервера")}>
       <div className="system-heading flex items-center justify-between gap-4 mb-4 flex-wrap">
         <h2>{t("Состояние сервера")}</h2>
-        <Actions>
-          <small>{t(hasVisibleCharts ? "Обновление каждые 5 секунд" : "Графики скрыты")}</small>
+        <Actions className="flex-nowrap">
+          <small>{t(hasVisibleCharts ? "Обновление каждые 3 секунды" : "Графики скрыты")}</small>
           <ChartPreferences />
         </Actions>
       </div>

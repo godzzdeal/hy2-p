@@ -11,11 +11,28 @@ test("expanding groups does not introduce a desktop scrollbar", async ({ page },
     for (const isExpanded of [true, false, true]) {
       const toggle = page.locator(".user-group-toggle");
       if (await toggle.getAttribute("aria-expanded") !== String(isExpanded)) await toggle.click();
+      await expect(page.locator(".group-users tr")).toHaveCount(isExpanded ? USERS.length : 0);
       await expect.poll(() => wrap.evaluate(element => element.scrollWidth - element.clientWidth)).toBe(0);
       expect(await wrap.evaluate(element => element.scrollHeight - element.clientHeight)).toBe(0);
     }
   }
   await page.screenshot({ path: info.outputPath("groups-no-scrollbar.png"), fullPage: true });
+});
+
+test("member cards align with the search control without an unused scrollbar gutter", async ({ page }) => {
+  const { users } = await mockMembers(page);
+  await page.route("http://panel.test/api/users", (route) => route.fulfill({ json: users.slice(0, 4) }));
+  await page.getByRole("button", { name: "Обновить", exact: true }).click();
+  await page.getByRole("button", { name: "Участники группы Friends", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  const search = (await dialog.getByRole("searchbox").boundingBox())!;
+  const list = dialog.locator(".group-member-list");
+  const scrollbar = await list.evaluate((element: HTMLDivElement) => element.offsetWidth - element.clientWidth);
+  for (const row of await dialog.locator(".group-member-row").all()) {
+    const bounds = (await row.boundingBox())!;
+    expect(bounds.x).toBe(search.x);
+    expect(Math.abs(bounds.x + bounds.width + scrollbar - search.x - search.width)).toBeLessThanOrEqual(1);
+  }
 });
 test("member rows keep names, flags and group labels inside their bounds", async ({ page }, info) => {
   await mockMembers(page);

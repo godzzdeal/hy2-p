@@ -38,8 +38,13 @@ export function PasswordLogin({ isPending, onSubmit }: IPasswordLogin) {
         minLength={0}
         autoComplete="current-password"
       />
-      <Button className="w-full justify-between" variant="primary" disabled={isPending}>
-        {t(isPending ? "Входим…" : "Войти в панель")}
+      <Button
+        aria-label={t("Войти в панель")}
+        className="w-full justify-between"
+        variant="primary"
+        disabled={isPending}
+      >
+        {t(isPending ? "Входим…" : "Войти")}
         <ArrowUpRight width={24} height={24} aria-hidden />
       </Button>
       <AccountRecovery />

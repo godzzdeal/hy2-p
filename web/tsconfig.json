@@ -9,6 +9,7 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
+    "jsxImportSource": "@/styles/runtime",
     "strict": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,

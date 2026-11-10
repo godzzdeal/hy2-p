@@ -1,17 +1,7 @@
 @layer components {
-  .content {
-    @apply snap-y;
-  }
-  .content:has(form),
-  html:has(.overlay) .content {
-    @apply snap-none;
-  }
-  .content:has(input:focus, textarea:focus, [contenteditable="true"]:focus, button:focus-visible) {
-    @apply snap-none;
-  }
   [data-scroll-section],
   .instance-selector {
-    @apply snap-start snap-always scroll-my-4;
+    @apply scroll-my-4;
   }
   .scroll-navigation {
     inset: 50% calc(var(--scrollbar-size) + var(--space-2)) auto auto;
@@ -37,12 +27,6 @@
   .scroll-point:focus-visible .scroll-point-label {
     @apply opacity-100 transform-none;
   }
-  @variant motion-reduce {
-    .content {
-      @apply snap-none;
-    }
-  }
-
   @variant max-tablet {
     .scroll-navigation {
       @apply inset-auto;

@@ -28,10 +28,10 @@
       @apply basis-full min-w-0;
     }
     .version-controls > button {
-      @apply flex-1;
+      @apply flex-auto;
     }
     .dialog-actions > button {
-      @apply flex-1;
+      @apply flex-auto;
     }
   }
 }

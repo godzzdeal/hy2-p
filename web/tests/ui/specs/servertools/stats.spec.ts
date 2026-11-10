@@ -12,11 +12,11 @@ test("runtime stats secret is fetched only on request and can be hidden", async 
   await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
   await page.getByRole("button", { name: "Traffic Stats API", exact: true }).click();
   expect(reads).toBe(0);
-  await page.getByRole("button", { name: "Показать секрет Traffic Stats", exact: true }).click();
+  await page.getByRole("button", { name: "Показать", exact: true }).click();
   await expect(
     page.getByRole("textbox", { name: "Фактический секрет Traffic Stats", exact: true }),
   ).toHaveValue("runtime-fixture-secret");
   await page.screenshot({ path: info.outputPath("stats-tools.png"), fullPage: true });
-  await page.getByRole("button", { name: "Скрыть секрет", exact: true }).click();
+  await page.getByRole("button", { name: "Скрыть", exact: true }).click();
   await expect(page.locator('input[value="runtime-fixture-secret"]')).toHaveCount(0);
 });

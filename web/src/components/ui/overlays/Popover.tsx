@@ -1,3 +1,4 @@
+import { styleClass } from "@/styles/runtime";
 import { POPUP_STYLES } from "@/components/ui/overlays/overlay-styles";
 import { cn } from "@/utils/cn";
 import * as Primitive from "@radix-ui/react-popover";
@@ -18,7 +19,7 @@ export function Popover({ trigger, children, contentProps, ...props }: IPopover)
           sideOffset={8}
           collisionPadding={16}
           {...contentProps}
-          className={cn(POPUP_STYLES, contentProps?.className)}
+          className={styleClass(cn(POPUP_STYLES, contentProps?.className))}
         >
           {children}
         </Primitive.Content>

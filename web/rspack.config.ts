@@ -1,14 +1,12 @@
 import path from "node:path";
 import { defineConfig } from "@rspack/cli";
 import { rspack } from "@rspack/core";
-import { WEB_ROOT, PANEL_VERSION, STYLE_MODULE, ASSET_PLUGINS } from "./build/index.ts";
-export default defineConfig((env: { demo?: boolean }) => ({
+import { WEB_ROOT, PANEL_VERSION, styleModule, ASSET_PLUGINS } from "./build/index.ts";
+export default defineConfig((env: { demo?: boolean }, argv: { mode?: string }) => ({
   entry: "./src/main.tsx",
   output: {
     filename: "[name].[contenthash:8].js",
     chunkFilename: "[name].[contenthash:8].js",
-    cssFilename: "[name].[contenthash:8].css",
-    cssChunkFilename: "[name].[contenthash:8].css",
     clean: true,
     publicPath: "/",
     path: path.resolve(WEB_ROOT, env.demo ? "dist-demo" : "dist"),
@@ -26,7 +24,6 @@ export default defineConfig((env: { demo?: boolean }) => ({
       "@config-schema": path.resolve(WEB_ROOT, "../internal/configuration/ordering/order.json"),
     },
   },
-  experiments: { css: true },
   optimization: { splitChunks: { chunks: "all" as const } },
   devServer: {
     host: "127.0.0.1",
@@ -34,8 +31,12 @@ export default defineConfig((env: { demo?: boolean }) => ({
     historyApiFallback: true,
     proxy: [{ context: ["/api", "/sub"], target: "http://127.0.0.1:8080" }],
   },
-  module: STYLE_MODULE,
+  module: styleModule(argv.mode === "production"),
   plugins: [
+    new rspack.CssExtractRspackPlugin({
+      filename: "[name].[contenthash:8].css",
+      chunkFilename: "[name].[contenthash:8].css",
+    }),
     new rspack.DefinePlugin({
       __HY2_DEMO__: JSON.stringify(env.demo === true),
       __HY2_PANEL_VERSION__: JSON.stringify(PANEL_VERSION),

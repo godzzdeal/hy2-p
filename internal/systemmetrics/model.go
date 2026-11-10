@@ -6,9 +6,10 @@ import (
 	"time"
 )
 
-const SampleInterval = 5 * time.Second
+const SampleInterval = 3 * time.Second
 const StorageInterval = time.Minute
-const HistorySize = 120
+const HistoryWindow = 10 * time.Minute
+const HistorySize = int(HistoryWindow / SampleInterval)
 const ScanTimeout = 15 * time.Second
 
 type Sample struct {

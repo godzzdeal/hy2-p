@@ -16,7 +16,7 @@ export function MemberRow({ user, groupName, isChecked, onToggle }: IMemberRow) 
   const { t } = useTranslation();
   return (
     <Field
-      className="group-member-row m-0 grid min-h-16 grid-cols-member items-center gap-3 border border-line bg-input px-3 py-2 hover:border-accent has-checked:border-accent has-checked:bg-surface-soft focus-within:outline-2 focus-within:outline-accent"
+      className="group-member-row m-0 grid min-h-16 grid-cols-member items-center gap-3 border-2 border-line bg-input px-3 py-2 hover:border-accent has-checked:border-accent has-checked:bg-surface-soft focus-within:outline-2 focus-within:-outline-offset-4 focus-within:outline-accent"
       isInline
     >
       <Input

@@ -36,8 +36,8 @@ export function GroupEditor({ group, onClose }: { group?: IGroup; onClose: () =>
         <Button type="button" variant="secondary" onClick={onClose} disabled={isPending}>
           {t("Назад")}
         </Button>
-        <Button variant="primary" disabled={isPending}>
-          {t(isPending ? "Сохраняем…" : "Сохранить группу")}
+        <Button aria-label={t("Сохранить группу")} variant="primary" disabled={isPending}>
+          {t(isPending ? "Сохраняем…" : "Сохранить")}
         </Button>
       </Actions>
     </Form>

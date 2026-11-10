@@ -1,7 +1,19 @@
 @layer components {
+  .select-trigger [data-select-value] .flag-name {
+    @apply flex max-w-full;
+  }
+  .select-trigger [data-select-value] .flag-name > span {
+    @apply min-w-0 truncate;
+  }
   .select-popup {
     min-width: var(--radix-select-trigger-width);
     max-width: calc(100vw - var(--space-4));
     max-height: min(320px, var(--radix-select-content-available-height));
+  }
+  .select-popup [data-radix-select-viewport] {
+    @apply scrollbar-thin;
+  }
+  .select-popup [data-radix-select-viewport]::-webkit-scrollbar {
+    display: block;
   }
 }

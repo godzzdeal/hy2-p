@@ -41,7 +41,7 @@ export function SavedConfiguration({
         }
       >
         <Icon width={24} height={24} aria-hidden />
-        {t(control.isPending ? "Применяем…" : isRunning ? "Перезапустить экземпляр" : "Запустить экземпляр")}
+        {t(control.isPending ? "Применяем…" : isRunning ? "Перезапустить" : "Запустить")}
       </Button>
     </div>
   );

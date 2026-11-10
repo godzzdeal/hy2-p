@@ -31,7 +31,6 @@
     scroll-behavior: smooth;
   }
   .modal,
-  .select-popup[data-state="open"],
   .user-action-popup[data-state="open"],
   .emoji-popup {
     animation: panel-appear var(--motion-normal) var(--motion-ease);
@@ -43,9 +42,14 @@
   .group-users:not([hidden]) {
     animation: panel-fade var(--motion-normal) var(--motion-ease);
   }
-  .select-popup[data-state="closed"],
   .user-action-popup[data-state="closed"] {
     animation: panel-disappear var(--motion-fast) var(--motion-ease);
+  }
+  .select-popup[data-state="open"] {
+    animation: panel-fade var(--motion-fast) var(--motion-ease);
+  }
+  .select-popup[data-state="closed"] {
+    animation: panel-fade var(--motion-fast) var(--motion-ease) reverse;
   }
   .user-group-toggle svg,
   .firewall-help summary svg {

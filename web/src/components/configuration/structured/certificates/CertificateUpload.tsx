@@ -35,12 +35,13 @@ export function CertificateUpload({ onUploaded }: { onUploaded: (cert: string, k
         onFile={(file) => onFile(file, "key")}
       />
       <Button
+        aria-label={t("Загрузить сертификат")}
         type="button"
         variant="secondary"
         disabled={!certificate || !privateKey || mutation.isPending}
         onClick={() => mutation.mutate({ certificate, privateKey })}
       >
-        {t("Загрузить сертификат")}
+        {t("Загрузить")}
       </Button>
       <Caption>
         {t(

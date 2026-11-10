@@ -60,9 +60,13 @@ export function OverviewPage() {
             <br />
             {t("И вы в сети.")}
           </h2>
-          <p>{t("Персональные URL и QR-коды для Happ.")}</p>
-          <Button variant="secondary" onClick={() => selectPage("users")}>
-            {t("К пользователям")}
+          <p>{t("Персональные URL и QR-коды.")}</p>
+          <Button
+            variant="secondary"
+            aria-label={t("Пользователи: открыть список")}
+            onClick={() => selectPage("users")}
+          >
+            {t("Пользователи")}
           </Button>
         </section>
       </div>

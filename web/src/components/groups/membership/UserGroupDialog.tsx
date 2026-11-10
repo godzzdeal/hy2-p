@@ -46,11 +46,12 @@ export function UserGroupDialog({ userId, onClose }: { userId: string; onClose: 
           )}
         </Caption>
         <Button
+          aria-label={t("Сохранить группу")}
           className="full w-full"
           variant="primary"
           disabled={!query.data || !!query.error || assign.isPending}
         >
-          {t(assign.isPending ? "Сохраняем…" : "Сохранить группу")}
+          {t(assign.isPending ? "Сохраняем…" : "Сохранить")}
         </Button>
       </form>
     </Modal>

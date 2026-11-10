@@ -56,7 +56,7 @@ export function DeviceRow({
           disabled={isPending}
           onClick={() => onBlocked(!device.blocked)}
         >
-          {t(device.blocked ? "Разрешить устройство" : "Отключить устройство")}
+          {t(device.blocked ? "Разрешить" : "Отключить")}
         </Button>
         <Button
           className="h-auto"

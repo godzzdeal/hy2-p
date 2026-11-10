@@ -59,16 +59,14 @@ export function YamlDialog(props: IYamlDialog) {
       <div className="yaml-footer">
         <span role="status">{errors ? t("Ошибок YAML: {{count}}", { count: errors }) : t("Без ошибок")}</span>
         <Actions>
-          <Button type="button" variant="secondary" onClick={props.onClose}>
-            {t("К конфигурации")}
-          </Button>
           <Button
+            aria-label={t("Сохранить конфигурацию")}
             type="button"
             variant="primary"
             disabled={props.isPending || !props.isDirty || errors > 0}
             onClick={props.onSave}
           >
-            {t(props.isPending ? "Сохраняем…" : "Сохранить конфигурацию")}
+            {t(props.isPending ? "Сохраняем…" : "Сохранить")}
           </Button>
         </Actions>
       </div>

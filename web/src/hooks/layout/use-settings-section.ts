@@ -4,21 +4,22 @@ const STORAGE_PREFIX = "hy2.settings-section.v2.";
 
 export function useSettingsSection(id: string) {
   const key = STORAGE_PREFIX + id;
-  const [isOpen, setOpen] = useState(() => {
+  const [state, setState] = useState(() => {
     try {
-      return localStorage.getItem(key) === "open";
+      const isOpen = localStorage.getItem(key) === "open";
+      return { isOpen, hasOpened: isOpen };
     } catch {
-      return false;
+      return { isOpen: false, hasOpened: false };
     }
   });
   function onToggle() {
-    const next = !isOpen;
-    setOpen(next);
+    const next = !state.isOpen;
+    setState({ isOpen: next, hasOpened: state.hasOpened || next });
     try {
       localStorage.setItem(key, next ? "open" : "closed");
     } catch {
       // Collapsing remains available when browser storage is disabled.
     }
   }
-  return { isOpen, onToggle };
+  return { ...state, onToggle };
 }

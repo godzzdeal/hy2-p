@@ -81,7 +81,7 @@ export const QUERY_KEYS = {
 } as const;
 export const MUTATION_KEYS = { coreControl: ["core-control"] } as const;
 export const NETWORK = {
-  systemPollMs: 5000,
+  systemPollMs: 3000,
   storagePollMs: 60000,
   restartPollMs: 1000,
   restartTimeoutMs: 120000,

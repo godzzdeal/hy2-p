@@ -6,7 +6,7 @@ export function TrafficStatus() {
   const { t } = useTranslation();
   const traffic = useTraffic();
   return (
-    <Caption>
+    <Caption className="traffic-status px-4 py-3">
       {(traffic.error ? t(traffic.error.message) : t(traffic.data?.error ?? "")) ||
         (traffic.data?.updated
           ? t("Статистика: ") + new Date(traffic.data.updated).toLocaleTimeString()

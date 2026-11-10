@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button/Button";
+import { Badge } from "@/components/ui/status/Badge";
 import { ChevronRight, Users } from "@/components/elements/icons";
 import { UserRow } from "@/components/users/list/row/UserRow";
 import { type IUserActions } from "@/components/users/list/row/actions/UserActions";
@@ -35,9 +36,7 @@ export function GroupSection({ section, onMembers, traffic, ...actions }: IGroup
                 <ChevronRight width={24} height={24} aria-hidden />
                 <span className="group-swatch w-2 h-2 bg-group-color shrink-0" aria-hidden />
                 <strong>{section.group?.name ?? t("Без группы")}</strong>
-                <span className="user-count inline-flex items-center justify-center flex-none border border-line bg-surface-soft text-accent">
-                  {section.total}
-                </span>
+                <Badge className="user-count" count={section.total} variant="accent" />
               </Button>
               {section.group && (
                 <Button
@@ -55,15 +54,16 @@ export function GroupSection({ section, onMembers, traffic, ...actions }: IGroup
         </tr>
       </tbody>
       <tbody id={id} hidden={!isOpen} className={cn("group-users", groupClass)}>
-        {section.users.map((user) => (
-          <UserRow
-            key={user.id}
-            user={user}
-            usage={traffic?.users[user.id] ?? EMPTY_USAGE}
-            isTrafficAvailable={traffic?.available === true}
-            {...actions}
-          />
-        ))}
+        {isOpen &&
+          section.users.map((user) => (
+            <UserRow
+              key={user.id}
+              user={user}
+              usage={traffic?.users[user.id] ?? EMPTY_USAGE}
+              isTrafficAvailable={traffic?.available === true}
+              {...actions}
+            />
+          ))}
       </tbody>
     </>
   );

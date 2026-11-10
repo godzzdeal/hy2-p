@@ -28,8 +28,14 @@ export function TransferSettings() {
           )}
         </p>
         <Actions>
-          <Button type="button" variant="secondary" disabled={transfer.isBusy} onClick={transfer.onExport}>
-            {t("Экспортировать данные")}
+          <Button
+            aria-label={t("Экспортировать данные")}
+            type="button"
+            variant="secondary"
+            disabled={transfer.isBusy}
+            onClick={transfer.onExport}
+          >
+            {t("Экспортировать")}
           </Button>
         </Actions>
         <FileDropzone
@@ -59,16 +65,23 @@ export function TransferSettings() {
           />
         )}
         <Button
+          aria-label={t("Добавить новые записи")}
           type="button"
           variant="primary"
           disabled={transfer.isBusy || !canApply}
           onClick={transfer.onApply}
         >
-          {t("Добавить новые записи")}
+          {t("Добавить")}
         </Button>
         {transfer.preview && (
-          <Button type="button" variant="secondary" disabled={transfer.isBusy} onClick={transfer.onRefresh}>
-            {t("Проверить ещё раз")}
+          <Button
+            aria-label={t("Проверить ещё раз")}
+            type="button"
+            variant="secondary"
+            disabled={transfer.isBusy}
+            onClick={transfer.onRefresh}
+          >
+            {t("Проверить")}
           </Button>
         )}
         <details>

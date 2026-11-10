@@ -47,8 +47,8 @@ export function PairEditor({
           }
         />
       ))}
-      <Button type="button" variant="secondary" onClick={onAdd}>
-        {t("Добавить параметр")}
+      <Button aria-label={t("Добавить параметр")} type="button" variant="secondary" onClick={onAdd}>
+        {t("Добавить")}
       </Button>
     </div>
   );

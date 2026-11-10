@@ -1,6 +1,6 @@
 import { defineConfig } from "@playwright/test";
 export default defineConfig({
-  testDir: "specs",
+  testDir: "../../.cache/tests/ui/specs",
   testMatch: "*.spec.ts",
   fullyParallel: true,
   timeout: 30000,

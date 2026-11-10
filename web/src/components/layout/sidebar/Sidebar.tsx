@@ -1,10 +1,8 @@
 import { Button } from "@/components/ui/button/Button";
-import { Field } from "@/components/ui/fields/Field";
 import { ChevronRight, Earth, LogOut, Server } from "@/components/elements/icons";
 import { LanguageSelect } from "@/components/elements/LanguageSelect";
 import { NavigationItem } from "@/components/layout/sidebar/NavigationItem";
-import { Select } from "@/components/ui/select/Select";
-import { SelectOption } from "@/components/ui/select/SelectOption";
+import { ThemeSwitch } from "@/components/layout/sidebar/theme";
 import { NAVIGATION } from "@/config/navigation";
 import { useConfiguration } from "@/hooks/configuration/use-configuration";
 import { useSession } from "@/hooks/session/use-session";
@@ -12,8 +10,6 @@ import { useUiStore } from "@/store/ui-store";
 import { useTranslation } from "react-i18next";
 export function Sidebar() {
   const { t } = useTranslation();
-  const theme = useUiStore((state) => state.theme);
-  const setTheme = useUiStore((state) => state.setTheme);
   const isSidebarCollapsed = useUiStore((state) => state.isSidebarCollapsed);
   const toggleSidebar = useUiStore((state) => state.toggleSidebar);
   const config = useConfiguration();
@@ -53,14 +49,7 @@ export function Sidebar() {
       </nav>
       <div className="aside-bottom max-tablet:grid max-tablet:grid-cols-2 max-tablet:items-center max-tablet:gap-3 max-tablet:pt-3 mt-auto pt-4">
         <LanguageSelect />
-        <Field className="theme-control max-tablet:m-0 max-tablet:flex-1 max-tablet:min-w-0 my-4 mx-0 tablet:group-data-collapsed/app:hidden">
-          {t("Тема")}
-          <Select value={theme} onValueChange={(nextValue) => setTheme(nextValue as typeof theme)}>
-            <SelectOption value="system">{t("Системная")}</SelectOption>
-            <SelectOption value="light">{t("Светлая")}</SelectOption>
-            <SelectOption value="dark">{t("Тёмная")}</SelectOption>
-          </Select>
-        </Field>
+        <ThemeSwitch />
         <Button
           className="w-full justify-start max-tablet:w-control max-tablet:justify-center max-tablet:px-0 tablet:group-data-collapsed/app:justify-center tablet:group-data-collapsed/app:px-2"
           aria-label={t("Выйти")}

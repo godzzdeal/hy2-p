@@ -41,6 +41,7 @@ export function EchTools({
       </Field>
       <Actions>
         <Button
+          aria-label={t("Создать ключ ECH")}
           type="button"
           variant="secondary"
           disabled={!name || generate.isPending}
@@ -48,15 +49,16 @@ export function EchTools({
             generate.mutate(name, { onSuccess: onGenerated });
           }}
         >
-          {t(generate.isPending ? "Создаём ECH…" : "Создать ключ ECH")}
+          {t(generate.isPending ? "Создаём ECH…" : "Создать")}
         </Button>
         <Button
+          aria-label={t("Получить публичный ECH")}
           type="button"
           variant="secondary"
           disabled={read.isFetching || generate.isPending || !keyPath}
           onClick={() => void read.refetch()}
         >
-          {t("Получить публичный ECH")}
+          {t("Получить")}
         </Button>
       </Actions>
       {read.isSuccess && !result?.configList && (

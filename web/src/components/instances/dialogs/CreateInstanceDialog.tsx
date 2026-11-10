@@ -72,8 +72,12 @@ export function CreateInstanceDialog({
           <Button type="button" onClick={onClose}>
             {t("Отмена")}
           </Button>
-          <Button variant="primary" disabled={create.isPending || !source.data}>
-            {t("Создать экземпляр")}
+          <Button
+            aria-label={t("Создать экземпляр")}
+            variant="primary"
+            disabled={create.isPending || !source.data}
+          >
+            {t("Создать")}
           </Button>
         </div>
       </form>

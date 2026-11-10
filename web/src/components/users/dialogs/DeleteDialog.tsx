@@ -15,12 +15,13 @@ export function DeleteDialog({ user, onClose }: { user: IUser; onClose: () => vo
         {t("\u00BB и его подписка будут удалены без возможности восстановления.")}
       </p>
       <Button
+        aria-label={t("Удалить пользователя")}
         className="full w-full"
         variant="primary"
         disabled={remove.isPending}
         onClick={() => remove.mutate(user.id, { onSuccess: onClose })}
       >
-        {remove.isPending ? t("Удаляем\u2026") : t("Удалить пользователя")}
+        {remove.isPending ? t("Удаляем\u2026") : t("Удалить")}
       </Button>
     </Modal>
   );

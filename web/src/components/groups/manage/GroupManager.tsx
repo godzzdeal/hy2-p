@@ -49,6 +49,7 @@ export function GroupManager({ onClose }: { onClose: () => void }) {
             </Button>
           )}
           <Button
+            aria-label={t("Создать группу")}
             type="button"
             variant="primary"
             disabled={!query.data || !!query.error}
@@ -58,7 +59,7 @@ export function GroupManager({ onClose }: { onClose: () => void }) {
             }}
           >
             <Plus width={24} height={24} aria-hidden />
-            {t("Создать группу")}
+            {t("Создать")}
           </Button>
           <ul className="group-list list-none p-0 grid gap-2">
             {query.data?.groups?.map((item) => (

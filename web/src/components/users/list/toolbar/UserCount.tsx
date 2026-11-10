@@ -9,10 +9,9 @@ export function UserCount() {
     <Badge
       className="user-count tablet:group-data-collapsed/app:h-5 tablet:group-data-collapsed/app:min-w-5 tablet:group-data-collapsed/app:p-0 tablet:group-data-collapsed/app:text-sm"
       variant="accent"
-      isCounter
+      count={users.data.length}
+      title={t("Всего пользователей: {{count}}", { count: users.data.length })}
       aria-label={t("Всего пользователей: {{count}}", { count: users.data.length })}
-    >
-      {users.data.length}
-    </Badge>
+    />
   );
 }

@@ -3,6 +3,7 @@ import { MoreHorizontal } from "@/components/elements/icons";
 import { UserActionButton } from "@/components/users/list/row/actions/UserActionButton";
 import { type IUserAction } from "@/components/users/list/row/actions/UserActions";
 import { Popover } from "@/components/ui/overlays/Popover";
+import { EmojiText } from "@/components/elements/emoji/text/EmojiText";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 export function UserActionMenu({ actions, name }: { actions: IUserAction[]; name: string }) {
@@ -42,7 +43,9 @@ export function UserActionMenu({ actions, name }: { actions: IUserAction[]; name
         },
       }}
     >
-      <strong className="user-action-title block p-2 wrap-anywhere text-lg text-muted">{name}</strong>
+      <strong className="user-action-title block p-2 wrap-anywhere text-lg text-muted">
+        <EmojiText value={name} />
+      </strong>
       {actions.map((action) => (
         <UserActionButton key={action.accessibleName} action={action} onSelected={onSelected} />
       ))}

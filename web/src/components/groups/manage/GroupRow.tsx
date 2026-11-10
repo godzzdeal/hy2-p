@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button/Button";
+import { Badge } from "@/components/ui/status/Badge";
 import { Trash2, Users } from "@/components/elements/icons";
 import { useDeleteGroup } from "@/hooks/groups/hooks";
 import { type IGroup } from "@/services/groups/types";
@@ -29,9 +30,7 @@ export function GroupRow({
       >
         <span aria-hidden className="group-swatch w-2 h-2 bg-group-color shrink-0" />
         {group.name}
-        <span className="user-count inline-flex items-center justify-center flex-none border border-line bg-surface-soft text-accent">
-          {members}
-        </span>
+        <Badge className="user-count" count={members} variant="accent" />
       </Button>
       <Button
         type="button"

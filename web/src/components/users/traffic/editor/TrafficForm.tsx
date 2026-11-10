@@ -97,8 +97,8 @@ export function TrafficForm({
         >
           {t("Сбросить счётчики")}
         </Button>
-        <Button variant="primary" disabled={mutation.isPending}>
-          {t("Сохранить трафик")}
+        <Button aria-label={t("Сохранить трафик")} variant="primary" disabled={mutation.isPending}>
+          {t("Сохранить")}
         </Button>
       </Actions>
       <Caption>{t("Трафик обновляется раз в 5 секунд.")}</Caption>

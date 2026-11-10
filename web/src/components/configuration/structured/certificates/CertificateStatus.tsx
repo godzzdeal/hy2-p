@@ -12,8 +12,13 @@ export function CertificateStatus() {
     <section className="certificate-status">
       <CardHeader>
         <h3>{t("Состояние сертификатов Hysteria2")}</h3>
-        <Button type="button" variant="outline" onClick={() => void query.refetch()}>
-          {t("Проверить сертификаты")}
+        <Button
+          aria-label={t("Проверить сертификаты")}
+          type="button"
+          variant="outline"
+          onClick={() => void query.refetch()}
+        >
+          {t("Проверить")}
         </Button>
       </CardHeader>
       <QueryState isLoading={query.isPending} error={query.error} />

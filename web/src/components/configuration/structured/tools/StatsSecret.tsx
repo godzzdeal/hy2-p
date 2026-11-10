@@ -22,7 +22,7 @@ export function StatsSecret() {
         disabled={stats.isPending}
         onClick={() => (stats.data ? stats.reset() : stats.mutate())}
       >
-        {t(stats.data ? "Скрыть секрет" : "Показать секрет Traffic Stats")}
+        {t(stats.data ? "Скрыть" : "Показать")}
       </Button>
       {stats.data && (
         <>

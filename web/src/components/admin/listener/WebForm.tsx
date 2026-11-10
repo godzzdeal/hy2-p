@@ -28,8 +28,12 @@ export function WebForm({ initial }: { initial: IWebSettings }) {
           hasPrivateKey={current.hasPrivateKey}
         />
         <CardBody>
-          <Button variant="primary" disabled={mutation.isPending}>
-            {t("Сохранить настройки веб-панели")}
+          <Button
+            aria-label={t("Сохранить настройки веб-панели")}
+            variant="primary"
+            disabled={mutation.isPending}
+          >
+            {t("Сохранить")}
           </Button>
           {current.restartRequired && (
             <Notice>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button/Button";
+import { Badge } from "@/components/ui/status/Badge";
 import { Notice } from "@/components/ui/feedback";
 import { Plus, RefreshCw } from "@/components/elements/icons";
 import { CreateInstanceDialog } from "@/components/instances/dialogs/CreateInstanceDialog";
@@ -29,9 +30,7 @@ export function InstancesPage() {
         <div>
           <h1>
             {t("Экземпляры HY2")}{" "}
-            <span className="user-count inline-flex items-center justify-center flex-none border border-line bg-surface-soft text-accent">
-              {query.data?.length ?? 0}
-            </span>
+            <Badge className="user-count" count={query.data?.length ?? 0} variant="accent" />
           </h1>
           <p>{t("До 8 экземпляров на одном сервере.")}</p>
         </div>
@@ -45,12 +44,13 @@ export function InstancesPage() {
             {t("Обновить")}
           </Button>
           <Button
+            aria-label={t("Добавить экземпляр")}
             variant="primary"
             disabled={isPending || !query.data || query.data.length >= MAX_INSTANCES}
             onClick={() => setCreating(true)}
           >
             <Plus width={24} height={24} aria-hidden />
-            {t("Добавить экземпляр")}
+            {t("Добавить")}
           </Button>
         </div>
       </div>
