@@ -1,3 +1,8 @@
+import { Caption } from "@/components/elements/Caption";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Button } from "@/components/ui/button/Button";
+import { Badge } from "@/components/ui/status/Badge";
 import { Notice } from "@/components/ui/feedback";
 import { DeviceRow } from "@/components/users/devices/DeviceRow";
 import { useDeviceCommands } from "@/hooks/users/devices/hooks";
@@ -15,16 +20,16 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
     commands.limit.mutate(Number(limit));
   }
   return (
-    <div className="user-devices">
+    <div className="user-devices min-w-0">
       {effectiveLimit !== data.limit && (
         <Notice>
           {t("Действующий лимит с учётом группы:")} {effectiveLimit}
         </Notice>
       )}
       <form onSubmit={onSubmit}>
-        <label>
+        <Field>
           {t("Лимит устройств")}
-          <input
+          <Input
             aria-label={t("Лимит устройств")}
             aria-describedby="device-limit-help"
             type="number"
@@ -36,22 +41,31 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
             onChange={(event) => setLimit(event.target.value)}
           />
           <small id="device-limit-help">{t("0 отключает лимит. Учитываются устройства с подпиской.")}</small>
-        </label>
-        <button className="primary full" disabled={isPending}>
-          {t(commands.limit.isPending ? "Сохраняем…" : "Сохранить лимит устройств")}
-        </button>
+        </Field>
+        <Button
+          aria-label={t("Сохранить лимит устройств")}
+          className="full w-full"
+          variant="primary"
+          disabled={isPending}
+        >
+          {t(commands.limit.isPending ? "Сохраняем…" : "Сохранить")}
+        </Button>
       </form>
       <Notice>
         {t("После включения лимита обновите подписку в Happ. Одиночные ссылки перестанут работать.")}
       </Notice>
       <h3>
         {t("Зарегистрированные устройства")}{" "}
-        <span className="user-count">{data.devices.filter((item) => !item.blocked).length}</span>
+        <Badge
+          className="user-count"
+          count={data.devices.filter((item) => !item.blocked).length}
+          variant="accent"
+        />
       </h3>
       {data.devices.length === 0 && (
         <p className="muted">{t("Устройства появятся после обновления подписки в Happ.")}</p>
       )}
-      <div className="device-list">
+      <div className="device-list grid gap-3 my-3">
         {data.devices.map((device) => (
           <DeviceRow
             key={device.id}
@@ -62,11 +76,9 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
           />
         ))}
       </div>
-      <p className="caption">
-        {t("Модель и ОС сообщает приложение. Статус подключения обновляется автоматически.")}
-      </p>
+      <Caption>{t("Модель и ОС сообщает приложение. Статус подключения обновляется автоматически.")}</Caption>
       {effectiveLimit === 0 && (
-        <p className="caption">{t("Без лимита одиночные ссылки работают без определения устройства.")}</p>
+        <Caption>{t("Без лимита одиночные ссылки работают без определения устройства.")}</Caption>
       )}
     </div>
   );

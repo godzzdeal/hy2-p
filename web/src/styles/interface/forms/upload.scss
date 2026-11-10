@@ -1,52 +1,30 @@
 @layer components {
   .file-upload {
-    display: grid;
-    gap: var(--space-2);
-    min-width: 0;
-    margin-bottom: var(--space-4);
+    @apply mb-4;
   }
   .file-upload:last-child {
-    margin-bottom: 0;
+    @apply mb-0;
   }
   .file-dropzone {
-    width: 100%;
-    min-width: 0;
-    min-height: calc(var(--space-16) + var(--space-10));
-    height: auto;
-    padding: var(--space-4);
-    gap: var(--space-4);
-    border: 2px dashed var(--line);
-    background: var(--input);
-    text-align: left;
-    box-shadow: none;
+    @apply border-2 shadow-none;
   }
   .file-dropzone > svg {
-    color: var(--accent);
+    @apply text-accent;
     transition: transform var(--motion-fast) var(--motion-ease);
-  }
-  .file-dropzone-content {
-    display: grid;
-    gap: var(--space-1);
-    min-width: 0;
-    overflow-wrap: anywhere;
   }
   .file-dropzone-content small,
   .file-dropzone-name {
-    color: var(--muted);
-    font-size: var(--text-small);
-    line-height: 1.4;
+    @apply text-muted text-lg leading-snug;
   }
   .file-dropzone:hover:not(:disabled),
   .file-dropzone-active {
-    border-color: var(--accent);
-    background: var(--surface-soft);
+    @apply border-accent bg-surface-soft;
   }
   .file-dropzone-active > svg {
     transform: translateY(calc(-1 * var(--space-1)));
   }
   .file-dropzone:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: var(--space-1);
+    @apply outline-2 outline-accent outline-offset-4;
   }
   .file-dropzone[aria-busy="true"] {
     cursor: progress;

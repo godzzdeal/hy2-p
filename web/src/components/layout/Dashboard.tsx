@@ -60,16 +60,26 @@ export function Dashboard() {
   const Page = PAGES[page];
   const content = useRef<HTMLDivElement>(null);
   return (
-    <div className={cn("shell", { "sidebar-collapsed": isSidebarCollapsed })}>
+    <div
+      className={cn(
+        "shell group/app snap-start scroll-m-0 min-h-screen flex max-tablet:flex max-tablet:flex-col max-tablet:h-dvh max-tablet:min-h-0",
+        { "sidebar-collapsed": isSidebarCollapsed },
+      )}
+      data-collapsed={isSidebarCollapsed ? "" : undefined}
+    >
       <SpaceScene />
       <Sidebar />
       <main>
-        <header className="app-header">
+        <header className="app-header bg-surface shrink-0 z-10 min-h-header h-header border-b-2 border-line py-0 px-4 flex items-center justify-between gap-4 max-desktop:px-6 max-tablet:px-4">
           <div className="breadcrumbs">{t(NAVIGATION.find((item) => item.id === page)?.label ?? "")}</div>
-          <span className="admin">{t("Администратор")}</span>
+          <span className="admin max-tablet:hidden">{t("Администратор")}</span>
         </header>
-        <div className="content" ref={content}>
-          <div className="page-content">
+        <div
+          data-page-content
+          className="content relative flex-1 min-h-0 w-full overflow-auto scrollbar-stable snap-proximity scroll-py-4"
+          ref={content}
+        >
+          <div className="page-content min-w-0 w-full max-w-content mx-auto max-tablet:pr-4 max-tablet:pb-4">
             {IS_DEMO && <DemoNotice />}
             <InstanceSelector />
             <Suspense fallback={<Loader label="Загрузка раздела…" />}>

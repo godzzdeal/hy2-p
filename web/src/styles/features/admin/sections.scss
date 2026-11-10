@@ -1,66 +1,41 @@
 @layer components {
   details > summary {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    list-style: none;
-    cursor: pointer;
+    @apply flex items-center gap-2 list-none cursor-pointer;
   }
   details > summary::-webkit-details-marker {
-    display: none;
+    @apply hidden;
   }
   details > summary > svg {
-    flex-shrink: 0;
-    width: var(--icon-size);
-    height: var(--icon-size);
+    @apply shrink-0 w-6 h-6;
     transition: transform var(--motion-fast) var(--motion-ease);
   }
   details[open] > summary > svg {
-    transform: rotate(90deg);
+    @apply rotate-90;
   }
   .settings-section > .card-header {
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-4);
+    @apply items-center flex-wrap gap-y-2 gap-x-4;
   }
   .settings-section > .card-header h2 {
-    flex: 1;
-    min-width: 0;
+    @apply flex-1 min-w-0;
   }
   .settings-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: var(--space-3);
-    min-height: var(--space-12);
-    height: auto;
-    padding: var(--space-2) 0;
-    width: 100%;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    color: inherit;
-    text-align: start;
+    @apply text-inherit;
     font: inherit;
   }
   .settings-toggle:hover,
   .settings-toggle:focus-visible {
-    color: var(--accent);
+    @apply text-accent;
   }
   .settings-toggle span {
-    min-width: 0;
-    overflow-wrap: anywhere;
+    @apply min-w-0 wrap-anywhere;
   }
   .settings-chevron {
-    width: var(--icon-size);
-    height: var(--icon-size);
-    flex-shrink: 0;
     transition: transform var(--motion-fast) var(--motion-ease);
   }
   .settings-chevron.is-expanded {
-    transform: rotate(90deg);
+    @apply rotate-90;
   }
-  @media (prefers-reduced-motion: reduce) {
+  @variant motion-reduce {
     details > summary > svg {
       transition: none;
     }

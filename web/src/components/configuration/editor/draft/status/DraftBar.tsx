@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button/Button";
 import { useTranslation } from "react-i18next";
 export function DraftBar({
   isDirty,
@@ -11,7 +12,7 @@ export function DraftBar({
   const { t } = useTranslation();
   if (!isDirty && !isPending) return null;
   return (
-    <div className="draft-bar">
+    <div className="draft-bar sticky bottom-3 z-10 flex items-center justify-between gap-3 flex-wrap py-3 px-4 border border-line bg-surface max-tablet:bottom-16">
       <div>
         <span role="status">
           {isDirty ? t("Есть несохранённые изменения") : t("Все изменения сохранены")}
@@ -21,12 +22,12 @@ export function DraftBar({
         </small>
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        <button type="button" className="text-btn" disabled={!isDirty || isPending} onClick={onReset}>
+        <Button type="button" variant="outline" disabled={!isDirty || isPending} onClick={onReset}>
           {t("Отменить")}
-        </button>
-        <button aria-label={t("Сохранить конфигурацию")} className="primary" disabled={isPending || !isDirty}>
+        </Button>
+        <Button aria-label={t("Сохранить конфигурацию")} variant="primary" disabled={isPending || !isDirty}>
           {isPending ? t("Сохраняем…") : t("Сохранить")}
-        </button>
+        </Button>
       </div>
     </div>
   );

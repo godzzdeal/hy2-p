@@ -1,4 +1,8 @@
-import { Modal } from "@/components/ui/modal/Modal";
+import { Caption } from "@/components/elements/Caption";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Button } from "@/components/ui/button/Button";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { QueryState } from "@/components/ui/loading";
 import { useConfiguration } from "@/hooks/configuration/use-configuration";
 import { useInstanceCommands } from "@/hooks/instances/use-commands";
@@ -37,20 +41,20 @@ export function CreateInstanceDialog({
         {t("Настройки будут скопированы из выбранного экземпляра. Новый экземпляр останется остановленным.")}
       </p>
       <QueryState isLoading={source.isPending} error={source.error} />
-      <form onSubmit={onSubmit} className="instance-form">
-        <label>
+      <form onSubmit={onSubmit} className="instance-form grid gap-4">
+        <Field>
           {t("Название экземпляра")}
-          <input
+          <Input
             required
             maxLength={100}
             value={name}
             onChange={(event) => setName(event.target.value)}
             autoFocus
           />
-        </label>
-        <label>
+        </Field>
+        <Field>
           {t("UDP-порт")}
-          <input
+          <Input
             required
             type="number"
             min={1}
@@ -58,19 +62,23 @@ export function CreateInstanceDialog({
             value={port}
             onChange={(event) => setPort(event.target.value)}
           />
-        </label>
-        <p className="caption">
+        </Field>
+        <Caption>
           {t(
             "Каждому экземпляру нужен свободный UDP-порт. После создания проверьте конфигурацию, запустите экземпляр и примените порт.",
           )}
-        </p>
+        </Caption>
         <div className="form-actions">
-          <button type="button" onClick={onClose}>
+          <Button type="button" onClick={onClose}>
             {t("Отмена")}
-          </button>
-          <button className="primary" disabled={create.isPending || !source.data}>
-            {t("Создать экземпляр")}
-          </button>
+          </Button>
+          <Button
+            aria-label={t("Создать экземпляр")}
+            variant="primary"
+            disabled={create.isPending || !source.data}
+          >
+            {t("Создать")}
+          </Button>
         </div>
       </form>
     </Modal>

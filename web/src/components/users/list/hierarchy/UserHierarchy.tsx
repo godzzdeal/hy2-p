@@ -17,7 +17,7 @@ export function UserHierarchy({ sections, ...actions }: IUserHierarchy) {
   return (
     <>
       <TrafficStatus />
-      <div className="user-hierarchy">
+      <div className="user-hierarchy @container">
         <UserTable hasStatus={false}>
           {sections.map((section) => (
             <GroupSection

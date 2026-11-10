@@ -1,3 +1,5 @@
+import { Caption } from "@/components/elements/Caption";
+import { Button } from "@/components/ui/button/Button";
 import { useCertificateUpload } from "@/hooks/configuration/use-certificates";
 import { readPemFile } from "@/utils/security";
 import { useState } from "react";
@@ -17,7 +19,7 @@ export function CertificateUpload({ onUploaded }: { onUploaded: (cert: string, k
     else setPrivateKey(text);
   }
   return (
-    <div className="certificate-upload">
+    <div className="certificate-upload p-4 border-t border-line">
       <FileDropzone
         label={t("Сертификат PEM")}
         hint={t("PEM, CRT или CER, до 1 МБ")}
@@ -32,19 +34,20 @@ export function CertificateUpload({ onUploaded }: { onUploaded: (cert: string, k
         disabled={mutation.isPending}
         onFile={(file) => onFile(file, "key")}
       />
-      <button
+      <Button
+        aria-label={t("Загрузить сертификат")}
         type="button"
-        className="secondary"
+        variant="secondary"
         disabled={!certificate || !privateKey || mutation.isPending}
         onClick={() => mutation.mutate({ certificate, privateKey })}
       >
-        {t("Загрузить сертификат")}
-      </button>
-      <p className="caption">
+        {t("Загрузить")}
+      </Button>
+      <Caption>
         {t(
           "Пара сертификат/ключ проверяется перед сохранением. Затем сохраните конфигурацию и перезапустите экземпляр.",
         )}
-      </p>
+      </Caption>
     </div>
   );
 }

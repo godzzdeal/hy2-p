@@ -1,5 +1,5 @@
 import { EmojiText } from "@/components/elements/emoji/text/EmojiText";
-import { Modal } from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { QueryState } from "@/components/ui/loading";
 import { TrafficForm } from "@/components/users/traffic/editor/TrafficForm";
 import { useTraffic } from "@/hooks/users/traffic/use-traffic";

@@ -1,3 +1,4 @@
+import { Caption } from "@/components/elements/Caption";
 import { useTraffic } from "@/hooks/users/traffic/use-traffic";
 import { useTranslation } from "react-i18next";
 
@@ -5,11 +6,11 @@ export function TrafficStatus() {
   const { t } = useTranslation();
   const traffic = useTraffic();
   return (
-    <p className="traffic-note caption">
+    <Caption className="traffic-status px-4 py-3">
       {(traffic.error ? t(traffic.error.message) : t(traffic.data?.error ?? "")) ||
         (traffic.data?.updated
           ? t("Статистика: ") + new Date(traffic.data.updated).toLocaleTimeString()
           : t("Ожидание статистики экземпляра"))}
-    </p>
+    </Caption>
   );
 }

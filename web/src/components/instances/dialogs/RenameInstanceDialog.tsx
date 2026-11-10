@@ -1,4 +1,7 @@
-import { Modal } from "@/components/ui/modal/Modal";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Button } from "@/components/ui/button/Button";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { useInstanceCommands } from "@/hooks/instances/use-commands";
 import { type IInstance } from "@/services/instances/types";
 import { useState, type FormEvent } from "react";
@@ -13,24 +16,24 @@ export function RenameInstanceDialog({ instance, onClose }: { instance: IInstanc
   }
   return (
     <Modal title={t("Переименовать экземпляр")} onClose={onClose}>
-      <form className="instance-form" onSubmit={onSubmit}>
-        <label>
+      <form className="instance-form grid gap-4" onSubmit={onSubmit}>
+        <Field>
           {t("Название экземпляра")}
-          <input
+          <Input
             required
             maxLength={100}
             value={name}
             onChange={(event) => setName(event.target.value)}
             autoFocus
           />
-        </label>
+        </Field>
         <div className="form-actions">
-          <button type="button" onClick={onClose}>
+          <Button type="button" onClick={onClose}>
             {t("Отмена")}
-          </button>
-          <button className="primary" disabled={rename.isPending}>
+          </Button>
+          <Button variant="primary" disabled={rename.isPending}>
             {t("Сохранить")}
-          </button>
+          </Button>
         </div>
       </form>
     </Modal>

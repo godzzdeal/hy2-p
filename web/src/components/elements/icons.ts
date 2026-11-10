@@ -31,6 +31,7 @@ export { Sliders as Settings2 } from "pixelarticons/react/Sliders.js";
 export { Sparkles } from "pixelarticons/react/Sparkles.js";
 export { SpeedMedium as Gauge } from "pixelarticons/react/SpeedMedium.js";
 export { Star } from "pixelarticons/react/Star.js";
+export { Sun } from "pixelarticons/react/Sun.js";
 export { Stop as Square } from "pixelarticons/react/Stop.js";
 export { Terminal } from "pixelarticons/react/Terminal.js";
 export { Trash as Trash2 } from "pixelarticons/react/Trash.js";

@@ -1,3 +1,5 @@
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
 import { type IInstance } from "@/services/instances/types";
 import { useTranslation } from "react-i18next";
 export function CoreOption({
@@ -13,8 +15,8 @@ export function CoreOption({
 }) {
   const { t } = useTranslation();
   return (
-    <label className="checkbox user-core-option">
-      <input
+    <Field className="user-core-option p-2 m-0 min-w-0" isInline>
+      <Input
         type="checkbox"
         checked={isChecked}
         disabled={isDisabled}
@@ -34,6 +36,6 @@ export function CoreOption({
           )}
         </small>
       </span>
-    </label>
+    </Field>
   );
 }

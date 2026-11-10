@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button/Button";
 import { Check, X, TriangleAlert } from "@/components/elements/icons";
 import { NETWORK } from "@/config/network";
 import { useNotifications, type INotification } from "@/store/notifications";
@@ -15,19 +16,22 @@ export function Notification({ item }: { item: INotification }) {
   const Icon = item.isError ? TriangleAlert : Check;
   return (
     <div
-      className={cn("notification", { "notification-error": item.isError })}
+      className={cn(
+        "notification grid gap-3 p-4 bg-surface text-foreground border border-accent shadow-popup wrap-anywhere",
+        { "notification-error border-danger": item.isError },
+      )}
       role={item.isError ? "alert" : "status"}
     >
       <Icon width={24} height={24} aria-hidden />
       <span>{t(item.message)}</span>
-      <button
+      <Button
         type="button"
-        className="icon-button"
+        size="icon"
         aria-label={t("Закрыть уведомление")}
         onClick={() => dismiss(item.id)}
       >
         <X width={24} height={24} aria-hidden />
-      </button>
+      </Button>
     </div>
   );
 }

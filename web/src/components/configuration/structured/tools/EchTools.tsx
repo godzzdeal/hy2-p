@@ -1,3 +1,9 @@
+import { Caption } from "@/components/elements/Caption";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Actions } from "@/components/ui/Actions";
+import { Button } from "@/components/ui/button/Button";
+import { Textarea } from "@/components/ui/fields/controls/Textarea";
 import { Notice } from "@/components/ui/feedback";
 import { useEchFields } from "@/hooks/configuration/tools";
 import { type IEch } from "@/services/configuration/tools/api";
@@ -19,55 +25,57 @@ export function EchTools({
     notify("Ключ ECH создан. Сохраните конфигурацию и перезапустите экземпляр.");
   }
   return (
-    <section className="configuration-tools">
+    <section className="configuration-tools grid gap-4 p-4 min-w-0">
       <Notice>
         {t(
           "ACME обновляет TLS-сертификат. ECH создаётся отдельно; клиентам передаётся только публичный tls.ech.",
         )}
       </Notice>
-      <label>
+      <Field>
         {t("Внешнее имя SNI для ECH")}
-        <input
+        <Input
           value={name}
           onChange={(event) => onName(event.target.value)}
           placeholder="public.example.com"
         />
-      </label>
-      <div className="row-actions">
-        <button
+      </Field>
+      <Actions>
+        <Button
+          aria-label={t("Создать ключ ECH")}
           type="button"
-          className="secondary"
+          variant="secondary"
           disabled={!name || generate.isPending}
           onClick={() => {
             generate.mutate(name, { onSuccess: onGenerated });
           }}
         >
-          {t(generate.isPending ? "Создаём ECH…" : "Создать ключ ECH")}
-        </button>
-        <button
+          {t(generate.isPending ? "Создаём ECH…" : "Создать")}
+        </Button>
+        <Button
+          aria-label={t("Получить публичный ECH")}
           type="button"
-          className="secondary"
+          variant="secondary"
           disabled={read.isFetching || generate.isPending || !keyPath}
           onClick={() => void read.refetch()}
         >
-          {t("Получить публичный ECH")}
-        </button>
-      </div>
+          {t("Получить")}
+        </Button>
+      </Actions>
       {read.isSuccess && !result?.configList && (
-        <p className="caption">{t("ECH ещё не настроен в сохранённой конфигурации.")}</p>
+        <Caption>{t("ECH ещё не настроен в сохранённой конфигурации.")}</Caption>
       )}
       {result?.configList && (
-        <label>
+        <Field>
           tls.ech
-          <textarea aria-label="tls.ech" readOnly value={result.configList} rows={3} />
+          <Textarea aria-label="tls.ech" readOnly value={result.configList} rows={3} />
           <CopyButton value={result.configList} label="Скопировать tls.ech" />
-        </label>
+        </Field>
       )}
-      <p className="caption">
+      <Caption>
         {t(
           "Публичный ECH добавляется в ссылку подключения. После замены ключа обновите подписку. Клиент должен поддерживать ECH для Hysteria2.",
         )}
-      </p>
+      </Caption>
     </section>
   );
 }

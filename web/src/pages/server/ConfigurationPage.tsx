@@ -7,7 +7,7 @@ export function ConfigurationPage() {
   const query = useConfiguration();
   return (
     <>
-      <div className="page-heading">
+      <div className="page-heading flex justify-between items-start gap-4 mb-5 max-tablet:flex-col max-tablet:items-start">
         <div>
           <h1>{t("Конфигурация сервера")}</h1>
           <p>{t("Параметры подключения")}</p>

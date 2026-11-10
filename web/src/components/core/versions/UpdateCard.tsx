@@ -1,3 +1,8 @@
+import { Caption } from "@/components/elements/Caption";
+import { Card } from "@/components/ui/cards/Card";
+import { CardHeader } from "@/components/ui/cards/CardHeader";
+import { Button } from "@/components/ui/button/Button";
+import { Field } from "@/components/ui/fields/Field";
 import { UpdateConfirmation } from "@/components/core/UpdateConfirmation";
 import { ReleaseOption } from "@/components/core/versions/ReleaseOption";
 import { UpdateProgress } from "@/components/core/versions/UpdateProgress";
@@ -27,23 +32,28 @@ export function UpdateCard() {
     versions.data?.some((release) => release.available && release.tag === version);
   const previous = normalizeVersion(status.data?.previous ?? "");
   return (
-    <section className="card version-card">
-      <div className="card-header">
+    <Card className="version-card">
+      <CardHeader>
         <h2>{t("Обновление экземпляра")}</h2>
-        <span className="version-current">{current ? normalizeVersion(current) : t("Не установлена")}</span>
-        <button
+        <span className="version-current text-accent font-bold">
+          {current ? normalizeVersion(current) : t("Не установлена")}
+        </span>
+        <Button
           type="button"
-          className="icon-btn"
+          size="icon"
           aria-label={t("Проверить версии HY2")}
           disabled={versions.isFetching || isBusy}
           onClick={() => void versions.refetch()}
         >
           <RefreshCw width={24} height={24} aria-hidden />
-        </button>
-      </div>
-      <div className="version-body">
-        <div className="version-controls">
-          <label htmlFor="core-version">
+        </Button>
+      </CardHeader>
+      <div className="version-body p-4 grid gap-3">
+        <div className="version-controls flex items-end gap-3 flex-wrap">
+          <Field
+            htmlFor="core-version"
+            className="m-0 min-w-48 flex-1 max-tablet:min-w-0 max-tablet:basis-full"
+          >
             {t("Версия HY2")}
             <Select
               id="core-version"
@@ -56,28 +66,28 @@ export function UpdateCard() {
                 <ReleaseOption key={release.tag} release={release} current={current} />
               ))}
             </Select>
-          </label>
-          <button
+          </Field>
+          <Button
             type="button"
-            className="primary"
+            variant="primary"
             disabled={!canInstall}
             onClick={() => setConfirmation("install")}
           >
             <Download width={24} height={24} aria-hidden />
             {t(isCurrent ? "Установлена" : "Установить")}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="secondary"
+            variant="secondary"
             disabled={isBusy || !status.data?.rollbackAvailable}
             onClick={() => setConfirmation("rollback")}
           >
             <Undo2 width={24} height={24} aria-hidden />
             {t("Откатить")}
             {previous ? " " + previous : ""}
-          </button>
+          </Button>
         </div>
-        <p className="caption" role="status">
+        <Caption role="status">
           {versions.isPending
             ? t("Получаем версии с GitHub…")
             : versions.error
@@ -85,7 +95,7 @@ export function UpdateCard() {
               : isLatest
                 ? t("Установлена последняя версия")
                 : t("Файл проверяется по SHA-256. Предыдущая версия сохраняется для отката.")}
-        </p>
+        </Caption>
         {status.data && <UpdateProgress status={status.data} />}
       </div>
       {confirmation && (
@@ -95,6 +105,6 @@ export function UpdateCard() {
           onClose={() => setConfirmation(null)}
         />
       )}
-    </section>
+    </Card>
   );
 }

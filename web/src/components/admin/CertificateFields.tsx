@@ -1,3 +1,7 @@
+import { Caption } from "@/components/elements/Caption";
+import { CardBody } from "@/components/ui/cards/CardBody";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
 import { PemFileField } from "@/components/elements/security/PemFileField";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
@@ -14,8 +18,8 @@ export function CertificateFields({
 }) {
   const { t } = useTranslation();
   return (
-    <div className="form-body">
-      <label>
+    <CardBody>
+      <Field>
         {t("HTTPS веб-панели")}
         <Select
           value={value.mode}
@@ -25,24 +29,24 @@ export function CertificateFields({
           <SelectOption value="manual">{t("HTTPS со своим сертификатом")}</SelectOption>
           <SelectOption value="acme">{t("HTTPS с автоматическим сертификатом")}</SelectOption>
         </Select>
-      </label>
+      </Field>
       {value.mode !== "http" && (
-        <label>
+        <Field>
           {t("Домен или IP веб-панели")}
-          <input
+          <Input
             required
             placeholder="panel.example.com / 203.0.113.10"
             value={value.domain}
             onChange={(event) => onChange({ ...value, domain: event.target.value })}
           />
-        </label>
+        </Field>
       )}
       {value.mode === "http" && (
-        <p className="caption">
+        <Caption>
           {t(
             "Домен и сертификат не нужны. Для входа по IP укажите публичный URL с http://. Соединение HTTP не зашифровано.",
           )}
-        </p>
+        </Caption>
       )}
       {value.mode === "manual" && (
         <>
@@ -55,26 +59,26 @@ export function CertificateFields({
             onChange={(privateKey) => onChange({ ...value, privateKey })}
           />
           {hasPrivateKey && (
-            <p className="caption">
+            <Caption>
               {t("Сохранённый ключ не показывается. Если ключ не меняется, повторно загружать его не нужно.")}
-            </p>
+            </Caption>
           )}
         </>
       )}
       {value.mode === "acme" && (
         <>
-          <label>
+          <Field>
             {t("Email для Let's Encrypt")}
-            <input
+            <Input
               type="email"
               required
               value={value.email}
               onChange={(event) => onChange({ ...value, email: event.target.value })}
             />
-          </label>
-          <label>
+          </Field>
+          <Field>
             {t("Внутренний HTTP-порт ACME")}
-            <input
+            <Input
               type="number"
               required
               min={1}
@@ -87,31 +91,31 @@ export function CertificateFields({
                 "Входящий TCP 80 должен вести на этот порт. Для домена проверьте DNS, для IP укажите публичный адрес сервера.",
               )}
             </small>
-          </label>
-          <label className="checkbox">
-            <input
+          </Field>
+          <Field isInline>
+            <Input
               type="checkbox"
               required
               checked={value.acceptedTerms}
               onChange={(event) => onChange({ ...value, acceptedTerms: event.target.checked })}
             />
             {t("Принимаю условия Let's Encrypt")}
-          </label>
+          </Field>
           <a href="https://letsencrypt.org/repository/" target="_blank" rel="noreferrer">
             {t("Условия центра сертификации")}
           </a>
-          <p className="caption">
+          <Caption>
             {t(
               "Сертификат выпускается и продлевается автоматически. Кеш ACME сохраняется на постоянном томе.",
             )}
-          </p>
-          <p className="caption">
+          </Caption>
+          <Caption>
             {t(
               "Для публичного IP используется сертификат Let's Encrypt на 160 часов. Панель автоматически продлевает его; TCP 80 должен оставаться доступным.",
             )}
-          </p>
+          </Caption>
         </>
       )}
-    </div>
+    </CardBody>
   );
 }

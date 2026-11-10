@@ -1,120 +1,59 @@
 @layer components {
-  .sidebar-toggle {
-    margin-left: auto;
-  }
   .sidebar-toggle[aria-expanded="true"] svg {
-    transform: rotate(180deg);
+    @apply rotate-180;
   }
-  @media (width > 760px) {
+  @variant tablet {
     .sidebar-collapsed {
       --sidebar-width: var(--space-16);
     }
     .sidebar-collapsed .brand > span,
     .sidebar-collapsed .workspace,
-    .sidebar-collapsed .nav-label,
     .sidebar-collapsed .nav-item-label,
     .sidebar-collapsed .aside-bottom > label,
     .sidebar-collapsed .logout-label {
-      display: none;
+      @apply hidden;
     }
     .sidebar-collapsed .brand {
-      justify-content: center;
+      @apply justify-center;
     }
     .sidebar-collapsed .sidebar-toggle {
-      margin: 0;
+      @apply m-0;
     }
     .sidebar-collapsed nav button,
     .sidebar-collapsed .aside-bottom > button {
-      justify-content: center;
-      padding-inline: var(--space-2);
-      position: relative;
+      @apply justify-center px-2 relative;
     }
     .sidebar-collapsed nav .user-count {
-      position: absolute;
-      right: 0;
-      top: 0;
-      min-width: var(--space-3);
-      height: var(--space-3);
-      padding: 0;
-      font-size: 13px;
+      @apply absolute right-0 top-0 min-w-3 h-3 p-0 text-sm;
     }
   }
-  @media (max-width: 760px) {
-    .sidebar-toggle {
-      display: none;
-    }
+  @variant max-tablet {
     .app-sidebar {
-      flex-shrink: 0;
-      position: relative;
-      width: 100%;
-      border-right: 0;
-      border-bottom: 1px solid var(--line);
       padding: 0 var(--space-3) var(--space-3);
     }
-    .brand {
-      font-size: 24px;
-    }
-    .workspace,
-    .nav-label {
-      display: none;
+    .workspace {
+      @apply hidden;
     }
     .app-sidebar nav {
-      display: flex;
-      align-items: center;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scrollbar-width: thin;
-      padding-block: var(--space-1);
-      margin-top: var(--space-2);
+      @apply flex items-center overflow-x-auto overflow-y-hidden scrollbar-thin py-1 mt-2;
     }
     .app-sidebar nav button {
-      flex: 0 0 auto;
-      min-width: 0;
-      height: var(--control-height);
-      padding: var(--space-1);
-      gap: var(--space-1);
-      text-align: left;
+      @apply flex-none min-w-0 h-control p-1 gap-1 text-left;
     }
     .app-sidebar nav button:focus-visible {
-      outline-offset: -2px;
-    }
-    .nav-item-label {
-      min-width: 0;
-      font-size: var(--text-small);
-      overflow-wrap: normal;
-      white-space: nowrap;
+      @apply -outline-offset-2;
     }
     .app-sidebar nav .user-count {
-      padding-inline: var(--space-1);
-    }
-    .aside-bottom {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      align-items: center;
-      gap: var(--space-3);
-      padding-top: var(--space-3);
-    }
-    .aside-bottom .version {
-      display: none;
-    }
-    .theme-control {
-      margin: 0;
-      flex: 1;
-      min-width: 0;
+      @apply px-1;
     }
     .aside-bottom > label {
-      min-width: 0;
+      @apply min-w-0;
     }
     .aside-bottom > button {
-      position: absolute;
-      top: var(--space-1);
-      right: var(--space-3);
-      width: var(--control-height);
-      padding: 0;
-      justify-content: center;
+      @apply absolute top-1 right-3 w-control p-0 justify-center;
     }
     .logout-label {
-      display: none;
+      @apply hidden;
     }
   }
 }

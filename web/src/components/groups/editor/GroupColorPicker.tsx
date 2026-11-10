@@ -1,3 +1,4 @@
+import { Field } from "@/components/ui/fields/Field";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { GROUP_COLORS, type TGroupColor } from "@/services/groups/types";
@@ -11,7 +12,7 @@ export function GroupColorPicker({
 }) {
   const { t } = useTranslation();
   return (
-    <label>
+    <Field>
       {t("Цвет группы")}
       <Select
         value={value}
@@ -27,6 +28,6 @@ export function GroupColorPicker({
         <SelectOption value="purple">{t("Фиолетовый")}</SelectOption>
         <SelectOption value="gray">{t("Серый")}</SelectOption>
       </Select>
-    </label>
+    </Field>
   );
 }

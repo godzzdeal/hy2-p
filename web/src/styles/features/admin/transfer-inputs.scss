@@ -1,12 +1,8 @@
 @layer components {
-  .configuration-file {
-    margin-block: var(--space-4);
-  }
   .transfer-form > .row-actions {
     align-items: end;
   }
   .notifications {
     max-height: calc(100dvh - var(--space-8));
-    overflow-y: auto;
   }
 }

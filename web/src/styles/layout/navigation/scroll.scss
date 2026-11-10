@@ -1,102 +1,36 @@
 @layer components {
-  .content {
-    scroll-snap-type: y proximity;
-    scroll-padding-block: var(--space-4);
-  }
-  .content:has(form),
-  html:has(.overlay) .content {
-    scroll-snap-type: none;
-  }
-  .content:has(input:focus, textarea:focus, [contenteditable="true"]:focus, button:focus-visible) {
-    scroll-snap-type: none;
-  }
-  .shell {
-    scroll-snap-align: start;
-    scroll-margin: 0;
-  }
   [data-scroll-section],
   .instance-selector {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    scroll-margin-block: var(--space-4);
+    @apply scroll-my-4;
   }
   .scroll-navigation {
-    position: fixed;
     inset: 50% calc(var(--scrollbar-size) + var(--space-2)) auto auto;
-    transform: translateY(-50%);
-    z-index: var(--layer-navigation);
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: var(--space-1);
-    margin: 0;
-    overflow: visible;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    background: var(--surface);
   }
   .scroll-navigation .scroll-point {
-    position: relative;
-    justify-content: center;
-    min-width: var(--space-8);
-    min-height: var(--space-10);
-    padding: var(--space-2);
+    @apply relative justify-center min-w-8 min-h-10 p-2;
   }
   .scroll-point > span:first-child {
-    width: var(--space-2);
-    height: var(--space-2);
-    border-radius: 50%;
-    background: var(--muted);
+    @apply w-2 h-2 rounded-full bg-muted;
     transition: transform 160ms ease;
   }
   .scroll-point-active > span:first-child {
-    background: var(--accent);
-    transform: scale(1.5);
+    @apply bg-accent scale-150;
   }
   .scroll-point-label {
-    position: absolute;
+    @apply opacity-0;
     right: calc(100% + var(--space-2));
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    font-size: var(--text-small);
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    transform: translateX(var(--space-1));
     transition:
       opacity 160ms ease,
       transform 160ms ease;
   }
   .scroll-point:hover .scroll-point-label,
   .scroll-point:focus-visible .scroll-point-label {
-    opacity: 1;
-    transform: none;
+    @apply opacity-100 transform-none;
   }
-  @media (prefers-reduced-motion: reduce) {
-    .content {
-      scroll-snap-type: none;
-    }
-  }
-
-  @media (max-width: 760px) {
+  @variant max-tablet {
     .scroll-navigation {
-      position: static;
-      inset: auto;
-      transform: none;
-      align-self: center;
-      flex-shrink: 0;
-      margin: var(--space-2) var(--space-4);
-      flex-direction: row;
+      @apply inset-auto;
       max-width: calc(100% - var(--space-8));
-    }
-    .scroll-point-label {
-      display: none;
-    }
-    .page-content {
-      padding-right: var(--space-4);
-      padding-bottom: var(--space-4);
     }
   }
 }

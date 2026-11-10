@@ -1,3 +1,6 @@
+import { Card } from "@/components/ui/cards/Card";
+import { CardHeader } from "@/components/ui/cards/CardHeader";
+import { CardBody } from "@/components/ui/cards/CardBody";
 import { formatBytes } from "@/services/users/traffic/traffic-types";
 import { useTranslation } from "react-i18next";
 
@@ -12,28 +15,28 @@ interface ITrafficCard {
 export function TrafficCard({ upload, download, received, transmitted, isAvailable }: ITrafficCard) {
   const { t } = useTranslation();
   return (
-    <section className="card">
-      <div className="card-header">
+    <Card>
+      <CardHeader>
         <h3>{t("Трафик")}</h3>
-      </div>
-      <div className="form-body">
-        <div className="system-storage-row">
-          <span>{t("VPN, отправлено пользователями")}</span>
+      </CardHeader>
+      <CardBody className="gap-1">
+        <div className="system-storage-row flex items-baseline justify-between gap-3 min-w-0">
+          <span>{t("Отправлено пользователями")}</span>
           <strong>{isAvailable ? "↑ " + formatBytes(upload, t) : t("Недоступно")}</strong>
         </div>
-        <div className="system-storage-row">
-          <span>{t("VPN, получено пользователями")}</span>
+        <div className="system-storage-row flex items-baseline justify-between gap-3 min-w-0">
+          <span>{t("Получено пользователями")}</span>
           <strong>{isAvailable ? "↓ " + formatBytes(download, t) : t("Недоступно")}</strong>
         </div>
-        <div className="system-storage-row">
-          <span>{t("Сеть, получено с запуска")}</span>
+        <div className="system-storage-row flex items-baseline justify-between gap-3 min-w-0">
+          <span>{t("Получено с запуска")}</span>
           <strong>↓ {formatBytes(received, t)}</strong>
         </div>
-        <div className="system-storage-row">
-          <span>{t("Сеть, отправлено с запуска")}</span>
+        <div className="system-storage-row flex items-baseline justify-between gap-3 min-w-0">
+          <span>{t("Отправлено с запуска")}</span>
           <strong>↑ {formatBytes(transmitted, t)}</strong>
         </div>
-      </div>
-    </section>
+      </CardBody>
+    </Card>
   );
 }

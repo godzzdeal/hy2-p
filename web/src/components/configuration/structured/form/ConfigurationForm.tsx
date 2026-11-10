@@ -1,3 +1,7 @@
+import { EmptyState } from "@/components/ui/status/EmptyState";
+import { Card } from "@/components/ui/cards/Card";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
 import { Notice } from "@/components/ui/feedback";
 import { CertificateMode } from "@/components/configuration/structured/certificates/CertificateMode";
 import { CertificateStatus } from "@/components/configuration/structured/certificates/CertificateStatus";
@@ -56,32 +60,32 @@ export function ConfigurationForm({
     onChange({ ...value, config: updateField(updateField(value.config, "tls.cert", cert), "tls.key", key) });
   }
   return (
-    <section
-      className="card structured-config"
+    <Card
+      className="structured-config"
       id="config-fields"
       data-scroll-section
       data-scroll-label={t("Параметры Hysteria2")}
     >
-      <div className="config-technical-toggle">
+      <div className="config-technical-toggle py-3 px-4 flex items-center justify-between gap-3 border-b border-line max-tablet:items-start max-tablet:flex-col">
         <PropertySearch
           value={search}
           onChange={setSearch}
           count={sections.reduce((count, item) => count + item.fields.length, 0)}
         />
-        <label className="checkbox">
-          <input
+        <Field isInline>
+          <Input
             type="checkbox"
             checked={showDescription}
             onChange={(event) => setDescription(event.target.checked)}
           />
           {t("Показывать пояснения")}
-        </label>
+        </Field>
       </div>
       {active ? (
-        <div className="configuration-layout">
+        <div className="configuration-layout grid grid-cols-config max-desktop:grid-cols-1">
           <ConfigNavigation sections={sections} value={active.id} onSelect={setSection} />
-          <div className="configuration-fields">
-            <div className="configuration-section-title">
+          <div className="configuration-fields min-w-0 border-l border-line max-desktop:border-l-0">
+            <div className="configuration-section-title p-4 border-b border-line bg-surface-soft flex items-center justify-between gap-3 flex-wrap">
               <h2>{active.title}</h2>
               <a href={CONFIGURATION_DOCS + "#" + active.anchor} target="_blank" rel="noreferrer">
                 {t("Документация")}
@@ -112,7 +116,9 @@ export function ConfigurationForm({
               </Notice>
             )}
             {document.errors.length ? (
-              <p className="inline-error">{t(document.errors[0].message)}</p>
+              <p className="inline-error text-danger text-lg py-3 px-0 wrap-anywhere">
+                {t(document.errors[0].message)}
+              </p>
             ) : active.id === "outbounds" ? (
               <OutboundsEditor
                 source={value.config}
@@ -135,8 +141,8 @@ export function ConfigurationForm({
           </div>
         </div>
       ) : (
-        <p className="empty">{t("Свойства не найдены. Попробуйте имя из документации.")}</p>
+        <EmptyState>{t("Свойства не найдены. Попробуйте имя из документации.")}</EmptyState>
       )}
-    </section>
+    </Card>
   );
 }

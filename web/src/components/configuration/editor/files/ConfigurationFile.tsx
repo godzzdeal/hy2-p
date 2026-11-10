@@ -12,7 +12,7 @@ export function ConfigurationFile({
   const { t } = useTranslation();
   const read = useConfigurationFile(value, onChange);
   return (
-    <div className="configuration-file">
+    <div className="configuration-file my-4">
       <FileDropzone
         label={t("Импорт YAML в черновик")}
         hint={t("YAML, до 1 МБ")}

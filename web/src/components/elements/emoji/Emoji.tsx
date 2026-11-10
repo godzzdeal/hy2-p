@@ -8,7 +8,7 @@ export function Emoji({ value, label = "" }: { value: string; label?: string }) 
     return <Sparkles width={24} height={24} aria-label={label || undefined} aria-hidden={!label} />;
   return (
     <img
-      className="emoji-image"
+      className="emoji-image inline-block flex-none w-6 h-6 object-contain align-middle"
       src={emojiAsset(value)}
       alt={label}
       width={24}

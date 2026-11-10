@@ -1,5 +1,5 @@
 import { Notice } from "@/components/ui/feedback";
-import { Modal } from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { useTranslation } from "react-i18next";
 export function InstallHelp({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
@@ -7,7 +7,7 @@ export function InstallHelp({ onClose }: { onClose: () => void }) {
     <Modal title="Панель на главном экране" onClose={onClose}>
       <Notice>{t("Для установки откройте панель по HTTPS с действительным сертификатом.")}</Notice>
       <h3>iPhone / iPad</h3>
-      <ol className="install-steps">
+      <ol className="install-steps mt-3 mb-5 pl-6">
         <li>{t("Откройте панель в Safari и нажмите «Поделиться».")}</li>
         <li>
           {t(
@@ -17,7 +17,7 @@ export function InstallHelp({ onClose }: { onClose: () => void }) {
         <li>{t("Нажмите «Добавить».")}</li>
       </ol>
       <h3>Android</h3>
-      <ol className="install-steps">
+      <ol className="install-steps mt-3 mb-5 pl-6">
         <li>{t("Откройте панель в Chrome.")}</li>
         <li>{t("В меню браузера выберите «Установить приложение» или «Добавить на главный экран».")}</li>
         <li>{t("Подтвердите установку.")}</li>

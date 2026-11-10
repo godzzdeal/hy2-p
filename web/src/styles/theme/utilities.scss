@@ -1,0 +1,53 @@
+@utility grid-cols-action {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+@utility grid-cols-label {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+@utility grid-cols-toolbar {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+@utility grid-cols-config {
+  grid-template-columns: var(--configuration-navigation-width) minmax(0, 1fr);
+}
+@utility grid-cols-member {
+  grid-template-columns: var(--space-6) var(--space-8) minmax(0, 1fr);
+}
+@utility scrollbar-stable {
+  scrollbar-gutter: stable;
+}
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+}
+@utility overflow-anchor-none {
+  overflow-anchor: none;
+}
+@utility dialog-viewport {
+  max-height: calc(100dvh - var(--space-8));
+}
+@utility popup-viewport {
+  max-width: calc(100vw - var(--space-8));
+  max-height: min(var(--radix-popover-content-available-height, 100dvh), calc(100dvh - var(--space-8)));
+  overflow-y: auto;
+}
+@utility pixel-check {
+  &::before {
+    content: "";
+    @apply size-6 bg-current opacity-0 transition-opacity duration-150;
+    mask: url("@pixel-icons/check.svg") center / contain no-repeat;
+  }
+  &:checked::before,
+  &:indeterminate::before {
+    @apply opacity-100;
+  }
+  &:indeterminate::before {
+    @apply h-1 w-3;
+    mask: none;
+  }
+  @media (forced-colors: active) {
+    appearance: auto;
+    &::before {
+      display: none;
+    }
+  }
+}

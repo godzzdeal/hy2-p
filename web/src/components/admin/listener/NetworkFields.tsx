@@ -1,3 +1,6 @@
+import { FieldGrid } from "@/components/ui/fields/FieldGrid";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { type IWebConfig } from "@/services/admin/admin-types";
@@ -11,8 +14,8 @@ export function NetworkFields({
 }) {
   const { t } = useTranslation();
   return (
-    <div className="field-grid">
-      <label>
+    <FieldGrid>
+      <Field>
         {t("Адрес веб-панели")}
         <Select value={value.host} onValueChange={(nextValue) => onChange({ ...value, host: nextValue })}>
           <SelectOption value="127.0.0.1">{t("Только локально (127.0.0.1)")}</SelectOption>
@@ -20,10 +23,10 @@ export function NetworkFields({
           <SelectOption value="::1">{t("Только локально по IPv6 (::1)")}</SelectOption>
           <SelectOption value="::">{t("Все IPv6 адреса (::)")}</SelectOption>
         </Select>
-      </label>
-      <label>
+      </Field>
+      <Field>
         {t("Порт веб-панели")}
-        <input
+        <Input
           type="number"
           min={1}
           max={65535}
@@ -39,17 +42,17 @@ export function NetworkFields({
             })
           }
         />
-      </label>
-      <label>
+      </Field>
+      <Field>
         {t("Публичный URL панели и подписок")}
-        <input
+        <Input
           aria-label={t("Публичный URL панели и подписок")}
           placeholder={value.mode === "http" ? "http://203.0.113.10:8080" : "https://203.0.113.10:9443"}
           value={value.publicURL}
           onChange={(event) => onChange({ ...value, publicURL: event.target.value })}
         />
         <small>{t("Укажите внешний адрес, если используете Docker или reverse proxy.")}</small>
-      </label>
-    </div>
+      </Field>
+    </FieldGrid>
   );
 }

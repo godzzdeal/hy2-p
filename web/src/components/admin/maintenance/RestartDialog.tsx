@@ -1,4 +1,6 @@
-import { Modal } from "@/components/ui/modal/Modal";
+import { Actions } from "@/components/ui/Actions";
+import { Button } from "@/components/ui/button/Button";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { Loader } from "@/components/ui/loading";
 import { usePanelOperation } from "@/hooks/panel/maintenance";
 import { useTranslation } from "react-i18next";
@@ -11,19 +13,19 @@ export function RestartDialog({ onClose }: { onClose: () => void }) {
       <p>{t("Подключения HY2 кратковременно прервутся. Настройки и пользователи сохранятся.")}</p>
       <p>{t("После перезапуска войдите снова.")}</p>
       {restart.isPending && <Loader label="Панель перезапускается…" />}
-      <div className="row-actions mt-4">
-        <button type="button" className="secondary" disabled={restart.isPending} onClick={onClose}>
+      <Actions className="mt-4">
+        <Button type="button" variant="secondary" disabled={restart.isPending} onClick={onClose}>
           {t("Отмена")}
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
-          className="primary"
+          variant="primary"
           disabled={restart.isPending}
           onClick={() => restart.mutate({ action: "restart" }, { onSuccess: onClose })}
         >
           {t("Перезапустить")}
-        </button>
-      </div>
+        </Button>
+      </Actions>
     </Modal>
   );
 }

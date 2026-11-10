@@ -1,3 +1,5 @@
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Button } from "@/components/ui/button/Button";
 import { RefreshCw, Trash2 } from "@/components/elements/icons";
 import { generatePassword } from "@/utils/security/password";
 import { useState } from "react";
@@ -19,14 +21,14 @@ export function PairRow({ name, value, onCommit, onRemove, hasGenerator }: IPair
     onCommit(draftName, generated);
   }
   return (
-    <div className="pair-row">
-      <input
+    <div className="pair-row flex gap-2 items-center mb-2 flex-wrap max-tablet:gap-1">
+      <Input
         aria-label={t("Ключ или логин")}
         value={draftName}
         onChange={(event) => setName(event.target.value)}
         onBlur={() => onCommit(draftName, draftValue)}
       />
-      <input
+      <Input
         aria-label={t("Значение или пароль")}
         autoComplete="off"
         value={draftValue}
@@ -34,18 +36,19 @@ export function PairRow({ name, value, onCommit, onRemove, hasGenerator }: IPair
         onBlur={() => onCommit(draftName, draftValue)}
       />
       {hasGenerator && (
-        <button
-          type="button"
-          className="icon-btn"
-          aria-label={t("Сгенерировать пароль")}
-          onClick={onGenerate}
-        >
+        <Button type="button" size="icon" aria-label={t("Сгенерировать пароль")} onClick={onGenerate}>
           <RefreshCw width={24} height={24} aria-hidden />
-        </button>
+        </Button>
       )}
-      <button type="button" className="icon-btn danger" aria-label={t("Удалить параметр")} onClick={onRemove}>
+      <Button
+        type="button"
+        variant="danger"
+        size="icon"
+        aria-label={t("Удалить параметр")}
+        onClick={onRemove}
+      >
         <Trash2 width={24} height={24} aria-hidden />
-      </button>
+      </Button>
     </div>
   );
 }

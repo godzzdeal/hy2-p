@@ -1,3 +1,4 @@
+import { Actions } from "@/components/ui/Actions";
 import { QueryState } from "@/components/ui/loading";
 import { SystemContent } from "@/components/overview/system/SystemContent";
 import { ChartPreferences } from "@/components/overview/system/preferences";
@@ -10,12 +11,12 @@ export function SystemOverview() {
   const data = read.data;
   return (
     <section id="overview-system" data-scroll-section data-scroll-label={t("Состояние сервера")}>
-      <div className="system-heading">
+      <div className="system-heading flex items-center justify-between gap-4 mb-4 flex-wrap">
         <h2>{t("Состояние сервера")}</h2>
-        <div className="row-actions">
-          <small>{t(hasVisibleCharts ? "Обновление каждые 5 секунд" : "Графики скрыты")}</small>
+        <Actions className="flex-nowrap">
+          <small>{t(hasVisibleCharts ? "Обновление каждые 3 секунды" : "Графики скрыты")}</small>
           <ChartPreferences />
-        </div>
+        </Actions>
       </div>
       <QueryState isLoading={read.isPending} error={read.error} />
       {data && <SystemContent data={data} traffic={traffic} />}

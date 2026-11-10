@@ -1,4 +1,5 @@
-import { Modal } from "@/components/ui/modal/Modal";
+import { Button } from "@/components/ui/button/Button";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { useUpdateCommands } from "@/hooks/core/updates/use-updates";
 import { useTranslation } from "react-i18next";
 interface IUpdateConfirmation {
@@ -34,13 +35,13 @@ export function UpdateConfirmation({ mode, version, onClose }: IUpdateConfirmati
           "Для проверки нужен рабочий TLS-конфиг. Даже остановленный экземпляр будет запущен на время проверки, затем остановлен снова.",
         )}
       </p>
-      <div className="dialog-actions">
-        <button className="secondary" onClick={onClose} disabled={isPending}>
+      <div className="dialog-actions flex justify-end gap-3 mt-3 flex-wrap">
+        <Button variant="secondary" onClick={onClose} disabled={isPending}>
           {t("Отмена")}
-        </button>
-        <button className="primary" onClick={onConfirm} disabled={isPending}>
+        </Button>
+        <Button variant="primary" onClick={onConfirm} disabled={isPending}>
           {isPending ? t("Подготовка\u2026") : isRollback ? t("Выполнить откат") : t("Установить")}
-        </button>
+        </Button>
       </div>
     </Modal>
   );

@@ -8,6 +8,7 @@ certs
 web/node_modules
 web/dist
 web/dist-demo
+web/.cache
 .vercel
 *.exe
 *.pem

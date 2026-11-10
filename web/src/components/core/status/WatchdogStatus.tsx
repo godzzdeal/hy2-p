@@ -5,7 +5,10 @@ export function WatchdogStatus({ watchdog }: { watchdog?: IWatchdog }) {
   const { t } = useTranslation();
   if (!watchdog) return null;
   return (
-    <div className="watchdog-status" role="status">
+    <div
+      className="watchdog-status flex items-start gap-3 py-4 px-8 border-t border-line text-lg max-tablet:py-4 max-tablet:px-5"
+      role="status"
+    >
       <ShieldCheck width={24} height={24} aria-hidden />
       <div>
         <strong>{t(WATCHDOG_LABELS[watchdog.state])}</strong>

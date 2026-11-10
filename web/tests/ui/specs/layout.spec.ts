@@ -124,15 +124,15 @@ test("motion is short and respects the reduced-motion preference", async ({ page
 
 test("Tailwind utilities retain precedence over component styles after Sass", async ({ page }) => {
   await mockPanel(page);
-  const display = await page.evaluate(() => {
-    const element = document.createElement("label");
-    element.className = "checkbox grid";
+  const pointerEvents = await page.evaluate(() => {
+    const element = document.createElement("div");
+    element.className = "notification pointer-events-none";
     document.body.append(element);
-    const value = getComputedStyle(element).display;
+    const value = getComputedStyle(element).pointerEvents;
     element.remove();
     return value;
   });
-  expect(display).toBe("grid");
+  expect(pointerEvents).toBe("none");
 });
 
 test("shared page notices have space before the following card", async ({ page }, info) => {

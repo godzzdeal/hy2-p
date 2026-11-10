@@ -7,7 +7,7 @@ export function UserTable({ children, hasStatus = true }: { children: ReactNode;
   return (
     <>
       {hasStatus && <TrafficStatus />}
-      <div className="table-wrap">
+      <div className="table-wrap relative overflow-x-auto">
         <table className="users-table">
           <thead>
             <tr>

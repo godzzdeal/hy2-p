@@ -10,6 +10,7 @@ test("settings collapse keeps drafts, remembers state and leaves room for fixed 
   const account = page.locator("#panel-account");
   const toggle = account.getByRole("button", { name: "Учётная запись администратора", exact: true });
   await expect(page.locator('.settings-toggle[aria-expanded="true"]')).toHaveCount(0);
+  await expect(account.locator("form")).toHaveCount(0);
   await toggle.click();
   await account.getByLabel("Логин", { exact: true }).fill("draft-name");
   await toggle.click();
@@ -28,7 +29,7 @@ test("settings collapse keeps drafts, remembers state and leaves room for fixed 
     const style = getComputedStyle(element);
     return [style.borderTopWidth, style.borderRightWidth, style.borderBottomWidth, style.borderLeftWidth];
   });
-  expect(borders).toEqual(["1px", "0px", "0px", "0px"]);
+  expect(borders).toEqual(["2px", "0px", "0px", "0px"]);
   const last = await page.locator("#panel-firewall").boundingBox();
   expect(last!.y + last!.height).toBeLessThanOrEqual(footer!.y);
   expect(footer!.y + footer!.height).toBeLessThanOrEqual(page.viewportSize()!.height);

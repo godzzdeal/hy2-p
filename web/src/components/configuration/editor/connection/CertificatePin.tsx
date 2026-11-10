@@ -1,3 +1,5 @@
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
 import {
   useCertificatePin,
   type ICertificatePin,
@@ -9,9 +11,9 @@ export function CertificatePin(props: ICertificatePin) {
   const { isAutomatic, pin, message, onToggle, onChangePin } = useCertificatePin(props);
   return (
     <div className="connection-sni">
-      <label>
+      <Field>
         pinSHA256
-        <input
+        <Input
           aria-label="pinSHA256"
           value={pin}
           readOnly={isAutomatic}
@@ -21,11 +23,11 @@ export function CertificatePin(props: ICertificatePin) {
           onChange={(event) => onChangePin(event.target.value)}
         />
         <small>{t(message || "После замены сертификата обновите подписку на устройствах.")}</small>
-      </label>
-      <label className="checkbox">
-        <input type="checkbox" checked={isAutomatic} onChange={(event) => onToggle(event.target.checked)} />
+      </Field>
+      <Field isInline>
+        <Input type="checkbox" checked={isAutomatic} onChange={(event) => onToggle(event.target.checked)} />
         {t("Вычислять по сертификату")}
-      </label>
+      </Field>
     </div>
   );
 }

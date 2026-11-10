@@ -1,7 +1,8 @@
 import { NETWORK } from "@/config/network";
 import { type ISystemMetrics, type ISystemSample } from "@/services/admin/maintenance";
 
-const HISTORY_SAMPLES = 120;
+const HISTORY_WINDOW_MS = 10 * 60 * 1000;
+const HISTORY_SAMPLES = HISTORY_WINDOW_MS / NETWORK.systemPollMs;
 const DEMO_BYTES = 1024 * 1024;
 export function demoSystem(): ISystemMetrics {
   const tick = Math.floor(Date.now() / NETWORK.systemPollMs);

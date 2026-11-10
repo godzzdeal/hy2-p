@@ -1,4 +1,7 @@
-import { Modal } from "@/components/ui/modal/Modal";
+import { Caption } from "@/components/elements/Caption";
+import { Actions } from "@/components/ui/Actions";
+import { Button } from "@/components/ui/button/Button";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { usePanelOperation } from "@/hooks/panel/maintenance";
 import { type IPanelInstallation, type TPanelRequest } from "@/services/panel/maintenance";
 import { formatDateTime } from "@/utils/format-date";
@@ -38,25 +41,23 @@ export function PanelConfirmation({ input, installation, onClose }: IPanelConfir
               )}
       </p>
       {!isCleanup && (
-        <p className="caption mt-2">
-          {t("Подключения HY2 кратковременно прервутся. После завершения войдите снова.")}
-        </p>
+        <Caption>{t("Подключения HY2 кратковременно прервутся. После завершения войдите снова.")}</Caption>
       )}
-      <div className="row-actions mt-4">
-        <button type="button" className="secondary" disabled={operation.isPending} onClick={onClose}>
+      <Actions className="mt-4">
+        <Button type="button" variant="secondary" disabled={operation.isPending} onClick={onClose}>
           {t("Отмена")}
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
-          className="primary"
+          variant="primary"
           disabled={operation.isPending}
           onClick={() => operation.mutate(input, { onSuccess: onClose })}
         >
           {t(
             operation.isPending ? "Запускаем…" : isCleanup ? "Удалить" : isRollback ? "Откатить" : "Обновить",
           )}
-        </button>
-      </div>
+        </Button>
+      </Actions>
     </Modal>
   );
 }

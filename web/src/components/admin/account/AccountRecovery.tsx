@@ -1,3 +1,4 @@
+import { Caption } from "@/components/elements/Caption";
 import { CommandBlock } from "@/components/elements/copy";
 import { ChevronRight } from "pixelarticons/react/ChevronRight.js";
 import { useTranslation } from "react-i18next";
@@ -10,13 +11,13 @@ export function AccountRecovery() {
         {t("Забыли пароль?")}
       </summary>
       <div className="grid gap-3 mt-3">
-        <p className="caption">
+        <Caption>
           {t(
             "Выполните команду на сервере через SSH. Она создаст новый пароль и завершит сеансы панели. Подключения VPN кратковременно прервутся.",
           )}
-        </p>
+        </Caption>
         <CommandBlock command="sudo hy2-panel password-reset" />
-        <p className="caption">{t("Новый пароль будет показан в терминале.")}</p>
+        <Caption>{t("Новый пароль будет показан в терминале.")}</Caption>
       </div>
     </details>
   );

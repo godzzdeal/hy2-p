@@ -1,6 +1,7 @@
+import { Button } from "@/components/ui/button/Button";
 import { Notice } from "@/components/ui/feedback";
 import { EmojiText } from "@/components/elements/emoji/text/EmojiText";
-import { Modal } from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { QueryState } from "@/components/ui/loading";
 import { AccessForm } from "@/components/users/access/AccessForm";
 import { useGroups } from "@/hooks/groups/hooks";
@@ -26,9 +27,9 @@ export function UserAccessDialog({ user, onClose }: { user: IUser; onClose: () =
       )}
       <QueryState isLoading={access.isPending || cores.isPending} error={access.error || cores.error} />
       {(access.error || cores.error) && (
-        <button onClick={() => void Promise.all([access.refetch(), cores.refetch()])}>
+        <Button onClick={() => void Promise.all([access.refetch(), cores.refetch()])}>
           {t("Повторить")}
-        </button>
+        </Button>
       )}
       {access.data && cores.data && !access.error && !cores.error && (
         <AccessForm userId={user.id} initial={access.data} instances={cores.data} onSaved={onClose} />

@@ -16,7 +16,7 @@ export function ConnectionBadge({
     (isOnline && online > 1 ? ` (${online})` : "");
   return (
     <span
-      className={cn("connection-indicator", {
+      className={cn("connection-indicator inline-grid place-items-center align-middle", {
         "is-online": isOnline,
         "is-unknown": !isAvailable && !isBlocked,
       })}

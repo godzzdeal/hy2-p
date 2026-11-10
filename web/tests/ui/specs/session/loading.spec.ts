@@ -18,7 +18,9 @@ test("startup loader spins, announces loading and respects reduced motion", asyn
     await expect(loader).toHaveAttribute("role", "status");
     await expect(loader).toContainText("Загрузка…");
     const spinner = loader.locator(".spinner");
-    expect(await spinner.evaluate((element) => getComputedStyle(element).animationName)).toBe("panel-spin");
+    expect(await spinner.evaluate((element) => element.getAnimations().some((animation) => animation.playState === "running"))).toBe(true);
+    const transform = await spinner.evaluate((element) => getComputedStyle(element).transform);
+    await expect.poll(() => spinner.evaluate((element) => getComputedStyle(element).transform)).not.toBe(transform);
     await page.screenshot({ path: info.outputPath("startup-loader.png") });
     await page.emulateMedia({ reducedMotion: "reduce" });
     expect(await spinner.evaluate((element) => getComputedStyle(element).animationName)).toBe("none");

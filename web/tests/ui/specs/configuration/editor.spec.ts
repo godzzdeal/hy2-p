@@ -19,7 +19,8 @@ test("YAML window highlights syntax, catches errors and keeps the draft", async 
   const changed = panel.saved().config.replace(":8443", ":61254") + "\n# draft kept\n";
   await editor.fill(changed);
   await expect(dialog.getByRole("status")).toHaveText("Без ошибок");
-  await dialog.getByRole("button", { name: "К конфигурации", exact: true }).click();
+  await expect(dialog.getByRole("button", { name: "К конфигурации", exact: true })).toHaveCount(0);
+  await dialog.getByRole("button", { name: "Закрыть", exact: true }).click();
   await expect(page.getByLabel("listen", { exact: true })).toHaveValue(":61254");
   await page.getByRole("button", { name: "Открыть", exact: true }).click();
   await expect(editor).toContainText("draft kept");

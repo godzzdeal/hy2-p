@@ -19,7 +19,7 @@ test("announcement checkbox supports its label, keyboard and saving", async ({ p
   await page.getByLabel("Текст объявления", { exact: true }).fill("Технические работы завтра");
   await checkbox.focus();
   await page.screenshot({ path: info.outputPath("checkbox-checked.png") });
-  await page.getByRole("button", { name: "Сохранить настройки подписки", exact: true }).click();
+  await page.getByRole("button", { name: "Сохранить", exact: true }).click();
   await expect.poll(() => panel.subscription().enabled).toBe(true);
   expect(panel.subscription().text).toBe("Технические работы завтра");
 });
@@ -59,7 +59,7 @@ test("subscription title keeps emoji without a separate flag selector", async ({
       .getByRole("status", { name: "Предпросмотр названия подписки" })
       .getByRole("img", { name: "🚀", exact: true }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Сохранить настройки подписки", exact: true }).click();
+  await page.getByRole("button", { name: "Сохранить", exact: true }).click();
   await expect.poll(() => panel.subscription().profileTitle).toBe("🚀 Сервер");
   await page.screenshot({ path: info.outputPath("subscription-title.png"), fullPage: true });
 });

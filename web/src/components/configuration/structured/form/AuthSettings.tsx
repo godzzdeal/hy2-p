@@ -1,3 +1,4 @@
+import { Field } from "@/components/ui/fields/Field";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { type IConfiguration } from "@/services/configuration/configuration-types";
@@ -11,8 +12,8 @@ export function AuthSettings({
 }) {
   const { t } = useTranslation();
   return (
-    <div className="config-note">
-      <label htmlFor="auth-source">{t("Кто управляет доступом")}</label>
+    <div className="config-note border-l-4 border-accent text-muted py-3 px-4 bg-surface-soft">
+      <Field htmlFor="auth-source">{t("Кто управляет доступом")}</Field>
       <Select
         id="auth-source"
         value={value.authMode ?? "panel"}

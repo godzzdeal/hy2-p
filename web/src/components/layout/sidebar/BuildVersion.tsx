@@ -1,11 +1,13 @@
 import { useBuildVersion } from "@/hooks/panel/use-build-version";
 import { useTranslation } from "react-i18next";
+import { type ComponentProps } from "react";
 
-export function BuildVersion() {
+export function BuildVersion(props: ComponentProps<"output">) {
   const { t } = useTranslation();
   const query = useBuildVersion();
   return (
     <output
+      {...props}
       aria-label={t("Версия панели")}
       title={query.data ? t("Сборка") + ": " + query.data.revision : undefined}
     >

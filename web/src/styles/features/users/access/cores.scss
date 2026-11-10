@@ -1,31 +1,21 @@
 @layer components {
   .user-core-access fieldset {
-    margin: var(--space-4) 0;
-    padding: var(--space-3);
-    border: 1px solid var(--line);
-    min-width: 0;
+    @apply my-4 mx-0 p-3 border border-line min-w-0;
   }
   .user-core-access legend {
-    padding-inline: var(--space-2);
-  }
-  .user-core-option {
-    padding: var(--space-2);
-    margin: 0;
-    min-width: 0;
+    @apply px-2;
   }
   .user-core-option span {
-    min-width: 0;
-    overflow-wrap: anywhere;
+    @apply min-w-0 wrap-anywhere;
   }
   .user-core-option strong,
   .user-core-option small {
-    display: block;
+    @apply block;
   }
   .user-core-option small {
-    margin-top: var(--space-1);
-    color: var(--muted);
+    @apply mt-1 text-muted;
   }
   .user-core-access > .caption {
-    margin-block: var(--space-3);
+    @apply my-3;
   }
 }

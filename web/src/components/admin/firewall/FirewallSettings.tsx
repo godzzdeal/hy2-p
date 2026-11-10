@@ -1,3 +1,6 @@
+import { Caption } from "@/components/elements/Caption";
+import { Button } from "@/components/ui/button/Button";
+import { CardBody } from "@/components/ui/cards/CardBody";
 import { Notice } from "@/components/ui/feedback";
 import { PortRuleForm } from "@/components/admin/firewall/PortRuleForm";
 import { SettingsSection } from "@/components/admin/SettingsSection";
@@ -14,41 +17,43 @@ export function FirewallSettings() {
       id="panel-firewall"
       title="Firewall"
       action={
-        <button
+        <Button
           type="button"
           aria-label={t("Проверить firewall")}
-          className="secondary"
+          variant="secondary"
           onClick={() => read.mutate()}
           disabled={read.isPending || change.isPending}
         >
           {t("Проверить")}
-        </button>
+        </Button>
       }
     >
-      <div className="form-body">
+      <CardBody>
         <PortGuide />
-        <p className="caption">
+        <Caption>
           {t("Правила UFW для входящих TCP/UDP-портов Ubuntu. Порты SSH и панели защищены от закрытия.")}
-        </p>
+        </Caption>
         <Notice>
           {t(
             "Опубликованные порты Docker могут обходить UFW. Панель не выдаёт такие порты за закрытые. Firewall хостинга настраивается отдельно.",
           )}
         </Notice>
         {!result && (
-          <div className="firewall-helper">
-            <p className="caption">{t("Для подключения помощника выполните на сервере:")}</p>
+          <div className="firewall-helper grid gap-2">
+            <Caption>{t("Для подключения помощника выполните на сервере:")}</Caption>
             <CommandBlock command="sudo hy2-panel firewall-setup" />
           </div>
         )}
         {result && (
           <>
             <p>{t(result.active ? "UFW включён" : "UFW выключен. Изменение правил недоступно.")}</p>
-            <pre className="logs">{result.output}</pre>
+            <pre className="logs m-0 bg-input overflow-auto whitespace-pre-wrap wrap-anywhere">
+              {result.output}
+            </pre>
             {!!result.protectedPorts?.length && (
-              <p className="caption">
+              <Caption>
                 {t("Защищённые TCP-порты:")} {result.protectedPorts.join(", ")}
-              </p>
+              </Caption>
             )}
           </>
         )}
@@ -58,7 +63,7 @@ export function FirewallSettings() {
             onApply={(rule) => change.mutate(rule)}
           />
         )}
-      </div>
+      </CardBody>
     </SettingsSection>
   );
 }

@@ -1,3 +1,7 @@
+import { EmptyState } from "@/components/ui/status/EmptyState";
+import { Actions } from "@/components/ui/Actions";
+import { Button } from "@/components/ui/button/Button";
+import { Card } from "@/components/ui/cards/Card";
 import { Notice } from "@/components/ui/feedback";
 import { Plus, Users } from "@/components/elements/icons";
 import { GroupFilter } from "@/components/groups/membership/GroupFilter";
@@ -35,20 +39,25 @@ export function UsersPage() {
   const [isGroupsOpen, setGroupsOpen] = useState(false);
   return (
     <>
-      <div className="page-heading" id="users-top" data-scroll-section data-scroll-label={t("Пользователи")}>
+      <div
+        className="page-heading flex justify-between items-start gap-4 mb-5 max-tablet:flex-col max-tablet:items-start"
+        id="users-top"
+        data-scroll-section
+        data-scroll-label={t("Пользователи")}
+      >
         <div>
           <h1>{t("Пользователи")}</h1>
         </div>
-        <div className="row-actions">
-          <button className="secondary" onClick={() => setGroupsOpen(true)}>
+        <Actions>
+          <Button variant="secondary" onClick={() => setGroupsOpen(true)}>
             <Users width={24} height={24} aria-hidden />
             {t("Группы")}
-          </button>
-          <button className="primary" onClick={() => setDialog({ type: "create" })}>
+          </Button>
+          <Button variant="primary" onClick={() => setDialog({ type: "create" })}>
             <Plus width={24} height={24} aria-hidden />
             {t("Добавить")}
-          </button>
-        </div>
+          </Button>
+        </Actions>
       </div>
       {configuration.data?.authMode === "native" && (
         <Notice>
@@ -60,12 +69,7 @@ export function UsersPage() {
           {t("Создайте пользователя, затем откройте его QR-код или скопируйте подписку для Happ.")}
         </Notice>
       )}
-      <section
-        className="card"
-        id="users-list"
-        data-scroll-section
-        data-scroll-label={t("Список пользователей")}
-      >
+      <Card id="users-list" data-scroll-section data-scroll-label={t("Список пользователей")}>
         <UsersToolbar search={search} onSearch={onSearch} found={filtered.length}>
           <GroupFilter value={groupId} onChange={onGroup} />
         </UsersToolbar>
@@ -80,14 +84,14 @@ export function UsersPage() {
           onDevices={(user) => setDialog({ type: "devices", user })}
         />
         {!query.isPending && !filtered.length && (
-          <p className="empty">
+          <EmptyState>
             {search
               ? t("Ничего не найдено.")
               : t("Добавьте первого пользователя для получения ссылки подключения.")}
-          </p>
+          </EmptyState>
         )}
         <Pagination page={current} pageCount={pageCount} onChange={setPage} />
-      </section>
+      </Card>
       <UserDialogs dialog={dialog} onClose={() => setDialog(null)} />
       <Suspense fallback={<Loader label="Загрузка формы…" />}>
         {isGroupsOpen && <GroupManager onClose={() => setGroupsOpen(false)} />}

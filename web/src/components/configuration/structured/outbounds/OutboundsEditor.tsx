@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button/Button";
 import { Notice } from "@/components/ui/feedback";
 import { JsonField } from "@/components/configuration/structured/fields/JsonField";
 import { OutboundRow } from "@/components/configuration/structured/outbounds/OutboundRow";
@@ -43,9 +44,14 @@ export function OutboundsEditor({
       {entries.map((entry, index) => (
         <OutboundRow key={index} value={entry} index={index} search={search} onEdit={onEdit} />
       ))}
-      <button type="button" className="secondary" onClick={() => onEdit({ type: "add" })}>
-        {t("Добавить исходящее подключение")}
-      </button>
+      <Button
+        aria-label={t("Добавить исходящее подключение")}
+        type="button"
+        variant="secondary"
+        onClick={() => onEdit({ type: "add" })}
+      >
+        {t("Добавить")}
+      </Button>
     </div>
   );
 }

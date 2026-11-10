@@ -1,3 +1,4 @@
+import { Field } from "@/components/ui/fields/Field";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { useInstances } from "@/hooks/instances/use-instances";
@@ -15,7 +16,7 @@ export function CoreBinding({
   const { t } = useTranslation();
   const instances = useInstances();
   return (
-    <label>
+    <Field>
       {row.name}: {t("Действие при импорте")}
       <Select
         aria-label={t("Экземпляр для импорта") + ": " + row.name}
@@ -33,6 +34,6 @@ export function CoreBinding({
             </SelectOption>
           ))}
       </Select>
-    </label>
+    </Field>
   );
 }

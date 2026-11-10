@@ -1,3 +1,6 @@
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Button } from "@/components/ui/button/Button";
 import { RefreshCw } from "@/components/elements/icons";
 import { Eye } from "pixelarticons/react/Eye.js";
 import { EyeOff } from "pixelarticons/react/EyeOff.js";
@@ -34,10 +37,14 @@ export function PasswordField({
   const [isVisible, setVisible] = useState(false);
   const Icon = isVisible ? Eye : EyeOff;
   return (
-    <div className="password-field">
-      {hasLabel && <label htmlFor={id}>{t(label)}</label>}
-      <div className="password-input">
-        <input
+    <div className="password-field min-w-0">
+      {hasLabel && (
+        <Field htmlFor={id} className="mb-2">
+          {t(label)}
+        </Field>
+      )}
+      <div className="password-input mt-0 flex gap-2 items-center max-tablet:flex-wrap">
+        <Input
           {...props}
           id={id}
           type={isVisible ? "text" : "password"}
@@ -51,26 +58,27 @@ export function PasswordField({
           disabled={disabled}
           onChange={(event) => onChange(event.target.value)}
         />
-        <button
+        <Button
           type="button"
-          className="icon-btn secondary"
+          variant="secondary"
+          size="icon"
           aria-label={t(isVisible ? "Скрыть пароль" : "Показать пароль")}
           aria-pressed={isVisible}
           disabled={disabled}
           onClick={() => setVisible(!isVisible)}
         >
           <Icon width={24} height={24} aria-hidden />
-        </button>
+        </Button>
         {canGenerate && (
-          <button
+          <Button
             type="button"
-            className="secondary"
+            variant="secondary"
             disabled={disabled || props.readOnly}
             onClick={() => onChange(generatePassword())}
           >
             <RefreshCw width={24} height={24} aria-hidden />
             {t("Сгенерировать")}
-          </button>
+          </Button>
         )}
       </div>
     </div>

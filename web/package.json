@@ -1,18 +1,19 @@
 {
   "name": "hy2-panel-web",
   "private": true,
-  "version": "0.8.0",
+  "version": "0.9.0",
   "type": "module",
+  "sideEffects": ["./src/main.tsx", "./src/config/i18n/setup.ts", "**/*.scss"],
   "scripts": {
     "dev": "rspack serve --mode development",
-    "build": "tsc --noEmit && rspack build --mode production",
-    "build:demo": "tsc --noEmit && rspack build --mode production --env demo",
+    "build": "tsc --noEmit && rspack build --mode production && bun build/testing/prepare.ts",
+    "build:demo": "tsc --noEmit && rspack build --mode production --env demo && bun build/testing/prepare.ts",
     "typecheck": "tsc --noEmit",
-    "format": "prettier --write src rspack.config.ts",
-    "lint": "prettier --check src rspack.config.ts && tsc --noEmit",
-    "test": "bun test tests/configuration tests/logs.test.ts tests/subscriptions",
+    "format": "prettier --write src build rspack.config.ts",
+    "lint": "prettier --check src build rspack.config.ts && tsc --noEmit",
+    "test": "bun test tests/configuration tests/logs.test.ts tests/traffic.test.ts tests/subscriptions",
     "test:ui": "playwright test --config tests/ui/playwright.config.ts",
-    "docs:screenshots": "bun tests/screenshots/index.ts"
+    "docs:screenshots": "bun build/testing/prepare.ts && bun .cache/tests/screenshots/index.ts"
   },
   "dependencies": {
     "@codemirror/commands": "^6.11.1",
@@ -52,9 +53,11 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@zxing/library": "^0.23.0",
+    "css-loader": "7.1.5",
     "pngjs": "^7.0.0",
     "postcss": "8",
     "postcss-loader": "8",
+    "postcss-selector-parser": "7.1.0",
     "prettier": "^3.9.10",
     "sass-embedded": "^1.108.1",
     "sass-loader": "^17.1.0",

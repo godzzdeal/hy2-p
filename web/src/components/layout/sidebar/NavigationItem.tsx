@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button/Button";
 import { UserCount } from "@/components/users/list/toolbar/UserCount";
 import { PageEnum, type NAVIGATION } from "@/config/navigation";
 import { useUiStore } from "@/store/ui-store";
@@ -8,17 +9,23 @@ interface INavigationItem {
 }
 export function NavigationItem({ item }: INavigationItem) {
   const { t } = useTranslation();
-  const { page, selectPage } = useUiStore();
+  const page = useUiStore((state) => state.page);
+  const selectPage = useUiStore((state) => state.selectPage);
   return (
-    <button
+    <Button
       aria-label={t(item.label)}
       title={t(item.label)}
-      className={cn({ selected: page === item.id })}
+      className={cn(
+        "w-full max-tablet:w-auto justify-start tablet:group-data-collapsed/app:justify-center tablet:group-data-collapsed/app:px-2",
+        page === item.id && "selected bg-surface-soft text-accent",
+      )}
       onClick={() => selectPage(item.id)}
     >
       <item.icon width={24} height={24} aria-hidden />
-      <span className="nav-item-label">{t(item.id === PageEnum.Core ? "Управление" : item.label)}</span>
+      <span className="nav-item-label max-tablet:min-w-0 max-tablet:text-lg max-tablet:wrap-normal max-tablet:whitespace-nowrap">
+        {t(item.id === PageEnum.Core ? "Управление" : item.label)}
+      </span>
       {item.id === "users" && <UserCount />}
-    </button>
+    </Button>
   );
 }

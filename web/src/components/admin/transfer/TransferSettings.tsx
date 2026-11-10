@@ -1,3 +1,7 @@
+import { Caption } from "@/components/elements/Caption";
+import { CardBody } from "@/components/ui/cards/CardBody";
+import { Actions } from "@/components/ui/Actions";
+import { Button } from "@/components/ui/button/Button";
 import { CommandBlock } from "@/components/elements/copy";
 import { ChevronRight } from "pixelarticons/react/ChevronRight.js";
 import { SettingsSection } from "@/components/admin/SettingsSection";
@@ -12,7 +16,7 @@ export function TransferSettings() {
   const canApply = transfer.preview?.rows.some((row) => row.action === "add") && !transfer.hasApplied;
   return (
     <SettingsSection id="panel-transfer" title={t("Импорт и экспорт")}>
-      <div className="form-body transfer-form">
+      <CardBody className="transfer-form">
         <p>
           {t(
             "Перенос конфигураций экземпляров, пользователей, групп и лимитов между панелями HY2-P. Существующие записи не перезаписываются.",
@@ -23,11 +27,17 @@ export function TransferSettings() {
             "Файл содержит пароли и ссылки подписок. Храните его в защищённом месте. Сертификаты, устройства и пароль входа в панель не переносятся.",
           )}
         </p>
-        <div className="row-actions">
-          <button type="button" className="secondary" disabled={transfer.isBusy} onClick={transfer.onExport}>
-            {t("Экспортировать данные")}
-          </button>
-        </div>
+        <Actions>
+          <Button
+            aria-label={t("Экспортировать данные")}
+            type="button"
+            variant="secondary"
+            disabled={transfer.isBusy}
+            onClick={transfer.onExport}
+          >
+            {t("Экспортировать")}
+          </Button>
+        </Actions>
         <FileDropzone
           label={t("Файл импорта HY2-P")}
           hint={t("JSON, до 16 МБ")}
@@ -42,11 +52,11 @@ export function TransferSettings() {
               <CoreBinding key={row.id} row={row} isDisabled={transfer.isBusy} onBind={transfer.onBind} />
             ))}
         {transfer.preview && !transfer.hasApplied && (
-          <p className="caption">
+          <Caption>
             {t(
               "Исключённые экземпляры не создаются и не попадают в доступ пользователей и групп. Если исключить все экземпляры пользователя, он будет добавлен без доступных подключений.",
             )}
-          </p>
+          </Caption>
         )}
         {transfer.preview && (
           <TransferPreview
@@ -54,18 +64,25 @@ export function TransferSettings() {
             value={transfer.preview}
           />
         )}
-        <button
+        <Button
+          aria-label={t("Добавить новые записи")}
           type="button"
-          className="primary"
+          variant="primary"
           disabled={transfer.isBusy || !canApply}
           onClick={transfer.onApply}
         >
-          {t("Добавить новые записи")}
-        </button>
+          {t("Добавить")}
+        </Button>
         {transfer.preview && (
-          <button type="button" className="secondary" disabled={transfer.isBusy} onClick={transfer.onRefresh}>
-            {t("Проверить ещё раз")}
-          </button>
+          <Button
+            aria-label={t("Проверить ещё раз")}
+            type="button"
+            variant="secondary"
+            disabled={transfer.isBusy}
+            onClick={transfer.onRefresh}
+          >
+            {t("Проверить")}
+          </Button>
         )}
         <details>
           <summary>
@@ -78,7 +95,7 @@ export function TransferSettings() {
           <p>{t("Чтобы связать пользователей с существующим основным экземпляром:")}</p>
           <CommandBlock command="sudo hy2-panel import /root/hy2-p.json --map-core default=default --apply" />
         </details>
-      </div>
+      </CardBody>
     </SettingsSection>
   );
 }

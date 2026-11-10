@@ -1,8 +1,14 @@
+import { Button } from "@/components/ui/button/Button";
 import { RefreshCw } from "@/components/elements/icons";
 import { usePanelRelease } from "@/hooks/layout/footer/use-panel-release";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import { PanelUpdateDialog } from "@/components/panel/maintenance";
+import { lazy, Suspense, useState } from "react";
+import { Loader } from "@/components/ui/loading";
+const PanelUpdateDialog = lazy(() =>
+  import("@/components/panel/maintenance/PanelUpdateDialog").then((module) => ({
+    default: module.PanelUpdateDialog,
+  })),
+);
 export function ReleaseStatus() {
   const { t } = useTranslation();
   const release = usePanelRelease();
@@ -10,33 +16,38 @@ export function ReleaseStatus() {
   const label = t(release.status, { version: release.data?.latest ?? "" });
   return (
     <>
-      <div className="footer-update">
-        <span className="footer-release-status" role="status" aria-live="polite">
+      <div className="footer-update flex items-center justify-end flex-wrap gap-2 min-w-0 max-desktop:col-span-full max-desktop:row-start-2 max-desktop:justify-between max-tablet:grid max-tablet:grid-cols-action">
+        <span className="footer-release-status min-w-0 wrap-anywhere" role="status" aria-live="polite">
           {release.hasUpdate ? (
-            <button
+            <Button
               type="button"
-              className="footer-new-release text-btn"
+              className="footer-new-release px-0 text-accent h-auto min-h-control text-left font-bold"
+              variant="outline"
               onClick={() => setOpen(true)}
               aria-label={t("Обновить панель")}
             >
               {label}
-            </button>
+            </Button>
           ) : (
             label
           )}
         </span>
-        <button
+        <Button
           type="button"
-          className="secondary"
+          variant="secondary"
           onClick={release.onCheck}
           disabled={release.isFetching}
           aria-label={t("Проверить обновления панели")}
         >
           <RefreshCw width={24} height={24} aria-hidden />
-          <span className="footer-check-label">{t("Проверить")}</span>
-        </button>
+          <span className="footer-check-label max-tablet:hidden">{t("Проверить")}</span>
+        </Button>
       </div>
-      {isOpen && <PanelUpdateDialog onClose={() => setOpen(false)} />}
+      {isOpen && (
+        <Suspense fallback={<Loader isInline />}>
+          <PanelUpdateDialog onClose={() => setOpen(false)} />
+        </Suspense>
+      )}
     </>
   );
 }

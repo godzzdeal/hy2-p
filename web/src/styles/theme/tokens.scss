@@ -10,7 +10,8 @@
     color-scheme: light dark;
     --font-body: "Epilepsy Sans", sans-serif;
     --font-heading: "Epilepsy Sans", sans-serif;
-    --font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+    --font-mono-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+    --font-mono: var(--font-mono-family);
     --star-color: #91a8aa;
     --planet-color: #d9bda1;
     --planet-shadow: #bc9e8f;
@@ -23,7 +24,7 @@
     --editor-selection: #c9dedb;
     --foreground: #1b303b;
     --muted: #4e6670;
-    --line: #9aafad;
+    --line: #7d9693;
     --accent: #096d79;
     --accent-text: #fffdf4;
     --danger: #a52d23;
@@ -53,6 +54,7 @@
     --text-title: 26px;
     --text-heading: 24px;
     --sidebar-width: 240px;
+    --configuration-navigation-width: 208px;
     --control-height: 36px;
     --header-height: 48px;
     --icon-size: 24px;
@@ -82,7 +84,7 @@
       --editor-selection: #27445c;
       --foreground: #edf5ec;
       --muted: #b3c7d8;
-      --line: #3b526b;
+      --line: #526c87;
       --accent: #78e0d2;
       --accent-text: #052c34;
       --danger: #ffb4a9;
@@ -106,7 +108,7 @@
     --editor-selection: #27445c;
     --foreground: #edf5ec;
     --muted: #b3c7d8;
-    --line: #3b526b;
+    --line: #526c87;
     --accent: #78e0d2;
     --accent-text: #052c34;
     --danger: #ffb4a9;

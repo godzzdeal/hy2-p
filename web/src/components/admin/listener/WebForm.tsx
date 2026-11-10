@@ -1,3 +1,5 @@
+import { CardBody } from "@/components/ui/cards/CardBody";
+import { Button } from "@/components/ui/button/Button";
 import { Notice } from "@/components/ui/feedback";
 import { CertificateFields } from "@/components/admin/CertificateFields";
 import { SettingsSection } from "@/components/admin/SettingsSection";
@@ -25,10 +27,14 @@ export function WebForm({ initial }: { initial: IWebSettings }) {
           onChange={(next) => setDraft(updateWebConfig(draft, next))}
           hasPrivateKey={current.hasPrivateKey}
         />
-        <div className="form-body">
-          <button className="primary" disabled={mutation.isPending}>
-            {t("Сохранить настройки веб-панели")}
-          </button>
+        <CardBody>
+          <Button
+            aria-label={t("Сохранить настройки веб-панели")}
+            variant="primary"
+            disabled={mutation.isPending}
+          >
+            {t("Сохранить")}
+          </Button>
           {current.restartRequired && (
             <Notice>
               <strong>{t("Нужен перезапуск панели")}</strong>
@@ -46,7 +52,7 @@ export function WebForm({ initial }: { initial: IWebSettings }) {
               )}
             </Notice>
           )}
-        </div>
+        </CardBody>
       </form>
     </SettingsSection>
   );

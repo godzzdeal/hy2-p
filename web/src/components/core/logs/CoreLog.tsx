@@ -1,3 +1,7 @@
+import { Card } from "@/components/ui/cards/Card";
+import { CardHeader } from "@/components/ui/cards/CardHeader";
+import { Actions } from "@/components/ui/Actions";
+import { Button } from "@/components/ui/button/Button";
 import { LogLine } from "@/components/core/logs/lines";
 import { LogToolbar } from "@/components/core/logs/LogToolbar";
 import { RefreshCw } from "@/components/elements/icons";
@@ -25,34 +29,29 @@ export function CoreLog() {
       );
   }
   return (
-    <section
-      className="card log-card"
-      id="core-logs"
-      data-scroll-section
-      data-scroll-label={t("Журнал экземпляра")}
-    >
-      <div className="card-header">
+    <Card className="log-card" id="core-logs" data-scroll-section data-scroll-label={t("Журнал экземпляра")}>
+      <CardHeader>
         <h2>{t("Журнал экземпляра")}</h2>
-        <div className="row-actions">
-          <button
+        <Actions>
+          <Button
             type="button"
-            className="text-btn"
+            variant="outline"
             onClick={() => setExpanded(!isExpanded)}
             aria-expanded={isExpanded}
           >
             {isExpanded ? t("Свернуть") : t("Развернуть")}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="icon-btn"
+            size="icon"
             aria-label={t("Обновить журнал")}
             disabled={query.isFetching}
             onClick={() => void query.refetch()}
           >
             <RefreshCw width={24} height={24} aria-hidden />
-          </button>
-        </div>
-      </div>
+          </Button>
+        </Actions>
+      </CardHeader>
       <LogToolbar
         users={users.data ?? []}
         userId={userId}
@@ -74,7 +73,9 @@ export function CoreLog() {
         tabIndex={0}
         aria-label={t("Сообщения экземпляра")}
         onScroll={onScroll}
-        className={cn("logs", { "logs-expanded": isExpanded })}
+        className={cn("logs m-0 bg-input overflow-auto whitespace-pre-wrap wrap-anywhere", {
+          "logs-expanded": isExpanded,
+        })}
       >
         {visible.length ? (
           visible.map((line, index) => <LogLine key={index} {...line} search={search} />)
@@ -86,10 +87,13 @@ export function CoreLog() {
           </p>
         )}
       </div>
-      <div className="log-footer" role="status">
+      <div
+        className="log-footer flex items-center justify-between flex-wrap gap-2 py-3 px-4 border-t border-line text-muted text-lg"
+        role="status"
+      >
         <span>{isFollowing ? t("Показываем новые сообщения") : t("Автопрокрутка на паузе")}</span>
         <span>{t("Показано {{visible}} из {{total}}", { visible: visible.length, total })}</span>
       </div>
-    </section>
+    </Card>
   );
 }

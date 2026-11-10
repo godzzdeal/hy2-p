@@ -1,3 +1,8 @@
+import { Caption } from "@/components/elements/Caption";
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Actions } from "@/components/ui/Actions";
+import { Button } from "@/components/ui/button/Button";
 import { Notice } from "@/components/ui/feedback";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
@@ -37,7 +42,7 @@ export function TrafficForm({
           {t("Личный лимит может быть только строже.")}
         </Notice>
       )}
-      <label>
+      <Field>
         {t("Единица измерения")}
         <Select value={unit} onValueChange={(nextValue) => setUnit(Number(nextValue))}>
           <SelectOption value={BYTE_UNITS.byte}>{t("Б")}</SelectOption>
@@ -46,10 +51,10 @@ export function TrafficForm({
           <SelectOption value={BYTE_UNITS.gigabyte}>{t("ГБ")}</SelectOption>
           <SelectOption value={BYTE_UNITS.terabyte}>{t("ТБ")}</SelectOption>
         </Select>
-      </label>
-      <label>
+      </Field>
+      <Field>
         {t("Отправлено клиентом")}
-        <input
+        <Input
           type="number"
           min={0}
           max={Number.MAX_SAFE_INTEGER / unit}
@@ -58,10 +63,10 @@ export function TrafficForm({
           value={(upload ?? usage.upload) / unit}
           onChange={(event) => setUpload(Math.round(Number(event.target.value) * unit))}
         />
-      </label>
-      <label>
+      </Field>
+      <Field>
         {t("Получено клиентом")}
-        <input
+        <Input
           type="number"
           min={0}
           step="any"
@@ -69,10 +74,10 @@ export function TrafficForm({
           value={(download ?? usage.download) / unit}
           onChange={(event) => setDownload(Math.round(Number(event.target.value) * unit))}
         />
-      </label>
-      <label>
+      </Field>
+      <Field>
         {t("Лимит трафика (0 без ограничений)")}
-        <input
+        <Input
           type="number"
           min={0}
           step="any"
@@ -80,23 +85,23 @@ export function TrafficForm({
           value={limit / unit}
           onChange={(event) => setLimit(Math.round(Number(event.target.value) * unit))}
         />
-      </label>
-      <div className="row-actions">
-        <button
+      </Field>
+      <Actions>
+        <Button
           type="button"
-          className="secondary"
+          variant="secondary"
           onClick={() => {
             setUpload(0);
             setDownload(0);
           }}
         >
           {t("Сбросить счётчики")}
-        </button>
-        <button className="primary" disabled={mutation.isPending}>
-          {t("Сохранить трафик")}
-        </button>
-      </div>
-      <p className="caption">{t("Трафик обновляется раз в 5 секунд.")}</p>
+        </Button>
+        <Button aria-label={t("Сохранить трафик")} variant="primary" disabled={mutation.isPending}>
+          {t("Сохранить")}
+        </Button>
+      </Actions>
+      <Caption>{t("Трафик обновляется раз в 5 секунд.")}</Caption>
     </form>
   );
 }

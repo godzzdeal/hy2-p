@@ -1,59 +1,31 @@
 @layer components {
   body::before {
+    @apply fixed inset-0 -z-20 pointer-events-none bg-star-color opacity-55;
     content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    pointer-events: none;
-    background: var(--star-color);
     mask-image: url("@assets/starfield.svg");
     mask-size: 2048px 1536px;
-    opacity: 0.55;
-  }
-  .space-scene {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
   }
   .space-scene > * {
-    position: absolute;
+    @apply absolute;
   }
   .space-earth {
-    top: var(--space-16);
-    right: var(--space-16);
+    @apply top-16 right-16;
     width: var(--planet-size);
     height: var(--planet-size);
-    color: var(--planet-color);
-    opacity: 0.55;
   }
   .space-orbit {
-    top: var(--space-4);
-    right: var(--space-4);
+    @apply top-4 right-4;
     width: var(--orbit-size);
     height: var(--orbit-size);
-    border: 1px dashed var(--star-color);
-    border-radius: 50%;
-    opacity: 0.45;
   }
   .space-moon {
+    @apply bottom-6;
     left: calc(var(--sidebar-width) + var(--space-6));
-    bottom: var(--space-6);
     width: var(--moon-size);
     height: var(--moon-size);
-    color: var(--planet-shadow);
-  }
-  .space-sparkles {
-    right: var(--space-6);
-    bottom: var(--space-16);
-    color: var(--star-color);
   }
   .space-star {
     top: 50%;
-    right: var(--space-5);
-    color: var(--accent);
-    opacity: 0.5;
   }
   .login .space-orbit {
     top: 12%;
@@ -70,28 +42,22 @@
   .app-header {
     background: color-mix(in srgb, var(--surface) 92%, transparent);
   }
-  @media (max-width: 760px) {
+  @variant max-tablet {
     .space-earth {
-      top: 288px;
-      right: var(--space-6);
-      opacity: 0.25;
+      @apply top-72 right-6;
     }
     .space-orbit {
-      top: 240px;
+      @apply top-60;
       right: calc(-1 * var(--space-6));
-      opacity: 0.25;
     }
     .space-moon {
-      left: var(--space-4);
-      bottom: var(--space-4);
-      opacity: 0.4;
+      @apply left-4 bottom-4;
     }
     .login .space-earth {
-      top: var(--space-16);
-      right: var(--space-8);
+      @apply top-16 right-8;
     }
     .login .space-orbit {
-      top: var(--space-4);
+      @apply top-4;
       right: calc(-1 * var(--space-4));
     }
   }

@@ -1,5 +1,6 @@
+import { Button } from "@/components/ui/button/Button";
 import { EmojiText } from "@/components/elements/emoji/text/EmojiText";
-import { Modal } from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { useUserCommands } from "@/hooks/users/user-queries";
 import { type IUser } from "@/services/users/user-types";
 import { useTranslation } from "react-i18next";
@@ -13,13 +14,15 @@ export function DeleteDialog({ user, onClose }: { user: IUser; onClose: () => vo
         <EmojiText value={user.displayName ?? user.name} />
         {t("\u00BB и его подписка будут удалены без возможности восстановления.")}
       </p>
-      <button
-        className="primary full delete-button"
+      <Button
+        aria-label={t("Удалить пользователя")}
+        className="full w-full"
+        variant="primary"
         disabled={remove.isPending}
         onClick={() => remove.mutate(user.id, { onSuccess: onClose })}
       >
-        {remove.isPending ? t("Удаляем\u2026") : t("Удалить пользователя")}
-      </button>
+        {remove.isPending ? t("Удаляем\u2026") : t("Удалить")}
+      </Button>
     </Modal>
   );
 }

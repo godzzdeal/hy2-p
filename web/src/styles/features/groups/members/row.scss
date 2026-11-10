@@ -1,40 +1,5 @@
 @layer components {
-  .group-members .group-member-row {
-    display: grid;
-    grid-template-columns: var(--space-6) var(--space-8) minmax(0, 1fr);
-    align-items: center;
-    gap: var(--space-3);
-    min-height: var(--space-16);
-    margin: 0;
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--line);
-    background: var(--input);
-    &:hover {
-      border-color: var(--accent);
-    }
-    &:has(:checked) {
-      border-color: var(--accent);
-      background: var(--surface-soft);
-    }
-    &:focus-within {
-      outline: 2px solid var(--accent);
-      outline-offset: 0;
-    }
-  }
-  .group-member-info {
-    display: grid;
-    gap: var(--space-1);
-    min-width: 0;
-  }
-  .group-member-name {
-    display: block;
-    overflow-wrap: anywhere;
-    line-height: 1.5;
-    font-weight: 500;
-  }
   .group-member-info .group-member-group {
-    margin: 0;
-    line-height: 1.4;
-    overflow-wrap: anywhere;
+    @apply m-0 wrap-anywhere leading-snug;
   }
 }

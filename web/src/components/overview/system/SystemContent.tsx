@@ -1,3 +1,4 @@
+import { EmptyState } from "@/components/ui/status/EmptyState";
 import { MetricChart } from "@/components/overview/system/charts";
 import { StorageCard } from "@/components/overview/system/storage";
 import { TrafficCard } from "@/components/overview/system/TrafficCard";
@@ -17,9 +18,9 @@ export function SystemContent({ data, traffic }: ISystemContent) {
   const hasVisibleCharts = Object.values(visible).some(Boolean);
   return (
     <>
-      {!data.available && <p className="empty">{t(data.error || "Системные показатели недоступны")}</p>}
+      {!data.available && <EmptyState>{t(data.error || "Системные показатели недоступны")}</EmptyState>}
       {data.available && hasVisibleCharts && (
-        <div className="system-grid">
+        <div className="system-grid grid grid-cols-2 gap-4 mb-4 max-tablet:grid-cols-1">
           {visible.cpu && (
             <MetricChart
               title="CPU"
@@ -68,7 +69,7 @@ export function SystemContent({ data, traffic }: ISystemContent) {
           )}
         </div>
       )}
-      <div className="system-grid">
+      <div className="system-grid grid grid-cols-2 gap-4 mb-4 max-tablet:grid-cols-1">
         <StorageCard value={data.storage} isHost={data.storage.managed} />
         <TrafficCard {...traffic} received={data.received} transmitted={data.transmitted} />
       </div>

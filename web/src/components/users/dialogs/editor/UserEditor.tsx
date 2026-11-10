@@ -1,5 +1,8 @@
+import { Field } from "@/components/ui/fields/Field";
+import { Input } from "@/components/ui/fields/controls/Input";
+import { Button } from "@/components/ui/button/Button";
 import { Form, FormPassword } from "@/components/ui/forms";
-import { Modal } from "@/components/ui/modal/Modal";
+import { Modal } from "@/components/ui/overlays/Modal";
 import { UserNameField } from "@/components/users/dialogs/editor/UserNameField";
 import { useUserEditor } from "@/hooks/users/use-user-editor";
 import { type IUser } from "@/services/users/user-types";
@@ -28,16 +31,16 @@ export function UserEditor({ user, onClose }: IUserEditor) {
             />
           )}
         />
-        <label>
+        <Field>
           {t("Доступ до")}
-          <input type="date" {...form.register("expires")} />
+          <Input type="date" {...form.register("expires")} />
           <small>{t("Оставьте пустым для бессрочного доступа.")}</small>
-        </label>
+        </Field>
         {user && (
-          <label className="checkbox">
-            <input type="checkbox" {...form.register("isEnabled")} />
+          <Field isInline>
+            <Input type="checkbox" {...form.register("isEnabled")} />
             {t("Доступ включён")}
-          </label>
+          </Field>
         )}
         <FormPassword
           control={form.control}
@@ -45,9 +48,14 @@ export function UserEditor({ user, onClose }: IUserEditor) {
           placeholder={user ? "Без изменений" : "Автоматически"}
           label={user ? t("Новый пароль подключения") : t("Пароль подключения (или автоматический)")}
         />
-        <button disabled={isPending} className="primary full">
-          {isPending ? t("Сохраняем\u2026") : t("Сохранить пользователя")}
-        </button>
+        <Button
+          aria-label={t("Сохранить пользователя")}
+          disabled={isPending}
+          className="full w-full"
+          variant="primary"
+        >
+          {isPending ? t("Сохраняем\u2026") : t("Сохранить")}
+        </Button>
       </Form>
     </Modal>
   );

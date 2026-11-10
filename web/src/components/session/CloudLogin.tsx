@@ -1,3 +1,5 @@
+import { Caption } from "@/components/elements/Caption";
+import { Button } from "@/components/ui/button/Button";
 import { useCloudLogin } from "@/hooks/session/use-cloud-login";
 import { Form, FormPassword } from "@/components/ui/forms";
 import { useForm } from "react-hook-form";
@@ -14,7 +16,7 @@ export function CloudLogin({ challenge, onBack }: { challenge: string; onBack: (
       onSubmit={({ password }) => login.mutate({ challenge, password })}
     >
       <h2>{t("Облачный пароль")}</h2>
-      <p className="caption">{t("Введите дополнительный пароль, чтобы завершить вход.")}</p>
+      <Caption>{t("Введите дополнительный пароль, чтобы завершить вход.")}</Caption>
       <FormPassword
         control={form.control}
         name="password"
@@ -25,13 +27,19 @@ export function CloudLogin({ challenge, onBack }: { challenge: string; onBack: (
         minLength={0}
         autoComplete="current-password"
       />
-      <button className="primary" disabled={login.isPending}>
+      <Button className="w-full" variant="primary" disabled={login.isPending}>
         {t(login.isPending ? "Проверяем…" : "Подтвердить")}
-      </button>
-      <button type="button" className="secondary full" disabled={login.isPending} onClick={onBack}>
+      </Button>
+      <Button
+        type="button"
+        className="full w-full"
+        variant="secondary"
+        disabled={login.isPending}
+        onClick={onBack}
+      >
         {t("Вернуться к входу")}
-      </button>
-      <p className="caption">{t("Забыли пароль? Сброс доступен владельцу сервера через SSH.")}</p>
+      </Button>
+      <Caption>{t("Забыли пароль? Сброс доступен владельцу сервера через SSH.")}</Caption>
     </Form>
   );
 }
