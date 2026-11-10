@@ -14,6 +14,8 @@ export function useDialogFocus(onClose: () => void) {
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (event.defaultPrevented) return;
     if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
       onClose();
       return;
     }

@@ -1,6 +1,7 @@
 import { QUERY_KEYS } from "@/config/network";
 import { panelMaintenanceApi, type TPanelRequest, type IPanelOperation } from "@/services/panel/maintenance";
 import { usePanelOperationStore } from "@/store/core/panel-operation-store";
+import { isNewerVersion } from "@/utils/core/version";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
@@ -38,7 +39,7 @@ export function usePanelMaintenance() {
     setConfirmation,
     isBusy,
     canUpdate:
-      installation.data?.available === true && !!version && version !== installation.data.current && !isBusy,
+      installation.data?.available === true && isNewerVersion(installation.data.current, version) && !isBusy,
     canRollback: installation.data?.rollbackAvailable === true && !isBusy,
   };
 }
