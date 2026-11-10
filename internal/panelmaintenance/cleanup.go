@@ -51,7 +51,8 @@ func (service *Service) cleanupKey() string {
 		return ""
 	}
 	previous, _ := os.ReadFile(filepath.Join(service.Root, "previous"))
-	key := current + ":" + strings.TrimSpace(string(previous))
+	backup, _ := os.ReadFile(filepath.Join(service.Root, "rollback-backup"))
+	key := current + ":" + strings.TrimSpace(string(previous)) + ":" + strings.TrimSpace(string(backup))
 	marker, err := os.ReadFile(filepath.Join(service.Root, "images-maintained"))
 	if err == nil && strings.TrimSpace(string(marker)) == key {
 		return ""

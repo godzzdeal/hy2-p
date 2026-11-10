@@ -17,7 +17,7 @@ import (
 func TestAutomaticCleanupWaitsForCompletedDeploymentAndSkipsMaintainedImages(t *testing.T) {
 	install := managed.New(t)
 	service := &Service{Root: install.Root}
-	expected := install.Current + ":" + install.Previous
+	expected := install.Current + ":" + install.Previous + ":" + filepath.Join(install.Root, "backups", "fixture")
 	if service.cleanupKey() != expected {
 		t.Fatal("new installation is not scheduled for cleanup")
 	}
@@ -42,6 +42,14 @@ func TestAutomaticCleanupWaitsForCompletedDeploymentAndSkipsMaintainedImages(t *
 	install.Write("images-maintained", expected)
 	if service.cleanupKey() != "" {
 		t.Fatal("already maintained images were scheduled again")
+	}
+	operation.ID = ""
+	if err := storage.Save(install.Root, operation); err != nil {
+		t.Fatal(err)
+	}
+	install.Write("rollback-backup", filepath.Join(install.Root, "backups", "next-update"))
+	if service.cleanupKey() == "" {
+		t.Fatal("reinstalling the same versions did not schedule cleanup")
 	}
 }
 

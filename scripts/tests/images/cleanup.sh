@@ -14,7 +14,7 @@ has_image "$FOREIGN"
 verify_image_archive "$OLD"
 [[ $(jq length "$ROOT/containers.json") == 2 ]]
 [[ ! -e $ROOT/image-archives/$STALE ]]
-[[ $(cat "$ROOT/images-maintained") == "$NEW:$OLD" ]]
+[[ $(cat "$ROOT/images-maintained") == "$NEW:$OLD:" ]]
 grep -q 'saved diagnostic' "$ROOT/last-maintenance.log"
 restore_image "$OLD"
 has_image "$OLD"

@@ -30,7 +30,7 @@ cleanup_images() {
   done
   prune_image_archives "$previous" || return 1
   if [[ $archived == false ]] || ! engine image inspect "$(image_for "$previous")" >/dev/null 2>&1; then
-    state_write images-maintained "$current:$previous" || return 1
+    state_write images-maintained "$current:$previous:$(cat "$ROOT/rollback-backup" 2>/dev/null || true)" || return 1
   fi
   log "Удалено старых образов: $removed. Работающая версия сохранена, предыдущая доступна из архива."
 }

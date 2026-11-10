@@ -1,4 +1,17 @@
 #!/usr/bin/env bash
+wait_image_archive() {
+  local previous=$1 attempt
+  for ((attempt=0; attempt<120; attempt++)); do
+    if sudo test -f "$ROOT/image-archives/$previous/checksum" &&
+      ! sudo docker image inspect "hy2-panel:$previous" >/dev/null 2>&1; then
+      sudo gzip -t "$ROOT/image-archives/$previous/image.tar.gz"
+      return
+    fi
+    sleep 1
+  done
+  printf 'Previous image was not archived automatically.\n' >&2
+  return 1
+}
 test_image_cleanup() {
   local current previous stale
   current=$(sudo cat "$ROOT/current")
