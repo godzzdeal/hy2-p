@@ -43,7 +43,8 @@ export function NetworkFields({
       <label>
         {t("Публичный URL панели и подписок")}
         <input
-          placeholder="https://panel.example.com:8443"
+          aria-label={t("Публичный URL панели и подписок")}
+          placeholder={value.mode === "http" ? "http://203.0.113.10:8080" : "https://203.0.113.10:9443"}
           value={value.publicURL}
           onChange={(event) => onChange({ ...value, publicURL: event.target.value })}
         />

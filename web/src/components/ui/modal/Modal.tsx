@@ -8,13 +8,17 @@ interface IModal {
   title: string;
   heading?: ReactNode;
   onClose: () => void;
+  isDismissible?: boolean;
   children: ReactNode;
 }
-export function Modal({ title, heading, onClose, children, className }: IModal) {
+export function Modal({ title, heading, onClose, children, className, isDismissible = true }: IModal) {
   const { t } = useTranslation();
-  const focus = useDialogFocus(onClose);
+  function onDismiss() {
+    if (isDismissible) onClose();
+  }
+  const focus = useDialogFocus(onDismiss);
   function onBackdrop(event: MouseEvent<HTMLDivElement>) {
-    if (event.target === event.currentTarget) onClose();
+    if (event.target === event.currentTarget) onDismiss();
   }
   return (
     <div className="overlay" onMouseDown={onBackdrop}>
@@ -28,7 +32,12 @@ export function Modal({ title, heading, onClose, children, className }: IModal) 
       >
         <div className="modal-heading">
           <h2>{heading ?? t(title)}</h2>
-          <button className="icon-btn" aria-label={t("Закрыть")} onClick={onClose}>
+          <button
+            className="icon-btn"
+            aria-label={t("Закрыть")}
+            onClick={onDismiss}
+            disabled={!isDismissible}
+          >
             <X width={24} height={24} aria-hidden />
           </button>
         </div>

@@ -23,21 +23,18 @@ type (
 	Snapshot = sources.Snapshot
 )
 
-type Runtime = sources.ManagedRuntime
 type Service struct {
-	GroupLimit                             func(string) uint64
-	mu                                     sync.Mutex
-	state                                  Snapshot
-	baseline                               map[string]Counter
-	generation, directory, secret, address string
-	runtime                                Runtime
-	client                                 *http.Client
-	multiple                               *sources.Collector
+	GroupLimit func(string) uint64
+	mu         sync.Mutex
+	state      Snapshot
+	directory  string
+	runtime    Runtime
+	multiple   *sources.Collector
 }
 
-func New(data, secret string, runtime Runtime) (*Service, error) {
-	service := &Service{directory: filepath.Join(data, "traffic"), secret: secret, address: "http://127.0.0.1:9999", runtime: runtime, client: &http.Client{Timeout: RequestTimeout}, baseline: map[string]Counter{}}
-	service.multiple = sources.New(service.client)
+func New(data string, runtime Runtime) (*Service, error) {
+	service := &Service{directory: filepath.Join(data, "traffic"), runtime: runtime}
+	service.multiple = sources.New(&http.Client{Timeout: RequestTimeout})
 	err := records.Read(service.directory, "usage", &service.state)
 	if err != nil && !os.IsNotExist(err) {
 		return nil, err

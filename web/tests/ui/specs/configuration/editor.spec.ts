@@ -3,21 +3,25 @@ import { mockPanel } from "../../fixtures";
 test("YAML window highlights syntax, catches errors and keeps the draft", async ({ page }, info) => {
   const panel = await mockPanel(page);
   await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
-  await page.getByRole("button", { name: "Открыть редактор YAML", exact: true }).click();
+  await page.getByRole("button", { name: "Открыть", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Редактор YAML", exact: true });
   const editor = dialog.getByRole("textbox", { name: "Конфигурация Hysteria2 YAML", exact: true });
   await expect(editor).toBeVisible();
   await expect(dialog.locator(".yaml-key").first()).toBeVisible();
   await expect(dialog.locator(".cm-lineNumbers")).toBeVisible();
+  const gutter = await dialog.locator(".cm-gutters").evaluate(element => ({font:getComputedStyle(element).fontFamily,background:getComputedStyle(element).backgroundColor,surface:getComputedStyle(element).getPropertyValue("--surface").trim()}));
+  expect(gutter.font).toContain("Epilepsy Sans");
+  expect(gutter.background).not.toBe("rgb(245, 245, 245)");
+  await dialog.screenshot({ path: info.outputPath("yaml-gutters.png") });
   await editor.fill("listen: [");
   await expect(dialog.getByRole("status")).toContainText("Ошибок YAML:");
   await expect(dialog.getByRole("button", { name: "Сохранить конфигурацию", exact: true })).toBeDisabled();
   const changed = panel.saved().config.replace(":8443", ":61254") + "\n# draft kept\n";
   await editor.fill(changed);
-  await expect(dialog.getByRole("status")).toHaveText("YAML без ошибок синтаксиса");
+  await expect(dialog.getByRole("status")).toHaveText("Без ошибок");
   await dialog.getByRole("button", { name: "К конфигурации", exact: true }).click();
   await expect(page.getByLabel("listen", { exact: true })).toHaveValue(":61254");
-  await page.getByRole("button", { name: "Открыть редактор YAML", exact: true }).click();
+  await page.getByRole("button", { name: "Открыть", exact: true }).click();
   await expect(editor).toContainText("draft kept");
   await dialog.getByRole("button", { name: "Сохранить конфигурацию", exact: true }).click();
   await expect.poll(() => panel.saved().config).toContain("draft kept");
@@ -27,7 +31,7 @@ test("YAML window highlights syntax, catches errors and keeps the draft", async 
 test("YAML search closes before the editor window", async ({ page }) => {
   await mockPanel(page);
   await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
-  await page.getByRole("button", { name: "Открыть редактор YAML", exact: true }).click();
+  await page.getByRole("button", { name: "Открыть", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Редактор YAML", exact: true });
   const editor = dialog.getByRole("textbox", { name: "Конфигурация Hysteria2 YAML", exact: true });
   await editor.press("Control+f");

@@ -3,7 +3,7 @@ export const TOOLS: Record<string, string> = {
   "Не удалось прочитать защищённые порты firewall": "Could not read protected firewall ports",
   "Не удалось проверить публикацию Docker. Закрытие порта отменено":
     "Could not check Docker port mappings. Blocking the port was cancelled",
-  "Группа дополнительно ограничивает доступные ядра:": "The group also restricts allowed engines:",
+  "Группа дополнительно ограничивает доступные экземпляры:": "The group also restricts allowed instances:",
   Группы: "Groups",
   Группа: "Group",
   "Группы пользователей": "User groups",
@@ -18,13 +18,13 @@ export const TOOLS: Record<string, string> = {
   "Удалить группу {{name}}": "Delete group {{name}}",
   "Удалить группу? Пользователи сохранятся, ограничения группы перестанут действовать.":
     "Delete this group? Users will remain and group restrictions will be removed.",
-  "Доступные ядра группы": "Group engines",
+  "Доступные экземпляры группы": "Group instances",
   "Лимит трафика на участника, ГБ": "Traffic limit per member, GB",
   "Лимит устройств на участника": "Device limit per member",
-  "0 отключает лимит группы. Личные ограничения продолжают действовать: применяется более строгий лимит и пересечение доступных ядер. Трафик участников не сбрасывается.":
-    "0 disables the group limit. Personal restrictions still apply: the stricter limit and the intersection of allowed engines take effect. Traffic counters are preserved.",
-  "Объединяйте пользователей и задавайте общие ядра, лимиты трафика и устройств. Каждый пользователь может состоять в одной группе.":
-    "Organize users and set shared engine, traffic and device restrictions. Each user can belong to one group.",
+  "0 отключает лимит группы. Личные ограничения продолжают действовать: применяется более строгий лимит и пересечение доступных экземпляров. Трафик участников не сбрасывается.":
+    "0 disables the group limit. Personal restrictions still apply: the stricter limit and the intersection of allowed instances take effect. Traffic counters are preserved.",
+  "Объединяйте пользователей и задавайте общие экземпляры, лимиты трафика и устройств. Каждый пользователь может состоять в одной группе.":
+    "Organize users and set shared instance, traffic and device restrictions. Each user can belong to one group.",
   "Групп пока нет. Создайте первую и добавьте в неё пользователей.":
     "No groups yet. Create one and assign users to it.",
   "Фильтр по группе": "Filter by group",
@@ -47,14 +47,14 @@ export const TOOLS: Record<string, string> = {
   "Группа не найдена": "Group not found",
   "Группа с таким именем уже существует": "A group with this name already exists",
   "Достигнут предел: 64 группы": "The limit of 64 groups has been reached",
-  "Выберите ядра с пользователями панели": "Select engines using panel users",
+  "Выберите экземпляры с пользователями панели": "Select instances using panel users",
   "Сначала отключите лишние устройства участников группы": "Disable excess devices for group members first",
   "Сначала отключите лишние устройства пользователя": "Disable this user's excess devices first",
   "Развернуть меню": "Expand menu",
   "Свернуть меню": "Collapse menu",
   "Какие порты открыть": "Which ports to open",
-  "Обычно нужны TCP-порт панели, UDP-порты ядер и TCP 80 для HTTP ACME или 443 для TLS ACME. DNS ACME не требует входящего порта.":
-    "Usually allow the panel TCP port, engine UDP ports, and TCP 80 for HTTP ACME or 443 for TLS ACME. DNS ACME needs no inbound port.",
+  "Обычно нужны TCP-порт панели, UDP-порты экземпляров и TCP 80 для HTTP ACME или 443 для TLS ACME. DNS ACME не требует входящего порта.":
+    "Usually allow the panel TCP port, instance UDP ports, and TCP 80 for HTTP ACME or 443 for TLS ACME. DNS ACME needs no inbound port.",
   "Ниже порты из сохранённых настроек и текущей публикации Docker. Это рекомендации, доступность извне не проверялась.":
     "Ports below come from saved settings and current Docker mappings. These are recommendations, not an external connectivity check.",
   "Изменение ещё нужно применить или опубликовать порт Docker.":
@@ -66,7 +66,7 @@ export const TOOLS: Record<string, string> = {
   "Проверка сертификата ACME по TLS": "ACME TLS certificate validation",
   "HTTP-сайт маскировки": "HTTP masquerade site",
   "HTTPS-сайт маскировки": "HTTPS masquerade site",
-  "Не удалось прочитать настройки ядер:": "Could not read engine settings:",
+  "Не удалось прочитать настройки экземпляров:": "Could not read instance settings:",
   "Не открывайте Traffic Stats и внутренние порты панели в интернет. SSH-порт оставьте разрешённым. Те же публичные порты разрешите в firewall хостинга.":
     "Keep Traffic Stats and internal panel ports private. Keep your SSH port allowed. Also allow public ports in the hosting firewall.",
   "Как вернуть доступ или отменить правило": "Restore access or undo a rule",
@@ -89,18 +89,18 @@ export const TOOLS: Record<string, string> = {
   "Получить публичный ECH": "Read public ECH config",
   "ECH ещё не настроен в сохранённой конфигурации.": "ECH is not configured in the saved configuration yet.",
   "Скопировать tls.ech": "Copy tls.ech",
-  "При замене ключа ECH обновите tls.ech на клиентах. Экспорт ECH в ссылки Happ пока не поддерживается.":
-    "When replacing ECH keys, update tls.ech on clients. Happ URI export does not support ECH yet.",
-  "Ключ ECH создан. Сохраните конфигурацию и перезапустите ядро.":
-    "ECH key generated. Save the configuration and restart the engine.",
-  "Панель задаёт trafficStats.listen и trafficStats.secret при запуске ядра. Ниже можно получить фактические значения панели.":
-    "The panel sets trafficStats.listen and trafficStats.secret when the engine starts. Retrieve the actual panel values below.",
+  "Публичный ECH добавляется в ссылку подключения. После замены ключа обновите подписку. Клиент должен поддерживать ECH для Hysteria2.":
+    "Public ECH is included in the connection link. Refresh the subscription after replacing the key. The client must support ECH for Hysteria2.",
+  "Ключ ECH создан. Сохраните конфигурацию и перезапустите экземпляр.":
+    "ECH key generated. Save the configuration and restart the instance.",
+  "Панель задаёт trafficStats.listen и trafficStats.secret при запуске экземпляра. Ниже можно получить фактические значения панели.":
+    "The panel sets trafficStats.listen and trafficStats.secret when the instance starts. Retrieve the actual panel values below.",
   "Скрыть секрет": "Hide secret",
   "Показать секрет Traffic Stats": "Show Traffic Stats secret",
   "Адрес статистики": "Statistics address",
-  "Ядро запущено": "Engine is running",
-  "Ядро остановлено. Значения применятся при запуске.":
-    "The engine is stopped. These values will apply at startup.",
+  "Экземпляр запущен": "Instance is running",
+  "Экземпляр остановлен. Значения применятся при запуске.":
+    "The instance is stopped. These values will apply at startup.",
   "Скопировать секрет": "Copy secret",
   "Секрет может измениться после перезапуска панели. API статистики слушает loopback и не публикуется в интернет.":
     "The secret may change after restarting the panel. The statistics API uses loopback and is not exposed to the internet.",
@@ -129,7 +129,7 @@ export const TOOLS: Record<string, string> = {
   "В файле нет публичного блока ECH CONFIGS. ACME-сертификат не содержит ключей ECH":
     "The file has no public ECH CONFIGS block. ACME certificates do not contain ECH keys",
   "Укажите доменное имя для внешнего SNI ECH": "Enter a domain name for the ECH public SNI",
-  "Не удалось создать ECH. Требуется ядро Hysteria2 с командой ech (2.12.3 или новее)":
+  "Не удалось создать ECH. Требуется экземпляр HY2 с командой ech (2.12.3 или новее)":
     "Could not generate ECH. Hysteria2 with the ech command (2.12.3 or newer) is required",
   "Помощник firewall недоступен. На сервере выполните sudo hy2-panel firewall-setup":
     "Firewall helper unavailable. Run sudo hy2-panel firewall-setup on your server",

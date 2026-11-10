@@ -1,4 +1,5 @@
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
+import { SystemOverview } from "@/components/overview/system";
 import { useConfiguration } from "@/hooks/configuration/use-configuration";
 import { useCore } from "@/hooks/core/use-core";
 import { useUsers } from "@/hooks/users/user-queries";
@@ -16,7 +17,6 @@ export function OverviewPage() {
       <div className="page-heading">
         <div>
           <h1>{t("Ваш сервер")}</h1>
-          <p>{t("Доступ, подключения и состояние вашего сервера.")}</p>
         </div>
       </div>
       <QueryState
@@ -27,15 +27,15 @@ export function OverviewPage() {
         className="metrics"
         id="overview-status"
         data-scroll-section
-        data-scroll-label={t("Состояние сервера")}
+        data-scroll-label={t("Состояние экземпляра")}
       >
         <section className="metric">
-          <div>{t("Состояние ядра")}</div>
+          <div>{t("Состояние экземпляра")}</div>
           <strong>{core.data?.running ? t("Запущено") : t("Остановлено")}</strong>
           <small>
             {core.data?.available
               ? t("Hysteria2 установлен")
-              : t("Установите Hysteria2 в разделе «Ядро и журнал».")}
+              : t("Установите HY2 в разделе «Управление HY2».")}
           </small>
         </section>
         <section className="metric">
@@ -51,6 +51,7 @@ export function OverviewPage() {
           <small>UDP / {config.data?.port || "8443"}</small>
         </section>
       </div>
+      <SystemOverview />
       <div
         className="overview-grid"
         id="overview-start"

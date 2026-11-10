@@ -1,4 +1,7 @@
 @layer components {
+  .hysteria-mark-accent {
+    fill: var(--hy2-logo-accent);
+  }
   body {
     isolation: isolate;
   }
@@ -93,13 +96,14 @@
   .metric > strong {
     font-weight: 600;
   }
-  .metric small,
-  .field-hint,
-  .share-help {
+  .metric small {
     line-height: 1.5;
   }
-  .config-note,
-  .info-note {
+  .field-hint,
+  .share-help {
+    line-height: var(--leading-caption);
+  }
+  .config-note {
     border-left: var(--space-1) solid var(--accent);
   }
   .emoji-grid button {

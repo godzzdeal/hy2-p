@@ -15,6 +15,7 @@ import (
 	portweb "hy2-panel/internal/portcontrol/web"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/subscriptions"
+	"hy2-panel/internal/systemmetrics"
 	"hy2-panel/internal/traffic"
 	"hy2-panel/internal/transfer"
 	"hy2-panel/internal/transport"
@@ -24,18 +25,22 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 	"time"
 )
 
-func routes(auth *auth.Handler, users *users.Handler, registry *instances.Registry, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, access *useraccess.Handler, devices *deviceapi.Handler, groups *groupapi.Handler, transfer *transfer.Service) http.Handler {
+func routes(auth *auth.Handler, users *users.Handler, registry *instances.Registry, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, access *useraccess.Handler, devices *deviceapi.Handler, groups *groupapi.Handler, transfer *transfer.Service, metrics *systemmetrics.Service) http.Handler {
 	mux := http.NewServeMux()
 	panelUpdates := updates.New(buildinfo.Version())
 	mux.HandleFunc("GET /api/version", buildinfo.Read)
 	mux.HandleFunc("POST /api/login", auth.Login)
 	mux.HandleFunc("POST /api/login/cloud", auth.CloudLogin)
 	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
+	mux.HandleFunc("GET /api/panel/restart/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{
+		"GET /api/system":                         metrics.Read,
+		"POST /api/panel/restart":                 portweb.Restart,
 		"GET /api/admin/transfer":                 transfer.Download,
 		"POST /api/admin/transfer/{mode}":         transfer.Import,
 		"PUT /api/groups/{group}/members":         groups.Members,
@@ -98,8 +103,28 @@ func awaitShutdown(failures <-chan error, servers []*http.Server) error {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
+	return errors.Join(err, shutdownServers(ctx, servers))
+}
+
+func shutdownServers(ctx context.Context, servers []*http.Server) error {
+	var failures error
 	for _, server := range servers {
-		server.Shutdown(ctx)
+		if err := server.Shutdown(ctx); err != nil {
+			failures = errors.Join(failures, err, server.Close())
+		}
 	}
-	return err
+	return failures
+}
+
+func background(parent context.Context, loops ...func(context.Context)) func() {
+	ctx, cancel := context.WithCancel(parent)
+	var workers sync.WaitGroup
+	for _, loop := range loops {
+		workers.Go(func() { loop(ctx) })
+	}
+	return func() { cancel(); workers.Wait() }
+}
+
+func httpServer(address string, handler http.Handler) *http.Server {
+	return &http.Server{Addr: address, Handler: handler, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}
 }

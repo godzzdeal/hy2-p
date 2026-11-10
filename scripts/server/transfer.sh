@@ -21,7 +21,8 @@ transfer_panel() {
       --preview) mode=preview ;;
       --apply) mode=apply ;;
       --map-core) (($#>1)) || die "Укажите source=target после --map-core."; mappings+=("$2"); shift ;;
-      *) die "Используйте --preview, --apply или --map-core source=target." ;;
+      --skip-core) (($#>1)) || die "Укажите ID экземпляра после --skip-core."; mappings+=("$2=skip"); shift ;;
+      *) die "Используйте --preview, --apply, --skip-core ID или --map-core source=target." ;;
     esac
     shift
   done

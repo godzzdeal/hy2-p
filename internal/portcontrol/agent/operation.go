@@ -1,48 +1,17 @@
 package agent
 
 import (
-	"context"
-	"crypto/rand"
-	"encoding/hex"
+	"hy2-panel/internal/portcontrol/agent/commands"
 	"hy2-panel/internal/portcontrol/protocol"
-	"os"
+	"hy2-panel/internal/transport"
+	"log"
+	"net/http"
 	"os/exec"
-	"path/filepath"
-	"regexp"
-	"strings"
 	"time"
 )
 
-var commitPattern = regexp.MustCompile("^[a-f0-9]{40}$")
-
-func randomToken() string {
-	var data [16]byte
-	if _, err := rand.Read(data[:]); err != nil {
-		panic(err)
-	}
-	return hex.EncodeToString(data[:])
-}
 func (agent *Agent) execute(arguments ...string) error {
-	data, err := os.ReadFile(filepath.Join(agent.root, "current"))
-	if err != nil {
-		return err
-	}
-	commit := strings.TrimSpace(string(data))
-	if !commitPattern.MatchString(commit) {
-		return os.ErrInvalid
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Minute)
-	defer cancel()
-	command := exec.CommandContext(ctx, "bash", append([]string{filepath.Join(agent.root, "releases", commit, "scripts/server/manage.sh")}, arguments...)...)
-	command.Env = append(os.Environ(), "HY2_INSTALL_DIR="+agent.root,
-		protocol.ProbeTokenEnv+"="+randomToken(), protocol.ProbeIDEnv+"="+agent.status.ID)
-	if len(arguments) > 3 && arguments[0] == "apply-udp" {
-		command.Env = append(command.Env, protocol.ProbePortEnv+"="+arguments[3])
-	}
-	// Deployment output stays in the helper log, never in the public operation status.
-	command.Stdout = os.Stdout
-	command.Stderr = os.Stderr
-	return command.Run()
+	return commands.Run(agent.root, agent.status.ID, randomToken(), arguments...)
 }
 func (agent *Agent) finish(err error) {
 	agent.mu.Lock()
@@ -55,7 +24,7 @@ func (agent *Agent) finish(err error) {
 		agent.status.UDPChecked = true
 		agent.status.CoreChecked = true
 		if agent.status.Remove {
-			agent.status.Message = "Публикация UDP-порта удалена. Работа остальных ядер проверена."
+			agent.status.Message = "Публикация UDP-порта удалена. Работа остальных экземпляров проверена."
 		}
 	case exitCode(err) == 10:
 		agent.status.Phase = "rolled_back"
@@ -87,4 +56,43 @@ func (agent *Agent) run(request protocol.Request) {
 func (agent *Agent) recover() {
 	// An interrupted transaction is rolled back before accepting another change.
 	agent.finish(agent.execute("recover-udp", agent.status.ID))
+}
+
+func (agent *Agent) restartPanel(writer http.ResponseWriter, request *http.Request) {
+	agent.mu.Lock()
+	defer agent.mu.Unlock()
+	if agent.status.Busy {
+		transport.Fail(writer, errBusy, http.StatusConflict)
+		return
+	}
+	agent.status = protocol.Status{ID: randomToken(), Operation: "restart", Phase: "restarting", Busy: true, Started: time.Now().UTC().Format(time.RFC3339), Message: "Панель перезапускается"}
+	if err := agent.persist(); err != nil {
+		agent.status.Busy = false
+		transport.Fail(writer, err, http.StatusInternalServerError)
+		return
+	}
+	writer.WriteHeader(http.StatusAccepted)
+	transport.Respond(writer, agent.status)
+	go agent.runRestart("restart-panel")
+}
+
+func (agent *Agent) runRestart(command string) {
+	time.Sleep(time.Second)
+	err := agent.execute(command)
+	agent.mu.Lock()
+	defer agent.mu.Unlock()
+	agent.status.Busy = false
+	if err != nil {
+		agent.status.Phase = "failed"
+		agent.status.Message = "Не удалось перезапустить панель. Проверьте журнал помощника"
+		log.Printf("panel restart: %v", err)
+	} else {
+		agent.status.Phase = "success"
+		agent.status.Message = "Панель перезапущена"
+	}
+	if err := agent.persist(); err != nil {
+		log.Printf("persist panel restart: %v", err)
+		agent.status.Phase = "failed"
+		agent.status.Message = "Не удалось сохранить результат перезапуска"
+	}
 }

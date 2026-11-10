@@ -8,7 +8,7 @@ export const TRANSPORT_SECTIONS: readonly IConfigSection[] = [
         path: "listen",
         label: "Адрес прослушивания Hysteria2",
         kind: "text",
-        hint: "Например :8443. Это UDP-порт ядра, а не порт веб-панели.",
+        hint: "Например :8443. Это UDP-порт экземпляра, а не порт веб-панели.",
       },
       {
         path: "bandwidth.up",

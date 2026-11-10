@@ -14,6 +14,7 @@ install_panel() {
   ensure_docker
   check_volume
   prepare_image "$sha"
+  if ! open_install_ports; then log "Не удалось добавить все правила UFW. Проверьте firewall после установки."; fi
   if ! start_release "$sha"; then
     compose "$sha" logs --tail=80 panel >&2 || true
     compose "$sha" stop panel || true

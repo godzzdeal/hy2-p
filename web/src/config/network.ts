@@ -1,4 +1,7 @@
 export const API_ROUTES = {
+  system: "/system",
+  panelRestart: "/panel/restart",
+  panelRestartStatus: (ticket: string) => "/panel/restart/" + encodeURIComponent(ticket),
   transfer: "/admin/transfer",
   transferMode: (mode: "preview" | "apply") => "/admin/transfer/" + mode,
   instances: "/instances",
@@ -45,6 +48,7 @@ export const API_ROUTES = {
   control: (action: string) => "/core/" + action,
 } as const;
 export const QUERY_KEYS = {
+  system: ["system"],
   connection: ["connection"],
   instances: ["instances"],
   firewallPorts: ["firewall-ports"],
@@ -70,6 +74,10 @@ export const QUERY_KEYS = {
   coreUpdate: ["core-update"],
 } as const;
 export const NETWORK = {
+  systemPollMs: 5000,
+  restartPollMs: 1000,
+  restartTimeoutMs: 120000,
+  restartRequestMs: 10000,
   udpApplyPollMs: 1000,
   corePollMs: 5000,
   staleMs: 10000,

@@ -1,6 +1,6 @@
 import { EmojiText } from "@/components/elements/emoji/text/EmojiText";
 import { Modal } from "@/components/ui/modal/Modal";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { TrafficForm } from "@/components/users/traffic/editor/TrafficForm";
 import { useTraffic } from "@/hooks/users/traffic/use-traffic";
 import { EMPTY_USAGE } from "@/services/users/traffic/traffic-types";
@@ -11,11 +11,11 @@ export function TrafficDialog({ user, onClose }: { user: IUser; onClose: () => v
   const query = useTraffic();
   return (
     <Modal
-      title={t("Трафик: ") + user.name}
+      title={t("Трафик: ") + (user.displayName ?? user.name)}
       heading={
         <>
           {t("Трафик: ")}
-          <EmojiText value={user.name} />
+          <EmojiText value={user.displayName ?? user.name} />
         </>
       }
       onClose={onClose}

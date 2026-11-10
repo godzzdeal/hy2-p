@@ -1,6 +1,7 @@
 import { Emoji } from "@/components/elements/emoji/Emoji";
 import { Sparkles, X } from "@/components/elements/icons";
 import { leadingEmoji } from "@/utils/emoji/model";
+import { Loader } from "@/components/ui/loading";
 import * as Popover from "@radix-ui/react-popover";
 import { lazy, Suspense, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,7 +35,7 @@ export function EmojiPicker({ value, onChange }: { value: string; onChange: (emo
             sideOffset={8}
             collisionPadding={16}
           >
-            <Suspense fallback={<p role="status">{t("Загружаем эмодзи…")}</p>}>
+            <Suspense fallback={<Loader label="Загружаем эмодзи…" />}>
               <EmojiMenu onSelect={onSelect} />
             </Suspense>
             <div className="emoji-menu-footer">

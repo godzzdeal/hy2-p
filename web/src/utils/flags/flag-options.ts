@@ -29,6 +29,9 @@ export const FLAGS = REGIONS.map((region) => ({
   ),
 }));
 export const FLAG_PREFIX = /^[\u{1F1E6}-\u{1F1FF}]{2}\s*/u;
+export function withDefaultFlag(name: string, flag: string): string {
+  return !flag || FLAG_PREFIX.test(name) ? name : flag + " " + name;
+}
 export function replaceFlag(title: string, flag: string): string {
   const name = title.replace(FLAG_PREFIX, "");
   return flag ? flag + " " + name : name;

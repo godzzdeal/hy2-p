@@ -1,5 +1,5 @@
 import { ChevronRight } from "@/components/elements/icons";
-import { CommandBlock } from "@/components/elements/CommandBlock";
+import { CommandBlock } from "@/components/elements/copy";
 import { useTranslation } from "react-i18next";
 
 export function PortHelp() {
@@ -13,7 +13,7 @@ export function PortHelp() {
       <div>
         <p className="caption">
           {t(
-            "Обычно нужны TCP-порт панели, UDP-порты ядер и TCP 80 для HTTP ACME или 443 для TLS ACME. DNS ACME не требует входящего порта.",
+            "Обычно нужны TCP-порт панели, UDP-порты экземпляров и TCP 80 для HTTP ACME или 443 для TLS ACME. DNS ACME не требует входящего порта.",
           )}
         </p>
         <p className="caption">

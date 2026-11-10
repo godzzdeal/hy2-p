@@ -8,7 +8,8 @@ import { DEFAULT_INSTANCE, MAX_INSTANCES } from "@/services/instances/types";
 export function demoInstances(path: string, { method = "GET", body }: IRequest): unknown {
   if (path === API_ROUTES.instances) {
     if (method === "GET") return demoState.instances;
-    if (demoState.instances.length >= MAX_INSTANCES) throw new ApiError("Достигнут предел: 8 ядер", 400);
+    if (demoState.instances.length >= MAX_INSTANCES)
+      throw new ApiError("Достигнут предел: 8 экземпляров", 400);
     const input = demoInput<{ name: string; settings: IConfiguration }>(body);
     const id = demoId();
     const port = input.settings.port;
@@ -36,7 +37,7 @@ export function demoInstances(path: string, { method = "GET", body }: IRequest):
   if (!instance) return undefined;
   if (method === "PATCH") instance.name = demoInput<{ name: string }>(body).name;
   if (method === "DELETE") {
-    if (instance.id === DEFAULT_INSTANCE) throw new ApiError("Основное ядро нельзя удалить", 400);
+    if (instance.id === DEFAULT_INSTANCE) throw new ApiError("Основный экземпляр нельзя удалить", 400);
     demoState.instances = demoState.instances.filter((item) => item.id !== instance.id);
     delete demoState.settings[instance.id];
     delete demoState.logs[instance.id];

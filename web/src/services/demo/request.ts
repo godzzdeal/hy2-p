@@ -1,5 +1,5 @@
 import { API_ROUTES } from "@/config/network";
-import { demoAdmin, demoGroups } from "@/services/demo/routes";
+import { demoAdmin, demoGroups, demoSystem } from "@/services/demo/routes";
 import { demoCore, demoInstances, demoSettings } from "@/services/demo/routes/server";
 import { demoUsers } from "@/services/demo/routes/users";
 import { demoInput, demoState, unavailable } from "@/services/demo/state";
@@ -21,6 +21,8 @@ function resolveDemo(path: string, options: IRequest): unknown {
     return { ok: true };
   }
   if (path === API_ROUTES.traffic) return demoState.traffic;
+  if (path === API_ROUTES.system) return demoSystem();
+  if (path === API_ROUTES.panelRestart) return unavailable();
   let instanceId = DEFAULT_INSTANCE;
   let scopedPath = path;
   const scoped = path.startsWith(API_ROUTES.instances + "/") && path.split("/").length > 3;
@@ -40,7 +42,7 @@ function resolveDemo(path: string, options: IRequest): unknown {
   if (scopedPath === API_ROUTES.coreUpdate && options.method === "POST") return unavailable();
   const core = demoCore(scopedPath, instanceId);
   if (core !== undefined) return core;
-  if (scoped) throw new ApiError("Ядро не найдено", 404);
+  if (scoped) throw new ApiError("Экземпляр не найден", 404);
   const admin = demoAdmin(path, options);
   if (admin !== undefined) return admin;
   throw new ApiError("Раздел недоступен в демоверсии", 404);

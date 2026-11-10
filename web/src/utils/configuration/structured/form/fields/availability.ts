@@ -19,7 +19,7 @@ export function fieldAvailability(
   const isModeActive = !field.when || type === field.when.value;
   let reason = "";
   if (field.managed || (isManagedHttp && ["acme.http.altPort", "acme.listenHost"].includes(field.path)))
-    reason = "Это свойство задаёт панель при запуске ядра.";
+    reason = "Это свойство задаёт панель при запуске экземпляра.";
   else if (!isNative && field.path.startsWith("auth."))
     reason = "Выберите «Настройки Hysteria2», чтобы редактировать auth.";
   else if (!isCertificateActive) reason = "Выберите соответствующий режим TLS / ACME.";

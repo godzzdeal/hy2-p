@@ -1,0 +1,1 @@
+export { CertificatePin } from "./CertificatePin";

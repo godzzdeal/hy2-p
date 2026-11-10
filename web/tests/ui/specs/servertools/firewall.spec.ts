@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { mockPanel } from "../../fixtures";
+import { expandSettings, mockPanel } from "../../fixtures";
 test("firewall status and port rule use the protected API", async ({ page }, info) => {
   await mockPanel(page);
   await page.route("http://panel.test/api/firewall/ports", (route) =>
@@ -19,6 +19,7 @@ test("firewall status and port rule use the protected API", async ({ page }, inf
     return route.fulfill({ json: { active: true, output: "Status: active\n8088/tcp ALLOW IN Anywhere" } });
   });
   await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
   await expect(
     page.getByRole("button", { name: "Скопировать команду для 61254/udp", exact: true }),
   ).toHaveAttribute("title", "sudo ufw insert 1 allow 61254/udp");
@@ -29,7 +30,7 @@ test("firewall status and port rule use the protected API", async ({ page }, inf
   await expect(page.getByText("sudo ufw status numbered", { exact: true })).toBeHidden();
   await page.getByText("Открытие портов и отмена правил", { exact: true }).click();
   await expect(page.getByText("sudo ufw status numbered", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Проверить UFW", exact: true }).click();
+  await page.getByRole("button", { name: "Проверить firewall", exact: true }).click();
   await page.getByLabel("Порт", { exact: true }).fill("8088");
   await page.getByRole("button", { name: "Применить правило", exact: true }).click();
   await expect.poll(() => applied).toEqual({ port: 8088, protocol: "tcp", action: "allow" });
@@ -45,6 +46,7 @@ test("shared ports are grouped and commands have contrast, copy and a manual fal
     { port: 61254, protocol: "udp", purpose: "vpn", source: "Основной", pending: false },
   ], warnings: [] } }));
   await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
   const guide = page.getByRole("region", { name: "Какие порты открыть", exact: true });
   await expect(guide.locator(".firewall-port-row")).toHaveCount(2);
   const row = guide.locator(".firewall-port-row").first();

@@ -1,13 +1,62 @@
 package instances_test
 
 import (
+	"context"
 	"encoding/json"
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/instances"
 	instanceapi "hy2-panel/internal/instances/api"
+	"runtime"
 	"strings"
 	"testing"
 )
+
+func TestInstanceSnapshotsRemainStableDuringRenameAndRemoval(t *testing.T) {
+	t.Setenv("HYSTERIA_BIN", "missing-hysteria-test-binary")
+	registry := openRegistry(t, t.TempDir())
+	created, err := registry.Add("Original", settings("8444"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	found, err := registry.Get(created.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	snapshots := []*instances.Instance{created, found, registry.All()[1]}
+	finished := make(chan error, 1)
+	done := make(chan struct{})
+	t.Cleanup(func() { <-done })
+	go func() {
+		defer close(done)
+		for range 16 {
+			if err := registry.Rename(created.ID, "Renamed"); err != nil {
+				finished <- err
+				return
+			}
+		}
+		_, err := registry.Remove(context.Background(), created.ID)
+		finished <- err
+	}()
+	for {
+		for _, instance := range snapshots {
+			if instance.Name != "Original" || instance.Removing || instance.Core != created.Core {
+				t.Fatal("public snapshot changed with the live registry")
+			}
+		}
+		select {
+		case err := <-finished:
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := registry.Get(created.ID); err == nil {
+				t.Fatal("removed instance is still registered")
+			}
+			return
+		default:
+			runtime.Gosched()
+		}
+	}
+}
 
 func TestSubscriptionsUseOnlyPublishedPorts(t *testing.T) {
 	t.Setenv("HYSTERIA_BIN", "missing-hysteria-test-binary")

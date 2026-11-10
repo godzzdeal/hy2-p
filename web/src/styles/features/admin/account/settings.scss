@@ -9,15 +9,17 @@
     align-items: center;
     margin-top: var(--space-2);
   }
+  .password-field {
+    min-width: 0;
+    margin-bottom: var(--space-4);
+  }
+  .cloud-password-form .password-field {
+    margin-bottom: 0;
+  }
   .password-input input {
     margin: 0;
     min-width: 0;
-  }
-  .generated-password {
-    font-family: var(--font-mono);
-    font-size: var(--text-small);
-    color: var(--muted);
-    margin-top: var(--space-2);
+    flex: 1;
   }
   .full-field {
     grid-column: 1 / -1;
@@ -86,7 +88,7 @@
       flex-wrap: wrap;
     }
     .password-input input {
-      flex-basis: 100%;
+      flex-basis: calc(100% - var(--space-16));
     }
     .pair-row {
       gap: var(--space-1);

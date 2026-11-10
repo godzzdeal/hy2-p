@@ -1,0 +1,51 @@
+@layer components {
+  .yaml-dialog {
+    width: min(1120px, calc(100vw - var(--space-12)));
+    height: min(800px, calc(100dvh - var(--space-12)));
+    max-height: calc(100dvh - var(--space-12));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    overflow: hidden;
+  }
+  .yaml-dialog .modal-heading {
+    margin: 0;
+  }
+  .yaml-toolbar,
+  .yaml-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+  .yaml-toolbar p {
+    color: var(--muted);
+    flex: 1;
+    min-width: 240px;
+  }
+  .yaml-code {
+    flex: 1;
+    min-height: 0;
+    border: 1px solid var(--line);
+  }
+  @media (max-width: 760px) {
+    .yaml-dialog {
+      width: 100%;
+      height: calc(100dvh - var(--space-8));
+      max-height: calc(100dvh - var(--space-8));
+      padding: var(--space-4);
+      gap: var(--space-3);
+    }
+    .yaml-footer > .row-actions {
+      width: 100%;
+    }
+    .yaml-footer button {
+      flex: 1;
+    }
+    .yaml-toolbar p {
+      min-width: 0;
+      flex-basis: 100%;
+    }
+  }
+}

@@ -3,7 +3,7 @@ import { previewDemo } from ".";
 test("demo pages work without a server or API requests", async ({ page }, info) => {
   const demo = await previewDemo(page);
   await expect(page.getByRole("complementary", { name: "Демоверсия" })).toBeVisible();
-  for (const title of ["Пользователи", "Подписки", "Ядра", "Конфигурация", "Ядро и журнал", "Настройки", "Обзор"]) {
+  for (const title of ["Пользователи", "Подписки", "Экземпляры", "Конфигурация", "Управление HY2", "Настройки", "Обзор"]) {
     await page.locator(".app-sidebar nav").getByRole("button", { name: title, exact: true }).click();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   }
@@ -18,10 +18,10 @@ test("configuration edits stay in their core and resetting restores the example"
   await page.getByLabel("Публичный адрес", { exact: true }).fill("edited.example.invalid");
   await page.getByRole("button", { name: "Сохранить конфигурацию", exact: true }).click();
   await expect(page.getByText("Конфигурация сохранена", { exact: true })).toBeVisible();
-  await page.getByRole("combobox", { name: "Выбранное ядро" }).click();
+  await page.getByRole("combobox", { name: "Выбранный экземпляр" }).click();
   await page.getByRole("option", { name: "Запасной", exact: true }).click();
   await expect(page.getByLabel("Публичный адрес", { exact: true })).toHaveValue("vpn.example.invalid");
-  await page.getByRole("combobox", { name: "Выбранное ядро" }).click();
+  await page.getByRole("combobox", { name: "Выбранный экземпляр" }).click();
   await page.getByRole("option", { name: "Основной", exact: true }).click();
   await expect(page.getByLabel("Публичный адрес", { exact: true })).toHaveValue("edited.example.invalid");
   await page.getByRole("button", { name: "Сбросить пример", exact: true }).click();
@@ -34,7 +34,7 @@ test("configuration edits stay in their core and resetting restores the example"
 test("changes are isolated between visitors and survive navigation", async ({ browser, page }) => {
   const demo = await previewDemo(page);
   await page.getByRole("button", { name: "Пользователи", exact: true }).click();
-  await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
+  await page.getByRole("button", { name: "Добавить", exact: true }).click();
   const dialog = page.getByRole("dialog");
   await dialog.getByLabel("Имя", { exact: true }).fill("Тест демоверсии");
   await dialog.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();

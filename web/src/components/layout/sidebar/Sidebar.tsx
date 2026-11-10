@@ -39,7 +39,6 @@ export function Sidebar() {
           <small>{config.data?.host || t("Адрес не настроен")}</small>
         </div>
       </div>
-      <span className="nav-label">{t("УПРАВЛЕНИЕ")}</span>
       <nav id="main-navigation">
         {NAVIGATION.map((item) => (
           <NavigationItem key={item.id} item={item} />

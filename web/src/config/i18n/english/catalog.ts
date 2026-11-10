@@ -9,7 +9,11 @@ import { INTERFACE } from "@/config/i18n/english/settings/interface";
 import { ADMINISTRATION } from "@/config/i18n/english/settings/panel/administration";
 import { INSTANCES } from "@/config/i18n/english/settings/panel/instances";
 import { TRANSFER } from "@/config/i18n/english/settings/panel/transfer";
+import { NETWORK } from "@/config/i18n/english/settings/network";
+import { SYSTEM } from "@/config/i18n/english/settings/system";
 export const ENGLISH = {
+  ...SYSTEM,
+  ...NETWORK,
   ...TRANSFER,
   ...DEMO_TRANSLATIONS,
   ...PANEL,

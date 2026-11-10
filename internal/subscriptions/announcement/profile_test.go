@@ -61,3 +61,23 @@ func TestProfileTitleValidationAndBackwardCompatibility(t *testing.T) {
 		t.Fatal("renamed existing subscriptions without a configured title")
 	}
 }
+
+func TestUserDefaultFlagPersistsWithoutReplacingIndividualChoices(t *testing.T) {
+	directory := t.TempDir()
+	store, err := Open(directory)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writer := httptest.NewRecorder()
+	store.Save(writer, httptest.NewRequest("PUT", "/", strings.NewReader(`{"defaultUserFlag":"🇳🇱","enabled":false,"text":"","updateInterval":6}`)))
+	if writer.Code != 200 {
+		t.Fatal(writer.Body.String())
+	}
+	store, err = Open(directory)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if store.UserName("🚀 Phone") != "🇳🇱 🚀 Phone" || store.UserName("🇩🇪 Phone") != "🇩🇪 Phone" {
+		t.Fatal("default flag not applied correctly")
+	}
+}

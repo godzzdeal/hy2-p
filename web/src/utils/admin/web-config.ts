@@ -8,10 +8,11 @@ export function updateWebConfig(previous: IWebConfig, next: IWebConfig): IWebCon
     return next;
   }
   const isDirect =
-    ["localhost", "127.0.0.1", previous.domain].includes(address.hostname) &&
+    ["localhost", "127.0.0.1", previous.domain].includes(address.hostname.replace(/^\[|\]$/g, "")) &&
     Number(address.port || (address.protocol === "https:" ? 443 : 80)) === previous.port;
   if (!isDirect) return next;
   const scheme = next.mode === "http" ? "http" : "https";
-  const hostname = next.domain || address.hostname;
+  const target = next.domain || address.hostname;
+  const hostname = target.includes(":") && !target.startsWith("[") ? "[" + target + "]" : target;
   return { ...next, publicURL: scheme + "://" + hostname + ":" + next.port };
 }

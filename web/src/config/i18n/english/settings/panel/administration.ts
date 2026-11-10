@@ -2,8 +2,7 @@ export const ADMINISTRATION: Record<string, string> = {
   "Забыли пароль?": "Forgot your password?",
   "Выполните команду на сервере через SSH. Она создаст новый пароль и завершит сеансы панели. Подключения VPN кратковременно прервутся.":
     "Run this command on the server over SSH. It creates a new password and ends panel sessions. VPN connections will briefly disconnect.",
-  "Логин и облачный пароль сохранятся. Новый пароль будет показан в терминале.":
-    "Your username and cloud password stay unchanged. The new password is displayed in the terminal.",
+  "Новый пароль будет показан в терминале.": "The new password is displayed in the terminal.",
   "Проверяем состояние…": "Checking status…",
   "Произошла ошибка": "An error occurred",
   "Профиль BBR": "BBR profile",
@@ -38,15 +37,15 @@ export const ADMINISTRATION: Record<string, string> = {
   "Сертификат Hysteria2": "Hysteria2 certificate",
   "Сертификат PEM": "Certificate PEM",
   "Сертификат веб-панели PEM": "Web panel certificate PEM",
-  "Сертификат выпускается при первом HTTPS-подключении и продлевается автоматически. Кеш ACME сохраняется на постоянном томе.":
-    "The certificate is issued on the first HTTPS connection and renewed automatically. The ACME cache is kept on persistent storage.",
+  "Сертификат выпускается и продлевается автоматически. Кеш ACME сохраняется на постоянном томе.":
+    "The certificate is issued and renewed automatically. The ACME cache is kept on persistent storage.",
   "Сертификат истёк": "Certificate expired",
-  "Сертификаты пока не найдены. Для ACME проверьте запуск ядра, DNS и журнал выдачи.":
-    "No certificates found yet. For ACME, check engine startup, DNS and certificate issuance logs.",
+  "Сертификаты пока не найдены. Для ACME проверьте запуск экземпляра, DNS и журнал выдачи.":
+    "No certificates found yet. For ACME, check instance startup, DNS and certificate issuance logs.",
   "Сессия завершена": "Session expired",
   Системная: "System",
-  "Скачивание и проверка выполняются до остановки текущего ядра.":
-    "Download and verification finish before the current engine is stopped.",
+  "Скачивание и проверка выполняются до остановки текущего экземпляра.":
+    "Download and verification finish before the current instance is stopped.",
   Скопировано: "Copied",
   "Скопировать ссылку": "Copy URL",
   "Скопируйте ссылку вручную из поля ниже.": "Copy the URL manually from the field below.",
@@ -60,15 +59,15 @@ export const ADMINISTRATION: Record<string, string> = {
   "Состояние сервера, проверенные обновления и быстрый откат.":
     "Server status, verified updates and quick rollback.",
   "Состояние сертификатов Hysteria2": "Hysteria2 certificate status",
-  "Состояние ядра": "Engine status",
-  "Сохранено. Перезапустите ядро для применения.": "Saved. Restart the engine to apply.",
+  "Состояние экземпляра": "Instance status",
+  "Сохранено. Перезапустите экземпляр для применения.": "Saved. Restart the instance to apply.",
   "Сохранить конфигурацию": "Save configuration",
   "Сохранить настройки веб-панели": "Save web panel settings",
   "Сохранить пользователя": "Save user",
   "Сохранить трафик": "Save traffic",
   "Сохраняем…": "Saving…",
-  "Сохранённое ядро изменилось: версия для отката не совпадает":
-    "The saved engine has changed: rollback version mismatch",
+  "Сохранённый экземпляр изменился: версия для отката не совпадает":
+    "The saved instance has changed: rollback version mismatch",
   "Сохранённый ключ не показывается. Если ключ не меняется, повторно загружать его не нужно.":
     "The stored key is never displayed. You do not need to upload it again if it is unchanged.",
   "Ссылка подключения": "Connection URL",
@@ -89,8 +88,7 @@ export const ADMINISTRATION: Record<string, string> = {
   "Тип обфускации": "Obfuscation type",
   Трафик: "Traffic",
   "Трафик ": "Traffic ",
-  "Трафик обновляется раз в 5 секунд. При аварийном завершении ядра последние неопросенные байты могут не попасть в учёт.":
-    "Traffic is sampled every 5 seconds. If the engine crashes, bytes since the last sample may not be counted.",
+  "Трафик обновляется раз в 5 секунд.": "Traffic is updated every 5 seconds.",
   "Требуется вмешательство": "Attention required",
   Тёмная: "Dark",
   УПРАВЛЕНИЕ: "MANAGEMENT",
@@ -107,8 +105,8 @@ export const ADMINISTRATION: Record<string, string> = {
   "Управляйте доступом и подключениями.": "Manage access and connections.",
   "Управляйте процессом Hysteria2.": "Manage the Hysteria2 process.",
   "Условия центра сертификации": "Certificate authority terms",
-  "Установите ядро и настройте конфигурацию для первого запуска.":
-    "Install the engine and configure it before the first startup.",
+  "Установите экземпляр и настройте конфигурацию для первого запуска.":
+    "Install the instance and configure it before the first startup.",
   Установить: "Install",
   "Установить версию": "Install version",
   "Установить новую версию?": "Install a new version?",

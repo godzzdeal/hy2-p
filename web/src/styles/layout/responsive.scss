@@ -19,9 +19,15 @@
   }
   @media (max-width: 760px) {
     .shell {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      min-height: 0;
     }
     main {
+      flex: 1;
+      min-height: 0;
+      height: auto;
       margin: 0;
       width: 100%;
     }

@@ -41,19 +41,19 @@ export function AccessForm({
   return (
     <form className="user-core-access" onSubmit={onSubmit}>
       <label>
-        {t("Режим доступа к ядрам")}
+        {t("Режим доступа к экземплярам")}
         <Select
-          aria-label={t("Режим доступа к ядрам")}
+          aria-label={t("Режим доступа к экземплярам")}
           value={mode}
           onValueChange={onMode}
           disabled={save.isPending}
         >
-          <SelectOption value={AccessMode.All}>{t("Все ядра, включая новые")}</SelectOption>
-          <SelectOption value={AccessMode.Selected}>{t("Только выбранные ядра")}</SelectOption>
+          <SelectOption value={AccessMode.All}>{t("Все экземпляры, включая новые")}</SelectOption>
+          <SelectOption value={AccessMode.Selected}>{t("Только выбранные экземпляры")}</SelectOption>
         </Select>
       </label>
       <fieldset disabled={save.isPending}>
-        <legend>{t("Ядра в подписке пользователя")}</legend>
+        <legend>{t("Экземпляры в подписке пользователя")}</legend>
         {available.map((instance) => (
           <CoreOption
             key={instance.id}
@@ -68,16 +68,16 @@ export function AccessForm({
         ))}
       </fieldset>
       {mode === AccessMode.Selected && ids.length === 0 && (
-        <p className="alert">{t("Ни одно ядро не выбрано. Подключения пользователя будут запрещены.")}</p>
+        <p className="alert">{t("Ни один экземпляр не выбран. Подключения пользователя будут запрещены.")}</p>
       )}
       <p className="caption">
         {t(
-          "В подписке будут только разрешённые опубликованные ядра. При снятии доступа активное подключение к этому ядру отключается.",
+          "В подписке будут только разрешённые опубликованные экземпляры. При снятии доступа активное подключение к этому экземпляру отключается.",
         )}
       </p>
       {available.some((item) => item.authMode === "native") && (
         <p className="caption">
-          {t("Ядра с собственной аутентификацией управляют доступом через свою конфигурацию.")}
+          {t("Экземпляры с собственной аутентификацией управляют доступом через свою конфигурацию.")}
         </p>
       )}
       <button className="primary full" disabled={save.isPending}>

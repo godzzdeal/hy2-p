@@ -8,15 +8,15 @@ import (
 
 func validate(policy Policy) error {
 	if policy.Mode != All && policy.Mode != Selected {
-		return errors.New("Выберите режим доступа к ядрам")
+		return errors.New("Выберите режим доступа к экземплярам")
 	}
 	if len(policy.Instances) > security.MaxCores || (policy.Mode == All && len(policy.Instances) > 0) {
-		return errors.New("Некорректный список доступных ядер")
+		return errors.New("Некорректный список доступных экземпляров")
 	}
 	seen := map[string]bool{}
 	for _, instance := range policy.Instances {
 		if !protocol.InstancePattern.MatchString(instance) || seen[instance] {
-			return errors.New("Некорректный список доступных ядер")
+			return errors.New("Некорректный список доступных экземпляров")
 		}
 		seen[instance] = true
 	}

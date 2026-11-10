@@ -65,7 +65,7 @@ func (service *Service) Apply(bundle model.Bundle, fingerprint string) (model.Pr
 		}
 		access, ok := importing.Access(group.Access, mapping)
 		if !ok || (group.Access.Mode == useraccess.All && len(mapping) != len(bundle.Profiles)) {
-			row.Action, row.Reason = "failed", "Ядро группы не было добавлено"
+			row.Action, row.Reason = "failed", "Экземпляр группы не был добавлен"
 			continue
 		}
 		group.Access = access
@@ -82,7 +82,7 @@ func (service *Service) Apply(bundle model.Bundle, fingerprint string) (model.Pr
 		}
 		access, ok := importing.Access(entry.Access, mapping)
 		if !ok || (entry.Access.Mode == useraccess.All && len(mapping) != len(bundle.Profiles)) || (entry.Group != "" && !availableGroups[entry.Group]) {
-			row.Action, row.Reason = "failed", "Группа или ядро пользователя не были добавлены"
+			row.Action, row.Reason = "failed", "Группа или экземпляр пользователя не были добавлены"
 			continue
 		}
 		user := users.User{ID: entry.ID, Name: entry.Name, Enabled: entry.Enabled, Expires: entry.Expires, Created: entry.Created, Password: entry.Password, Token: entry.Token}

@@ -6,11 +6,14 @@ export interface ICertificateInfo {
   domains: string[];
   notAfter: string;
   expired: boolean;
+  pinSHA256?: string;
 }
 export interface ICertificateStatus {
   mode: string;
   automaticRenewal: boolean;
   certificates: ICertificateInfo[];
+  pinSHA256?: string;
+  pinError?: string;
 }
 export interface ICertificateUpload {
   certificatePath: string;

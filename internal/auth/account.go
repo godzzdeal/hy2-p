@@ -60,10 +60,6 @@ func (handler *Handler) CloudSettings(writer http.ResponseWriter, request *http.
 		transport.Fail(writer, errors.New("Текущий пароль неверен"), 400)
 		return
 	}
-	if input.Password != "" && handler.Credentials.Verify(handler.Credentials.Username(), input.Password) {
-		transport.Fail(writer, errors.New("Облачный пароль должен отличаться от основного"), 400)
-		return
-	}
 	if err := handler.Credentials.ChangeCloud(input.CurrentCloudPassword, input.Password); err != nil {
 		transport.Fail(writer, err, 400)
 		return

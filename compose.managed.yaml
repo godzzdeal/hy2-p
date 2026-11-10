@@ -17,10 +17,12 @@ services:
     network_mode: host
     environment:
       HY2_INSTALL_DIR: ${PANEL_INSTALL_DIR:?Installation directory required}
+      PANEL_DATA: /panel-data
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${PANEL_INSTALL_DIR}:${PANEL_INSTALL_DIR}
       - port-agent-socket:/run/hy2-port-agent
+      - panel-data:/panel-data:ro
     healthcheck:
       test: ["CMD", "/usr/local/bin/port-agent", "health"]
       interval: 2s

@@ -1,5 +1,5 @@
 import { WebForm } from "@/components/admin/listener/WebForm";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { useWebSettings } from "@/hooks/admin/use-admin";
 export function WebSettings() {
   const query = useWebSettings();

@@ -1,93 +1,59 @@
 @layer components {
   .version-card .card-header {
-    align-items: center;
-    padding: var(--space-3) var(--space-4);
+    gap: var(--space-3);
   }
   .version-card h2 {
-    margin-top: var(--space-2);
+    flex: 1;
+    min-width: 0;
   }
-  .verified-label {
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
+  .version-current {
     color: var(--accent);
-    background: var(--success-bg);
-    padding: var(--space-1) var(--space-2);
-    font-size: var(--text-small);
-    white-space: nowrap;
+    font-weight: 700;
   }
   .version-body {
-    padding: var(--space-3) var(--space-4);
-  }
-  .version-summary {
+    padding: var(--space-4);
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-4);
-    margin-bottom: var(--space-3);
-    padding-bottom: var(--space-3);
-    border-bottom: 1px solid var(--line);
+    gap: var(--space-3);
   }
-  .version-summary span {
-    display: block;
-    color: var(--muted);
-    font-size: var(--text-small);
-    margin-bottom: var(--space-2);
-  }
-  .version-summary strong {
-    display: block;
-    font-weight: 600;
-    font-size: 20px;
-    overflow-wrap: anywhere;
-  }
-  .version-body select {
-    display: block;
-    margin-top: var(--space-2);
-    min-height: var(--control-height);
-  }
-  .version-actions {
+  .version-controls {
     display: flex;
+    align-items: flex-end;
     gap: var(--space-3);
     flex-wrap: wrap;
-    margin: var(--space-3) 0;
   }
-  .version-actions .primary {
+  .version-controls label {
     flex: 1;
+    min-width: 192px;
+    margin: 0;
   }
-  .version-body > .caption {
-    margin-top: var(--space-4);
+  .version-controls button {
+    flex-shrink: 0;
   }
   .update-progress {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--space-3);
-    padding: var(--space-4);
+    padding: var(--space-3);
     border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
     background: var(--input);
   }
   .update-progress > svg {
     color: var(--accent);
     flex-shrink: 0;
-    margin-top: var(--space-1);
+  }
+  .update-progress > div {
+    flex: 1;
+    min-width: 0;
   }
   .update-progress strong {
     font-size: var(--text-small);
-  }
-  .update-progress p {
-    color: var(--muted);
-    font-size: var(--text-small);
-    margin-top: var(--space-1);
-    line-height: 1.8;
-    overflow-wrap: anywhere;
   }
   .update-progress progress {
     display: block;
     accent-color: var(--accent);
     width: 100%;
     height: var(--space-1);
-    margin-top: var(--space-3);
-  }
-  .update-progress-warning > svg {
-    color: var(--danger);
+    margin-top: var(--space-2);
   }
   .inline-error {
     color: var(--danger);
@@ -103,15 +69,12 @@
     flex-wrap: wrap;
   }
   @media (max-width: 760px) {
-    .version-card .card-header,
-    .version-body {
-      padding: var(--space-5);
+    .version-controls label {
+      flex-basis: 100%;
+      min-width: 0;
     }
-    .version-summary strong {
-      font-size: 18px;
-    }
-    .version-actions {
-      flex-direction: column;
+    .version-controls > button {
+      flex: 1;
     }
     .dialog-actions > button {
       flex: 1;

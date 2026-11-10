@@ -1,39 +1,37 @@
 import { useCertificateUpload } from "@/hooks/configuration/use-certificates";
-import { useUiStore } from "@/store/ui-store";
-import { useState, type ChangeEvent } from "react";
+import { readPemFile } from "@/utils/security";
+import { useState } from "react";
+import { FileDropzone } from "@/components/elements/upload";
 import { useTranslation } from "react-i18next";
-const MAX_PEM_FILE = 1 << 20;
 export function CertificateUpload({ onUploaded }: { onUploaded: (cert: string, key: string) => void }) {
   const { t } = useTranslation();
   const [certificate, setCertificate] = useState("");
   const [privateKey, setPrivateKey] = useState("");
-  const showError = useUiStore((state) => state.showError);
   const mutation = useCertificateUpload((certificatePath, keyPath) => {
     onUploaded(certificatePath, keyPath);
     setPrivateKey("");
   });
-  async function onFile(event: ChangeEvent<HTMLInputElement>, target: "cert" | "key") {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    try {
-      if (file.size > MAX_PEM_FILE) throw new Error(t("Файл сертификата слишком большой"));
-      const text = await file.text();
-      if (target === "cert") setCertificate(text);
-      else setPrivateKey(text);
-    } catch (error) {
-      showError(error);
-    }
+  async function onFile(file: File, target: "cert" | "key") {
+    const text = await readPemFile(file);
+    if (target === "cert") setCertificate(text);
+    else setPrivateKey(text);
   }
   return (
     <div className="certificate-upload">
-      <label>
-        {t("Сертификат PEM")}
-        <input type="file" accept=".crt,.pem,.cer" onChange={(event) => void onFile(event, "cert")} />
-      </label>
-      <label>
-        {t("Приватный ключ PEM")}
-        <input type="file" accept=".key,.pem" onChange={(event) => void onFile(event, "key")} />
-      </label>
+      <FileDropzone
+        label={t("Сертификат PEM")}
+        hint={t("PEM, CRT или CER, до 1 МБ")}
+        accept=".crt,.pem,.cer"
+        disabled={mutation.isPending}
+        onFile={(file) => onFile(file, "cert")}
+      />
+      <FileDropzone
+        label={t("Приватный ключ PEM")}
+        hint={t("PEM или KEY, до 1 МБ")}
+        accept=".key,.pem"
+        disabled={mutation.isPending}
+        onFile={(file) => onFile(file, "key")}
+      />
       <button
         type="button"
         className="secondary"
@@ -44,7 +42,7 @@ export function CertificateUpload({ onUploaded }: { onUploaded: (cert: string, k
       </button>
       <p className="caption">
         {t(
-          "Пара сертификат/ключ проверяется перед сохранением. Затем сохраните конфигурацию и перезапустите ядро.",
+          "Пара сертификат/ключ проверяется перед сохранением. Затем сохраните конфигурацию и перезапустите экземпляр.",
         )}
       </p>
     </div>

@@ -1,19 +1,21 @@
 @layer components {
-  html:has(.shell) {
+  .content {
     scroll-snap-type: y proximity;
     scroll-padding-block: var(--space-4);
   }
-  html:has(.overlay, .content form) {
+  .content:has(form),
+  html:has(.overlay) .content {
     scroll-snap-type: none;
   }
-  html:has(input:focus, textarea:focus, [contenteditable="true"]:focus, button:focus-visible) {
+  .content:has(input:focus, textarea:focus, [contenteditable="true"]:focus, button:focus-visible) {
     scroll-snap-type: none;
   }
   .shell {
     scroll-snap-align: start;
     scroll-margin: 0;
   }
-  [data-scroll-section] {
+  [data-scroll-section],
+  .instance-selector {
     scroll-snap-align: start;
     scroll-snap-stop: always;
     scroll-margin-block: var(--space-4);
@@ -73,15 +75,19 @@
     transform: none;
   }
   @media (prefers-reduced-motion: reduce) {
-    html:has(.shell) {
+    .content {
       scroll-snap-type: none;
     }
   }
 
   @media (max-width: 760px) {
     .scroll-navigation {
-      inset: auto auto var(--space-3) 50%;
-      transform: translateX(-50%);
+      position: static;
+      inset: auto;
+      transform: none;
+      align-self: center;
+      flex-shrink: 0;
+      margin: var(--space-2) var(--space-4);
       flex-direction: row;
       max-width: calc(100% - var(--space-8));
     }
@@ -90,7 +96,7 @@
     }
     .content {
       padding-right: var(--space-4);
-      padding-bottom: calc(var(--space-16) + var(--space-6));
+      padding-bottom: var(--space-4);
     }
   }
 }

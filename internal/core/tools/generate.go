@@ -48,7 +48,7 @@ func Generate(ctx context.Context, binaryPath, data, name string) (ECH, error) {
 	// CLI output can contain private material: never forward stdout/stderr.
 	command := exec.CommandContext(ctx, binaryPath, "ech", "--public-name", name, "--output", path)
 	if err := command.Run(); err != nil {
-		return ECH{}, errors.New("Не удалось создать ECH. Требуется ядро Hysteria2 с командой ech (2.12.3 или новее)")
+		return ECH{}, errors.New("Не удалось создать ECH. Требуется экземпляр HY2 с командой ech (2.12.3 или новее)")
 	}
 	if err := os.Chmod(path, 0600); err != nil {
 		return ECH{}, err

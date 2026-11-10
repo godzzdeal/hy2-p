@@ -5,11 +5,12 @@ import { useInstanceId } from "@/store/core/instance-store";
 import { useUiStore } from "@/store/ui-store";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export function useCertificates() {
+export function useCertificates(isEnabled = true) {
   const id = useInstanceId();
   return useQuery({
     queryKey: instanceKey(QUERY_KEYS.hy2Certificates, id),
     queryFn: () => certificateApi.read(id),
+    enabled: isEnabled,
   });
 }
 

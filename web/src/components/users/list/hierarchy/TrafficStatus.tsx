@@ -9,7 +9,7 @@ export function TrafficStatus() {
       {(traffic.error ? t(traffic.error.message) : t(traffic.data?.error ?? "")) ||
         (traffic.data?.updated
           ? t("Статистика: ") + new Date(traffic.data.updated).toLocaleTimeString()
-          : t("Ожидание статистики ядра"))}
+          : t("Ожидание статистики экземпляра"))}
     </p>
   );
 }

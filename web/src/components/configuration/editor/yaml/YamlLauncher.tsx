@@ -7,7 +7,6 @@ export function YamlLauncher({ onOpen, onHistory }: { onOpen: () => void; onHist
       <div className="card-header">
         <div>
           <h2>{t("Редактор YAML")}</h2>
-          <p className="muted">{t("Подсветка синтаксиса, поиск и проверка ошибок в отдельном окне.")}</p>
         </div>
         <div className="row-actions">
           <button type="button" className="secondary" onClick={onHistory}>
@@ -16,7 +15,7 @@ export function YamlLauncher({ onOpen, onHistory }: { onOpen: () => void; onHist
           </button>
           <button type="button" className="primary" onClick={onOpen}>
             <FileCode2 width={24} height={24} aria-hidden />
-            {t("Открыть редактор YAML")}
+            {t("Открыть")}
           </button>
         </div>
       </div>

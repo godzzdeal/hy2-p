@@ -91,5 +91,5 @@ func oneCore(data string) error {
 		case <-time.After(250 * time.Millisecond):
 		}
 	}
-	return errors.New("ядро не прошло проверку после смены UDP-порта")
+	return errors.New("экземпляр не прошло проверку после смены UDP-порта")
 }

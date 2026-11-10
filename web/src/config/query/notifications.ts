@@ -10,6 +10,7 @@ const crashes = new Map<string, string>();
 const updates = new Map<string, string>();
 const queryErrors = new Map<string, string>();
 export function notifyQueryError(error: Error, query: Query<unknown, unknown, unknown>) {
+  if (useUiStore.getState().isPanelRestarting) return;
   if (error instanceof ApiError && error.status === 401) return;
   // The deployment monitor survives the expected container restart itself.
   if (query.queryKey[0] === QUERY_KEYS.udpOperation[0]) return;
@@ -53,6 +54,8 @@ export function notifyQuerySuccess(data: unknown, query: Query<unknown, unknown,
     if ((!watchdog.lastCrash && !watchdog.lastError) || crashes.get(instance.id) === stamp) continue;
     crashes.set(instance.id, stamp);
     const details = watchdog.lastError || watchdog.message;
-    useUiStore.getState().showError(i18n.t("Ошибка ядра") + ": " + instance.name + ". " + i18n.t(details));
+    useUiStore
+      .getState()
+      .showError(i18n.t("Ошибка экземпляра") + ": " + instance.name + ". " + i18n.t(details));
   }
 }

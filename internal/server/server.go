@@ -8,15 +8,16 @@ import (
 	"hy2-panel/internal/auth"
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/core"
-	"hy2-panel/internal/core/supervision"
 	"hy2-panel/internal/cryptovault"
 	deviceapi "hy2-panel/internal/devices/integration"
 	groupapi "hy2-panel/internal/groups/integration"
 	"hy2-panel/internal/instances"
 	instanceapi "hy2-panel/internal/instances/api"
 	"hy2-panel/internal/security"
+	"hy2-panel/internal/server/bootstrap"
 	"hy2-panel/internal/subscriptions"
 	"hy2-panel/internal/subscriptions/announcement"
+	"hy2-panel/internal/systemmetrics"
 	"hy2-panel/internal/traffic"
 	"hy2-panel/internal/transfer"
 	"hy2-panel/internal/transfer/local"
@@ -27,7 +28,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"time"
 )
 
 func Run() error {
@@ -40,7 +40,8 @@ func Run() error {
 	if err != nil {
 		return err
 	}
-	db, err := openDatabase(data)
+	defer web.Close()
+	db, err := bootstrap.OpenDatabase(data, bootstrap.InitialConfiguration(web.Current()))
 	if err != nil {
 		return err
 	}
@@ -65,7 +66,7 @@ func Run() error {
 		return err
 	}
 	defer registry.Close()
-	traffic, err := traffic.New(data, core.Secret, registry)
+	traffic, err := traffic.New(data, registry)
 	if err != nil {
 		return err
 	}
@@ -82,12 +83,16 @@ func Run() error {
 	if err != nil {
 		return err
 	}
-	go traffic.Run(monitorContext)
-	go devices.Store.Run(monitorContext)
 	access.AllowIdentity = devices.AllowedIdentity
 	access.Sources, access.Observe = devices.Store.Sources, devices.Store.Observe
-	go access.Run(monitorContext)
-	defer devices.Store.Flush()
+	defer func() {
+		if err := devices.Store.Flush(); err != nil {
+			log.Printf("flush device metadata: %v", err)
+		}
+	}()
+	metrics := systemmetrics.New(systemmetrics.Options{Data: data})
+	stopBackground := background(monitorContext, traffic.Run, devices.Store.Run, access.Run, metrics.Run)
+	defer stopBackground()
 	auth, err := auth.Open(passwordHash, security.Env("PANEL_SECURE_COOKIE", "false") == "true" || web.Active().Mode != "http", data, security.Env("PANEL_ADMIN_USERNAME", "admin"))
 	if err != nil {
 		return err
@@ -96,15 +101,16 @@ func Run() error {
 	if err != nil {
 		return err
 	}
+	users.DisplayName = announcements.UserName
 	subscriptions := &subscriptions.Handler{Announcements: announcements, DB: db, Users: users, Sources: instanceapi.Profiles(registry), AllowCore: access.Allows, DeviceLimit: devices.Store.Limit, PrepareSubscription: devices.Prepare, PublicURL: strings.TrimRight(web.Active().URL(), "/")}
 	transfer := &transfer.Service{Users: users, Registry: registry, Groups: groups.Store, Access: access.Store, Devices: devices.Store, Traffic: traffic}
-	public := httpServer(web.Active().Address(), routes(auth, users, registry, subscriptions, traffic, web, access, devices, groups, transfer))
+	public := httpServer(web.Active().Address(), routes(auth, users, registry, subscriptions, traffic, web, access, devices, groups, transfer, metrics))
 	tlsConfig, challenge, err := web.TLS()
 	if err != nil {
 		return err
 	}
 	if os.Getenv("PANEL_CONTAINER") == "true" {
-		challenge = gateway.ServerFor(web.Active().Host, web.Active().ChallengePort, challenge, instanceapi.ACMESources(registry))
+		challenge = gateway.ServerFor(web.Active().ListenHost(), web.Active().ChallengePort, challenge, instanceapi.ACMESources(registry))
 	}
 	public.TLSConfig = tlsConfig
 	internalMux := http.NewServeMux()
@@ -138,9 +144,5 @@ func Run() error {
 		}()
 	}
 	log.Printf("Panel listening on %s", public.Addr)
-	go supervision.ExpiryLoop(monitorContext, db, registry.Running, registry.Kick)
 	return awaitShutdown(failures, servers)
-}
-func httpServer(address string, handler http.Handler) *http.Server {
-	return &http.Server{Addr: address, Handler: handler, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}
 }

@@ -10,8 +10,7 @@ export function CorePage() {
       <div className="page-heading">
         <div>
           <span className="eyebrow">{t("СИСТЕМА / HYSTERIA 2")}</span>
-          <h1>{t("Ядро и журнал")}</h1>
-          <p>{t("Запуск, журнал и обновление Hysteria2.")}</p>
+          <h1>{t("Управление HY2")}</h1>
         </div>
         <a
           className="documentation-link"
@@ -29,7 +28,7 @@ export function CorePage() {
         className="min-w-0"
         id="core-versions"
         data-scroll-section
-        data-scroll-label={t("Обновление ядра")}
+        data-scroll-label={t("Обновление экземпляра")}
       >
         <UpdateCard />
       </div>

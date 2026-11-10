@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { mockPanel } from "../fixtures";
+import { expandSettings, mockPanel } from "../fixtures";
 test("sidebar collapse is saved and mobile keeps horizontal navigation", async ({ page }, info) => {
   await mockPanel(page);
   const toggle = page.getByRole("button", { name: "Свернуть меню", exact: true });
@@ -73,18 +73,35 @@ test("quick-start content and navigation stay inside their bounds", async ({ pag
   }
   await page.screenshot({ path: info.outputPath("navigation-spacing.png"), fullPage: true });
 });
-
 test("page forms share padding and content stays inside the viewport", async ({ page }, info) => {
   await mockPanel(page);
-  for (const title of ["Обзор", "Пользователи", "Подписки", "Ядра", "Конфигурация", "Ядро и журнал", "Настройки"]) {
+  for (const title of [
+    "Обзор",
+    "Пользователи",
+    "Подписки",
+    "Экземпляры",
+    "Конфигурация",
+    "Управление HY2",
+    "Настройки",
+  ]) {
     await page.locator(".app-sidebar nav").getByRole("button", { name: title, exact: true }).click();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    if (title === "Настройки" || title === "Подписки") await expandSettings(page);
     if (title === "Настройки") await expect(page.locator("#cloud-password input").first()).toBeVisible();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
-    const forms = await page.locator(".form-body").evaluateAll(elements => elements.map(element => {
-      const style = getComputedStyle(element);
-      return { left: parseFloat(style.paddingLeft), right: parseFloat(style.paddingRight), top: parseFloat(style.paddingTop), bottom: parseFloat(style.paddingBottom) };
-    }));
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
+    ).toBe(0);
+    const forms = await page.locator(".form-body").evaluateAll((elements) =>
+      elements.map((element) => {
+        const style = getComputedStyle(element);
+        return {
+          left: parseFloat(style.paddingLeft),
+          right: parseFloat(style.paddingRight),
+          top: parseFloat(style.paddingTop),
+          bottom: parseFloat(style.paddingBottom),
+        };
+      }),
+    );
     for (const padding of forms) {
       expect(Math.min(padding.left, padding.right, padding.top, padding.bottom)).toBeGreaterThanOrEqual(16);
     }
@@ -95,12 +112,14 @@ test("page forms share padding and content stays inside the viewport", async ({ 
 test("motion is short and respects the reduced-motion preference", async ({ page }) => {
   await mockPanel(page);
   await page.getByRole("button", { name: "Пользователи", exact: true }).click();
-  await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
+  await page.getByRole("button", { name: "Добавить", exact: true }).click();
   const dialog = page.getByRole("dialog");
-  expect(await dialog.evaluate(element => getComputedStyle(element).animationDuration)).toBe("0.2s");
+  expect(await dialog.evaluate((element) => getComputedStyle(element).animationDuration)).toBe("0.2s");
   await page.emulateMedia({ reducedMotion: "reduce" });
-  expect(await dialog.evaluate(element => getComputedStyle(element).animationName)).toBe("none");
-  expect(await page.locator("html").evaluate(element => getComputedStyle(element).scrollBehavior)).toBe("auto");
+  expect(await dialog.evaluate((element) => getComputedStyle(element).animationName)).toBe("none");
+  expect(await page.locator("html").evaluate((element) => getComputedStyle(element).scrollBehavior)).toBe(
+    "auto",
+  );
 });
 
 test("Tailwind utilities retain precedence over component styles after Sass", async ({ page }) => {
@@ -114,4 +133,18 @@ test("Tailwind utilities retain precedence over component styles after Sass", as
     return value;
   });
   expect(display).toBe("grid");
+});
+
+test("shared page notices have space before the following card", async ({ page }, info) => {
+  await mockPanel(page);
+  for (const section of ["Пользователи", "Экземпляры"]) {
+    await page.getByRole("button", { name: section, exact: true }).click();
+    const notice = page.locator(".content > .notice");
+    await expect(notice).toBeVisible();
+    const box = (await notice.boundingBox())!;
+    const following = (await notice.locator("xpath=following-sibling::*[1]").boundingBox())!;
+    expect(following.y - box.y - box.height).toBeGreaterThanOrEqual(16);
+    expect(await notice.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+    await page.screenshot({ path: info.outputPath("notice-" + section + ".png") });
+  }
 });

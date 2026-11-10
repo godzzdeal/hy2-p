@@ -4,12 +4,14 @@ import (
 	"errors"
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/configuration/deployment"
+	"hy2-panel/internal/security"
 	"hy2-panel/internal/users"
 	"os"
 )
 
 type Profile struct {
 	ID, Name string
+	Data     string
 	Settings configuration.Settings
 }
 type Connection struct {
@@ -19,6 +21,9 @@ type Connection struct {
 }
 
 func (handler *Handler) connections(user users.User) ([]Connection, error) {
+	if handler.Announcements != nil {
+		user.Name = handler.Announcements.UserName(user.Name)
+	}
 	var profiles []Profile
 	var err error
 	if handler.Sources != nil {
@@ -29,7 +34,7 @@ func (handler *Handler) connections(user users.User) ([]Connection, error) {
 		if os.Getenv("PANEL_CONTAINER") == "true" {
 			settings.Port, _ = deployment.Published("default")
 		}
-		profiles = []Profile{{ID: "default", Settings: settings}}
+		profiles = []Profile{{ID: "default", Data: security.Env("PANEL_DATA", "data"), Settings: settings}}
 	}
 	if err != nil {
 		return nil, err
@@ -52,7 +57,7 @@ func (handler *Handler) connections(user users.User) ([]Connection, error) {
 		if len(profiles) > 1 {
 			labelled.Name += " / " + profile.Name
 		}
-		uri, exportError := ConnectionURI(profile.Settings, labelled)
+		uri, exportError := ConnectionURI(profile.Settings, labelled, profile.Data)
 		if exportError != nil && err == nil {
 			err = exportError
 		}

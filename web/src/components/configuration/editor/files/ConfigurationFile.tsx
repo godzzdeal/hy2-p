@@ -1,6 +1,7 @@
 import { useConfigurationFile } from "@/components/configuration/editor/files/use-configuration-file";
 import { type IConfiguration } from "@/services/configuration/configuration-types";
 import { useTranslation } from "react-i18next";
+import { FileDropzone } from "@/components/elements/upload";
 export function ConfigurationFile({
   value,
   onChange,
@@ -11,18 +12,14 @@ export function ConfigurationFile({
   const { t } = useTranslation();
   const read = useConfigurationFile(value, onChange);
   return (
-    <label className="configuration-file">
-      {t("Импорт YAML в черновик")}
-      <input
-        type="file"
+    <div className="configuration-file">
+      <FileDropzone
+        label={t("Импорт YAML в черновик")}
+        hint={t("YAML, до 1 МБ")}
         accept=".yaml,.yml,text/yaml,application/yaml"
-        disabled={read.isPending}
-        onChange={(event) => {
-          const file = event.target.files?.[0];
-          if (file) read.mutate(file);
-          event.target.value = "";
-        }}
+        isBusy={read.isPending}
+        onFile={(file) => read.mutate(file)}
       />
-    </label>
+    </div>
   );
 }

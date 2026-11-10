@@ -54,7 +54,7 @@ func ACME(id string, candidate configuration.Settings, entries []Entry) error {
 			return err
 		}
 		if other == port {
-			return fmt.Errorf("TCP-порт ACME %d уже используется ядром %s. В Docker используйте acme.type: http или готовый TLS-сертификат", port, entry.ID)
+			return fmt.Errorf("TCP-порт ACME %d уже используется экземпляром %s. В Docker используйте acme.type: http или готовый TLS-сертификат", port, entry.ID)
 		}
 	}
 	return nil

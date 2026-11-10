@@ -20,13 +20,13 @@ func Validate(bundle Bundle) error {
 	cores, groupIDs, userIDs, credentials, tokens := map[string]bool{}, map[string]bool{}, map[string]bool{}, map[string]bool{}, map[string]bool{}
 	for _, profile := range bundle.Profiles {
 		if !validationID(profile.ID) || cores[profile.ID] || validation.Name(profile.Name) != nil || configuration.Validate(profile.Settings) != nil {
-			return errors.New("Некорректная конфигурация ядра в файле")
+			return errors.New("Некорректная конфигурация экземпляра в файле")
 		}
 		cores[profile.ID] = true
 	}
 	for source, target := range bundle.Targets {
-		if !cores[source] || !validationID(target) {
-			return errors.New("Некорректные связи ядер")
+		if !cores[source] || (target != ExcludeProfile && !validationID(target)) {
+			return errors.New("Некорректные связи экземпляров")
 		}
 	}
 	for _, group := range bundle.Groups {

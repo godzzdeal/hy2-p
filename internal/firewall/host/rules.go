@@ -16,7 +16,7 @@ const Docker = "/usr/bin/docker"
 const MaxRules = 16
 
 var publishedPattern = regexp.MustCompile(`:(\d+)->\d+/(tcp|udp)`)
-var rulePattern = regexp.MustCompile(`^\[\s*(\d+)\]\s+(\d+)/(tcp|udp)(?:\s+\(v6\))?\s+(?:ALLOW|DENY)(?:\s+IN)?\s+Anywhere(?:\s+\(v6\))?(?:\s+#.*)?$`)
+var rulePattern = regexp.MustCompile(`^\[\s*(\d+)\]\s+(\d+)/(tcp|udp)(?:\s+\(v6\))?\s+(ALLOW|DENY)(?:\s+IN)?\s+Anywhere(?:\s+\(v6\))?(?:\s+#.*)?$`)
 
 type Result struct {
 	Active         bool   `json:"active"`
@@ -65,16 +65,21 @@ func (service *Service) Change(ctx context.Context, change firewall.Change) (Res
 	if err != nil {
 		return Result{}, err
 	}
-	indices := []int{}
-	for _, line := range strings.Split(numbered, "\n") {
-		match := rulePattern.FindStringSubmatch(strings.TrimSpace(line))
-		if match != nil && match[2] == strconv.Itoa(change.Port) && match[3] == change.Protocol {
-			index, _ := strconv.Atoi(match[1])
-			indices = append(indices, index)
-		}
-	}
-	if len(indices) > MaxRules {
+	if len(ruleIndices(numbered, change, "")) > MaxRules {
 		return Result{}, errors.New("Слишком много правил для одного порта. Проверьте их на сервере.")
+	}
+	// Keep existing protection until the replacement is installed in both address families.
+	if _, err := service.Execute(ctx, UFW, "insert", "1", change.Action, fmt.Sprintf("%d/%s", change.Port, change.Protocol), "comment", "HY2-P"); err != nil {
+		return Result{}, err
+	}
+	// UFW may insert two rules or skip an existing equivalent rule. Read actual indices again.
+	numbered, err = service.Execute(ctx, UFW, "status", "numbered")
+	if err != nil {
+		return Result{}, err
+	}
+	indices := ruleIndices(numbered, change, strings.ToUpper(change.Action))
+	if len(indices) > MaxRules {
+		return Result{}, errors.New("Список правил изменился. Проверьте firewall на сервере.")
 	}
 	slices.Sort(indices)
 	slices.Reverse(indices)
@@ -83,8 +88,19 @@ func (service *Service) Change(ctx context.Context, change firewall.Change) (Res
 			return Result{}, err
 		}
 	}
-	if _, err := service.Execute(ctx, UFW, "insert", "1", change.Action, fmt.Sprintf("%d/%s", change.Port, change.Protocol), "comment", "HY2-P"); err != nil {
-		return Result{}, err
-	}
 	return service.Status(ctx)
+}
+
+func ruleIndices(numbered string, change firewall.Change, keepAction string) []int {
+	indices := []int{}
+	for _, line := range strings.Split(numbered, "\n") {
+		match := rulePattern.FindStringSubmatch(strings.TrimSpace(line))
+		if match == nil || match[2] != strconv.Itoa(change.Port) || match[3] != change.Protocol || match[4] == keepAction {
+			continue
+		}
+		if index, err := strconv.Atoi(match[1]); err == nil && index > 0 {
+			indices = append(indices, index)
+		}
+	}
+	return indices
 }

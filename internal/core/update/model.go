@@ -43,7 +43,6 @@ type Runtime interface {
 	Probe(context.Context, string) (string, error)
 }
 type Service struct {
-	revision  uint64
 	mu        sync.Mutex
 	state     State
 	busy      bool
@@ -82,10 +81,10 @@ func (service *Service) RecoverLocked(ctx context.Context) error {
 	original := service.state
 	if original.Previous == nil {
 		service.mu.Unlock()
-		return errors.New("нет предыдущего исправного ядра для отката")
+		return errors.New("нет предыдущего исправного экземпляра для отката")
 	}
 	service.busy = true
-	original.Last = Result{Phase: "rolling_back", Message: "Watchdog: перезапуски не помогли, восстанавливаем предыдущее ядро", Target: original.Previous.Version, Started: time.Now().UTC().Format(time.RFC3339)}
+	original.Last = Result{Phase: "rolling_back", Message: "Watchdog: перезапуски не помогли, восстанавливаем предыдущий экземпляр", Target: original.Previous.Version, Started: time.Now().UTC().Format(time.RFC3339)}
 	service.mu.Unlock()
 	defer func() { service.mu.Lock(); service.busy = false; service.mu.Unlock() }()
 	candidate, err := service.prepare(ctx, "", true, original)
@@ -100,14 +99,19 @@ func (service *Service) RecoverLocked(ctx context.Context) error {
 		return err
 	}
 	if err = service.runtime.Activate(ctx, candidate.Path, true); err != nil {
+		// A timed-out health check can leave the candidate running. Restore the
+		// recorded binary selection without starting the already rejected version.
+		cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), OperationTimeout)
+		err = errors.Join(err, service.runtime.Activate(cleanup, original.Current.Path, false))
+		cancel()
 		service.finishError(original, err)
 		return err
 	}
 	next := State{Current: candidate, Last: original.Last}
 	next.Last.Phase = "success"
-	next.Last.Message = "Watchdog восстановил предыдущее ядро после неудачных перезапусков"
+	next.Last.Message = "Watchdog восстановил предыдущий экземпляр после неудачных перезапусков"
 	if err = service.commit(next); err != nil {
-		service.progress("failed", "Ядро запущено, но состояние отката не сохранено: "+err.Error())
+		service.progress("failed", "Экземпляр запущен, но состояние отката не сохранено: "+err.Error())
 		return err
 	}
 	return nil

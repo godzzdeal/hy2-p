@@ -7,6 +7,8 @@ import (
 )
 
 const Socket = "/run/hy2-port-agent/control.sock"
+const SystemPath = "/system"
+const RestartPath = "/restart"
 const ProbeTokenEnv = "PANEL_UDP_PROBE_TOKEN"
 const ProbeIDEnv = "PANEL_UDP_PROBE_ID"
 const ProbePortEnv = "PANEL_UDP_PROBE_PORT"
@@ -21,6 +23,7 @@ type Request struct {
 	ListenPort string `json:"listenPort"`
 }
 type Status struct {
+	Operation   string `json:"operation,omitempty"`
 	InstanceID  string `json:"instanceId,omitempty"`
 	Remove      bool   `json:"remove,omitempty"`
 	ID          string `json:"id"`
@@ -36,7 +39,7 @@ type Status struct {
 
 func (request Request) Validate() error {
 	if request.InstanceID != "" && !InstancePattern.MatchString(request.InstanceID) {
-		return errors.New("некорректное ядро")
+		return errors.New("некорректный экземпляр")
 	}
 	if request.Remove && (request.InstanceID == "" || request.InstanceID == "default") {
 		return errors.New("основной UDP-порт нельзя удалить")

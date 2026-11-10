@@ -3,6 +3,8 @@ import { type TPage } from "@/config/navigation";
 import { create } from "zustand";
 import { useNotifications } from "@/store/notifications";
 interface IUiState {
+  isPanelRestarting: boolean;
+  setPanelRestarting: (isPanelRestarting: boolean) => void;
   isSidebarCollapsed: boolean;
   toggleSidebar: () => void;
   theme: "system" | "light" | "dark";
@@ -15,6 +17,8 @@ interface IUiState {
   notify: (notice: string) => void;
 }
 export const useUiStore = create<IUiState>((set, get) => ({
+  isPanelRestarting: false,
+  setPanelRestarting: (isPanelRestarting) => set({ isPanelRestarting }),
   isSidebarCollapsed: localStorage.getItem("hy2.sidebar-collapsed") === "true",
   toggleSidebar: () => {
     const isSidebarCollapsed = !get().isSidebarCollapsed;

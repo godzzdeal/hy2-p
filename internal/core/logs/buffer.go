@@ -9,8 +9,8 @@ import (
 
 const Capacity = 64000
 
-var ansi = regexp.MustCompile("\\x1b(?:\\[[0-?]*[ -/]*[@-~]|\\][^\\x07\\x1b]*(?:\\x07|\\x1b\\\\))")
-var incomplete = regexp.MustCompile("\\x1b(?:\\[[0-?]*[ -/]*|\\][^\\x07\\x1b]*)?$")
+var ansi = regexp.MustCompile(`\x1b(?:\[[0-?]*[ -/]*[@-~]|\][^\x07\x1b]*(?:\x07|\x1b\\))`)
+var incomplete = regexp.MustCompile(`\x1b(?:\[[0-?]*[ -/]*|\][^\x07\x1b]*)?$`)
 
 // Buffer accepts split UTF-8 writes and exposes plain text, never terminal commands.
 type Buffer struct {

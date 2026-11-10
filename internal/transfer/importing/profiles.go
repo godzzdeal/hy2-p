@@ -5,6 +5,7 @@ import (
 	"hy2-panel/internal/transfer/model"
 	"hy2-panel/internal/useraccess"
 	"reflect"
+	"slices"
 	"sort"
 )
 
@@ -12,6 +13,10 @@ func Profiles(registry *instances.Registry, input, current model.Bundle, rows []
 	mapping := map[string]string{}
 	for index, profile := range input.Profiles {
 		row := &rows[index]
+		if row.Target == model.ExcludeProfile {
+			mapping[profile.ID] = ""
+			continue
+		}
 		if row.Action == "skip" {
 			if row.Target != "" {
 				mapping[profile.ID] = row.Target
@@ -29,7 +34,7 @@ func Profiles(registry *instances.Registry, input, current model.Bundle, rows []
 		}
 		instance, err := registry.Add(profile.Name, profile.Settings)
 		if err != nil {
-			row.Action, row.Reason = "failed", "Не удалось добавить ядро. Проверьте порты и пути сертификатов."
+			row.Action, row.Reason = "failed", "Не удалось добавить экземпляр. Проверьте порты и пути сертификатов."
 			continue
 		}
 		mapping[profile.ID] = instance.ID
@@ -41,7 +46,9 @@ func Access(policy useraccess.Policy, mapping map[string]string) (useraccess.Pol
 	result := useraccess.Policy{Mode: useraccess.Selected, Instances: []string{}}
 	if policy.Mode == useraccess.All {
 		for _, target := range mapping {
-			result.Instances = append(result.Instances, target)
+			if target != "" {
+				result.Instances = append(result.Instances, target)
+			}
 		}
 	} else {
 		for _, source := range policy.Instances {
@@ -49,9 +56,12 @@ func Access(policy useraccess.Policy, mapping map[string]string) (useraccess.Pol
 			if !ok {
 				return result, false
 			}
-			result.Instances = append(result.Instances, target)
+			if target != "" {
+				result.Instances = append(result.Instances, target)
+			}
 		}
 	}
 	sort.Strings(result.Instances)
+	result.Instances = slices.Compact(result.Instances)
 	return result, true
 }

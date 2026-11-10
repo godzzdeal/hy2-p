@@ -1,6 +1,9 @@
 import { DeploymentNotice } from "@/components/configuration/editor/DeploymentNotice";
+import { CertificatePin } from "@/components/configuration/editor/connection";
+import { useWebSettings } from "@/hooks/admin/use-admin";
+import { setConnectionAddress } from "@/utils/configuration/address";
 import { type IConfiguration } from "@/services/configuration/configuration-types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 interface IConnectionFields {
   value: IConfiguration;
@@ -9,6 +12,15 @@ interface IConnectionFields {
 export function ConnectionFields({ value, onChange }: IConnectionFields) {
   const { t } = useTranslation();
   const [isSniLinked, setSniLinked] = useState(value.sni === value.host);
+  const web = useWebSettings();
+  const sharedAddress = web.data?.config.domain ?? "";
+  const hasSuggested = useRef(!!value.host);
+  useEffect(() => {
+    if (!hasSuggested.current && !value.host && sharedAddress) {
+      hasSuggested.current = true;
+      onChange(setConnectionAddress(value, sharedAddress, isSniLinked));
+    }
+  }, [value, sharedAddress, isSniLinked, onChange]);
   useEffect(() => {
     if (isSniLinked && value.sni !== value.host) setSniLinked(false);
   }, [isSniLinked, value.sni, value.host]);
@@ -29,15 +41,18 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
             aria-label={t("Публичный адрес")}
             placeholder="vpn.example.com"
             value={value.host}
-            onChange={(event) =>
-              onChange({
-                ...value,
-                host: event.target.value,
-                sni: isSniLinked ? event.target.value : value.sni,
-              })
-            }
+            onChange={(event) => onChange(setConnectionAddress(value, event.target.value, isSniLinked))}
           />
           <small>{t("Адрес, к которому будет подключаться Happ. Например vpn.example.com.")}</small>
+          {sharedAddress && value.host !== sharedAddress && (
+            <button
+              type="button"
+              className="text-btn"
+              onClick={() => onChange(setConnectionAddress(value, sharedAddress, isSniLinked))}
+            >
+              {t("Использовать адрес панели")}
+            </button>
+          )}
         </label>
         <label>
           {t("Публичный UDP-порт")}
@@ -76,6 +91,7 @@ export function ConnectionFields({ value, onChange }: IConnectionFields) {
             {t("SNI совпадает с адресом")}
           </label>
         </div>
+        <CertificatePin value={value} onChange={onChange} />
       </div>
       <DeploymentNotice />
     </section>

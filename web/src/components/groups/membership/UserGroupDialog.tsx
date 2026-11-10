@@ -1,5 +1,5 @@
 import { Modal } from "@/components/ui/modal/Modal";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { useAssignGroup, useGroups } from "@/hooks/groups/hooks";

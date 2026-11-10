@@ -135,7 +135,7 @@ test("configuration can be applied without leaving the page", async ({ page }) =
   await page.getByRole("button", { name: "Сохранить конфигурацию", exact: true }).click();
   await expect(page.getByText("Конфигурация сохранена", { exact: true })).toBeVisible();
   expect(panel.coreActions).toEqual([]);
-  await page.getByRole("button", { name: "Перезапустить ядро", exact: true }).click();
+  await page.getByRole("button", { name: "Перезапустить экземпляр", exact: true }).click();
   await expect.poll(() => panel.coreActions).toEqual(["restart"]);
   await expect(page.getByText("Конфигурация сохранена", { exact: true })).toHaveCount(0);
 });

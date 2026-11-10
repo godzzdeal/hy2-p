@@ -1,3 +1,4 @@
+import { Notice } from "@/components/ui/feedback";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { useAdjustTraffic } from "@/hooks/users/traffic/use-traffic";
@@ -26,15 +27,15 @@ export function TrafficForm({
   }
   return (
     <form onSubmit={onSubmit}>
-      <p className="config-note">
+      <Notice>
         {t("Использовано:")} {formatBytes(usage.upload + usage.download, t)}
         {t(". При исчерпании квоты доступ блокируется до её увеличения или сброса счётчиков.")}
-      </p>
+      </Notice>
       {!!usage.groupLimit && (
-        <p className="config-note">
+        <Notice>
           {t("Лимит группы:")} {formatBytes(usage.groupLimit, t)}.{" "}
           {t("Личный лимит может быть только строже.")}
-        </p>
+        </Notice>
       )}
       <label>
         {t("Единица измерения")}
@@ -95,11 +96,7 @@ export function TrafficForm({
           {t("Сохранить трафик")}
         </button>
       </div>
-      <p className="caption">
-        {t(
-          "Трафик обновляется раз в 5 секунд. При аварийном завершении ядра последние неопросенные байты могут не попасть в учёт.",
-        )}
-      </p>
+      <p className="caption">{t("Трафик обновляется раз в 5 секунд.")}</p>
     </form>
   );
 }

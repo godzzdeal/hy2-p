@@ -31,7 +31,10 @@ func (handler *Handler) History(writer http.ResponseWriter, request *http.Reques
 			return
 		}
 		var settings Settings
-		json.Unmarshal([]byte(raw), &settings)
+		if err := json.Unmarshal([]byte(raw), &settings); err != nil {
+			transport.Fail(writer, err, 500)
+			return
+		}
 		if handler.Vault != nil {
 			settings.Config, err = handler.Vault.OpenPassword(settings.Config)
 			if err != nil {
@@ -40,6 +43,10 @@ func (handler *Handler) History(writer http.ResponseWriter, request *http.Reques
 			}
 		}
 		result = append(result, map[string]any{"id": id, "created": created, "settings": settings})
+	}
+	if err := rows.Err(); err != nil {
+		transport.Fail(writer, err, 500)
+		return
 	}
 	transport.Respond(writer, result)
 }

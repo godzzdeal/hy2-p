@@ -24,10 +24,6 @@ func (handler *Handler) Edit(writer http.ResponseWriter, request *http.Request) 
 		return
 	}
 	if payload.Password != "" {
-		if err := handler.validatePassword(payload.Password, user.ID); err != nil {
-			transport.Fail(writer, err, 400)
-			return
-		}
 		user.Password = payload.Password
 	}
 	user.Name = payload.Name
@@ -42,13 +38,31 @@ func (handler *Handler) Edit(writer http.ResponseWriter, request *http.Request) 
 		transport.Fail(writer, err, 500)
 		return
 	}
-	_, err = handler.DB.Exec("UPDATE users SET name=?,enabled=?,expires=?,password=? WHERE id=?", user.Name, user.Enabled, user.Expires, encrypted, user.ID)
+	tx, err := handler.DB.Begin()
+	if err != nil {
+		transport.Fail(writer, err, 500)
+		return
+	}
+	defer tx.Rollback()
+	if payload.Password != "" {
+		if err := handler.validatePassword(tx, user.Password, user.ID); err != nil {
+			transport.Fail(writer, err, 400)
+			return
+		}
+	}
+	_, err = tx.Exec("UPDATE users SET name=?,enabled=?,expires=?,password=? WHERE id=?", user.Name, user.Enabled, user.Expires, encrypted, user.ID)
+	if err == nil {
+		err = tx.Commit()
+	}
 	if err != nil {
 		transport.Fail(writer, err, 500)
 		return
 	}
 	if !Active(user) || payload.Password != "" {
 		handler.Kick(user.ID)
+	}
+	if handler.DisplayName != nil {
+		user.DisplayName = handler.DisplayName(user.Name)
 	}
 	transport.Respond(writer, user)
 }

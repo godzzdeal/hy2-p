@@ -15,6 +15,7 @@ export function useSession() {
   const showError = useUiStore((state) => state.showError);
   useEffect(() => {
     const onExpired = () => {
+      if (useUiStore.getState().isPanelRestarting) return;
       endSession(client);
     };
     window.addEventListener("session-expired", onExpired);

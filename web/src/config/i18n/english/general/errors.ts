@@ -2,25 +2,25 @@ export const ERRORS: Record<string, string> = {
   "Учётная запись администратора": "Administrator account",
   "Учётная запись, сетевой адрес и сертификат веб-интерфейса.":
     "Sign-in credentials, network address and web interface certificate.",
-  "Файл загружается с официального GitHub и сверяется с SHA-256. Предыдущее ядро продолжает работать до завершения загрузки.":
-    "The file is downloaded from the official GitHub release and checked against SHA-256. The previous engine keeps running until the download finishes.",
+  "Файл загружается с официального GitHub и сверяется с SHA-256. Предыдущий экземпляр продолжает работать до завершения загрузки.":
+    "The file is downloaded from the official GitHub release and checked against SHA-256. The previous server keeps running until the download finishes.",
   "Файл правил ACL": "ACL rules file",
   "Файл сертификата слишком большой": "Certificate file is too large",
   "Центр сертификации": "Certificate authority",
-  "Экспорт ECH пока не поддерживается": "ECH export is not supported yet",
   "Экспорт для Happ поддерживает только Salamander; измените obfs":
     "Happ export supports Salamander only; change obfs",
   "Экспорт режима Realm пока не поддерживается": "Realm export is not supported yet",
-  "Ядро восстановлено, но состояние не сохранено: ": "Engine restored, but state could not be saved: ",
-  "Ядро готово к работе. Управляйте запуском и версиями ниже.":
-    "The engine is ready. Manage startup and versions below.",
-  "Ядро запущено, но состояние отката не сохранено: ":
-    "Engine started, but rollback state could not be saved: ",
-  "Ядро и журнал": "Engine and logs",
-  "Ядро остановлено вручную": "Engine stopped manually",
-  "Ядро перезапущено. Watchdog продолжает наблюдение.": "Engine restarted. Watchdog is still monitoring it.",
-  "Ядро под контролем": "Engine under control",
-  "Ядро уже запущено": "Engine is already running",
+  "Экземпляр восстановлен, но состояние не сохранено: ": "Instance restored, but state could not be saved: ",
+  "Экземпляр готов к работе. Управляйте запуском и версиями ниже.":
+    "The instance is ready. Manage startup and versions below.",
+  "Экземпляр запущен, но состояние отката не сохранено: ":
+    "Instance started, but rollback state could not be saved: ",
+  "Управление HY2": "HY2 control",
+  "Экземпляр остановлен вручную": "Instance stopped manually",
+  "Экземпляр перезапущен. Watchdog продолжает наблюдение.":
+    "Instance restarted. Watchdog is still monitoring it.",
+  "Экземпляр под контролем": "Instance under control",
+  "Экземпляр уже запущен": "Instance is already running",
   Язык: "Language",
   "бинарный файл не сообщил версию Hysteria2": "binary did not report a Hysteria2 version",
   "версия бинарного файла %q не совпадает с %q": "binary version %q does not match %q",
@@ -30,8 +30,8 @@ export const ERRORS: Record<string, string> = {
   "для HTTPS укажите домен без схемы и порта": "for HTTPS, enter a domain without a scheme or port",
   "для этой платформы нет файла с SHA-256": "no file with a SHA-256 digest is available for this platform",
   "доступны только стабильные релизы Hysteria2": "only stable Hysteria2 releases are allowed",
-  "другая операция с ядром уже выполняется": "another engine operation is already in progress",
-  "контрольная сумма сохранённого ядра не совпадает": "saved engine checksum mismatch",
+  "другая операция с экземпляром уже выполняется": "another instance operation is already in progress",
+  "контрольная сумма сохранённого экземпляра не совпадает": "saved instance checksum mismatch",
   "логин: от 3 до 64 символов без пробелов": "username: 3 to 64 characters without spaces",
   "не удалось расшифровать пароль: проверьте ключ из резервной копии":
     "cannot decrypt the password: restore the key from your backup",
@@ -45,13 +45,14 @@ export const ERRORS: Record<string, string> = {
   "некорректная версия": "invalid version",
   "некорректный SHA-256": "invalid SHA-256",
   "неофициальный адрес файла": "unofficial asset URL",
-  "нет предыдущего исправного ядра для отката": "no previous healthy engine is available for rollback",
-  "новое ядро завершилось во время проверки": "new engine exited during its health check",
+  "нет предыдущего исправного экземпляра для отката":
+    "no previous healthy instance is available for rollback",
+  "новый экземпляр завершился во время проверки": "new instance exited during its health check",
   "нужен раздел auth": "an auth section is required",
   "отсутствует SHA-256": "SHA-256 is missing",
   "пароль пользователя: от 12 до 128 байт": "user password: 12 to 128 bytes",
   "пароль: от 16 до 72 байт": "password: 16 to 72 bytes",
-  "повреждено состояние ядра": "engine state is corrupted",
+  "повреждено состояние экземпляра": "instance state is corrupted",
   "повреждён зашифрованный пароль": "encrypted password is corrupted",
   "подтвердите условия Let's Encrypt": "accept the Let's Encrypt terms",
   "порт панели недопустим или зарезервирован": "panel port is invalid or reserved",

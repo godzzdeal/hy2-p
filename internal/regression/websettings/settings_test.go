@@ -93,3 +93,15 @@ func TestSettingsValidationAndACME(t *testing.T) {
 		t.Fatal(result.Body.String())
 	}
 }
+
+func TestManualIPCertificateDoesNotRequireADomain(t *testing.T) {
+	cert, key := certificate(t)
+	config := websettings.Config{Host: "0.0.0.0", Port: 9443, Mode: "manual", Domain: "203.0.113.10", Certificate: cert, PrivateKey: key, ChallengePort: 9080}
+	if err := websettings.Validate(config); err != nil {
+		t.Fatal(err)
+	}
+	config.Domain = "203.0.113.11"
+	if websettings.Validate(config) == nil {
+		t.Fatal("certificate accepted for the wrong IP")
+	}
+}

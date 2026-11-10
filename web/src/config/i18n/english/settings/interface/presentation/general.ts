@@ -25,9 +25,9 @@ export const INTERFACE = {
   "Состояние сервера": "Server status",
   "Список пользователей": "User list",
   "Параметры Hysteria2": "Hysteria2 settings",
-  "Обновление ядра": "Engine update",
-  "ACME продлевает сертификаты, пока ядро работает. В Docker HTTP-проверка панели и ядра использует общий внешний TCP-порт 80. После её включения выполните sudo hy2-panel restart. TLS-проверка требует отдельного проброса TCP 443; DNS-проверка не занимает порты.":
-    "ACME renews certificates while the engine is running. In Docker, HTTP validation shares public TCP port 80 between the panel and engine. Run sudo hy2-panel restart after enabling it. TLS validation requires a separate TCP 443 mapping; DNS validation uses no inbound ports.",
+  "Обновление экземпляра": "Instance update",
+  "ACME продлевает сертификаты, пока экземпляр работает. В Docker HTTP-проверка панели и экземпляра использует общий внешний TCP-порт 80. После её включения выполните sudo hy2-panel restart. TLS-проверка требует отдельного проброса TCP 443; DNS-проверка не занимает порты.":
+    "ACME renews certificates while the instance is running. In Docker, HTTP validation shares public TCP port 80 between the panel and instance. Run sudo hy2-panel restart after enabling it. TLS validation requires a separate TCP 443 mapping; DNS validation uses no inbound ports.",
   "Оставьте пустым для бессрочного доступа.": "Leave empty for access without an expiry date.",
   "Подключение: ": "Connection: ",
   "Трафик: ": "Traffic: ",
@@ -56,12 +56,12 @@ export const INTERFACE = {
   "Настройки Hysteria2": "Hysteria2 configuration",
   "Пользователи панели не применяются. Доступ определяют параметры auth ниже.":
     "Panel users are not applied. Access is controlled by the auth settings below.",
-  "Пользователи хранятся в панели. Happ получает пароль по ссылке подключения, а Hysteria2 проверяет его через панель. Добавлять пользователей в YAML и перезапускать ядро не нужно.":
-    "Users are stored in the panel. Happ receives the password through the connection link and Hysteria2 checks it with the panel. You do not need to add users to YAML or restart the engine.",
+  "Пользователи хранятся в панели. Happ получает пароль по ссылке подключения, а HY2 проверяет его через панель. Добавлять пользователей в YAML и перезапускать экземпляр не нужно.":
+    "Users are stored in the panel. Happ receives the password through the connection link and Hysteria2 checks it with the panel. You do not need to add users to YAML or restart the instance.",
   "Пользователи хранятся в панели и работают сразу после добавления. Для Happ скопируйте подписку или откройте QR-код.":
     "Users are stored in the panel and work as soon as they are added. Copy a subscription or open the QR code for Happ.",
-  "Упорядочить YAML": "Sort YAML",
-  "Открыть редактор YAML": "Open YAML editor",
+  Упорядочить: "Sort",
+  Открыть: "Open",
   "Есть несохранённые изменения": "You have unsaved changes",
   "Все изменения сохранены": "All changes saved",
   "Отменить изменения": "Discard changes",
@@ -80,7 +80,7 @@ export const INTERFACE = {
   Автопрокрутка: "Follow new messages",
   Скачать: "Download",
   Очистить: "Clear",
-  "Сообщения ядра": "Engine messages",
+  "Сообщения экземпляра": "Instance messages",
   "Сообщений по этому запросу нет": "No matching messages",
   "Показываем новые сообщения": "Following new messages",
   "Автопрокрутка на паузе": "Auto-scroll paused",

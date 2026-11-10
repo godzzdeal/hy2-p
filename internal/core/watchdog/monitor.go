@@ -107,7 +107,7 @@ func (monitor *Monitor) recover(parent context.Context) {
 	monitor.snapshot.State = "watching"
 	monitor.snapshot.LastError = ""
 	monitor.stableSince = time.Now()
-	monitor.snapshot.Message = "Ядро перезапущено. Watchdog продолжает наблюдение."
+	monitor.snapshot.Message = "Экземпляр перезапущен. Watchdog продолжает наблюдение."
 	if rollback {
 		monitor.snapshot.Attempt = 0
 		monitor.version = monitor.runtime.Version()

@@ -7,8 +7,8 @@ test("group editor saves per-member quotas and reopens the saved policy", async 
   await page.getByLabel("Название группы", { exact: true }).fill("Friends");
   await page.getByLabel("Лимит трафика на участника, ГБ", { exact: true }).fill("2");
   await page.getByLabel("Лимит устройств на участника", { exact: true }).fill("3");
-  await page.getByRole("combobox", { name: "Режим доступа к ядрам", exact: true }).click();
-  await page.getByRole("option", { name: "Только выбранные ядра", exact: true }).click();
+  await page.getByRole("combobox", { name: "Режим доступа к экземплярам", exact: true }).click();
+  await page.getByRole("option", { name: "Только выбранные экземпляры", exact: true }).click();
   await page.getByRole("button", { name: "Сохранить группу", exact: true }).click();
   await expect.poll(() => fixture.saved().groups[0]?.trafficLimit).toBe(2 * 1024 ** 3);
   await expect.poll(() => fixture.saved().groups[0]?.access.instances).toEqual(["default"]);

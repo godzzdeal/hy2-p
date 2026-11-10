@@ -44,6 +44,7 @@
       display: none;
     }
     .app-sidebar {
+      flex-shrink: 0;
       position: relative;
       width: 100%;
       border-right: 0;

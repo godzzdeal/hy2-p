@@ -1,8 +1,9 @@
+import { Notice } from "@/components/ui/feedback";
 import { Plus, RefreshCw } from "@/components/elements/icons";
 import { CreateInstanceDialog } from "@/components/instances/dialogs/CreateInstanceDialog";
 import { RenameInstanceDialog } from "@/components/instances/dialogs/RenameInstanceDialog";
 import { InstanceCard } from "@/components/instances/list/InstanceCard";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { useInstances, useInstanceSelection } from "@/hooks/instances/use-instances";
 import { MAX_INSTANCES, type IInstance } from "@/services/instances/types";
 import { useInstanceStore } from "@/store/core/instance-store";
@@ -26,9 +27,9 @@ export function InstancesPage() {
       <div className="page-heading">
         <div>
           <h1>
-            {t("Ядра Hysteria2")} <span className="user-count">{query.data?.length ?? 0}</span>
+            {t("Экземпляры HY2")} <span className="user-count">{query.data?.length ?? 0}</span>
           </h1>
-          <p>{t("Отдельные конфигурации, порты, версии и журналы. До 8 ядер на одном сервере.")}</p>
+          <p>{t("До 8 экземпляров на одном сервере.")}</p>
         </div>
         <div className="instance-actions">
           <button
@@ -45,15 +46,15 @@ export function InstancesPage() {
             onClick={() => setCreating(true)}
           >
             <Plus width={24} height={24} aria-hidden />
-            {t("Добавить ядро")}
+            {t("Добавить экземпляр")}
           </button>
         </div>
       </div>
-      <p className="config-note">
+      <Notice>
         {t(
-          "Пользователи и лимиты трафика общие. Доступ к ядрам настраивается отдельно для каждого пользователя.",
+          "Пользователи и лимиты трафика общие. Доступ к экземплярам настраивается отдельно для каждого пользователя.",
         )}
-      </p>
+      </Notice>
       <QueryState isLoading={query.isPending} error={query.error} />
       <div className="instances-grid">
         {query.data?.map((instance) => (

@@ -1,10 +1,10 @@
 export const CONFIGURATION: Record<string, string> = {
-  "Сейчас Docker принимает UDP {{public}} и передаёт его ядру на порт {{target}}.":
-    "Docker currently forwards public UDP port {{public}} to engine port {{target}}.",
+  "Сейчас Docker принимает UDP {{public}} и передаёт его экземпляру на порт {{target}}.":
+    "Docker currently forwards public UDP port {{public}} to instance port {{target}}.",
   "Сохранённые порты: снаружи {{public}}, в контейнере {{target}}.":
     "Saved ports: public {{public}}, container {{target}}.",
-  "Для применения выполните команду на сервере. Перезапуск ядра не меняет проброс Docker.":
-    "Run this command on the server to apply the ports. Restarting the engine does not change Docker port forwarding.",
+  "Для применения выполните команду на сервере. Перезапуск экземпляра не меняет проброс Docker.":
+    "Run this command on the server to apply the ports. Restarting the instance does not change Docker port forwarding.",
   "Скопировать команду": "Copy command",
   "Скопируйте команду вручную.": "Copy the command manually.",
   "Не удалось проверить UDP-порты Docker.": "Could not check Docker UDP ports.",
@@ -12,12 +12,11 @@ export const CONFIGURATION: Record<string, string> = {
     "Sign in again after running the command. Allow the public UDP port in the server and hosting firewall.",
   "Для автоматического проброса Docker укажите один UDP-порт в listen, например :61254.":
     "For automatic Docker forwarding, set a single UDP port in listen, for example :61254.",
-  "Ядро слушает только внутри контейнера. Для подключения снаружи укажите listen без 127.0.0.1, например :61254.":
-    "The engine listens on container loopback only. To accept external connections, set listen without 127.0.0.1, for example :61254.",
+  "Экземпляр слушает только внутри контейнера. Для подключения снаружи укажите listen без 127.0.0.1, например :61254.":
+    "The instance listens on container loopback only. To accept external connections, set listen without 127.0.0.1, for example :61254.",
   "Порт для подключения Happ. Проброс Docker показан ниже.":
     "The port Happ connects to. Docker forwarding is shown below.",
   "Добавить параметр": "Add entry",
-  "Добавить пользователя": "Add user",
   "Добавьте первого пользователя для получения ссылки подключения.":
     "Add your first user to get a connection URL.",
   Документация: "Documentation",
@@ -31,7 +30,7 @@ export const CONFIGURATION: Record<string, string> = {
   "Доступ отключён или истёк.": "Access is disabled or expired.",
   "Доступ, подключения и состояние вашего сервера.": "Access, connections and server status.",
   "Доступ, подключения, потребление и квоты трафика.": "Access, connections, traffic usage and quotas.",
-  "Журнал ядра": "Engine logs",
+  "Журнал экземпляра": "Instance logs",
   "Загрузить в редактор": "Load into editor",
   "Загрузить сертификат": "Upload certificate",
   "Загрузка версии": "Downloading version",
@@ -49,8 +48,8 @@ export const CONFIGURATION: Record<string, string> = {
   "Значение пароля для копирования": "Password value to copy",
   "И вы в сети.": "And you're connected.",
   "Игнорировать скорость клиента": "Ignore client bandwidth",
-  "Идёт операция с ядром": "An engine operation is in progress",
-  "Изменения применяются после перезапуска ядра.": "Restart the engine to apply changes.",
+  "Идёт операция с экземпляром": "An instance operation is in progress",
+  "Изменения применяются после перезапуска экземпляра.": "Restart the instance to apply changes.",
   "Изменить данные входа": "Change sign-in credentials",
   Имя: "Name",
   "Имя в сертификате сервера.": "The name in the server certificate.",
@@ -72,7 +71,7 @@ export const CONFIGURATION: Record<string, string> = {
   "Ключ или логин": "Key or username",
   "Ключ или логин должен быть уникальным и непустым": "Key or username must be unique and non-empty",
   "Команда аутентификации": "Authentication command",
-  "Команда выполнена. Проверьте журнал ядра.": "Command completed. Check the engine logs.",
+  "Команда выполнена. Проверьте журнал экземпляра.": "Command completed. Check the instance logs.",
   "Контроль перегрузки": "Congestion control",
   Конфигурация: "Configuration",
   "Конфигурация Hysteria2 YAML": "Hysteria2 YAML configuration",
@@ -90,8 +89,8 @@ export const CONFIGURATION: Record<string, string> = {
   "Мой сервер": "My server",
   Назад: "Back",
   "Например 100 mbps. Скорость загрузки клиента.": "For example, 100 mbps. The client's download speed.",
-  "Например :8443. Это UDP-порт ядра, а не порт веб-панели.":
-    "For example, :8443. This is the engine's UDP port, not the web panel port.",
+  "Например :8443. Это UDP-порт экземпляра, а не порт веб-панели.":
+    "For example, :8443. This is the instance's UDP port, not the web panel port.",
   "Настройки панели": "Panel settings",
   "Настройки сети сохранены. Для применения перезапустите панель.":
     "Network settings saved. Restart the panel to apply.",
@@ -109,16 +108,16 @@ export const CONFIGURATION: Record<string, string> = {
   "Не установлено": "Not installed",
   "Неверная дата окончания": "Invalid expiry date",
   "Неверный логин или пароль": "Incorrect username or password",
-  "Незавершённое обновление отменено. Выбрано предыдущее подтверждённое ядро.":
-    "Interrupted update cancelled. The last confirmed engine version was selected.",
+  "Незавершённое обновление отменено. Выбран предыдущий проверенный экземпляр.":
+    "Interrupted update cancelled. The last confirmed instance version was selected.",
   "Неизвестное действие": "Unknown action",
   "Некорректные данные запроса": "Invalid request data",
   "Некорректный JSON": "Invalid JSON",
   "Некорректный адрес или порт": "Invalid address or port",
   "Нет данных": "No data",
   "Ничего не найдено.": "No results.",
-  "Новая версия не прошла проверку. Восстанавливаем предыдущее ядро":
-    "The new version failed its check. Restoring the previous engine",
+  "Новая версия не прошла проверку. Восстанавливаем предыдущий экземпляр":
+    "The new version failed its check. Restoring the previous instance",
   "Новый пароль (не менее 16 символов)": "New password (at least 16 characters)",
   "Новый пароль подключения": "New connection password",
   "Новый пользователь": "New user",

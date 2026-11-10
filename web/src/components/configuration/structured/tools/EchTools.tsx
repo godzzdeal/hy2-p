@@ -1,7 +1,9 @@
+import { Notice } from "@/components/ui/feedback";
+import { CompatibilityNotice } from "@/components/elements/CompatibilityNotice";
 import { useCoreTools } from "@/hooks/configuration/tools/use-core-tools";
 import { type IEch } from "@/services/configuration/tools/api";
 import { useUiStore } from "@/store/ui-store";
-import { copyValue } from "@/utils/clipboard";
+import { CopyButton } from "@/components/elements/copy";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 export function EchTools({ onSet }: { onSet: (path: string, value: unknown) => void }) {
@@ -9,19 +11,18 @@ export function EchTools({ onSet }: { onSet: (path: string, value: unknown) => v
   const [name, setName] = useState("");
   const { read, generate } = useCoreTools();
   const notify = useUiStore((state) => state.notify);
-  const showError = useUiStore((state) => state.showError);
   const result = generate.data ?? read.data;
   function onGenerated(value: IEch) {
     onSet("ech.keyPath", value.keyPath);
-    notify("Ключ ECH создан. Сохраните конфигурацию и перезапустите ядро.");
+    notify("Ключ ECH создан. Сохраните конфигурацию и перезапустите экземпляр.");
   }
   return (
     <section className="configuration-tools">
-      <p className="config-note">
+      <Notice>
         {t(
           "ACME обновляет TLS-сертификат. ECH создаётся отдельно; клиентам передаётся только публичный tls.ech.",
         )}
-      </p>
+      </Notice>
       <label>
         {t("Внешнее имя SNI для ECH")}
         <input
@@ -61,24 +62,15 @@ export function EchTools({ onSet }: { onSet: (path: string, value: unknown) => v
         <label>
           tls.ech
           <textarea aria-label="tls.ech" readOnly value={result.configList} rows={3} />
-          <button
-            type="button"
-            className="secondary"
-            onClick={() =>
-              void copyValue(result.configList)
-                .then(() => notify("Скопировано"))
-                .catch(showError)
-            }
-          >
-            {t("Скопировать tls.ech")}
-          </button>
+          <CopyButton value={result.configList} label="Скопировать tls.ech" />
         </label>
       )}
       <p className="caption">
         {t(
-          "При замене ключа ECH обновите tls.ech на клиентах. Экспорт ECH в ссылки Happ пока не поддерживается.",
+          "Публичный ECH добавляется в ссылку подключения. После замены ключа обновите подписку. Клиент должен поддерживать ECH для Hysteria2.",
         )}
       </p>
+      <CompatibilityNotice />
     </section>
   );
 }

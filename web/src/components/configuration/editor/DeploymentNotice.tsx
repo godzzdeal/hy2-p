@@ -1,27 +1,25 @@
+import { Notice } from "@/components/ui/feedback";
 import { ApplyPortButton } from "@/components/configuration/ports/ApplyPortButton";
-import { CommandBlock } from "@/components/elements/CommandBlock";
+import { CommandBlock } from "@/components/elements/copy";
 import { useDeployment } from "@/hooks/configuration/deployment/use-deployment";
 import { useTranslation } from "react-i18next";
 export function DeploymentNotice() {
   const { t } = useTranslation();
   const query = useDeployment();
   const status = query.data;
-  if (query.error)
-    return (
-      <p className="config-note" role="alert">
-        {t("Не удалось проверить UDP-порты Docker.")}
-      </p>
-    );
+  if (query.error) return <Notice role="alert">{t("Не удалось проверить UDP-порты Docker.")}</Notice>;
   if (!status?.container) return null;
   return (
-    <div className="config-note" role="status">
+    <Notice role="status">
       <p>
         {status.publishedUdpPort
-          ? t("Сейчас Docker принимает UDP {{public}} и передаёт его ядру на порт {{target}}.", {
+          ? t("Сейчас Docker принимает UDP {{public}} и передаёт его экземпляру на порт {{target}}.", {
               public: status.publishedUdpPort,
               target: status.publishedUdpListenPort,
             })
-          : t("UDP-порт этого ядра ещё не опубликован. Запустите ядро и нажмите «Применить UDP-порт».")}
+          : t(
+              "UDP-порт этого экземпляра ещё не опубликован. Запустите экземпляр и нажмите «Применить UDP-порт».",
+            )}
       </p>
       {status.udpWarning && <p className="mt-2">{t(status.udpWarning)}</p>}
       {status.udpRestartRequired && (
@@ -43,6 +41,6 @@ export function DeploymentNotice() {
           <small>{t("Публичный UDP-порт должен быть разрешён в сетевом экране сервера и хостинга.")}</small>
         </div>
       )}
-    </div>
+    </Notice>
   );
 }

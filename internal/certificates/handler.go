@@ -3,21 +3,17 @@ package certificates
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"encoding/pem"
-	"errors"
-	"gopkg.in/yaml.v3"
+	"hy2-panel/internal/certificates/files"
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/transport"
-	"io"
 	"net/http"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 )
 
-const MaxCertificateSize = 1 << 20
+const MaxCertificateSize = files.MaxCertificateSize
 
 type Handler struct {
 	Data   string
@@ -65,61 +61,25 @@ func (handler *Handler) Inspect(writer http.ResponseWriter, request *http.Reques
 		transport.Fail(writer, err, 500)
 		return
 	}
-	var config map[string]any
-	if err = yaml.Unmarshal([]byte(settings.Config), &config); err != nil {
+	mode, paths, err := files.Sources(settings.Config, handler.Data)
+	if err != nil {
 		transport.Fail(writer, err, 400)
 		return
 	}
-	paths := []string{}
-	mode := "tls"
-	if tlsConfig, ok := config["tls"].(map[string]any); ok {
-		if path, ok := tlsConfig["cert"].(string); ok {
-			paths = append(paths, path)
-		}
-	}
-	if acmeConfig, ok := config["acme"].(map[string]any); ok {
-		mode = "acme"
-		directory, _ := acmeConfig["dir"].(string)
-		if directory == "" {
-			directory = filepath.Join(handler.Data, "acme-hy2")
-		}
-		count := 0
-		filepath.WalkDir(directory, func(path string, entry os.DirEntry, walkErr error) error {
-			count++
-			if count > 512 {
-				return filepath.SkipAll
-			}
-			if walkErr == nil && !entry.IsDir() && strings.HasSuffix(path, ".crt") {
-				paths = append(paths, path)
-			}
-			return nil
-		})
-	}
-	certificates := []map[string]any{}
+	certificates := []files.Certificate{}
 	for _, path := range paths {
-		if info, err := inspect(path); err == nil {
+		if info, err := files.Read(path); err == nil {
 			certificates = append(certificates, info)
 		}
 	}
-	transport.Respond(writer, map[string]any{"mode": mode, "automaticRenewal": mode == "acme", "certificates": certificates})
-}
-func inspect(path string) (map[string]any, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
+	name := settings.SNI
+	if name == "" {
+		name = settings.Host
 	}
-	defer file.Close()
-	payload, err := io.ReadAll(io.LimitReader(file, MaxCertificateSize))
-	if err != nil {
-		return nil, err
+	pin, pinError := files.Pin(mode, certificates, name)
+	message := ""
+	if pinError != nil {
+		message = pinError.Error()
 	}
-	block, _ := pem.Decode(payload)
-	if block == nil || block.Type != "CERTIFICATE" {
-		return nil, errors.New("неверный PEM сертификата")
-	}
-	cert, err := x509.ParseCertificate(block.Bytes)
-	if err != nil {
-		return nil, err
-	}
-	return map[string]any{"path": filepath.ToSlash(path), "domains": cert.DNSNames, "notAfter": cert.NotAfter.UTC().Format(time.RFC3339), "expired": time.Now().After(cert.NotAfter)}, nil
+	transport.Respond(writer, map[string]any{"mode": mode, "automaticRenewal": mode == "acme", "certificates": certificates, "pinSHA256": pin, "pinError": message})
 }

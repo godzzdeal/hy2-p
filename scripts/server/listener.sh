@@ -7,7 +7,13 @@ sync_listener() {
       latest=""
       for file in /data/web/web-*.json; do [ ! -f "$file" ] || latest=$file; done
       if [ -n "$latest" ]; then cat "$latest"; else printf "{}"; fi
-    ' | jq '{port,mode,challengePort,publicURL}')
+    ' | jq '{host,port,mode,challengePort,publicURL}')
+  local bind
+  bind=$(jq -r '.host // empty' <<<"$settings")
+  if [[ -n $bind ]]; then
+    [[ $bind == 127.0.0.1 || $bind == 0.0.0.0 || $bind == :: || $bind == ::1 ]] || die "Некорректный адрес панели."
+    env_set PANEL_BIND "$bind"
+  fi
   port=$(jq -r '.port // empty' <<<"$settings")
   if [[ -n $port ]]; then
     [[ $port =~ ^[1-9][0-9]*$ && $port -le 65535 ]] || die "Некорректный сохранённый порт."
@@ -24,13 +30,13 @@ sync_listener() {
   # Older or stopped panels may not expose deployment metadata yet.
   if [[ -n $identifier ]] && metadata=$(engine exec "$identifier" wget -T 5 -q -O - http://127.0.0.1:8081/deployment 2>/dev/null); then
     core_http=$(jq -er '.httpChallenge | tostring' <<<"$metadata")
-    [[ $core_http == true || $core_http == false ]] || die "Некорректные параметры ACME ядра."
+    [[ $core_http == true || $core_http == false ]] || die "Некорректные параметры ACME экземпляра."
     env_set PANEL_CORE_ACME_HTTP "$core_http"
     udp_public=$(jq -r '.udpPublicPort // empty' <<<"$metadata")
     udp_listen=$(jq -r '.udpListenPort // empty' <<<"$metadata")
     if [[ -n $udp_public && -n $udp_listen ]]; then
       [[ $udp_public =~ ^[1-9][0-9]{0,4}$ && $udp_public -le 65535 ]] || die "Некорректный публичный UDP-порт."
-      [[ $udp_listen =~ ^[1-9][0-9]{0,4}$ && $udp_listen -le 65535 ]] || die "Некорректный UDP-порт ядра."
+      [[ $udp_listen =~ ^[1-9][0-9]{0,4}$ && $udp_listen -le 65535 ]] || die "Некорректный UDP-порт экземпляра."
       env_set HYSTERIA_PUBLIC_PORT "$udp_public"
       env_set HYSTERIA_LISTEN_PORT "$udp_listen"
     fi

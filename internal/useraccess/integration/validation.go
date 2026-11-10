@@ -12,19 +12,19 @@ func (handler *Handler) validate(policy useraccess.Policy) error {
 	for _, id := range policy.Instances {
 		instance, err := handler.Registry.Get(id)
 		if err != nil {
-			return errors.New("Ядро больше недоступно. Обновите список")
+			return errors.New("Экземпляр больше недоступен. Обновите список")
 		}
 		for _, definition := range handler.Registry.Definitions() {
 			if definition.ID == id && definition.Removing {
-				return errors.New("Ядро ожидает удаления")
+				return errors.New("Экземпляр ожидает удаления")
 			}
 		}
 		settings, err := instance.Config.Get()
 		if err != nil {
-			return errors.New("Не удалось проверить конфигурацию ядра")
+			return errors.New("Не удалось проверить конфигурацию экземпляра")
 		}
 		if settings.AuthMode == "native" {
-			return errors.New("Доступ к этому ядру задаётся в его конфигурации")
+			return errors.New("Доступ к этому экземпляру задаётся в его конфигурации")
 		}
 	}
 	return nil

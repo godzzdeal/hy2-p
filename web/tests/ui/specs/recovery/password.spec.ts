@@ -1,5 +1,5 @@
 import {expect,test} from "@playwright/test";
-import {mockPanel} from "../../fixtures";
+import { expandSettings, mockPanel } from "../../fixtures";
 test("forgotten password help is available before login and copies a server-only command",async({page},info)=>{
  await mockPanel(page,false);
  let loginCalls=0;
@@ -14,7 +14,7 @@ test("forgotten password help is available before login and copies a server-only
  expect(await page.evaluate(()=>document.documentElement.dataset.copiedCommand)).toBe("sudo hy2-panel password-reset");
  expect(loginCalls).toBe(0);
  await expect(page.getByLabel("Пароль",{exact:true})).toHaveValue("");
- await expect(form).toContainText("Логин и облачный пароль сохранятся");
+ await expect(form).not.toContainText("Логин и облачный пароль сохранятся");
  const bounds=await form.boundingBox();
  const command=await block.boundingBox();
  expect(command!.x).toBeGreaterThanOrEqual(bounds!.x+16);
@@ -25,6 +25,7 @@ test("forgotten password help is available before login and copies a server-only
 test("account settings show the same recovery instruction",async({page})=>{
  await mockPanel(page);
  await page.getByRole("button",{name:"Настройки",exact:true}).click();
+  await expandSettings(page);
  const account=page.locator("#panel-account");
  await account.getByText("Забыли пароль?",{exact:true}).click();
  await expect(account.getByRole("group",{name:"Команда для сервера"})).toContainText("sudo hy2-panel password-reset");

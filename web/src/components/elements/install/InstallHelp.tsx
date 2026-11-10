@@ -1,12 +1,11 @@
+import { Notice } from "@/components/ui/feedback";
 import { Modal } from "@/components/ui/modal/Modal";
 import { useTranslation } from "react-i18next";
 export function InstallHelp({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
   return (
     <Modal title="Панель на главном экране" onClose={onClose}>
-      <p className="info-note">
-        {t("Для установки откройте панель по HTTPS с действительным сертификатом.")}
-      </p>
+      <Notice>{t("Для установки откройте панель по HTTPS с действительным сертификатом.")}</Notice>
       <h3>iPhone / iPad</h3>
       <ol className="install-steps">
         <li>{t("Откройте панель в Safari и нажмите «Поделиться».")}</li>

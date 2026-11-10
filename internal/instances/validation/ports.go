@@ -22,10 +22,10 @@ func listen(settings configuration.Settings) (string, error) {
 	host, port, err := net.SplitHostPort(document.Listen)
 	number, parseError := strconv.Atoi(port)
 	if err != nil || parseError != nil || number < 1 || number > 65535 {
-		return "", errors.New("Для нескольких ядер укажите один UDP-порт в listen")
+		return "", errors.New("Для нескольких экземпляров укажите один UDP-порт в listen")
 	}
 	if host != "" && host != "0.0.0.0" && host != "::" {
-		return "", errors.New("Для нескольких ядер укажите listen без фиксированного IP")
+		return "", errors.New("Для нескольких экземпляров укажите listen без фиксированного IP")
 	}
 	return strconv.Itoa(number), nil
 }
@@ -44,13 +44,13 @@ func Ports(id string, candidate configuration.Settings, entries []Entry) error {
 		}
 		otherTarget, err := listen(entry.Settings)
 		if err != nil && !entry.Removing {
-			return fmt.Errorf("Ядро %s: %w", entry.ID, err)
+			return fmt.Errorf("Экземпляр %s: %w", entry.ID, err)
 		}
 		if !entry.Removing && (entry.Settings.Port == candidate.Port || otherTarget == target) {
-			return fmt.Errorf("UDP-порт уже используется конфигурацией ядра %s", entry.ID)
+			return fmt.Errorf("UDP-порт уже используется конфигурацией экземпляра %s", entry.ID)
 		}
 		if entry.PublicPort == candidate.Port || entry.ListenPort == target {
-			return fmt.Errorf("UDP-порт ещё опубликован для ядра %s. Сначала примените его сетевые изменения", entry.ID)
+			return fmt.Errorf("UDP-порт ещё опубликован для экземпляра %s. Сначала примените его сетевые изменения", entry.ID)
 		}
 	}
 	return nil

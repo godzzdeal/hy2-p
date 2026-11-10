@@ -1,3 +1,4 @@
+import { Notice } from "@/components/ui/feedback";
 import { CertificateMode } from "@/components/configuration/structured/certificates/CertificateMode";
 import { CertificateStatus } from "@/components/configuration/structured/certificates/CertificateStatus";
 import { CertificateUpload } from "@/components/configuration/structured/certificates/CertificateUpload";
@@ -87,17 +88,22 @@ export function ConfigurationForm({
               </a>
             </div>
             {active.id === "tls" && (
-              <CertificateMode source={value.config} onChange={(config) => onChange({ ...value, config })} />
+              <CertificateMode
+                source={value.config}
+                address={value.host}
+                email={web.data?.config.email}
+                onChange={(config) => onChange({ ...value, config })}
+              />
             )}
             {active.id === "auth" && <AuthSettings value={value} onChange={onChange} />}
             {active.id === "ech" && <EchTools key={instanceId} onSet={onSet} />}
             {active.id === "trafficStats" && <StatsSecret key={instanceId} />}
             {active.id === "mimic" && (
-              <p className="config-note">
+              <Notice>
                 {t(
-                  "Mimic требует отдельной установки программы и модуля Linux. Обычный контейнер панели не получает права root для ядра.",
+                  "Mimic требует отдельной установки программы и модуля Linux. Обычный контейнер панели не получает права root для экземпляра.",
                 )}
-              </p>
+              </Notice>
             )}
             {document.errors.length ? (
               <p className="inline-error">{t(document.errors[0].message)}</p>

@@ -9,9 +9,9 @@ export function InstanceSelector() {
   useInstanceRecovery();
   return (
     <label className="instance-selector">
-      <span>{t("Выбранное ядро")}</span>
+      <span>{t("Выбранный экземпляр")}</span>
       <Select
-        aria-label={t("Выбранное ядро")}
+        aria-label={t("Выбранный экземпляр")}
         value={id}
         disabled={isPending || !query.data}
         onValueChange={select}

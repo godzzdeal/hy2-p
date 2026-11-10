@@ -1,7 +1,7 @@
 {
   "name": "hy2-panel-web",
   "private": true,
-  "version": "0.7.4",
+  "version": "0.7.5",
   "type": "module",
   "scripts": {
     "dev": "rspack serve --mode development",
@@ -11,7 +11,8 @@
     "format": "prettier --write src rspack.config.ts",
     "lint": "prettier --check src rspack.config.ts && tsc --noEmit",
     "test": "bun test tests/configuration tests/logs.test.ts tests/subscriptions",
-    "test:ui": "playwright test --config tests/ui/playwright.config.ts"
+    "test:ui": "playwright test --config tests/ui/playwright.config.ts",
+    "docs:screenshots": "bun tests/screenshots/index.ts"
   },
   "dependencies": {
     "@codemirror/commands": "^6.11.1",
@@ -35,6 +36,7 @@
     "qrcode.react": "^4.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.91.0",
     "react-i18next": "^17.1.12",
     "tailwind-merge": "^3.7.0",
     "yaml": "2",

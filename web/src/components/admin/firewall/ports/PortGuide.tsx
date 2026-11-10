@@ -1,6 +1,6 @@
 import { PortRow } from "@/components/admin/firewall/ports/PortRow";
 import { PortHelp } from "@/components/admin/firewall/ports/PortHelp";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { useRecommendedPorts } from "@/hooks/admin/firewall/use-recommended-ports";
 import { useTranslation } from "react-i18next";
 import { groupRecommendedPorts } from "@/services/admin/firewall/recommendations";
@@ -11,7 +11,9 @@ export function PortGuide() {
   return (
     <section className="firewall-guide" aria-label={t("Какие порты открыть")}>
       <h3>{t("Какие порты открыть")}</h3>
-      <p className="caption">{t("Порты из настроек панели и ядер. Доступность извне не проверена.")}</p>
+      <p className="caption">
+        {t("Порты из настроек панели и экземпляров. Доступность извне не проверена.")}
+      </p>
       <QueryState isLoading={query.isPending} error={query.error} />
       {query.error && (
         <button className="secondary" onClick={() => void query.refetch()}>
@@ -25,7 +27,7 @@ export function PortGuide() {
       </ul>
       {!!query.data?.warnings?.length && (
         <p className="inline-error">
-          {t("Не удалось прочитать настройки ядер:")} {query.data.warnings.join(", ")}
+          {t("Не удалось прочитать настройки экземпляров:")} {query.data.warnings.join(", ")}
         </p>
       )}
       <PortHelp />

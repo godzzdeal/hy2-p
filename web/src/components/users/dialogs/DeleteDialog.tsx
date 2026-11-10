@@ -10,7 +10,7 @@ export function DeleteDialog({ user, onClose }: { user: IUser; onClose: () => vo
     <Modal title={t("Удалить пользователя?")} onClose={onClose}>
       <p>
         {t("Пользователь \u00AB")}
-        <EmojiText value={user.name} />
+        <EmojiText value={user.displayName ?? user.name} />
         {t("\u00BB и его подписка будут удалены без возможности восстановления.")}
       </p>
       <button

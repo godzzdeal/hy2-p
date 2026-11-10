@@ -13,6 +13,9 @@ import (
 )
 
 func (client *Client) Download(ctx context.Context, asset Asset, directory string) (string, error) {
+	if err := ctx.Err(); err != nil {
+		return "", err
+	}
 	expected := strings.TrimPrefix(asset.Digest, "sha256:")
 	if len(expected) != 64 {
 		return "", errors.New("отсутствует SHA-256")
@@ -22,6 +25,14 @@ func (client *Client) Download(ctx context.Context, asset Asset, directory strin
 	}
 	if err := os.MkdirAll(directory, 0700); err != nil {
 		return "", err
+	}
+	suffix := ""
+	if runtime.GOOS == "windows" {
+		suffix = ".exe"
+	}
+	destination := filepath.Join(directory, "hysteria-"+expected+suffix)
+	if cached, err := cachedBinary(destination, asset); cached != "" || err != nil {
+		return cached, err
 	}
 	response, err := client.get(ctx, asset.URL)
 	if err != nil {
@@ -54,22 +65,31 @@ func (client *Client) Download(ctx context.Context, asset Asset, directory strin
 	if err = temporary.Close(); err != nil {
 		return "", err
 	}
-	suffix := ""
-	if runtime.GOOS == "windows" {
-		suffix = ".exe"
-	}
-	destination := filepath.Join(directory, "hysteria-"+expected+suffix)
 	// Content-addressed files are immutable; a running version is never overwritten.
-	if _, err = os.Stat(destination); err == nil {
-		if err = Verify(destination, asset.Digest); err == nil {
-			return destination, nil
-		}
-		return "", err
+	if cached, err := cachedBinary(destination, asset); cached != "" || err != nil {
+		return cached, err
 	}
 	if err = os.Rename(temporary.Name(), destination); err != nil {
 		return "", err
 	}
 	return destination, nil
+}
+
+func cachedBinary(path string, asset Asset) (string, error) {
+	info, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		return "", nil
+	}
+	if err != nil {
+		return "", err
+	}
+	if !info.Mode().IsRegular() || info.Size() != asset.Size || info.Size() > MaxBinarySize {
+		return "", errors.New("размер загруженного файла не совпадает с релизом")
+	}
+	if err := Verify(path, "sha256:"+strings.TrimPrefix(asset.Digest, "sha256:")); err != nil {
+		return "", err
+	}
+	return path, nil
 }
 func Verify(path, expected string) error {
 	file, err := os.Open(path)
@@ -82,7 +102,7 @@ func Verify(path, expected string) error {
 		return err
 	}
 	if "sha256:"+hex.EncodeToString(digest.Sum(nil)) != expected {
-		return errors.New("контрольная сумма сохранённого ядра не совпадает")
+		return errors.New("контрольная сумма сохранённого экземпляра не совпадает")
 	}
 	return nil
 }

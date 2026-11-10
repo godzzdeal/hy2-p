@@ -5,7 +5,7 @@ export interface IPortOperation {
   id: string;
   instanceId?: string;
   remove?: boolean;
-  phase: "idle" | "applying" | "success" | "rolled_back" | "failed";
+  phase: "idle" | "applying" | "restarting" | "success" | "rolled_back" | "failed";
   busy: boolean;
   message: string;
   publicPort: string;

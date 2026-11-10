@@ -4,7 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 export function useTransfer() {
   const [bundle, setBundle] = useState<unknown>(null);
-  const [filename, setFilename] = useState("");
   const client = useQueryClient();
   const { notify, showError } = useUiStore();
   const preview = useMutation({ mutationFn: transferApi.preview, onError: showError });
@@ -23,7 +22,6 @@ export function useTransfer() {
       setBundle(null);
       preview.reset();
       apply.reset();
-      setFilename(file.name);
       if (file.size > TRANSFER_LIMIT) throw new Error("Размер файла не должен превышать 16 МБ");
       let parsed: unknown;
       try {
@@ -65,7 +63,6 @@ export function useTransfer() {
     preview.mutate(next);
   }
   return {
-    filename,
     preview: apply.data ?? preview.data,
     hasApplied: apply.isSuccess,
     onBind,

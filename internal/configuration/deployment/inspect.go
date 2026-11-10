@@ -72,7 +72,7 @@ func Inspect(settings configuration.Settings, container bool, published, target 
 	}
 	address := net.ParseIP(host)
 	if container && (host == "localhost" || address != nil && address.IsLoopback()) {
-		result.UDPWarning = "Ядро слушает только внутри контейнера. Для подключения снаружи укажите listen без 127.0.0.1, например :61254."
+		result.UDPWarning = "Экземпляр слушает только внутри контейнера. Для подключения снаружи укажите listen без 127.0.0.1, например :61254."
 	}
 	result.UDPRestartRequired = container && (result.UDPPublicPort != published || result.UDPListenPort != target)
 	return result, nil

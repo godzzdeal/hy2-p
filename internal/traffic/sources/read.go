@@ -32,7 +32,7 @@ func (collector *Collector) sample(ctx context.Context, source Source) Sample {
 		sample.Err = collector.read(ctx, source, "/online", &sample.Online)
 	}
 	if sample.Generation != source.Runtime.Generation() {
-		sample.Err = fmt.Errorf("ядро %s перезапускается", source.ID)
+		sample.Err = fmt.Errorf("экземпляр %s перезапускается", source.ID)
 	}
 	return sample
 }
@@ -50,5 +50,5 @@ func (collector *Collector) Read(ctx context.Context, sources []Source) Result {
 		}(index, source)
 	}
 	workers.Wait()
-	return collector.merge(samples)
+	return collector.merge(samples, sources)
 }

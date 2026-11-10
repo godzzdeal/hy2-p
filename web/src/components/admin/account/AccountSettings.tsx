@@ -1,5 +1,5 @@
 import { AccountForm } from "@/components/admin/account/AccountForm";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { useAccount } from "@/hooks/admin/use-admin";
 export function AccountSettings() {
   const query = useAccount();

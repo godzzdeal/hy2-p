@@ -5,8 +5,8 @@ import { type Page } from "@playwright/test";
 import path from "node:path";
 import { INITIAL_SETTINGS, PANEL_METADATA, WEB_SETTINGS } from "./data";
 const DIST = path.resolve(process.cwd(), "dist");
-export async function mockPanel(page: Page, isAuthorized = true) {
-  let settings = { ...INITIAL_SETTINGS };
+export async function mockPanel(page: Page, isAuthorized = true, initial: IConfiguration = INITIAL_SETTINGS) {
+  let settings = { ...initial };
   const coreActions: string[] = [];
   let users: IUser[] = [];
   let announcement: IAnnouncement = { enabled: false, text: "", updateInterval: 6, profileTitle: "" };

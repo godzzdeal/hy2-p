@@ -11,28 +11,33 @@ HY2 Control installer for Ubuntu
   --version latest|main|vX.Y.Z   Panel version (default: latest release)
   --directory /opt/hy2-panel    Separate installation directory
   --domain panel.example.com   Public HTTPS with Let's Encrypt
+  --address 203.0.113.10       Public IP for HTTP or automatic HTTPS
+  --http                      Use unencrypted HTTP at the given address
+  --open-ports                Add required rules to UFW without enabling it
   --email admin@example.com    ACME contact
   --accept-acme-terms          Explicit acceptance of Let's Encrypt terms
   --port 9443                  Panel TCP port (HTTP default: 8080)
   --username admin             Initial administrator username
   --yes                        No interactive questions; password is generated
-Without a domain, the panel is accessible through an SSH tunnel.
+Without an address, the panel is accessible through an SSH tunnel.
 EOF
 }
 while (($#)); do
   case $1 in
-    --version|--directory|--domain|--email|--port|--username)
+    --version|--directory|--domain|--address|--email|--port|--username)
       (($#>=2)) || { usage; exit 1; }
       case $1 in
         --version) version=$2 ;;
         --directory) export HY2_INSTALL_DIR=$2 ;;
-        --domain) export HY2_DOMAIN=$2 ;;
+        --domain|--address) export HY2_DOMAIN=$2 ;;
         --email) export HY2_EMAIL=$2 ;;
         --port) export HY2_PORT=$2 ;;
         --username) export HY2_USERNAME=$2 ;;
       esac
       shift 2 ;;
     --accept-acme-terms) export HY2_ACCEPT_ACME_TERMS=true; shift ;;
+    --http) export HY2_HTTP=true; shift ;;
+    --open-ports) export HY2_OPEN_PORTS=true; shift ;;
     --yes) export HY2_NONINTERACTIVE=true; shift ;;
     -h|--help) usage; exit 0 ;;
     *) printf 'Unknown option: %s\n' "$1" >&2; usage; exit 1 ;;
@@ -86,10 +91,18 @@ source "$release/scripts/server/common.sh"
 printf '%s\n' "$version" >"$ROOT/image-version-$sha"
 # shellcheck source=/dev/null
 source "$release/scripts/server/releases/source/image.sh"
-for file in docker wizard setup; do
+for file in docker setup; do
   # shellcheck source=/dev/null
   source "$release/scripts/server/install/$file.sh"
 done
+if [[ -f $release/scripts/server/install/configuration/index.sh ]]; then
+  # shellcheck source=/dev/null
+  source "$release/scripts/server/install/configuration/index.sh"
+else
+  [[ ${HY2_HTTP:-false} != true && ${HY2_OPEN_PORTS:-false} != true ]] || die "Выбранная версия не поддерживает --http и --open-ports. Установите свежий релиз."
+  # shellcheck source=/dev/null
+  source "$release/scripts/server/install/wizard.sh"
+fi
 # shellcheck source=/dev/null
 source "$release/scripts/server/listener.sh"
 install_panel "$sha"

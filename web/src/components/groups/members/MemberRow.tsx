@@ -17,13 +17,13 @@ export function MemberRow({ user, groupName, isChecked, onToggle }: IMemberRow) 
       <input
         type="checkbox"
         checked={isChecked}
-        aria-label={t("Выбрать {{name}}", { name: user.name })}
+        aria-label={t("Выбрать {{name}}", { name: user.displayName ?? user.name })}
         onChange={(event) => onToggle(user.id, event.target.checked)}
       />
-      <UserAvatar name={user.name} />
+      <UserAvatar name={user.displayName ?? user.name} />
       <span className="group-member-info">
         <strong className="group-member-name">
-          <EmojiText value={user.name.replace(FLAG_PREFIX, "")} />
+          <EmojiText value={(user.displayName ?? user.name).replace(FLAG_PREFIX, "")} />
         </strong>
         <small className="group-member-group">{groupName ?? t("Без группы")}</small>
       </span>

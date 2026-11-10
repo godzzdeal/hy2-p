@@ -1,4 +1,4 @@
-import { CommandBlock } from "@/components/elements/CommandBlock";
+import { CommandBlock } from "@/components/elements/copy";
 import { PORT_PURPOSES } from "@/services/admin/firewall/ports";
 import { type IPortSummary } from "@/services/admin/firewall/recommendations";
 import { useTranslation } from "react-i18next";

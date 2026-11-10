@@ -1,7 +1,7 @@
 import { LogLine } from "@/components/core/logs/LogLine";
 import { LogToolbar } from "@/components/core/logs/LogToolbar";
 import { RefreshCw } from "@/components/elements/icons";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { useClearLogs } from "@/hooks/core/logs/use-clear-logs";
 import { useCore } from "@/hooks/core/use-core";
 import { cn } from "@/utils/cn";
@@ -35,10 +35,10 @@ export function CoreLog() {
       className="card log-card"
       id="core-logs"
       data-scroll-section
-      data-scroll-label={t("Журнал ядра")}
+      data-scroll-label={t("Журнал экземпляра")}
     >
       <div className="card-header">
-        <h2>{t("Журнал ядра")}</h2>
+        <h2>{t("Журнал экземпляра")}</h2>
         <div className="row-actions">
           <button
             type="button"
@@ -75,7 +75,7 @@ export function CoreLog() {
         ref={viewport}
         role="region"
         tabIndex={0}
-        aria-label={t("Сообщения ядра")}
+        aria-label={t("Сообщения экземпляра")}
         onScroll={onScroll}
         className={cn("logs", { "logs-expanded": isExpanded })}
       >

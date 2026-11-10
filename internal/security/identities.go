@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-var pattern = regexp.MustCompile("^([a-f0-9]{16})\\.([a-f0-9]{32})\\.([a-f0-9]{16})$")
+var pattern = regexp.MustCompile(`^([a-f0-9]{16})\.([a-f0-9]{32})\.([a-f0-9]{16})$`)
 
 type ConnectionIdentity struct{ User, Device, Version string }
 

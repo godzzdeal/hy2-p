@@ -1,5 +1,6 @@
 import { MemberRow } from "@/components/groups/members/MemberRow";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
+import { Pagination } from "@/components/ui/Pagination";
 import { useSetGroupMembers } from "@/hooks/groups/hooks";
 import { useMemberSelection } from "@/hooks/groups/use-member-selection";
 import { type IGroup } from "@/services/groups/types";
@@ -48,29 +49,7 @@ export function GroupMembers({ group, onClose }: { group: IGroup; onClose: () =>
           ))}
         </div>
         {!isLoading && !selection.found && <p className="empty">{t("Пользователи не найдены")}</p>}
-        {selection.pageCount > 1 && (
-          <div className="config-footer">
-            <button
-              type="button"
-              className="secondary"
-              disabled={selection.current === 0}
-              onClick={() => selection.setPage(selection.current - 1)}
-            >
-              {t("Назад")}
-            </button>
-            <span>
-              {selection.current + 1} / {selection.pageCount}
-            </span>
-            <button
-              type="button"
-              className="secondary"
-              disabled={selection.current + 1 >= selection.pageCount}
-              onClick={() => selection.setPage(selection.current + 1)}
-            >
-              {t("Далее")}
-            </button>
-          </div>
-        )}
+        <Pagination page={selection.current} pageCount={selection.pageCount} onChange={selection.setPage} />
       </fieldset>
       <p className="caption">
         {t("Снятая отметка убирает из группы. При лимите устройств обновите подписку в Happ.")}

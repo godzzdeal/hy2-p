@@ -38,6 +38,7 @@ type Instance struct {
 	Certificates *certificates.Handler
 	Ports        *portweb.Handler
 	cancel       context.CancelFunc
+	done         chan struct{}
 }
 type Registry struct {
 	mu          sync.RWMutex
@@ -52,10 +53,10 @@ type Registry struct {
 // validate is called with the registry write lock held through configuration persistence.
 func (registry *Registry) validate(id string, settings configuration.Settings) error {
 	if id != "" && registry.instances[id] == nil {
-		return errors.New("Ядро не найдено")
+		return errors.New("Экземпляр не найден")
 	}
 	if current := registry.instances[id]; current != nil && current.Removing {
-		return errors.New("Ядро ожидает удаления UDP-порта")
+		return errors.New("Экземпляр ожидает удаления UDP-порта")
 	}
 	entries := []validation.Entry{}
 	for _, instance := range registry.instances {
@@ -80,7 +81,7 @@ func (registry *Registry) WithCore(id string, writer http.ResponseWriter, reques
 	defer registry.mu.RUnlock()
 	instance := registry.instances[id]
 	if instance == nil || instance.Removing {
-		transport.Fail(writer, errors.New("Ядро недоступно или ожидает удаления"), http.StatusConflict)
+		transport.Fail(writer, errors.New("Экземпляр недоступен или ожидает удаления"), http.StatusConflict)
 		return
 	}
 	handler(instance)(writer, request)
@@ -99,7 +100,7 @@ func (registry *Registry) Rename(id, name string) error {
 	defer registry.mu.Unlock()
 	instance := registry.instances[id]
 	if instance == nil {
-		return errors.New("Ядро не найдено")
+		return errors.New("Экземпляр не найден")
 	}
 	var previous string
 	for index := range registry.definitions {
@@ -134,8 +135,7 @@ func (registry *Registry) forget(id string) error {
 		return err
 	}
 	if instance := registry.instances[id]; instance != nil && instance.cancel != nil {
-		instance.cancel()
-		instance.Core.Stop()
+		instance.close()
 		if err := os.RemoveAll(instance.Core.Data); err != nil {
 			log.Printf("Cannot remove retired core %s data: %v", id, err)
 		}

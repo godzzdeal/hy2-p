@@ -19,12 +19,16 @@ type Handler struct {
 	AllowCore         func(string, string) bool
 	ResolveCredential func(string) (User, string, error)
 	OnAuthenticated   func(string, string, string, string)
+	DisplayName       func(string) string
 }
 
 func (handler *Handler) User(id string) (User, error) {
 	user, err := Scan(handler.DB.QueryRow("SELECT id,name,enabled,expires,created,password,token FROM users WHERE id=?", id))
 	if err == nil {
 		user.Password, err = handler.Vault.OpenPassword(user.Password)
+	}
+	if handler.DisplayName != nil {
+		user.DisplayName = handler.DisplayName(user.Name)
 	}
 	return user, err
 }
@@ -49,6 +53,9 @@ func (handler *Handler) All() ([]User, error) {
 		if err != nil {
 			return nil, err
 		}
+		if handler.DisplayName != nil {
+			user.DisplayName = handler.DisplayName(user.Name)
+		}
 		users = append(users, user)
 	}
 	return users, rows.Err()
@@ -65,10 +72,6 @@ func (handler *Handler) Create(writer http.ResponseWriter, request *http.Request
 	}
 	user := User{ID: security.Token()[:16], Name: strings.TrimSpace(input.Name), Expires: input.Expires, Enabled: true, Created: time.Now().UTC().Format(time.RFC3339), Password: security.Token(), Token: security.Token()}
 	if input.Password != "" {
-		if err := handler.validatePassword(input.Password, ""); err != nil {
-			transport.Fail(writer, err, 400)
-			return
-		}
 		user.Password = input.Password
 	}
 	if err := validUser(user); err != nil {
@@ -80,21 +83,37 @@ func (handler *Handler) Create(writer http.ResponseWriter, request *http.Request
 		transport.Fail(writer, err, 500)
 		return
 	}
-	_, err = handler.DB.Exec("INSERT INTO users VALUES(?,?,?,?,?,?,?)", user.ID, user.Name, user.Enabled, user.Expires, user.Created, encrypted, user.Token)
+	tx, err := handler.DB.Begin()
+	if err != nil {
+		transport.Fail(writer, err, 500)
+		return
+	}
+	defer tx.Rollback()
+	if err := handler.validatePassword(tx, user.Password, ""); err != nil {
+		transport.Fail(writer, err, 400)
+		return
+	}
+	_, err = tx.Exec("INSERT INTO users VALUES(?,?,?,?,?,?,?)", user.ID, user.Name, user.Enabled, user.Expires, user.Created, encrypted, user.Token)
+	if err == nil {
+		err = tx.Commit()
+	}
 	if err != nil {
 		transport.Fail(writer, err, 500)
 		return
 	}
 	writer.WriteHeader(201)
+	if handler.DisplayName != nil {
+		user.DisplayName = handler.DisplayName(user.Name)
+	}
 	transport.Respond(writer, user)
 }
 
-func (handler *Handler) validatePassword(password, id string) error {
+func (handler *Handler) validatePassword(tx *sql.Tx, password, id string) error {
 	if len(password) < 12 || len(password) > 128 {
 		return errors.New("пароль пользователя: от 12 до 128 байт")
 	}
 	var count int
-	if err := handler.DB.QueryRow("SELECT count(*) FROM users WHERE id<>? AND (password LIKE ? OR password=?)", id, handler.Vault.Prefix(password)+"%", password).Scan(&count); err != nil {
+	if err := tx.QueryRow("SELECT count(*) FROM users WHERE id<>? AND (password LIKE ? OR password=?)", id, handler.Vault.Prefix(password)+"%", password).Scan(&count); err != nil {
 		return err
 	}
 	if count > 0 {

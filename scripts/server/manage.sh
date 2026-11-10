@@ -23,9 +23,9 @@ case $command in
     printf '%s\n' '  firewall-setup         Подключить помощник управления UFW'
     printf '%s\n' '  cloud-password-reset   Отключить забытый облачный пароль'
     printf '%s\n' '  password-reset         Создать новый пароль администратора'
-    printf '%s\n' '  export <файл.json>     Экспорт ядер, групп и пользователей' '  import <файл.json> [--apply] Просмотр совпадений или добавление записей'
+    printf '%s\n' '  export <файл.json>     Экспорт экземпляров, групп и пользователей' '  import <файл.json> [--apply] Просмотр совпадений или добавление записей'
     exit 0 ;;
-  status|logs|start|stop|restart|update|rollback|backup|url|apply-udp|remove-udp|recover-udp|firewall-setup|cloud-password-reset|password-reset|import|export) ;;
+  status|logs|start|stop|restart|start-panel|restart-panel|update|rollback|backup|url|apply-udp|remove-udp|recover-udp|firewall-setup|cloud-password-reset|password-reset|import|export) ;;
   *) die "Неизвестная команда: $command" ;;
 esac
 [[ -f $ROOT/.env && -f $ROOT/current ]] || die "Установка не найдена."
@@ -56,6 +56,8 @@ case $command in
       rollback) rollback_panel "$current" "${2:-}" ;;
       backup) backup_panel "$current" ;;
       stop) compose "$current" stop panel ;;
+      start-panel|restart-panel)
+        restart_panel "$current" "$command" || die "Панель не прошла проверку запуска." ;;
       start|restart)
         sync_listener "$current"
         if [[ $command == restart ]]; then compose "$current" stop panel; fi

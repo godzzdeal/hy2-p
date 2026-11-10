@@ -12,7 +12,7 @@ export const WATCHDOG_LABELS: Record<IWatchdog["state"], string> = {
   idle: "Watchdog ожидает запуска",
   watching: "Watchdog активен",
   backoff: "Ожидание перезапуска",
-  restarting: "Watchdog перезапускает ядро",
+  restarting: "Watchdog перезапускает экземпляр",
   rolling_back: "Watchdog откатывает версию",
   failed: "Требуется вмешательство",
 };

@@ -50,7 +50,7 @@ type Monitor struct {
 }
 
 func New(runtime Runtime, policy Policy) *Monitor {
-	return &Monitor{runtime: runtime, policy: policy, wake: make(chan struct{}, 1), snapshot: Snapshot{State: "idle", Message: "Ядро остановлено вручную", MaxAttempts: len(policy.RetryDelays)}}
+	return &Monitor{runtime: runtime, policy: policy, wake: make(chan struct{}, 1), snapshot: Snapshot{State: "idle", Message: "Экземпляр остановлен вручную", MaxAttempts: len(policy.RetryDelays)}}
 }
 func (monitor *Monitor) Snapshot() Snapshot {
 	monitor.mu.Lock()
@@ -69,7 +69,7 @@ func (monitor *Monitor) SetDesired(wanted bool) {
 		monitor.snapshot.Message = "Watchdog следит за процессом"
 	} else {
 		monitor.snapshot.State = "idle"
-		monitor.snapshot.Message = "Автовосстановление выключено: ядро остановлено вручную"
+		monitor.snapshot.Message = "Автовосстановление выключено: экземпляр остановлен вручную"
 	}
 	monitor.snapshot.NextRetry = ""
 	if monitor.cancel != nil {

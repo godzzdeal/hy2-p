@@ -9,21 +9,21 @@ export function useScrollSections(root: RefObject<HTMLDivElement | null>, page: 
   const [sections, setSections] = useState<IScrollSection[]>([]);
   const [active, setActive] = useState("");
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     const content = root.current;
     if (!content) return;
+    content.scrollTo({ top: 0, left: 0, behavior: "instant" });
     let targets: HTMLElement[] = [];
     let frame = 0;
     function updateActive() {
       frame = 0;
       let current: HTMLElement | undefined = targets[0];
-      const line = window.innerHeight * ACTIVE_VIEWPORT_RATIO;
+      const line = content!.getBoundingClientRect().top + content!.clientHeight * ACTIVE_VIEWPORT_RATIO;
       for (const target of targets) {
         if (target.getBoundingClientRect().top <= line) current = target;
       }
       const atBottom =
-        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - SCROLL_EDGE_TOLERANCE;
-      if (atBottom && document.documentElement.scrollHeight > window.innerHeight + SCROLL_EDGE_TOLERANCE)
+        content!.scrollTop + content!.clientHeight >= content!.scrollHeight - SCROLL_EDGE_TOLERANCE;
+      if (atBottom && content!.scrollHeight > content!.clientHeight + SCROLL_EDGE_TOLERANCE)
         current = targets.at(-1);
       setActive(current?.id ?? "");
     }
@@ -44,15 +44,15 @@ export function useScrollSections(root: RefObject<HTMLDivElement | null>, page: 
       subtree: true,
       childList: true,
       attributes: true,
-      attributeFilter: ["data-scroll-label"],
+      attributeFilter: ["data-scroll-label", "hidden"],
     });
     collect();
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    content.addEventListener("scroll", scheduleUpdate, { passive: true });
     window.addEventListener("resize", scheduleUpdate);
     return () => {
       observer.disconnect();
       cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", scheduleUpdate);
+      content.removeEventListener("scroll", scheduleUpdate);
       window.removeEventListener("resize", scheduleUpdate);
     };
   }, [root, page]);

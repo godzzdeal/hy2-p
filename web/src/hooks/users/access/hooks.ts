@@ -30,7 +30,7 @@ export function useSaveUserAccess(id: string) {
       client.setQueryData(queryKey, saved);
       await client.invalidateQueries({ queryKey: ["connection", id] });
       await client.invalidateQueries({ queryKey: QUERY_KEYS.traffic });
-      notify("Доступ к ядрам сохранён");
+      notify("Доступ к экземплярам сохранён");
     },
   });
 }

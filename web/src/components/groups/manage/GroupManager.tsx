@@ -6,7 +6,7 @@ import { useUsers } from "@/hooks/users/user-queries";
 import { groupUsers } from "@/services/groups/membership";
 import { EMPTY_GROUPS } from "@/services/groups/types";
 import { Modal } from "@/components/ui/modal/Modal";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { useGroups } from "@/hooks/groups/hooks";
 import { type IGroup } from "@/services/groups/types";
 import { useState } from "react";
@@ -36,7 +36,7 @@ export function GroupManager({ onClose }: { onClose: () => void }) {
         <>
           <p className="caption">
             {t(
-              "Объединяйте пользователей и задавайте общие ядра, лимиты трафика и устройств. Каждый пользователь может состоять в одной группе.",
+              "Объединяйте пользователей и задавайте общие экземпляры, лимиты трафика и устройств. Каждый пользователь может состоять в одной группе.",
             )}
           </p>
           <QueryState isLoading={query.isPending} error={query.error} />

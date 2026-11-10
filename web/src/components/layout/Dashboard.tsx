@@ -2,6 +2,7 @@ import { InstanceSelector } from "@/components/instances/list/InstanceSelector";
 import { DemoNotice } from "@/components/demo/DemoNotice";
 import { IS_DEMO } from "@/config/build";
 import { PanelFooter } from "@/components/layout/footer/PanelFooter";
+import { Loader } from "@/components/ui/loading";
 import { ScrollNavigation } from "@/components/layout/scroll/ScrollNavigation";
 import { Sidebar } from "@/components/layout/sidebar/Sidebar";
 import { SpaceScene } from "@/components/layout/SpaceScene";
@@ -70,13 +71,13 @@ export function Dashboard() {
         <div className="content" ref={content}>
           {IS_DEMO && <DemoNotice />}
           <InstanceSelector />
-          <Suspense fallback={<p role="status">{t("Загрузка раздела\u2026")}</p>}>
+          <Suspense fallback={<Loader label="Загрузка раздела…" />}>
             <Page key={page === "config" || page === "core" || page === "overview" ? instanceId : page} />
           </Suspense>
-          <PanelFooter />
         </div>
+        <ScrollNavigation root={content} page={page} />
+        <PanelFooter />
       </main>
-      <ScrollNavigation root={content} page={page} />
     </div>
   );
 }

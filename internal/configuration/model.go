@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v3"
 	"hy2-panel/internal/configuration/profiles"
+	"hy2-panel/internal/security"
 	"io"
 	"net"
 	"net/url"
@@ -15,6 +16,9 @@ import (
 type Settings = profiles.Settings
 
 func Validate(settings Settings) error {
+	if _, err := security.CertificatePin(settings.PinSHA256); err != nil {
+		return err
+	}
 	if strings.ContainsAny(settings.Host, " /?#@\r\n") || strings.ContainsAny(settings.SNI, " /?#@\r\n") {
 		return errors.New("Укажите домен или IP без схемы и пути")
 	}

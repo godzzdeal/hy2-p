@@ -19,11 +19,16 @@ func Build(input, current model.Bundle) (model.Preview, error) {
 	blocked := map[string]bool{}
 	for _, profile := range input.Profiles {
 		row := model.Row{Kind: "core", ID: profile.ID, Name: profile.Name, Action: "add"}
+		if input.Targets[profile.ID] == model.ExcludeProfile {
+			row.Action, row.Reason, row.Target = "skip", "Исключено из импорта", model.ExcludeProfile
+			result.Rows = append(result.Rows, row)
+			continue
+		}
 		if target := input.Targets[profile.ID]; target != "" {
-			row.Action, row.Reason = "conflict", "Выбранное ядро недоступно"
+			row.Action, row.Reason = "conflict", "Выбранный экземпляр недоступен"
 			for _, existing := range current.Profiles {
 				if existing.ID == target && (existing.Settings.AuthMode != "native" || profile.Settings.AuthMode == "native") {
-					row.Action, row.Reason, row.Target = "skip", "Используется выбранное ядро без изменения его настроек", target
+					row.Action, row.Reason, row.Target = "skip", "Используется выбранный экземпляр без изменения его настроек", target
 				}
 			}
 			blocked[profile.ID] = row.Action == "conflict"
@@ -40,7 +45,7 @@ func Build(input, current model.Bundle) (model.Preview, error) {
 			before, _ := deployment.Inspect(existing.Settings, false, "", "")
 			after, _ := deployment.Inspect(profile.Settings, false, "", "")
 			if strings.EqualFold(existing.Name, profile.Name) || existing.Settings.Port == profile.Settings.Port || before.UDPListenPort == after.UDPListenPort {
-				row.Action, row.Reason = "conflict", "Совпадает имя, идентификатор или порт ядра"
+				row.Action, row.Reason = "conflict", "Совпадает имя, идентификатор или порт экземпляра"
 			}
 		}
 		blocked[profile.ID] = row.Action == "conflict"
@@ -49,7 +54,11 @@ func Build(input, current model.Bundle) (model.Preview, error) {
 	mapping := map[string]string{}
 	for _, row := range result.Rows {
 		if row.Target != "" {
-			mapping[row.ID] = row.Target
+			if row.Target == model.ExcludeProfile {
+				mapping[row.ID] = ""
+			} else {
+				mapping[row.ID] = row.Target
+			}
 		}
 	}
 	blockedGroups := map[string]bool{}
@@ -69,7 +78,7 @@ func Build(input, current model.Bundle) (model.Preview, error) {
 			}
 		}
 		if accessBlocked(group.Access.Mode, group.Access.Instances, blocked) && row.Action == "add" {
-			row.Action, row.Reason = "conflict", "Есть конфликт доступных ядер"
+			row.Action, row.Reason = "conflict", "Есть конфликт доступных экземпляров"
 		}
 		blockedGroups[group.ID] = row.Action == "conflict"
 		result.Rows = append(result.Rows, row)
@@ -83,7 +92,7 @@ func Build(input, current model.Bundle) (model.Preview, error) {
 			}
 		}
 		if row.Action == "add" && (blockedGroups[user.Group] || accessBlocked(user.Access.Mode, user.Access.Instances, blocked)) {
-			row.Action, row.Reason = "conflict", "Есть конфликт группы или доступных ядер"
+			row.Action, row.Reason = "conflict", "Есть конфликт группы или доступных экземпляров"
 		}
 		result.Rows = append(result.Rows, row)
 	}

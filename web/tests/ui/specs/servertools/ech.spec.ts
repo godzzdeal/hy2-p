@@ -14,7 +14,7 @@ test("ECH generation changes only the draft and exposes public config", async ({
     "/data/ech/test/ech.pem",
   );
   await expect(
-    page.getByText("Ключ ECH создан. Сохраните конфигурацию и перезапустите ядро.", { exact: true }),
+    page.getByText("Ключ ECH создан. Сохраните конфигурацию и перезапустите экземпляр.", { exact: true }),
   ).toBeVisible();
   await page.screenshot({ path: info.outputPath("ech-tools.png"), fullPage: true });
 });

@@ -1,10 +1,13 @@
 package agent
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"hy2-panel/internal/firewall"
 	"hy2-panel/internal/portcontrol/protocol"
+	"hy2-panel/internal/security"
+	"hy2-panel/internal/systemmetrics"
 	"hy2-panel/internal/transport"
 	"io"
 	"net"
@@ -20,9 +23,11 @@ type Agent struct {
 	root   string
 	mu     sync.Mutex
 	status protocol.Status
+	system *systemmetrics.Service
 }
 
 var rootPattern = regexp.MustCompile("^/[a-zA-Z0-9/_.-]+$")
+var errBusy = errors.New("Другая операция уже выполняется")
 
 func New(root string) (*Agent, error) {
 	resolved, err := filepath.EvalSymlinks(root)
@@ -30,6 +35,7 @@ func New(root string) (*Agent, error) {
 		return nil, errors.New("некорректная папка установки")
 	}
 	agent := &Agent{root: root}
+	agent.system = systemmetrics.New(systemmetrics.Options{Data: security.Env("PANEL_DATA", "/panel-data"), Root: root, Scope: "host"})
 	agent.read()
 	return agent, nil
 }
@@ -45,6 +51,8 @@ func (agent *Agent) Handler() http.Handler {
 	})
 	mux.HandleFunc("POST /udp", agent.start)
 	mux.HandleFunc("GET /udp/{ticket}", agent.history)
+	mux.HandleFunc("POST "+protocol.RestartPath, agent.restartPanel)
+	mux.HandleFunc("GET "+protocol.SystemPath, agent.system.Read)
 	return mux
 }
 func (agent *Agent) start(w http.ResponseWriter, r *http.Request) {
@@ -84,6 +92,10 @@ func (agent *Agent) start(w http.ResponseWriter, r *http.Request) {
 	go agent.run(request)
 }
 func (agent *Agent) Serve() error {
+	ctx, cancel := context.WithCancel(context.Background())
+	var workers sync.WaitGroup
+	workers.Go(func() { agent.system.Run(ctx) })
+	defer func() { cancel(); workers.Wait() }()
 	directory := filepath.Dir(protocol.Socket)
 	if err := os.MkdirAll(directory, 0750); err != nil {
 		return err
@@ -107,7 +119,11 @@ func (agent *Agent) Serve() error {
 		return err
 	}
 	if agent.status.Busy {
-		go agent.recover()
+		if agent.status.Operation == "restart" {
+			go agent.runRestart("start-panel")
+		} else {
+			go agent.recover()
+		}
 	}
 	server := &http.Server{Handler: agent.Handler(), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 5 * time.Second, WriteTimeout: 30 * time.Second}
 	return server.Serve(listener)

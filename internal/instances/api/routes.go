@@ -90,5 +90,5 @@ func (handler Handler) Deployment(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	transport.Fail(w, errors.New("Ядро не найдено"), 404)
+	transport.Fail(w, errors.New("Экземпляр не найден"), 404)
 }

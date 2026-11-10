@@ -36,7 +36,7 @@ engine() {
         find "$ROOT/fake-data" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} \;
         tar -xzf - -C "$ROOT/fake-data"
       else
-        printf '{"port":9443,"mode":"acme","challengePort":9080}\n'
+        printf '{"host":"0.0.0.0","port":9443,"mode":"acme","challengePort":9080}\n'
       fi ;;
     *) printf 'unexpected engine command\n' >&2; return 1 ;;
   esac

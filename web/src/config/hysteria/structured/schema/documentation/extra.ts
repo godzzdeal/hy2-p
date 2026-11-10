@@ -16,7 +16,7 @@ export const EXTRA_FIELDS: readonly IConfigField[] = [
   { path: "realm.portMapping.lifetime", label: "Время аренды порта", kind: "text" },
   {
     path: "trafficStats.listen",
-    label: "Панель задаёт адрес статистики при запуске ядра.",
+    label: "Панель задаёт адрес статистики при запуске экземпляра.",
     kind: "text",
     managed: true,
   },

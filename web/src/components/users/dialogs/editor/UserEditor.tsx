@@ -1,9 +1,9 @@
-import { PasswordField } from "@/components/elements/security/PasswordField";
+import { Form, FormPassword } from "@/components/ui/forms";
 import { Modal } from "@/components/ui/modal/Modal";
 import { UserNameField } from "@/components/users/dialogs/editor/UserNameField";
-import { useUserCommands } from "@/hooks/users/user-queries";
+import { useUserEditor } from "@/hooks/users/use-user-editor";
 import { type IUser } from "@/services/users/user-types";
-import { useState, type FormEvent } from "react";
+import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 interface IUserEditor {
   user?: IUser;
@@ -11,50 +11,44 @@ interface IUserEditor {
 }
 export function UserEditor({ user, onClose }: IUserEditor) {
   const { t } = useTranslation();
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState(user?.name ?? "");
-  const [expires, setExpires] = useState(user?.expires.slice(0, 10) ?? "");
-  const [isEnabled, setEnabled] = useState(user?.enabled ?? true);
-  const { create, update } = useUserCommands();
-  const isPending = create.isPending || update.isPending;
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const body = {
-      name,
-      password,
-      expires: expires ? new Date(expires + "T23:59:59").toISOString() : "",
-    };
-    if (user) update.mutate({ id: user.id, body: { ...body, enabled: isEnabled } }, { onSuccess: onClose });
-    else create.mutate(body, { onSuccess: onClose });
-  }
+  const { form, isPending, onSubmit } = useUserEditor(user, onClose);
   return (
     <Modal title={user ? t("Редактировать пользователя") : t("Новый пользователь")} onClose={onClose}>
-      <form onSubmit={onSubmit}>
-        <UserNameField value={name} onChange={setName} />
+      <Form form={form} onSubmit={onSubmit}>
+        <Controller
+          control={form.control}
+          name="name"
+          rules={{ required: t("Заполните это поле"), maxLength: 80 }}
+          render={({ field }) => (
+            <UserNameField
+              value={field.value}
+              onChange={field.onChange}
+              ref={field.ref}
+              onBlur={field.onBlur}
+            />
+          )}
+        />
         <label>
           {t("Доступ до")}
-          <input type="date" value={expires} onChange={(event) => setExpires(event.target.value)} />
+          <input type="date" {...form.register("expires")} />
           <small>{t("Оставьте пустым для бессрочного доступа.")}</small>
         </label>
         {user && (
           <label className="checkbox">
-            <input
-              type="checkbox"
-              checked={isEnabled}
-              onChange={(event) => setEnabled(event.target.checked)}
-            />
+            <input type="checkbox" {...form.register("isEnabled")} />
             {t("Доступ включён")}
           </label>
         )}
-        <PasswordField
-          value={password}
-          onChange={setPassword}
+        <FormPassword
+          control={form.control}
+          name="password"
+          placeholder={user ? "Без изменений" : "Автоматически"}
           label={user ? t("Новый пароль подключения") : t("Пароль подключения (или автоматический)")}
         />
         <button disabled={isPending} className="primary full">
           {isPending ? t("Сохраняем\u2026") : t("Сохранить пользователя")}
         </button>
-      </form>
+      </Form>
     </Modal>
   );
 }

@@ -1,8 +1,9 @@
 import { ArrowUpRight } from "@/components/elements/icons";
 import { AccountRecovery } from "@/components/admin/account/AccountRecovery";
+import { Form, FormPassword } from "@/components/ui/forms";
 import { LanguageSelect } from "@/components/elements/LanguageSelect";
 import { type ILoginCredentials } from "@/services/session/session-api";
-import { useState, type FormEvent } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 interface IPasswordLogin {
@@ -11,40 +12,34 @@ interface IPasswordLogin {
 }
 export function PasswordLogin({ isPending, onSubmit }: IPasswordLogin) {
   const { t } = useTranslation();
-  const [username, setUsername] = useState(localStorage.getItem("hy2.login") ?? "admin");
-  const [password, setPassword] = useState("");
-  function onLogin(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    onSubmit({ username, password });
-  }
+  const form = useForm<ILoginCredentials>({
+    defaultValues: { username: localStorage.getItem("hy2.login") ?? "admin", password: "" },
+  });
   return (
-    <form onSubmit={onLogin}>
+    <Form form={form} onSubmit={onSubmit}>
       <LanguageSelect />
       <label>
         {t("Логин")}
         <input
           autoComplete="username"
           required
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
+          {...form.register("username", { required: t("Заполните это поле") })}
         />
       </label>
-      <label>
-        {t("Пароль")}
-        <input
-          autoFocus
-          type="password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </label>
+      <FormPassword
+        control={form.control}
+        name="password"
+        autoFocus
+        required
+        canGenerate={false}
+        minLength={0}
+        autoComplete="current-password"
+      />
       <button className="primary" disabled={isPending}>
         {t(isPending ? "Входим…" : "Войти в панель")}
         <ArrowUpRight width={24} height={24} aria-hidden />
       </button>
       <AccountRecovery />
-    </form>
+    </Form>
   );
 }

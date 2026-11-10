@@ -21,7 +21,9 @@ export function useCoreControl() {
     onSuccess: (data, action) => {
       client.setQueryData(instanceKey(QUERY_KEYS.core, id), data);
       void client.invalidateQueries({ queryKey: QUERY_KEYS.instances });
-      notify(action === "stop" ? "Ядро остановлено." : "Ядро запускается. Проверьте подключение в Happ.");
+      notify(
+        action === "stop" ? "Экземпляр остановлен." : "Экземпляр запускается. Проверьте подключение в Happ.",
+      );
     },
     onError: showError,
   });

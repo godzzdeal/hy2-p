@@ -5,7 +5,7 @@
     align-items: center;
     gap: var(--space-2);
     min-width: 0;
-    padding: var(--space-3);
+    padding: var(--space-1) var(--space-2);
     border: 1px solid var(--command-border);
     background: var(--command-background);
     color: var(--command-foreground);
@@ -19,7 +19,8 @@
       display: block;
       user-select: all;
       font-family: var(--font-mono);
-      line-height: 1.5;
+      font-size: var(--text-code);
+      line-height: 1.35;
     }
     .secondary {
       background: transparent;

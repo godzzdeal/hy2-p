@@ -1,23 +1,21 @@
-import { CommandBlock } from "@/components/elements/CommandBlock";
+import { CommandBlock } from "@/components/elements/copy";
+import { ChevronRight } from "pixelarticons/react/ChevronRight.js";
+import { SettingsSection } from "@/components/admin/SettingsSection";
 import { CoreBinding } from "@/components/admin/transfer/preview";
 import { TransferPreview } from "@/components/admin/transfer/preview/TransferPreview";
 import { useTransfer } from "@/hooks/admin/transfer/use-transfer";
 import { useTranslation } from "react-i18next";
-import { useRef } from "react";
+import { FileDropzone } from "@/components/elements/upload";
 export function TransferSettings() {
   const { t } = useTranslation();
   const transfer = useTransfer();
-  const fileInput = useRef<HTMLInputElement>(null);
   const canApply = transfer.preview?.rows.some((row) => row.action === "add") && !transfer.hasApplied;
   return (
-    <section className="card" data-scroll-section data-scroll-label={t("Перенос данных")}>
-      <div className="card-header">
-        <h2>{t("Импорт и экспорт")}</h2>
-      </div>
+    <SettingsSection id="panel-transfer" title={t("Импорт и экспорт")}>
       <div className="form-body transfer-form">
         <p>
           {t(
-            "Перенос конфигураций ядер, пользователей, групп и лимитов между панелями HY2-P. Существующие записи не перезаписываются.",
+            "Перенос конфигураций экземпляров, пользователей, групп и лимитов между панелями HY2-P. Существующие записи не перезаписываются.",
           )}
         </p>
         <p className="muted">
@@ -29,36 +27,27 @@ export function TransferSettings() {
           <button type="button" className="secondary" disabled={transfer.isBusy} onClick={transfer.onExport}>
             {t("Экспортировать данные")}
           </button>
-          <button
-            type="button"
-            className="secondary"
-            disabled={transfer.isBusy}
-            onClick={() => fileInput.current?.click()}
-          >
-            {t("Выбрать файл импорта")}
-          </button>
-          <input
-            ref={fileInput}
-            aria-label={t("Файл импорта HY2-P")}
-            hidden
-            type="file"
-            accept=".json,application/json"
-            disabled={transfer.isBusy}
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              if (file) transfer.onRead(file);
-              event.target.value = "";
-            }}
-          />
         </div>
-        {transfer.filename && <p>{transfer.filename}</p>}
-        {transfer.isBusy && <p role="status">{t("Обрабатываем файл…")}</p>}
+        <FileDropzone
+          label={t("Файл импорта HY2-P")}
+          hint={t("JSON, до 16 МБ")}
+          accept=".json,application/json"
+          isBusy={transfer.isBusy}
+          onFile={transfer.onRead}
+        />
         {!transfer.hasApplied &&
           transfer.preview?.rows
             .filter((row) => row.kind === "core")
             .map((row) => (
               <CoreBinding key={row.id} row={row} isDisabled={transfer.isBusy} onBind={transfer.onBind} />
             ))}
+        {transfer.preview && !transfer.hasApplied && (
+          <p className="caption">
+            {t(
+              "Исключённые экземпляры не создаются и не попадают в доступ пользователей и групп. Если исключить все экземпляры пользователя, он будет добавлен без доступных подключений.",
+            )}
+          </p>
+        )}
         {transfer.preview && (
           <TransferPreview
             key={transfer.preview.fingerprint + String(transfer.hasApplied)}
@@ -79,14 +68,17 @@ export function TransferSettings() {
           </button>
         )}
         <details>
-          <summary>{t("Импорт через терминал")}</summary>
+          <summary>
+            <ChevronRight width={24} height={24} aria-hidden />
+            {t("Импорт через терминал")}
+          </summary>
           <CommandBlock command="sudo hy2-panel export /root/hy2-p.json" />
           <CommandBlock command="sudo hy2-panel import /root/hy2-p.json" />
           <CommandBlock command="sudo hy2-panel import /root/hy2-p.json --apply" />
-          <p>{t("Чтобы связать пользователей с существующим основным ядром:")}</p>
+          <p>{t("Чтобы связать пользователей с существующим основным экземпляром:")}</p>
           <CommandBlock command="sudo hy2-panel import /root/hy2-p.json --map-core default=default --apply" />
         </details>
       </div>
-    </section>
+    </SettingsSection>
   );
 }

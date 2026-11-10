@@ -6,6 +6,7 @@ import (
 	"errors"
 	"hy2-panel/internal/security"
 	"net"
+	"net/netip"
 	"net/url"
 	"os"
 	"strconv"
@@ -35,8 +36,9 @@ func Validate(config Config) error {
 	if config.Mode != "http" && config.Mode != "manual" && config.Mode != "acme" {
 		return errors.New("неверный режим HTTPS")
 	}
-	if config.Mode != "http" && (config.Domain == "" || strings.ContainsAny(config.Domain, " /:@*")) {
-		return errors.New("для HTTPS укажите домен без схемы и порта")
+	address, ipError := netip.ParseAddr(config.Domain)
+	if config.Mode != "http" && (config.Domain == "" || (ipError != nil && strings.ContainsAny(config.Domain, " /:@*[]"))) {
+		return errors.New("для HTTPS укажите домен или IP без схемы и порта")
 	}
 	if config.Mode == "manual" {
 		pair, err := tls.X509KeyPair([]byte(config.Certificate), []byte(config.PrivateKey))
@@ -52,6 +54,9 @@ func Validate(config Config) error {
 		}
 	}
 	if config.Mode == "acme" {
+		if ipError == nil && (!address.IsGlobalUnicast() || address.IsPrivate() || address.IsLoopback() || address.IsLinkLocalUnicast() || address.Is4In6() || address.Zone() != "") {
+			return errors.New("для сертификата ACME на IP укажите публичный IPv4 или IPv6")
+		}
 		if !config.AcceptedTerms {
 			return errors.New("подтвердите условия Let's Encrypt")
 		}
@@ -74,7 +79,13 @@ func Validate(config Config) error {
 	return nil
 }
 func (config Config) Address() string {
-	return net.JoinHostPort(config.Host, strconv.Itoa(config.Port))
+	return net.JoinHostPort(config.ListenHost(), strconv.Itoa(config.Port))
+}
+func (config Config) ListenHost() string {
+	if os.Getenv("PANEL_CONTAINER") == "true" {
+		return "0.0.0.0"
+	}
+	return config.Host
 }
 func (config Config) URL() string {
 	if config.PublicURL != "" {
@@ -92,6 +103,9 @@ func (config Config) URL() string {
 }
 
 func environment(config Config) (Config, error) {
+	if os.Getenv("PANEL_CONTAINER") == "true" && os.Getenv("PANEL_BIND_HOST") != "" {
+		config.Host = os.Getenv("PANEL_BIND_HOST")
+	}
 	if mode := os.Getenv("PANEL_TLS_MODE"); mode != "" {
 		config.Mode = mode
 	}

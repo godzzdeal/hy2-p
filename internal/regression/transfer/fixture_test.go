@@ -9,6 +9,7 @@ import (
 	"hy2-panel/internal/testutil"
 	"hy2-panel/internal/traffic"
 	"hy2-panel/internal/transfer"
+	"hy2-panel/internal/transfer/model"
 	"hy2-panel/internal/useraccess"
 	"testing"
 )
@@ -38,7 +39,7 @@ func setup(t *testing.T) *transfer.Service {
 	if err != nil {
 		t.Fatal(err)
 	}
-	usage, err := traffic.New(data, "fixture", registry)
+	usage, err := traffic.New(data, registry)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -91,5 +92,33 @@ func TestRepeatedMulticoreMergeKeepsGroupMappingsStable(t *testing.T) {
 				t.Fatal("identical data produced a conflict", row)
 			}
 		}
+	}
+	excluded := setup(t)
+	bundle.Targets = map[string]string{}
+	for _, profile := range bundle.Profiles {
+		bundle.Targets[profile.ID] = model.ExcludeProfile
+	}
+	preview, err = excluded.Preview(bundle)
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err = excluded.Apply(bundle, preview.Fingerprint)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, row := range result.Rows {
+		if row.Kind == "core" && (row.Action != "skip" || row.Target != model.ExcludeProfile) {
+			t.Fatal(row)
+		}
+		if row.Action == "failed" || row.Action == "conflict" {
+			t.Fatal(row)
+		}
+	}
+	if len(excluded.Registry.Definitions()) != 1 {
+		t.Fatal("excluded instances created")
+	}
+	policy := excluded.Groups.Snapshot().Groups[0].Access
+	if policy.Mode != useraccess.Selected || len(policy.Instances) != 0 {
+		t.Fatal("exclusion widened group access", policy)
 	}
 }

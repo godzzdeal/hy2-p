@@ -6,11 +6,13 @@ import (
 )
 
 type Settings struct {
-	AuthMode string `json:"authMode,omitempty"`
-	Host     string `json:"host"`
-	Port     string `json:"port"`
-	SNI      string `json:"sni"`
-	Config   string `json:"config"`
+	AuthMode           string `json:"authMode,omitempty"`
+	Host               string `json:"host"`
+	Port               string `json:"port"`
+	SNI                string `json:"sni"`
+	PinSHA256          string `json:"pinSHA256,omitempty"`
+	PinFromCertificate bool   `json:"pinFromCertificate,omitempty"`
+	Config             string `json:"config"`
 }
 type Revision struct {
 	ID       int64    `json:"id"`

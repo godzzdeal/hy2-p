@@ -1,10 +1,14 @@
-import { CommandBlock } from "@/components/elements/CommandBlock";
+import { CommandBlock } from "@/components/elements/copy";
+import { ChevronRight } from "pixelarticons/react/ChevronRight.js";
 import { useTranslation } from "react-i18next";
 export function AccountRecovery() {
   const { t } = useTranslation();
   return (
     <details className="mt-4">
-      <summary>{t("Забыли пароль?")}</summary>
+      <summary>
+        <ChevronRight width={24} height={24} aria-hidden />
+        {t("Забыли пароль?")}
+      </summary>
       <div className="grid gap-3 mt-3">
         <p className="caption">
           {t(
@@ -12,9 +16,7 @@ export function AccountRecovery() {
           )}
         </p>
         <CommandBlock command="sudo hy2-panel password-reset" />
-        <p className="caption">
-          {t("Логин и облачный пароль сохранятся. Новый пароль будет показан в терминале.")}
-        </p>
+        <p className="caption">{t("Новый пароль будет показан в терминале.")}</p>
       </div>
     </details>
   );

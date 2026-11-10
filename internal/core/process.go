@@ -64,7 +64,7 @@ func (handler *Handler) start() error {
 	handler.mu.Lock()
 	defer handler.mu.Unlock()
 	if handler.core != nil {
-		return errors.New("Ядро уже запущено")
+		return errors.New("Экземпляр уже запущен")
 	}
 	settings, err := handler.Config.Get()
 	if err != nil {

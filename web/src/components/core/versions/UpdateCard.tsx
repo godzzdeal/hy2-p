@@ -5,6 +5,7 @@ import { Download, RefreshCw, Undo2 } from "@/components/elements/icons";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { useReleaseVersions, useUpdateStatus } from "@/hooks/core/updates/use-updates";
+import { normalizeVersion } from "@/utils/core/version";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 export function UpdateCard() {
@@ -13,84 +14,79 @@ export function UpdateCard() {
   const status = useUpdateStatus();
   const [selected, setSelected] = useState("");
   const [confirmation, setConfirmation] = useState<"install" | "rollback" | null>(null);
-  const version =
-    selected ||
-    versions.data?.find((release) => release.available && release.tag !== status.data?.current)?.tag ||
-    "";
+  const latest = versions.data?.find((release) => release.available)?.tag ?? "";
+  const current = status.data?.current ?? "";
+  const version = selected || latest || current;
+  const isCurrent = !!current && normalizeVersion(version) === normalizeVersion(current);
+  const isLatest = !!latest && normalizeVersion(latest) === normalizeVersion(current);
   const isBusy = status.data?.busy === true;
-  const hasSelection = version !== "" && version !== status.data?.current;
+  const canInstall =
+    !!status.data &&
+    !isBusy &&
+    !isCurrent &&
+    versions.data?.some((release) => release.available && release.tag === version);
+  const previous = normalizeVersion(status.data?.previous ?? "");
   return (
     <section className="card version-card">
       <div className="card-header">
-        <div>
-          <span className="eyebrow">{t("ОБНОВЛЕНИЕ ЯДРА")}</span>
-          <h2>{t("Обновление Hysteria2")}</h2>
-        </div>
-        <span className="verified-label">SHA-256</span>
+        <h2>{t("Обновление экземпляра")}</h2>
+        <span className="version-current">{current ? normalizeVersion(current) : t("Не установлена")}</span>
+        <button
+          type="button"
+          className="icon-btn"
+          aria-label={t("Проверить версии HY2")}
+          disabled={versions.isFetching || isBusy}
+          onClick={() => void versions.refetch()}
+        >
+          <RefreshCw width={24} height={24} aria-hidden />
+        </button>
       </div>
       <div className="version-body">
-        <div className="version-summary">
-          <div>
-            <span>{t("Установленная")}</span>
-            <strong>{status.data?.current.replace("app/", "") || t("Не установлена")}</strong>
-          </div>
-          <div>
-            <span>{t("Для отката")}</span>
-            <strong>{status.data?.previous.replace("app/", "") || t("Пока нет")}</strong>
-          </div>
-        </div>
-        <label htmlFor="core-version">
-          {t("Версия Hysteria2")}
-          <Select
-            id="core-version"
-            value={version}
-            disabled={versions.isPending || isBusy || !!versions.error}
-            onValueChange={(nextValue) => setSelected(nextValue)}
-          >
-            <SelectOption value="">{t("Выберите версию")}</SelectOption>
-            {versions.data?.map((release) => (
-              <ReleaseOption key={release.tag} release={release} current={status.data?.current ?? ""} />
-            ))}
-          </Select>
-        </label>
-        {versions.isPending && (
-          <p className="muted" role="status">
-            {t("Получаем версии с GitHub\u2026")}
-          </p>
-        )}
-        {versions.error && (
-          <div>
-            <button className="text-btn" onClick={() => void versions.refetch()}>
-              <RefreshCw width={24} height={24} aria-hidden />
-              {t("Повторить")}
-            </button>
-          </div>
-        )}
-        {!versions.isPending && !versions.error && versions.data?.length === 0 && (
-          <p className="muted">{t("Стабильных релизов пока нет.")}</p>
-        )}
-        <div className="version-actions">
+        <div className="version-controls">
+          <label htmlFor="core-version">
+            {t("Версия HY2")}
+            <Select
+              id="core-version"
+              value={version}
+              disabled={versions.isPending || isBusy || !!versions.error}
+              onValueChange={setSelected}
+            >
+              <SelectOption value="">{t("Выберите версию")}</SelectOption>
+              {versions.data?.map((release) => (
+                <ReleaseOption key={release.tag} release={release} current={current} />
+              ))}
+            </Select>
+          </label>
           <button
+            type="button"
             className="primary"
-            disabled={isBusy || !hasSelection || !status.data}
+            disabled={!canInstall}
             onClick={() => setConfirmation("install")}
           >
             <Download width={24} height={24} aria-hidden />
-            {t("Установить версию")}
+            {t(isCurrent ? "Установлена" : "Установить")}
           </button>
           <button
+            type="button"
             className="secondary"
             disabled={isBusy || !status.data?.rollbackAvailable}
             onClick={() => setConfirmation("rollback")}
           >
             <Undo2 width={24} height={24} aria-hidden />
             {t("Откатить")}
+            {previous ? " " + previous : ""}
           </button>
         </div>
-        {status.data && <UpdateProgress status={status.data} />}
-        <p className="caption">
-          {t("Проверяем подлинность файла и сохраняем предыдущую версию для отката.")}
+        <p className="caption" role="status">
+          {versions.isPending
+            ? t("Получаем версии с GitHub…")
+            : versions.error
+              ? t("Не удалось загрузить версии. Повторите проверку.")
+              : isLatest
+                ? t("Установлена последняя версия")
+                : t("Файл проверяется по SHA-256. Предыдущая версия сохраняется для отката.")}
         </p>
+        {status.data && <UpdateProgress status={status.data} />}
       </div>
       {confirmation && (
         <UpdateConfirmation

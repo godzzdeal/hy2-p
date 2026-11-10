@@ -1,30 +1,30 @@
 import { useCloudLogin } from "@/hooks/session/use-cloud-login";
-import { useState, type FormEvent } from "react";
+import { Form, FormPassword } from "@/components/ui/forms";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 export function CloudLogin({ challenge, onBack }: { challenge: string; onBack: () => void }) {
   const { t } = useTranslation();
-  const [password, setPassword] = useState("");
+  const form = useForm({ defaultValues: { password: "" } });
   const login = useCloudLogin();
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    login.mutate({ challenge, password });
-  }
   return (
-    <form className="cloud-login" onSubmit={onSubmit}>
+    <Form
+      form={form}
+      className="cloud-login"
+      onSubmit={({ password }) => login.mutate({ challenge, password })}
+    >
       <h2>{t("Облачный пароль")}</h2>
       <p className="caption">{t("Введите дополнительный пароль, чтобы завершить вход.")}</p>
-      <label>
-        {t("Облачный пароль")}
-        <input
-          autoFocus
-          required
-          type="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </label>
+      <FormPassword
+        control={form.control}
+        name="password"
+        label="Облачный пароль"
+        autoFocus
+        required
+        canGenerate={false}
+        minLength={0}
+        autoComplete="current-password"
+      />
       <button className="primary" disabled={login.isPending}>
         {t(login.isPending ? "Проверяем…" : "Подтвердить")}
       </button>
@@ -32,6 +32,6 @@ export function CloudLogin({ challenge, onBack }: { challenge: string; onBack: (
         {t("Вернуться к входу")}
       </button>
       <p className="caption">{t("Забыли пароль? Сброс доступен владельцу сервера через SSH.")}</p>
-    </form>
+    </Form>
   );
 }

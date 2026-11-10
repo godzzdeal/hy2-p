@@ -10,13 +10,14 @@ import (
 )
 
 type User struct {
-	ID       string `json:"id"`
-	Name     string `json:"name"`
-	Enabled  bool   `json:"enabled"`
-	Expires  string `json:"expires"`
-	Created  string `json:"created"`
-	Password string `json:"-"`
-	Token    string `json:"-"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	DisplayName string `json:"displayName,omitempty"`
+	Enabled     bool   `json:"enabled"`
+	Expires     string `json:"expires"`
+	Created     string `json:"created"`
+	Password    string `json:"-"`
+	Token       string `json:"-"`
 }
 
 func validUser(user User) error {

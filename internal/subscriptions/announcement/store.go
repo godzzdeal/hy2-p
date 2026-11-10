@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"hy2-panel/internal/records"
+	"hy2-panel/internal/subscriptions/announcement/flags"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -20,10 +21,11 @@ const MaxUpdateHours = 168
 const DefaultUpdateHours = 6
 
 type Settings struct {
-	ProfileTitle   string `json:"profileTitle,omitempty"`
-	Enabled        bool   `json:"enabled"`
-	Text           string `json:"text"`
-	UpdateInterval int    `json:"updateInterval"`
+	DefaultUserFlag string `json:"defaultUserFlag,omitempty"`
+	ProfileTitle    string `json:"profileTitle,omitempty"`
+	Enabled         bool   `json:"enabled"`
+	Text            string `json:"text"`
+	UpdateInterval  int    `json:"updateInterval"`
 }
 type Store struct {
 	mu        sync.RWMutex
@@ -42,6 +44,9 @@ func Open(data string) (*Store, error) {
 	return store, nil
 }
 func validate(settings Settings) error {
+	if !flags.Valid(settings.DefaultUserFlag) {
+		return errors.New("выберите корректный флаг пользователей")
+	}
 	if !utf8.ValidString(settings.ProfileTitle) || utf8.RuneCountInString(settings.ProfileTitle) > MaxProfileTitleLength {
 		return errors.New("название подписки: не более 25 символов")
 	}
@@ -63,6 +68,9 @@ func (store *Store) Current() Settings {
 	store.mu.RLock()
 	defer store.mu.RUnlock()
 	return store.settings
+}
+func (store *Store) UserName(name string) string {
+	return flags.Apply(name, store.Current().DefaultUserFlag)
 }
 func (store *Store) Headers(headers http.Header) {
 	settings := store.Current()

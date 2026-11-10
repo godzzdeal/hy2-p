@@ -6,7 +6,7 @@ export const EDITOR = {
   "Изменения остаются в черновике. Закрытие окна не сохраняет их на сервере.":
     "Edits stay in the draft. Closing this window does not save them to the server.",
   "Ошибок YAML: {{count}}": "YAML errors: {{count}}",
-  "YAML без ошибок синтаксиса": "No YAML syntax errors",
+  "Без ошибок": "No errors",
   "К конфигурации": "Back to configuration",
   Найти: "Find",
   Заменить: "Replace",

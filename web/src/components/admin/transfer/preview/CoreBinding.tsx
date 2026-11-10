@@ -1,7 +1,7 @@
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { useInstances } from "@/hooks/instances/use-instances";
-import { type ITransferRow } from "@/services/admin/transfer/api";
+import { EXCLUDE_PROFILE, type ITransferRow } from "@/services/admin/transfer/api";
 import { useTranslation } from "react-i18next";
 export function CoreBinding({
   row,
@@ -16,14 +16,15 @@ export function CoreBinding({
   const instances = useInstances();
   return (
     <label>
-      {row.name}: {t("Использовать существующее ядро")}
+      {row.name}: {t("Действие при импорте")}
       <Select
-        aria-label={t("Ядро для импорта") + ": " + row.name}
+        aria-label={t("Экземпляр для импорта") + ": " + row.name}
         value={row.target ?? ""}
         disabled={isDisabled}
         onValueChange={(target) => onBind(row.id, target)}
       >
         <SelectOption value="">{t("Добавить отдельную конфигурацию")}</SelectOption>
+        <SelectOption value={EXCLUDE_PROFILE}>{t("Не импортировать")}</SelectOption>
         {instances.data
           ?.filter((instance) => !instance.removing)
           .map((instance) => (

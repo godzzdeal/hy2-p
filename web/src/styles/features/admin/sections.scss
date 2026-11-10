@@ -1,0 +1,71 @@
+@layer components {
+  details > summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    list-style: none;
+    cursor: pointer;
+  }
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+  details > summary > svg {
+    flex-shrink: 0;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    transition: transform var(--motion-fast) var(--motion-ease);
+  }
+  details[open] > summary > svg {
+    transform: rotate(90deg);
+  }
+  .settings-section > .card-header {
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+  }
+  .settings-section > .card-header h2 {
+    flex: 1;
+    min-width: 0;
+  }
+  .settings-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-3);
+    min-height: var(--space-12);
+    height: auto;
+    padding: var(--space-2) 0;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    text-align: start;
+    font: inherit;
+  }
+  .settings-toggle:hover,
+  .settings-toggle:focus-visible {
+    color: var(--accent);
+  }
+  .settings-toggle span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .settings-chevron {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    flex-shrink: 0;
+    transition: transform var(--motion-fast) var(--motion-ease);
+  }
+  .settings-chevron.is-expanded {
+    transform: rotate(90deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    details > summary > svg {
+      transition: none;
+    }
+    .settings-chevron {
+      transition: none;
+    }
+  }
+}

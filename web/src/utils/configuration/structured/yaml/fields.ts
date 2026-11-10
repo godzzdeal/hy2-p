@@ -33,15 +33,19 @@ export function formatField(value: unknown, kind: TFieldKind): string {
   if (Array.isArray(value) && kind === "lines") return value.join("\n");
   return String(value);
 }
-export function certificateMode(source: string, mode: string): string {
+export function certificateMode(
+  source: string,
+  mode: string,
+  defaults: { host?: string; email?: string } = {},
+): string {
   const document = parseDocument(source);
   if (document.errors.length) throw document.errors[0];
   if (mode === "acme") {
     document.delete("tls");
     if (!document.has("acme"))
       document.set("acme", {
-        domains: [],
-        email: "",
+        domains: defaults.host ? [defaults.host] : [],
+        email: defaults.email ?? "",
         ca: "letsencrypt",
         type: "http",
         dir: "/data/acme-hy2",

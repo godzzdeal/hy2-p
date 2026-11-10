@@ -35,7 +35,7 @@ export function YamlDialog(props: IYamlDialog) {
           </button>
           <button type="button" className="secondary" onClick={props.onOrder}>
             <FileCode2 width={24} height={24} aria-hidden />
-            {t("Упорядочить YAML")}
+            {t("Упорядочить")}
           </button>
         </div>
       </div>
@@ -51,9 +51,7 @@ export function YamlDialog(props: IYamlDialog) {
         phrases={editorPhrases(t)}
       />
       <div className="yaml-footer">
-        <span role="status">
-          {errors ? t("Ошибок YAML: {{count}}", { count: errors }) : t("YAML без ошибок синтаксиса")}
-        </span>
+        <span role="status">{errors ? t("Ошибок YAML: {{count}}", { count: errors }) : t("Без ошибок")}</span>
         <div className="row-actions">
           <button type="button" className="secondary" onClick={props.onClose}>
             {t("К конфигурации")}

@@ -51,7 +51,7 @@ func setup(t *testing.T) fixture {
 	if err != nil {
 		t.Fatal(err)
 	}
-	stats, err := traffic.New(data, "fixture-only", registry)
+	stats, err := traffic.New(data, registry)
 	if err != nil {
 		t.Fatal(err)
 	}

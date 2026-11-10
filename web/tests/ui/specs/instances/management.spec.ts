@@ -2,17 +2,17 @@ import { expect, test } from "@playwright/test";
 import { mockInstances } from "./fixture";
 test("create, configure, rename and remove an independent core", async ({ page }, info) => {
   const fixture = await mockInstances(page);
-  await page.getByRole("button", { name: "Ядра", exact: true }).click();
-  await page.getByRole("button", { name: "Добавить ядро", exact: true }).click();
-  await page.getByLabel("Название ядра", { exact: true }).fill("Второй");
+  await page.getByRole("button", { name: "Экземпляры", exact: true }).click();
+  await page.getByRole("button", { name: "Добавить экземпляр", exact: true }).click();
+  await page.getByLabel("Название экземпляра", { exact: true }).fill("Второй");
   await page.getByLabel("UDP-порт", { exact: true }).fill("8444");
-  await page.getByRole("button", { name: "Создать ядро", exact: true }).click();
+  await page.getByRole("button", { name: "Создать экземпляр", exact: true }).click();
   await expect(page.getByLabel("Публичный UDP-порт", { exact: true })).toHaveValue("8444");
   await page.getByLabel("Публичный адрес", { exact: true }).fill("new.example.org");
   await page.getByRole("button", { name: "Сохранить конфигурацию", exact: true }).click();
   await expect.poll(() => fixture.extra().host).toBe("new.example.org");
   expect(fixture.panel.saved().host).toBe("vpn.example.org");
-  await page.getByRole("button", { name: "Ядра", exact: true }).click();
+  await page.getByRole("button", { name: "Экземпляры", exact: true }).click();
   const card = page.getByRole("region", { name: "Второй", exact: true });
   await expect(card).toBeVisible();
   await card.getByRole("button", { name: "Запустить", exact: true }).click();
@@ -20,7 +20,7 @@ test("create, configure, rename and remove an independent core", async ({ page }
   await expect(card.getByRole("button", { name: "Удалить", exact: true })).toBeDisabled();
   await card.getByRole("button", { name: "Остановить", exact: true }).click();
   await card.getByRole("button", { name: "Переименовать", exact: true }).click();
-  await page.getByLabel("Название ядра", { exact: true }).fill("Луна");
+  await page.getByLabel("Название экземпляра", { exact: true }).fill("Луна");
   await page.getByRole("button", { name: "Сохранить", exact: true }).click();
   const renamed = page.getByRole("region", { name: "Луна", exact: true });
   await expect(renamed).toBeVisible();
@@ -30,5 +30,5 @@ test("create, configure, rename and remove an independent core", async ({ page }
   page.once("dialog", (dialog) => dialog.accept());
   await renamed.getByRole("button", { name: "Удалить", exact: true }).click();
   await expect(renamed).toHaveCount(0);
-  await expect(page.getByRole("combobox", { name: "Выбранное ядро", exact: true })).toHaveText("Основной");
+  await expect(page.getByRole("combobox", { name: "Выбранный экземпляр", exact: true })).toHaveText("Основной");
 });

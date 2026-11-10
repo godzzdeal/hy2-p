@@ -1,5 +1,5 @@
 import { ConfigurationEditor } from "@/components/configuration/editor/draft/ConfigurationEditor";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { useConfiguration } from "@/hooks/configuration/use-configuration";
 import { useTranslation } from "react-i18next";
 export function ConfigurationPage() {
@@ -10,7 +10,7 @@ export function ConfigurationPage() {
       <div className="page-heading">
         <div>
           <h1>{t("Конфигурация сервера")}</h1>
-          <p>{t("Параметры подключения и полный YAML.")}</p>
+          <p>{t("Параметры подключения")}</p>
         </div>
       </div>
       <QueryState isLoading={query.isPending} error={query.error} />

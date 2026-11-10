@@ -69,6 +69,9 @@ func (store *Store) Change(currentPassword, username, password string) error {
 		if len(password) < MinAdminPassword || len(password) > MaxPasswordBytes {
 			return errors.New("пароль: от 16 до 72 байт")
 		}
+		if len(store.value.CloudHash) > 0 && bcrypt.CompareHashAndPassword(store.value.CloudHash, []byte(password)) == nil {
+			return errors.New("основной пароль должен отличаться от облачного")
+		}
 		hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 		if err != nil {
 			return err

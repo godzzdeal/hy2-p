@@ -57,8 +57,3 @@ type Snapshot struct {
 	Updated   string           `json:"updated"`
 	Error     string           `json:"error"`
 }
-
-type ManagedRuntime interface {
-	Runtime
-	Kick(string)
-}

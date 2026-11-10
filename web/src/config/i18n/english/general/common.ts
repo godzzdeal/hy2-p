@@ -1,10 +1,10 @@
 export const COMMON: Record<string, string> = {
-  "Подписка Happ": "Happ subscription",
+  Добавить: "Add",
   "Название подписки": "Subscription name",
   Флаг: "Flag",
   "Без флага": "No flag",
-  "Название появится в Happ после обновления подписки. Можно вставить свой флаг или эмодзи.":
-    "The name appears in Happ after updating the subscription. You can paste a custom flag or emoji.",
+  "Название появится в приложении после обновления подписки. Можно добавить эмодзи.":
+    "The name appears in the app after refreshing the subscription. You can add an emoji.",
   "Сохранить настройки подписки": "Save subscription settings",
   "Настройки подписки сохранены. Обновите подписку в Happ.":
     "Subscription settings saved. Update the subscription in Happ.",
@@ -15,19 +15,19 @@ export const COMMON: Record<string, string> = {
   "Нужен вход": "Sign-in required",
   "Нужен перезапуск панели": "Panel restart required",
   "Нужен раздел tls или acme": "A tls or acme section is required",
-  "ОБНОВЛЕНИЕ ЯДРА": "ENGINE UPDATE",
+  "ОБНОВЛЕНИЕ ЭКЗЕМПЛЯРА": "INSTANCE UPDATE",
   Обзор: "Overview",
   "Обновите страницу, чтобы повторить загрузку.": "Reload the page to try again.",
   "Обновить журнал": "Refresh logs",
   "Обновление завершено": "Update completed",
   "Обновление или другая операция уже выполняется":
-    "An update or another engine operation is already in progress",
+    "An update or another instance operation is already in progress",
   "Обновление: %v. Откат: %v. Требуется проверка журнала.": "Update: %v. Rollback: %v. Check the logs.",
   Обфускация: "Obfuscation",
   "Общий пароль": "Shared password",
   "Одна ссылка.": "One link.",
   "Ожидание перезапуска": "Waiting to restart",
-  "Ожидание статистики ядра": "Waiting for engine statistics",
+  "Ожидание статистики экземпляра": "Waiting for instance statistics",
   "Операция не выполнена": "Operation failed",
   "Оставьте новый пароль пустым, чтобы изменить только логин. После сохранения все сессии будут завершены.":
     "Leave the new password empty to change only the username. Saving signs out all sessions.",
@@ -51,11 +51,10 @@ export const COMMON: Record<string, string> = {
   "Панель не подменяет auth. Пользователи и лимиты панели не управляют внешней аутентификацией.":
     "The panel does not override auth. Panel users and quotas do not control external authentication.",
   "Панель управления /": "Control panel /",
-  "Пара сертификат/ключ проверяется перед сохранением. Затем сохраните конфигурацию и перезапустите ядро.":
-    "The certificate/key pair is checked before saving. Then save the configuration and restart the engine.",
+  "Пара сертификат/ключ проверяется перед сохранением. Затем сохраните конфигурацию и перезапустите экземпляр.":
+    "The certificate/key pair is checked before saving. Then save the configuration and restart the instance.",
   "Параметры API DNS-провайдера": "DNS provider API parameters",
   "Параметры подключения": "Connection settings",
-  "Параметры подключения и полный YAML.": "Connection settings and complete YAML.",
   Пароль: "Password",
   "Пароль Gecko": "Gecko password",
   "Пароль Salamander": "Salamander password",
@@ -75,8 +74,8 @@ export const COMMON: Record<string, string> = {
   Подключение: "Connection",
   "Подключение ": "Connection ",
   "Подключение / Happ": "Connection / Happ",
-  "Подключения кратковременно прервутся. Панель проверит запуск и локальный API ядра. При ошибке она попытается автоматически восстановить предыдущее ядро.":
-    "Connections will briefly disconnect. The panel checks startup and the local engine API, then tries to restore the previous engine if the check fails.",
+  "Подключения кратковременно прервутся. Панель проверит запуск и локальный API экземпляра. При ошибке она попытается автоматически восстановить предыдущий экземпляр.":
+    "Connections will briefly disconnect. The panel checks startup and the local instance API, then tries to restore the previous instance if the check fails.",
   "Подключите устройство": "Connect your device",
   Подписка: "Subscription",
   "Подписки панели требуют режима управления пользователями через панель":
@@ -104,13 +103,13 @@ export const COMMON: Record<string, string> = {
     "Previous version restored. Automatic rollback cannot switch back to the failed version.",
   "Предыдущая версия сохраняется. При неудачном запуске панель выполняет откат и показывает причину.":
     "The previous version is preserved. If startup fails, the panel rolls back and shows the reason.",
-  "Предыдущее ядро восстановлено. Причина: ": "Previous engine restored. Reason: ",
+  "Предыдущий экземпляр восстановлен. Причина: ": "Previous instance restored. Reason: ",
   "Предыдущих версий пока нет.": "No previous versions yet.",
   "Приватный ключ PEM": "Private key PEM",
   "Приватный ключ веб-панели PEM": "Web panel private key PEM",
   "Принимаю условия Let's Encrypt": "I accept the Let's Encrypt terms",
   "Приём сервера": "Server download",
-  "Пробный запуск и проверка API ядра": "Trial startup and engine API health check",
+  "Пробный запуск и проверка API экземпляра": "Trial startup and instance API health check",
   "Проверить сертификаты": "Check certificates",
   "Проверка SNI": "SNI verification",
   "Проверка владения доменом": "Domain validation",

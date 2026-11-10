@@ -37,12 +37,12 @@ func (handler *Handler) Save(writer http.ResponseWriter, request *http.Request) 
 	for _, id := range group.Access.Instances {
 		instance, err := handler.Registry.Get(id)
 		if err != nil || instance.Removing {
-			transport.Fail(writer, errors.New("Ядро недоступно"), 409)
+			transport.Fail(writer, errors.New("Экземпляр недоступен"), 409)
 			return
 		}
 		settings, err := instance.Config.Get()
 		if err != nil || settings.AuthMode == "native" {
-			transport.Fail(writer, errors.New("Выберите ядра с пользователями панели"), 409)
+			transport.Fail(writer, errors.New("Выберите экземпляры с пользователями панели"), 409)
 			return
 		}
 	}

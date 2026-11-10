@@ -1,12 +1,5 @@
-import {
-  FileCode2,
-  LayoutDashboard,
-  Rss,
-  Server,
-  Settings2,
-  Terminal,
-  Users,
-} from "@/components/elements/icons";
+import { FileCode2, LayoutDashboard, Rss, Server, Settings2, Users } from "@/components/elements/icons";
+import { HysteriaMark } from "@/components/elements/hysteria";
 export const PageEnum = {
   Overview: "overview",
   Users: "users",
@@ -41,9 +34,9 @@ export const NAVIGATION = [
   },
   {
     id: PageEnum.Instances,
-    label: "Ядра",
-    title: "Ядра Hysteria2",
-    description: "Отдельные конфигурации и управление ядрами.",
+    label: "Экземпляры",
+    title: "Экземпляры HY2",
+    description: "Отдельные конфигурации и управление экземплярами.",
     icon: Server,
   },
   {
@@ -55,10 +48,10 @@ export const NAVIGATION = [
   },
   {
     id: PageEnum.Core,
-    label: "Ядро и журнал",
-    title: "Ядро и журнал",
+    label: "Управление HY2",
+    title: "Управление HY2",
     description: "Управляйте процессом Hysteria2.",
-    icon: Terminal,
+    icon: HysteriaMark,
   },
   {
     id: PageEnum.Admin,

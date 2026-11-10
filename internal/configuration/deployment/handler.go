@@ -9,10 +9,7 @@ import (
 	"os"
 )
 
-// Read exposes deployment ports only; credentials and configuration contents stay private.
-func Read(config *configuration.Handler) http.HandlerFunc {
-	return ReadFor(config, "default", false, nil)
-}
+// ReadFor exposes deployment ports only; credentials and configuration contents stay private.
 func ReadFor(config *configuration.Handler, instance string, removing bool, running func() bool, needsHTTP ...func() bool) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		settings, err := config.Get()

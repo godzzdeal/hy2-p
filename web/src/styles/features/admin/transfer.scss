@@ -8,16 +8,6 @@
   .transfer-form > p {
     margin: 0;
   }
-  .transfer-file {
-    display: grid;
-    gap: var(--space-2);
-    min-width: 0;
-    flex: 1;
-  }
-  .transfer-file input {
-    width: 100%;
-    min-width: 0;
-  }
   .transfer-preview ul {
     list-style: none;
     padding: 0;

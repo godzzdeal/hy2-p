@@ -25,7 +25,7 @@ func (handler *Handler) Prepare(w http.ResponseWriter, r *http.Request, user use
 		w.Header().Set("x-hwid-max-devices-reached", "true")
 		w.Header().Set("x-hwid-limit", "true")
 	default:
-		http.Error(w, "Subscription temporarily unavailable", 503)
+		http.Error(w, "Subscription temporarily unavailable", http.StatusServiceUnavailable)
 		return user, false
 	}
 	w.Header().Set("announce", "base64:"+base64.StdEncoding.EncodeToString([]byte(err.Error())))

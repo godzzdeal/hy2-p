@@ -12,10 +12,10 @@ export function RenameInstanceDialog({ instance, onClose }: { instance: IInstanc
     rename.mutate({ id: instance.id, name }, { onSuccess: onClose });
   }
   return (
-    <Modal title={t("Переименовать ядро")} onClose={onClose}>
+    <Modal title={t("Переименовать экземпляр")} onClose={onClose}>
       <form className="instance-form" onSubmit={onSubmit}>
         <label>
-          {t("Название ядра")}
+          {t("Название экземпляра")}
           <input
             required
             maxLength={100}

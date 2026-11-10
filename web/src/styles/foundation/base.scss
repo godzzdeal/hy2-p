@@ -12,7 +12,7 @@
   button,
   input,
   textarea,
-  select {
+  select:not([aria-hidden="true"]) {
     font: inherit;
     font-size: var(--text-control);
     line-height: 1.2;
@@ -42,7 +42,7 @@
   }
   input,
   textarea,
-  select {
+  select:not([aria-hidden="true"]) {
     width: 100%;
     min-height: var(--control-height);
     color: var(--foreground);
@@ -58,7 +58,7 @@
     border-color: var(--accent);
   }
   input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
-  select {
+  select:not([aria-hidden="true"]) {
     height: var(--control-height);
   }
   textarea {

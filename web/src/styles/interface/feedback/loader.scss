@@ -1,0 +1,37 @@
+@layer components {
+  @keyframes panel-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .spinner {
+    display: inline-block;
+    flex-shrink: 0;
+    color: var(--accent);
+    animation: panel-spin 960ms linear infinite;
+  }
+  .loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-height: calc(var(--space-16) + var(--space-16));
+    padding: var(--space-6);
+    color: var(--muted);
+    text-align: center;
+  }
+  .loader-inline {
+    flex-direction: row;
+    min-height: var(--control-height);
+    padding: var(--space-2);
+  }
+  .startup-loader {
+    min-height: 100dvh;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spinner {
+      animation: none;
+    }
+  }
+}

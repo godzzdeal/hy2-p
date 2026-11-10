@@ -26,31 +26,31 @@ export function UserActions({ user, onShare, onDelete, onTraffic, onAccess, onDe
   const actions: IUserAction[] = [
     {
       label: t("Устройства"),
-      accessibleName: t("Устройства ") + user.name,
+      accessibleName: t("Устройства ") + (user.displayName ?? user.name),
       icon: Monitor,
       onSelect: () => onDevices(user),
     },
     {
-      label: t("Доступные ядра"),
-      accessibleName: t("Доступные ядра ") + user.name,
+      label: t("Доступные экземпляры"),
+      accessibleName: t("Доступные экземпляры ") + (user.displayName ?? user.name),
       icon: Server,
       onSelect: () => onAccess(user),
     },
     {
       label: t("Подключение"),
-      accessibleName: t("Подключение ") + user.name,
+      accessibleName: t("Подключение ") + (user.displayName ?? user.name),
       icon: QrCode,
       onSelect: () => onShare(user),
     },
     {
       label: t("Трафик"),
-      accessibleName: t("Трафик ") + user.name,
+      accessibleName: t("Трафик ") + (user.displayName ?? user.name),
       icon: Gauge,
       onSelect: () => onTraffic(user),
     },
     {
       label: t("Удалить"),
-      accessibleName: t("Удалить ") + user.name,
+      accessibleName: t("Удалить ") + (user.displayName ?? user.name),
       icon: Trash2,
       isDanger: true,
       onSelect: () => onDelete(user),
@@ -63,7 +63,7 @@ export function UserActions({ user, onShare, onDelete, onTraffic, onAccess, onDe
           <UserActionButton key={action.accessibleName} action={action} isCompact />
         ))}
       </div>
-      <UserActionMenu actions={actions} name={user.name} />
+      <UserActionMenu actions={actions} name={user.displayName ?? user.name} />
     </div>
   );
 }

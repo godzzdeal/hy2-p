@@ -1,4 +1,6 @@
+import { Notice } from "@/components/ui/feedback";
 import { CertificateFields } from "@/components/admin/CertificateFields";
+import { SettingsSection } from "@/components/admin/SettingsSection";
 import { NetworkFields } from "@/components/admin/listener/NetworkFields";
 import { useSaveWeb } from "@/hooks/admin/use-admin";
 import { type IWebSettings } from "@/services/admin/admin-types";
@@ -15,44 +17,37 @@ export function WebForm({ initial }: { initial: IWebSettings }) {
     mutation.mutate(draft);
   }
   return (
-    <form
-      className="card settings-form"
-      onSubmit={onSubmit}
-      id="panel-network"
-      data-scroll-section
-      data-scroll-label={t("Порт, домен и HTTPS веб-панели")}
-    >
-      <div className="card-header">
-        <h2>{t("Порт, домен и HTTPS веб-панели")}</h2>
-      </div>
-      <NetworkFields value={draft} onChange={(next) => setDraft(updateWebConfig(draft, next))} />
-      <CertificateFields
-        value={draft}
-        onChange={(next) => setDraft(updateWebConfig(draft, next))}
-        hasPrivateKey={current.hasPrivateKey}
-      />
-      <div className="form-body">
-        <button className="primary" disabled={mutation.isPending}>
-          {t("Сохранить настройки веб-панели")}
-        </button>
-        {current.restartRequired && (
-          <div className="info-note">
-            <strong>{t("Нужен перезапуск панели")}</strong>
-            <p>
-              {t(
-                "Текущий адрес продолжает работать до перезапуска. После него используйте новый порт и протокол.",
-              )}
-            </p>
-            {current.container && (
+    <SettingsSection id="panel-network" title={t("Порт, домен и HTTPS веб-панели")}>
+      <form className="settings-form" onSubmit={onSubmit}>
+        <NetworkFields value={draft} onChange={(next) => setDraft(updateWebConfig(draft, next))} />
+        <CertificateFields
+          value={draft}
+          onChange={(next) => setDraft(updateWebConfig(draft, next))}
+          hasPrivateKey={current.hasPrivateKey}
+        />
+        <div className="form-body">
+          <button className="primary" disabled={mutation.isPending}>
+            {t("Сохранить настройки веб-панели")}
+          </button>
+          {current.restartRequired && (
+            <Notice>
+              <strong>{t("Нужен перезапуск панели")}</strong>
               <p>
                 {t(
-                  "В Docker также измените опубликованный порт в Compose: PANEL_PORT должен соответствовать выбранному порту.",
+                  "Текущий адрес продолжает работать до перезапуска. После него используйте новый порт и протокол.",
                 )}
               </p>
-            )}
-          </div>
-        )}
-      </div>
-    </form>
+              {current.container && (
+                <p>
+                  {t(
+                    "В Docker также измените опубликованный порт в Compose: PANEL_PORT должен соответствовать выбранному порту.",
+                  )}
+                </p>
+              )}
+            </Notice>
+          )}
+        </div>
+      </form>
+    </SettingsSection>
   );
 }

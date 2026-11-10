@@ -3,6 +3,7 @@ package traffic
 import (
 	"context"
 	"encoding/json"
+	"hy2-panel/internal/traffic/sources"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -13,11 +14,15 @@ type testRuntime struct {
 	running    bool
 	generation string
 	kicked     []string
+	address    string
 }
 
 func (runtime *testRuntime) Running() bool      { return runtime.running }
 func (runtime *testRuntime) Generation() string { return runtime.generation }
 func (runtime *testRuntime) Kick(id string)     { runtime.kicked = append(runtime.kicked, id) }
+func (runtime *testRuntime) TrafficSources() []sources.Source {
+	return []sources.Source{{ID: "default", Address: runtime.address, Secret: "secret", Runtime: runtime}}
+}
 func TestPersistentTrafficAndQuota(t *testing.T) {
 	runtime := &testRuntime{running: true, generation: "first"}
 	counters := map[string]Counter{"alice": {TX: 100, RX: 200}}
@@ -39,11 +44,11 @@ func TestPersistentTrafficAndQuota(t *testing.T) {
 	}))
 	defer server.Close()
 	directory := t.TempDir()
-	service, err := New(directory, "secret", runtime)
+	service, err := New(directory, runtime)
 	if err != nil {
 		t.Fatal(err)
 	}
-	service.address = server.URL
+	runtime.address = server.URL
 	collect := func() { service.Collect(context.Background()) }
 	collect()
 	collect()
@@ -74,7 +79,7 @@ func TestPersistentTrafficAndQuota(t *testing.T) {
 	if usage.Upload != 160 || usage.Download != 270 {
 		t.Fatalf("restart reset totals: %+v", usage)
 	}
-	restarted, err := New(directory, "secret", runtime)
+	restarted, err := New(directory, runtime)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -96,13 +101,22 @@ func TestPersistentTrafficAndQuota(t *testing.T) {
 	}
 }
 func TestAdjustKeepsBaselineAndRejectsInvalidValues(t *testing.T) {
-	runtime := &testRuntime{}
-	service, err := New(t.TempDir(), "", runtime)
+	runtime := &testRuntime{running: true}
+	counter := Counter{TX: 100, RX: 200}
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		if request.URL.Path == "/traffic" {
+			json.NewEncoder(writer).Encode(map[string]Counter{"alice": counter})
+		} else {
+			json.NewEncoder(writer).Encode(map[string]int{})
+		}
+	}))
+	defer server.Close()
+	runtime.address = server.URL
+	service, err := New(t.TempDir(), runtime)
 	if err != nil {
 		t.Fatal(err)
 	}
-	service.state.Users["alice"] = Usage{Upload: 100, Download: 200}
-	service.baseline["alice"] = Counter{TX: 100, RX: 200}
+	service.Collect(context.Background())
 	adjust := func(body string) int {
 		reader := httptest.NewRequest("PUT", "/traffic", strings.NewReader(body))
 		reader.SetPathValue("id", "alice")
@@ -113,7 +127,8 @@ func TestAdjustKeepsBaselineAndRejectsInvalidValues(t *testing.T) {
 	if adjust(`{"upload":0,"download":0,"limit":50}`) != 200 {
 		t.Fatal("reset failed")
 	}
-	service.addCounter("alice", Counter{TX: 110, RX: 220})
+	counter = Counter{TX: 110, RX: 220}
+	service.Collect(context.Background())
 	usage := service.Snapshot().Users["alice"]
 	if usage.Upload != 10 || usage.Download != 20 || usage.Limit != 50 {
 		t.Fatalf("%+v", usage)

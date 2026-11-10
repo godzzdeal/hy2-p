@@ -32,7 +32,7 @@ type Summary struct {
 func (handler Handler) networkReady(w http.ResponseWriter, r *http.Request) bool {
 	for _, instance := range handler.Registry.All() {
 		if instance.Core.Updates.Snapshot().Busy {
-			transport.Fail(w, errors.New("Дождитесь завершения обновлений всех ядер"), 409)
+			transport.Fail(w, errors.New("Дождитесь завершения обновлений всех экземпляров"), 409)
 			return false
 		}
 	}
@@ -60,7 +60,7 @@ func (handler Handler) List(w http.ResponseWriter, r *http.Request) {
 			item.ListenPort, item.PublishedPort, item.PortChangeRequired = snapshot.UDPListenPort, public, snapshot.UDPRestartRequired
 		}
 		if err != nil {
-			item.Error = "Не удалось прочитать конфигурацию ядра"
+			item.Error = "Не удалось прочитать конфигурацию экземпляра"
 		}
 		result = append(result, item)
 	}

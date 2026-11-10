@@ -20,12 +20,18 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: "1.26.x"
+          check-latest: true
           cache: true
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version: "1.4.3"
       - run: go test -race ./...
-      - run: go vet ./...
+      - name: Install Go audit tools
+        run: |
+          go install honnef.co/go/tools/cmd/staticcheck@v0.8.2
+          go install golang.org/x/tools/cmd/deadcode@v0.52.0
+          go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
+      - run: bash scripts/check-go.sh
       - run: bun install --frozen-lockfile
         working-directory: web
       - run: bun run test && bun run lint && bun run build
@@ -63,7 +69,7 @@ jobs:
           persist-credentials: false
       - name: Build ready-to-load Docker image
         run: |
-          docker build --build-arg PANEL_REVISION="$GITHUB_SHA" -t "hy2-panel:$GITHUB_SHA" .
+          docker build --pull --build-arg PANEL_REVISION="$GITHUB_SHA" -t "hy2-panel:$GITHUB_SHA" .
           docker save "hy2-panel:$GITHUB_SHA" | gzip -1 > "hy2-panel-linux-${{ matrix.arch }}.tar.gz"
           sha256sum "hy2-panel-linux-${{ matrix.arch }}.tar.gz" > "hy2-panel-linux-${{ matrix.arch }}.tar.gz.sha256"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
@@ -84,6 +90,7 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: "1.26.x"
+          check-latest: true
           cache: true
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:

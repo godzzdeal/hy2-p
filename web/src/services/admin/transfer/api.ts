@@ -1,6 +1,7 @@
 import { API_ROUTES } from "@/config/network";
 import { request } from "@/services/http/client";
 export const TRANSFER_LIMIT = 16 * 1024 * 1024;
+export const EXCLUDE_PROFILE = "skip";
 export interface ITransferRow {
   target?: string;
   kind: "core" | "group" | "user";

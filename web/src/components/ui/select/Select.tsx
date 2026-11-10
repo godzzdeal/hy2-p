@@ -2,14 +2,15 @@ import { ChevronDown, ChevronUp } from "@/components/elements/icons";
 import { EMPTY_SELECT_VALUE, encodeSelectValue } from "@/components/ui/select/select-value";
 import { cn } from "@/utils/cn";
 import * as Primitive from "@radix-ui/react-select";
-import { type ComponentPropsWithoutRef, type ReactNode } from "react";
-interface ISelect extends Omit<ComponentPropsWithoutRef<typeof Primitive.Root>, "value" | "children"> {
+import { type ComponentProps } from "react";
+interface ISelect
+  extends
+    Omit<ComponentProps<typeof Primitive.Root>, "value">,
+    Pick<
+      ComponentProps<typeof Primitive.Trigger>,
+      "id" | "className" | "aria-label" | "aria-labelledby" | "ref" | "onBlur"
+    > {
   value: string | number;
-  children: ReactNode;
-  id?: string;
-  className?: string;
-  "aria-label"?: string;
-  "aria-labelledby"?: string;
 }
 export function Select({
   value,
@@ -19,6 +20,8 @@ export function Select({
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledBy,
   onValueChange,
+  ref,
+  onBlur,
   ...props
 }: ISelect) {
   return (
@@ -28,6 +31,8 @@ export function Select({
       onValueChange={(next) => onValueChange?.(next === EMPTY_SELECT_VALUE ? "" : next)}
     >
       <Primitive.Trigger
+        ref={ref}
+        onBlur={onBlur}
         id={id}
         className={cn("select-trigger", className)}
         aria-label={ariaLabel}

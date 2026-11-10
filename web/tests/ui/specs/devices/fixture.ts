@@ -51,7 +51,7 @@ export async function mockDevices(page: Page) {
     }),
   );
   await page.getByRole("button", { name: "Пользователи", exact: true }).click();
-  await page.getByRole("button", { name: "Добавить пользователя", exact: true }).click();
+  await page.getByRole("button", { name: "Добавить", exact: true }).click();
   await page.getByLabel("Имя", { exact: true }).fill("Phone");
   await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();
   return {

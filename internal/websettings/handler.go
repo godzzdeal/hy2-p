@@ -16,6 +16,13 @@ type Handler struct {
 	config    Config
 	active    Config
 	directory string
+	closeTLS  func()
+}
+
+func (handler *Handler) Close() {
+	if handler.closeTLS != nil {
+		handler.closeTLS()
+	}
 }
 
 func Open(data, listen, publicURL string) (*Handler, error) {

@@ -1,49 +1,40 @@
 import { GroupColorPicker } from "@/components/groups/editor/GroupColorPicker";
 import { GroupPolicyFields } from "@/components/groups/editor/GroupPolicyFields";
-import { useSaveGroup } from "@/hooks/groups/hooks";
-import { type IGroup, type IGroupInput } from "@/services/groups/types";
-import { useState, type FormEvent } from "react";
+import { useGroupForm } from "@/hooks/groups/use-group-form";
+import { type IGroup } from "@/services/groups/types";
+import { Form } from "@/components/ui/forms";
+import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 export function GroupEditor({ group, onClose }: { group?: IGroup; onClose: () => void }) {
   const { t } = useTranslation();
-  const [value, setValue] = useState<IGroupInput>(
-    group ?? {
-      name: "",
-      color: "cyan",
-      access: { mode: "all", instances: [] },
-      trafficLimit: 0,
-      deviceLimit: 0,
-    },
-  );
-  const save = useSaveGroup();
-  function onSubmit(event: FormEvent) {
-    event.preventDefault();
-    save.mutate({ id: group?.id, body: value }, { onSuccess: onClose });
-  }
+  const { form, policy, isPending, onSubmit } = useGroupForm(group, onClose);
   return (
-    <form className="group-editor" onSubmit={onSubmit}>
-      <fieldset disabled={save.isPending}>
+    <Form form={form} className="group-editor" onSubmit={onSubmit}>
+      <fieldset disabled={isPending}>
         <legend>{t(group ? "Редактировать группу" : "Новая группа")}</legend>
         <label>
           {t("Название группы")}
           <input
             required
             maxLength={100}
-            value={value.name}
-            onChange={(event) => setValue({ ...value, name: event.target.value })}
+            {...form.register("name", { required: t("Заполните это поле"), maxLength: 100 })}
           />
         </label>
-        <GroupColorPicker value={value.color} onChange={(color) => setValue({ ...value, color })} />
-        <GroupPolicyFields value={value} onChange={setValue} />
+        <Controller
+          control={form.control}
+          name="color"
+          render={({ field }) => <GroupColorPicker value={field.value} onChange={field.onChange} />}
+        />
+        <GroupPolicyFields policy={policy} />
       </fieldset>
       <div className="row-actions">
-        <button type="button" className="secondary" onClick={onClose} disabled={save.isPending}>
+        <button type="button" className="secondary" onClick={onClose} disabled={isPending}>
           {t("Назад")}
         </button>
-        <button className="primary" disabled={save.isPending}>
-          {t(save.isPending ? "Сохраняем…" : "Сохранить группу")}
+        <button className="primary" disabled={isPending}>
+          {t(isPending ? "Сохраняем…" : "Сохранить группу")}
         </button>
       </div>
-    </form>
+    </Form>
   );
 }

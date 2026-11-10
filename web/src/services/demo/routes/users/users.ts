@@ -3,7 +3,8 @@ import { DEMO } from "@/services/demo/data";
 import { demoId, demoInput, demoState } from "@/services/demo/state";
 import { ApiError } from "@/services/http/ApiError";
 import { type IRequest } from "@/services/http/client";
-import { type IUserInput, type IUserUpdate } from "@/services/users/user-types";
+import { type IUser, type IUserInput, type IUserUpdate } from "@/services/users/user-types";
+import { withDefaultFlag } from "@/utils/flags/flag-options";
 import { demoDevices } from "@/services/demo/routes/users/devices";
 import { demoLinks } from "@/services/demo/routes/users/links";
 import { EMPTY_USAGE, type IUserUsage } from "@/services/users/traffic/traffic-types";
@@ -11,7 +12,7 @@ import { type IUserAccess } from "@/services/users/access/types";
 export function demoUsers(path: string, options: IRequest): unknown {
   const { method = "GET", body } = options;
   if (path === API_ROUTES.users) {
-    if (method === "GET") return demoState.users;
+    if (method === "GET") return demoState.users.map(displayUser);
     const input = demoInput<IUserInput>(body);
     if (!input.name.trim()) throw new ApiError("Укажите имя", 400);
     if (demoState.users.length >= DEMO.userLimit)
@@ -24,7 +25,7 @@ export function demoUsers(path: string, options: IRequest): unknown {
       expires: input.expires,
     };
     demoState.users.push(user);
-    return user;
+    return displayUser(user);
   }
   if (!path.startsWith(API_ROUTES.users + "/")) return undefined;
   const userId = path.split("/")[2];
@@ -41,7 +42,7 @@ export function demoUsers(path: string, options: IRequest): unknown {
     }
     const input = demoInput<IUserUpdate>(body);
     Object.assign(user, { name: input.name, enabled: input.enabled, expires: input.expires });
-    return user;
+    return displayUser(user);
   }
   if (path === API_ROUTES.userGroup(userId)) {
     const input = demoInput<{ groupId: string }>(body);
@@ -63,4 +64,7 @@ export function demoUsers(path: string, options: IRequest): unknown {
   if (path === API_ROUTES.rotate(userId)) return { ok: true };
   if (path === API_ROUTES.links(userId)) return demoLinks(user);
   return demoDevices(userId, path, options);
+}
+function displayUser(user: IUser): IUser {
+  return { ...user, displayName: withDefaultFlag(user.name, demoState.announcement.defaultUserFlag ?? "") };
 }

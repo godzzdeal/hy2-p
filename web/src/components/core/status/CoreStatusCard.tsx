@@ -1,6 +1,6 @@
 import { WatchdogStatus } from "@/components/core/status/WatchdogStatus";
 import { Activity, Power, RefreshCw, Square } from "@/components/elements/icons";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { useUpdateStatus } from "@/hooks/core/updates/use-updates";
 import { useCore, useCoreControl } from "@/hooks/core/use-core";
 import { cn } from "@/utils/cn";
@@ -22,7 +22,7 @@ export function CoreStatusCard() {
       className="card engine-card"
       id="core-status"
       data-scroll-section
-      data-scroll-label={t("Состояние ядра")}
+      data-scroll-label={t("Состояние экземпляра")}
     >
       <div className="engine-summary">
         <span className={cn("engine-symbol", { "engine-symbol-active": isRunning })}>
@@ -39,8 +39,8 @@ export function CoreStatusCard() {
           </h2>
           <p>
             {query.data?.available
-              ? t("Ядро готово к работе. Управляйте запуском и версиями ниже.")
-              : t("Установите ядро и настройте конфигурацию для первого запуска.")}
+              ? t("Экземпляр готов к работе. Управляйте запуском и версиями ниже.")
+              : t("Установите экземпляр и настройте конфигурацию для первого запуска.")}
           </p>
         </div>
         <span className={cn("engine-badge", { "engine-badge-active": isRunning })}>
@@ -78,7 +78,7 @@ export function CoreStatusCard() {
           </button>
         </div>
         <span className="caption">
-          {update.data?.busy ? t("Идёт операция с ядром") : t("Локальное управление процессом")}
+          {update.data?.busy ? t("Идёт операция с экземпляром") : t("Локальное управление процессом")}
         </span>
       </div>
     </section>

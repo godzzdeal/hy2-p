@@ -3,6 +3,8 @@ export interface IConfiguration {
   host: string;
   port: string;
   sni: string;
+  pinSHA256?: string;
+  pinFromCertificate?: boolean;
   config: string;
 }
 export interface IRevision {

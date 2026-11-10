@@ -16,6 +16,7 @@ import (
 	"hy2-panel/internal/records"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/traffic/sources"
+	"log"
 	"os"
 	"path/filepath"
 	"sync"
@@ -26,15 +27,15 @@ func (registry *Registry) Get(id string) (*Instance, error) {
 		id = DefaultID
 	}
 	if !IDPattern.MatchString(id) {
-		return nil, errors.New("Ядро не найдено")
+		return nil, errors.New("Экземпляр не найден")
 	}
 	registry.mu.RLock()
 	defer registry.mu.RUnlock()
 	instance := registry.instances[id]
 	if instance == nil {
-		return nil, errors.New("Ядро не найдено")
+		return nil, errors.New("Экземпляр не найден")
 	}
-	return instance, nil
+	return snapshot(instance), nil
 }
 func Open(ctx context.Context, data string, db *sql.DB, vault *cryptovault.Vault, config *configuration.Handler, main *core.Handler) (*Registry, error) {
 	registry := &Registry{directory: data, database: db, vault: vault, ctx: ctx, instances: map[string]*Instance{}}
@@ -73,14 +74,23 @@ func (registry *Registry) attach(instance *Instance) {
 	instance.Config.SaveLock = &registry.mu
 	registry.instances[instance.ID] = instance
 	ctx, cancel := context.WithCancel(registry.ctx)
-	instance.cancel = cancel
-	go instance.Core.Watchdog.Run(ctx)
+	instance.cancel, instance.done = cancel, make(chan struct{})
+	go func() {
+		defer close(instance.done)
+		instance.Core.Watchdog.Run(ctx)
+	}()
+}
+func (instance *Instance) close() {
+	instance.cancel()
+	if err := instance.Core.Stop(); err != nil {
+		log.Printf("Cannot stop HY2 instance %s: %v", instance.ID, err)
+	}
+	<-instance.done
 }
 func (registry *Registry) Close() {
 	var workers sync.WaitGroup
 	for _, instance := range registry.All() {
-		workers.Add(1)
-		go func(instance *Instance) { defer workers.Done(); instance.cancel(); instance.Core.Stop() }(instance)
+		workers.Go(instance.close)
 	}
 	workers.Wait()
 }
@@ -90,18 +100,10 @@ func (registry *Registry) All() []*Instance {
 	result := make([]*Instance, 0, len(registry.definitions))
 	for _, definition := range registry.definitions {
 		if instance := registry.instances[definition.ID]; instance != nil {
-			result = append(result, instance)
+			result = append(result, snapshot(instance))
 		}
 	}
 	return result
-}
-func (registry *Registry) Running() bool {
-	for _, instance := range registry.All() {
-		if instance.Core.Running() {
-			return true
-		}
-	}
-	return false
 }
 func (registry *Registry) Generation() string {
 	result := ""

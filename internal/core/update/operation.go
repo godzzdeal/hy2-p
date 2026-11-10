@@ -10,7 +10,7 @@ import (
 
 func (service *Service) Begin(tag string, rollback bool) error {
 	if !service.runtime.TryLock() {
-		return errors.New("другая операция с ядром уже выполняется")
+		return errors.New("другая операция с экземпляром уже выполняется")
 	}
 	service.mu.Lock()
 	if rollback && service.state.Previous == nil {
@@ -52,7 +52,7 @@ func (service *Service) run(tag string, rollback bool) {
 		service.finishError(original, err)
 		return
 	}
-	service.progress("restarting", "Пробный запуск и проверка API ядра")
+	service.progress("restarting", "Пробный запуск и проверка API экземпляра")
 	if err = service.runtime.Activate(ctx, candidate.Path, true); err != nil {
 		service.restore(original, wasRunning, err)
 		return
@@ -87,7 +87,7 @@ func (service *Service) prepare(ctx context.Context, tag string, rollback bool, 
 		if reported, err := service.runtime.Probe(ctx, entry.Path); err != nil {
 			return Entry{}, err
 		} else if reported != entry.Version {
-			return Entry{}, errors.New("Сохранённое ядро изменилось: версия для отката не совпадает")
+			return Entry{}, errors.New("Сохранённый экземпляр изменился: версия для отката не совпадает")
 		}
 		return entry, nil
 	}
@@ -118,7 +118,7 @@ func (service *Service) finishError(original State, cause error) {
 	}
 }
 func (service *Service) restore(original State, wasRunning bool, cause error) {
-	service.progress("rolling_back", "Новая версия не прошла проверку. Восстанавливаем предыдущее ядро")
+	service.progress("rolling_back", "Новая версия не прошла проверку. Восстанавливаем предыдущий экземпляр")
 	ctx, cancel := context.WithTimeout(context.Background(), OperationTimeout)
 	defer cancel()
 	if err := service.runtime.Activate(ctx, original.Current.Path, wasRunning); err != nil {
@@ -127,8 +127,8 @@ func (service *Service) restore(original State, wasRunning bool, cause error) {
 	}
 	original.Pending = nil
 	original.Last.Phase = "rolled_back"
-	original.Last.Message = "Предыдущее ядро восстановлено. Причина: " + cause.Error()
+	original.Last.Message = "Предыдущий экземпляр восстановлен. Причина: " + cause.Error()
 	if err := service.commit(original); err != nil {
-		service.progress("failed", "Ядро восстановлено, но состояние не сохранено: "+err.Error())
+		service.progress("failed", "Экземпляр восстановлен, но состояние не сохранено: "+err.Error())
 	}
 }

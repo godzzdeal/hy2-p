@@ -1,3 +1,4 @@
+import { Notice } from "@/components/ui/feedback";
 import { DeviceRow } from "@/components/users/devices/DeviceRow";
 import { useDeviceCommands } from "@/hooks/users/devices/hooks";
 import { MAX_USER_DEVICES, type IDevices } from "@/services/users/devices/types";
@@ -16,9 +17,9 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
   return (
     <div className="user-devices">
       {effectiveLimit !== data.limit && (
-        <p className="config-note">
+        <Notice>
           {t("Действующий лимит с учётом группы:")} {effectiveLimit}
-        </p>
+        </Notice>
       )}
       <form onSubmit={onSubmit}>
         <label>
@@ -40,9 +41,9 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
           {t(commands.limit.isPending ? "Сохраняем…" : "Сохранить лимит устройств")}
         </button>
       </form>
-      <p className="config-note">
+      <Notice>
         {t("После включения лимита обновите подписку в Happ. Одиночные ссылки перестанут работать.")}
-      </p>
+      </Notice>
       <h3>
         {t("Зарегистрированные устройства")}{" "}
         <span className="user-count">{data.devices.filter((item) => !item.blocked).length}</span>

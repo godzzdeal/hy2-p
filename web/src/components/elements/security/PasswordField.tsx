@@ -1,53 +1,78 @@
 import { RefreshCw } from "@/components/elements/icons";
-import { generatePassword } from "@/utils/security/password";
-import { useId } from "react";
+import { Eye } from "pixelarticons/react/Eye.js";
+import { EyeOff } from "pixelarticons/react/EyeOff.js";
+import { generatePassword, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } from "@/utils/security";
+import { useId, useState, type ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
+interface IPasswordField extends Omit<ComponentProps<"input">, "value" | "onChange" | "type" | "children"> {
+  value: string;
+  onChange: (value: string) => void;
+  label?: string;
+  hasLabel?: boolean;
+  canGenerate?: boolean;
+}
+
 export function PasswordField({
-  inputId,
+  id: inputId,
   hasLabel = true,
   value,
   onChange,
   label = "Пароль",
   required = false,
-  minLength = 12,
-}: {
-  inputId?: string;
-  hasLabel?: boolean;
-  value: string;
-  onChange: (value: string) => void;
-  label?: string;
-  required?: boolean;
-  minLength?: number;
-}) {
+  minLength = PASSWORD_MIN_LENGTH,
+  canGenerate = true,
+  autoComplete = "new-password",
+  autoFocus = false,
+  placeholder,
+  maxLength = PASSWORD_MAX_LENGTH,
+  disabled,
+  ...props
+}: IPasswordField) {
   const { t } = useTranslation();
   const generatedId = useId();
   const id = inputId ?? generatedId;
+  const [isVisible, setVisible] = useState(false);
+  const Icon = isVisible ? Eye : EyeOff;
   return (
     <div className="password-field">
       {hasLabel && <label htmlFor={id}>{t(label)}</label>}
       <div className="password-input">
         <input
+          {...props}
           id={id}
-          type="password"
-          autoComplete="new-password"
+          type={isVisible ? "text" : "password"}
+          autoComplete={autoComplete}
+          autoFocus={autoFocus}
+          placeholder={placeholder ? t(placeholder) : undefined}
           value={value}
           required={required}
           minLength={minLength}
-          maxLength={128}
+          maxLength={maxLength}
+          disabled={disabled}
           onChange={(event) => onChange(event.target.value)}
         />
-        <button type="button" className="secondary" onClick={() => onChange(generatePassword())}>
-          <RefreshCw width={24} height={24} aria-hidden />
-          {t("Сгенерировать")}
+        <button
+          type="button"
+          className="icon-btn secondary"
+          aria-label={t(isVisible ? "Скрыть пароль" : "Показать пароль")}
+          aria-pressed={isVisible}
+          disabled={disabled}
+          onClick={() => setVisible(!isVisible)}
+        >
+          <Icon width={24} height={24} aria-hidden />
         </button>
+        {canGenerate && (
+          <button
+            type="button"
+            className="secondary"
+            disabled={disabled || props.readOnly}
+            onClick={() => onChange(generatePassword())}
+          >
+            <RefreshCw width={24} height={24} aria-hidden />
+            {t("Сгенерировать")}
+          </button>
+        )}
       </div>
-      <input
-        className="generated-password"
-        aria-label={t("Значение пароля для копирования")}
-        readOnly
-        value={value}
-        placeholder={t(required ? "Здесь появится созданный пароль" : "Оставьте пустым, чтобы не менять")}
-      />
     </div>
   );
 }

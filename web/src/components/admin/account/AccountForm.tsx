@@ -1,66 +1,56 @@
-import { PasswordField } from "@/components/elements/security/PasswordField";
+import { Form, FormPassword } from "@/components/ui/forms";
+import { SettingsSection } from "@/components/admin/SettingsSection";
 import { AccountRecovery } from "@/components/admin/account/AccountRecovery";
-import { useAccountChange } from "@/hooks/admin/use-admin";
-import { useState, type FormEvent } from "react";
+import { useAccountForm } from "@/hooks/admin/forms";
 import { useTranslation } from "react-i18next";
 export function AccountForm({ username }: { username: string }) {
   const { t } = useTranslation();
-  const [name, setName] = useState(username);
-  const [currentPassword, setCurrent] = useState("");
-  const [password, setPassword] = useState("");
-  const mutation = useAccountChange();
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    mutation.mutate({ username: name, currentPassword, password });
-  }
+  const { form, isPending, onSubmit } = useAccountForm(username);
   return (
-    <form
-      className="card settings-form"
-      onSubmit={onSubmit}
-      id="panel-account"
-      data-scroll-section
-      data-scroll-label={t("Учётная запись администратора")}
-    >
-      <div className="card-header">
-        <h2>{t("Учётная запись администратора")}</h2>
-      </div>
-      <div className="form-body">
-        <label>
-          {t("Логин")}
-          <input
+    <SettingsSection id="panel-account" title={t("Учётная запись администратора")}>
+      <Form form={form} className="settings-form" onSubmit={onSubmit}>
+        <div className="form-body">
+          <label>
+            {t("Логин")}
+            <input
+              required
+              autoComplete="username"
+              minLength={3}
+              maxLength={64}
+              {...form.register("username", {
+                required: t("Заполните это поле"),
+                minLength: 3,
+                maxLength: 64,
+              })}
+            />
+          </label>
+          <FormPassword
+            control={form.control}
+            name="currentPassword"
+            label="Текущий пароль"
             required
-            autoComplete="username"
-            minLength={3}
-            maxLength={64}
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-        </label>
-        <label>
-          {t("Текущий пароль")}
-          <input
-            required
-            type="password"
+            canGenerate={false}
+            minLength={0}
             autoComplete="current-password"
-            value={currentPassword}
-            onChange={(event) => setCurrent(event.target.value)}
           />
-        </label>
-        <PasswordField
-          label={t("Новый пароль (не менее 16 символов)")}
-          value={password}
-          onChange={setPassword}
-        />
-        <p className="caption">
-          {t(
-            "Оставьте новый пароль пустым, чтобы изменить только логин. После сохранения все сессии будут завершены.",
-          )}
-        </p>
-        <button className="primary" disabled={mutation.isPending}>
-          {t("Изменить данные входа")}
-        </button>
-        <AccountRecovery />
-      </div>
-    </form>
+          <FormPassword
+            control={form.control}
+            name="password"
+            label={t("Новый пароль (не менее 16 символов)")}
+            minLength={16}
+            placeholder="Без изменений"
+          />
+          <p className="caption">
+            {t(
+              "Оставьте новый пароль пустым, чтобы изменить только логин. После сохранения все сессии будут завершены.",
+            )}
+          </p>
+          <button className="primary" disabled={isPending}>
+            {t("Изменить данные входа")}
+          </button>
+          <AccountRecovery />
+        </div>
+      </Form>
+    </SettingsSection>
   );
 }

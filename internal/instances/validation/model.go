@@ -21,26 +21,26 @@ type Definition struct {
 
 func Name(name string) error {
 	if strings.TrimSpace(name) == "" || len([]rune(name)) > 100 || strings.ContainsAny(name, "\r\n\t") {
-		return errors.New("Название ядра: от 1 до 100 символов в одной строке")
+		return errors.New("Название экземпляра: от 1 до 100 символов в одной строке")
 	}
 	return nil
 }
 func Definitions(definitions []Definition) error {
 	ids, slots := map[string]bool{}, map[int]bool{}
 	if len(definitions) > MaxInstances {
-		return errors.New("Превышен предел числа ядер")
+		return errors.New("Превышен предел числа экземпляров")
 	}
 	for _, definition := range definitions {
 		if !protocol.InstancePattern.MatchString(definition.ID) || ids[definition.ID] || slots[definition.Slot] ||
 			definition.Slot < 0 || definition.Slot >= MaxInstances || (definition.ID == DefaultID) != (definition.Slot == 0) ||
 			Name(definition.Name) != nil || (definition.ID == DefaultID && definition.Removing) ||
 			(definition.RemovalTicket != "" && !protocol.TicketPattern.MatchString(definition.RemovalTicket)) {
-			return errors.New("Повреждён список ядер: проверьте резервную копию")
+			return errors.New("Повреждён список экземпляров: проверьте резервную копию")
 		}
 		ids[definition.ID], slots[definition.Slot] = true, true
 	}
 	if !ids[DefaultID] {
-		return errors.New("В списке ядер отсутствует основное ядро")
+		return errors.New("В списке экземпляров отсутствует основный экземпляр")
 	}
 	return nil
 }

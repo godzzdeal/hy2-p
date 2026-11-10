@@ -24,10 +24,10 @@ export function UserRow({ user, usage, isTrafficAvailable, onEdit, ...actions }:
     <tr>
       <td>
         <div className="user-identity">
-          <UserAvatar name={user.name} />
+          <UserAvatar name={user.displayName ?? user.name} />
           <div>
             <button className="user-cell" onClick={() => onEdit(user)}>
-              <EmojiText value={user.name.replace(FLAG_PREFIX, "")} />
+              <EmojiText value={(user.displayName ?? user.name).replace(FLAG_PREFIX, "")} />
             </button>
             <div className="user-meta">
               <small>{user.id.slice(0, 8)}</small>

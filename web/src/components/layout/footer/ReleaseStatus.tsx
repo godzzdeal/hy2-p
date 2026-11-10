@@ -24,7 +24,7 @@ export function ReleaseStatus() {
         aria-label={t("Проверить обновления панели")}
       >
         <RefreshCw width={24} height={24} aria-hidden />
-        {t("Проверить")}
+        <span className="footer-check-label">{t("Проверить")}</span>
       </button>
     </div>
   );

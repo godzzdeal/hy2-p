@@ -4,6 +4,7 @@
   "installCommand": "cd web && bunx bun@1.4.3 install --frozen-lockfile",
   "buildCommand": "cd web && bunx bun@1.4.3 run build:demo",
   "outputDirectory": "web/dist-demo",
+  "redirects": [{ "source": "/install.sh", "destination": "https://github.com/godzzdeal/hy2-p/releases/latest/download/install.sh", "permanent": false }],
   "headers": [{ "source": "/(.*)", "headers": [
     { "key": "X-Content-Type-Options", "value": "nosniff" },
     { "key": "Referrer-Policy", "value": "no-referrer" },

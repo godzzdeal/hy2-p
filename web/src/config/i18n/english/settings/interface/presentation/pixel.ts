@@ -12,13 +12,14 @@ export const PIXEL = {
   "Список пользователей обновлён": "User list refreshed",
   "Обновляем…": "Refreshing…",
   "Раздел конфигурации": "Configuration section",
-  "Ядро остановлено.": "Engine stopped.",
-  "Ядро запускается. Проверьте подключение в Happ.": "The engine is starting. Check your connection in Happ.",
+  "Экземпляр остановлен.": "Instance stopped.",
+  "Экземпляр запускается. Проверьте подключение в Happ.":
+    "The instance is starting. Check your connection in Happ.",
   "Конфигурация сохранена": "Configuration saved",
   "Перезапуск включит новые настройки и ненадолго прервёт подключения.":
     "Restarting applies the new settings and briefly interrupts connections.",
-  "Запустите ядро, чтобы включить сервер с сохранёнными настройками.":
-    "Start the engine to run the server with the saved settings.",
+  "Запустите экземпляр, чтобы включить сервер с сохранёнными настройками.":
+    "Start the instance to run the server with the saved settings.",
   "Применяем…": "Applying…",
 
   "Общие настройки": "General settings",
@@ -54,7 +55,7 @@ export const PIXEL = {
   "Порт, к которому подключается Happ. После изменения сохраните и нажмите «Применить UDP-порт».":
     "The port Happ connects to. Save the change, then select Apply UDP port.",
   "Hysteria2 установлен": "Hysteria2 is installed",
-  "Установите Hysteria2 в разделе «Ядро и журнал».": "Install Hysteria2 in Engine and logs.",
-  "Сохранение не прерывает подключения. Чтобы применить настройки, перезапустите ядро.":
-    "Saving keeps connections active. Restart the engine to apply the settings.",
+  "Установите HY2 в разделе «Управление HY2».": "Install Hysteria2 in HY2 control.",
+  "Сохранение не прерывает подключения. Чтобы применить настройки, перезапустите экземпляр.":
+    "Saving keeps connections active. Restart the instance to apply the settings.",
 };

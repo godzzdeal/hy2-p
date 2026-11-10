@@ -1,3 +1,4 @@
+import { Notice } from "@/components/ui/feedback";
 import { JsonField } from "@/components/configuration/structured/fields/JsonField";
 import { OutboundRow } from "@/components/configuration/structured/outbounds/OutboundRow";
 import { useUiStore } from "@/store/ui-store";
@@ -38,9 +39,7 @@ export function OutboundsEditor({
   const entries = isOutboundList(value) ? value : [];
   return (
     <div className="outbounds-editor">
-      <p className="config-note">
-        {t("Исходящие подключения используются в ACL по имени. Порядок списка сохраняется.")}
-      </p>
+      <Notice>{t("Исходящие подключения используются в ACL по имени. Порядок списка сохраняется.")}</Notice>
       {entries.map((entry, index) => (
         <OutboundRow key={index} value={entry} index={index} search={search} onEdit={onEdit} />
       ))}

@@ -2,6 +2,7 @@ import { API_ROUTES } from "@/config/network";
 import { request } from "@/services/http/client";
 
 export interface IAnnouncement {
+  defaultUserFlag?: string;
   profileTitle?: string;
   enabled: boolean;
   text: string;

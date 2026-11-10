@@ -21,21 +21,28 @@ export function CertificateFields({
           value={value.mode}
           onValueChange={(nextValue) => onChange({ ...value, mode: nextValue as IWebConfig["mode"] })}
         >
-          <SelectOption value="http">{t("HTTP через обратный прокси или локально")}</SelectOption>
+          <SelectOption value="http">{t("HTTP без сертификата")}</SelectOption>
           <SelectOption value="manual">{t("HTTPS со своим сертификатом")}</SelectOption>
           <SelectOption value="acme">{t("HTTPS с автоматическим сертификатом")}</SelectOption>
         </Select>
       </label>
       {value.mode !== "http" && (
         <label>
-          {t("Домен веб-панели")}
+          {t("Домен или IP веб-панели")}
           <input
             required
-            placeholder="panel.example.com"
+            placeholder="panel.example.com / 203.0.113.10"
             value={value.domain}
             onChange={(event) => onChange({ ...value, domain: event.target.value })}
           />
         </label>
+      )}
+      {value.mode === "http" && (
+        <p className="caption">
+          {t(
+            "Домен и сертификат не нужны. Для входа по IP укажите публичный URL с http://. Соединение HTTP не зашифровано.",
+          )}
+        </p>
       )}
       {value.mode === "manual" && (
         <>
@@ -77,7 +84,7 @@ export function CertificateFields({
             />
             <small>
               {t(
-                "Снаружи домен должен направлять HTTP-порт 80 на этот порт. DNS A/AAAA должны вести на сервер.",
+                "Входящий TCP 80 должен вести на этот порт. Для домена проверьте DNS, для IP укажите публичный адрес сервера.",
               )}
             </small>
           </label>
@@ -95,7 +102,12 @@ export function CertificateFields({
           </a>
           <p className="caption">
             {t(
-              "Сертификат выпускается при первом HTTPS-подключении и продлевается автоматически. Кеш ACME сохраняется на постоянном томе.",
+              "Сертификат выпускается и продлевается автоматически. Кеш ACME сохраняется на постоянном томе.",
+            )}
+          </p>
+          <p className="caption">
+            {t(
+              "Для публичного IP используется сертификат Let's Encrypt на 160 часов. Панель автоматически продлевает его; TCP 80 должен оставаться доступным.",
             )}
           </p>
         </>

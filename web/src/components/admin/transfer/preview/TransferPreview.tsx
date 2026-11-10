@@ -1,4 +1,5 @@
 import { TransferRow } from "@/components/admin/transfer/preview/TransferRow";
+import { Pagination } from "@/components/ui/Pagination";
 import { NETWORK } from "@/config/network";
 import { type ITransferPreview } from "@/services/admin/transfer/api";
 import { useState } from "react";
@@ -19,29 +20,7 @@ export function TransferPreview({ value }: { value: ITransferPreview }) {
           <TransferRow key={row.kind + row.id} row={row} />
         ))}
       </ul>
-      {pages > 1 && (
-        <div className="row-actions">
-          <button
-            type="button"
-            className="secondary"
-            disabled={current === 0}
-            onClick={() => setPage(current - 1)}
-          >
-            {t("Назад")}
-          </button>
-          <span>
-            {current + 1} / {pages}
-          </span>
-          <button
-            type="button"
-            className="secondary"
-            disabled={current + 1 === pages}
-            onClick={() => setPage(current + 1)}
-          >
-            {t("Далее")}
-          </button>
-        </div>
-      )}
+      <Pagination page={current} pageCount={pages} onChange={setPage} />
     </div>
   );
 }

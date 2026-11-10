@@ -1,9 +1,11 @@
+import { expandSettings } from "../../../fixtures";
 import { expect, test } from "@playwright/test";
 import { CLOUD_PASSWORD, MAIN_PASSWORD, mockCloud, signIn } from "./fixture";
 
 test("cloud settings confirm the password and require both steps after enabling", async ({ page }, info) => {
   const fixture = await mockCloud(page, false, true);
   await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
   const section = page.locator("#cloud-password");
   await section.getByLabel("Основной пароль", { exact: true }).fill(MAIN_PASSWORD);
   await section.getByLabel("Новый облачный пароль", { exact: true }).fill(CLOUD_PASSWORD);
@@ -23,6 +25,7 @@ test("cloud settings confirm the password and require both steps after enabling"
 test("disabling cloud password requires the current cloud password", async ({ page }) => {
   const fixture = await mockCloud(page, true, true);
   await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
   const section = page.locator("#cloud-password");
   await section.getByLabel("Основной пароль", { exact: true }).fill(MAIN_PASSWORD);
   await section.getByLabel("Текущий облачный пароль", { exact: true }).fill(CLOUD_PASSWORD);
@@ -38,6 +41,7 @@ test("disabling cloud password requires the current cloud password", async ({ pa
 test("cloud password content has padding and its reset command can be copied", async ({ page }, info) => {
   await mockCloud(page, false, true);
   await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
   const section = page.locator("#cloud-password");
   const geometry = await section.locator(".form-body").evaluate(element => {
     const rect = element.getBoundingClientRect();

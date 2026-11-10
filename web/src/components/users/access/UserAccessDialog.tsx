@@ -1,6 +1,7 @@
+import { Notice } from "@/components/ui/feedback";
 import { EmojiText } from "@/components/elements/emoji/text/EmojiText";
 import { Modal } from "@/components/ui/modal/Modal";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { AccessForm } from "@/components/users/access/AccessForm";
 import { useGroups } from "@/hooks/groups/hooks";
 import { useInstances } from "@/hooks/instances/use-instances";
@@ -14,14 +15,14 @@ export function UserAccessDialog({ user, onClose }: { user: IUser; onClose: () =
   const groups = useGroups();
   const group = groups.data?.groups?.find((item) => item.id === groups.data?.memberships?.[user.id]);
   return (
-    <Modal title={t("Доступные ядра")} onClose={onClose}>
+    <Modal title={t("Доступные экземпляры")} onClose={onClose}>
       <p className="muted">
-        <EmojiText value={t("Пользователь: {{name}}", { name: user.name })} />
+        <EmojiText value={t("Пользователь: {{name}}", { name: user.displayName ?? user.name })} />
       </p>
       {group && (
-        <p className="config-note">
-          {t("Группа дополнительно ограничивает доступные ядра:")} {group.name}
-        </p>
+        <Notice>
+          {t("Группа дополнительно ограничивает доступные экземпляры:")} {group.name}
+        </Notice>
       )}
       <QueryState isLoading={access.isPending || cores.isPending} error={access.error || cores.error} />
       {(access.error || cores.error) && (

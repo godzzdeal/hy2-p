@@ -123,12 +123,8 @@ func (handler *Handler) KickIdentity(id string) {
 	statistics.Client{Address: handler.StatsURL(), Secret: handler.Secret}.KickIdentity(context.Background(), id)
 }
 
-func (handler *Handler) ExpiryLoop(ctx context.Context) {
-	supervision.ExpiryLoop(ctx, handler.DB, handler.Running, handler.Kick)
-}
-
 const HealthWindow = 3 * time.Second
 const HealthPoll = 200 * time.Millisecond
 const HealthRequestTimeout = time.Second
 
-var versionExpression = regexp.MustCompile("(?:app/)?v2\\.[0-9]+\\.[0-9]+")
+var versionExpression = regexp.MustCompile(`(?:app/)?v2\.[0-9]+\.[0-9]+`)

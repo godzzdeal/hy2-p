@@ -34,14 +34,33 @@
     z-index: var(--layer-feedback);
     box-shadow: 0 var(--space-2) var(--space-8) var(--shadow);
   }
-  .info-note {
-    padding: var(--space-6);
+  .notice {
+    display: grid;
+    gap: var(--space-2);
+    min-width: 0;
+    padding: var(--space-4);
+    margin-block: var(--space-4);
     border: 1px solid var(--line);
+    border-left: var(--space-1) solid var(--accent);
     border-radius: var(--radius-md);
     background: var(--surface-soft);
+    overflow-wrap: anywhere;
   }
-  .info-note p {
-    margin-top: var(--space-2);
-    color: var(--muted);
+  .notice:first-child {
+    margin-top: 0;
+  }
+  .notice:last-child {
+    margin-bottom: 0;
+  }
+  .notice p {
+    margin: 0;
+  }
+  .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
   }
 }

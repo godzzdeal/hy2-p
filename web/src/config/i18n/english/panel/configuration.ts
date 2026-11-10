@@ -6,12 +6,13 @@ export const DOCUMENTATION = {
   "Свойства не найдены. Попробуйте имя из документации.":
     "No properties found. Try a property name from the documentation.",
   "По умолчанию: {{value}}": "Default: {{value}}",
-  "Это свойство задаёт панель при запуске ядра.": "The panel sets this property when starting the engine.",
+  "Это свойство задаёт панель при запуске экземпляра.":
+    "The panel sets this property when starting the instance.",
   "Выберите «Настройки Hysteria2», чтобы редактировать auth.": "Select Hysteria2 settings to edit auth.",
   "Выберите соответствующий режим TLS / ACME.": "Select the matching TLS / ACME mode.",
   "SNI совпадает с адресом": "SNI matches server address",
-  "Mimic требует отдельной установки программы и модуля Linux. Обычный контейнер панели не получает права root для ядра.":
-    "Mimic requires its program and Linux module to be installed separately. The standard panel container does not run the engine as root.",
+  "Mimic требует отдельной установки программы и модуля Linux. Обычный контейнер панели не получает права root для экземпляра.":
+    "Mimic requires its program and Linux module to be installed separately. The standard panel container does not run the instance as root.",
   "Список STUN-серверов": "STUN server list",
   "Таймаут STUN": "STUN timeout",
   "Таймаут hole punching": "Hole punching timeout",
@@ -20,8 +21,8 @@ export const DOCUMENTATION = {
   "Семейство IP для NAT traversal": "IP family for NAT traversal",
   "Таймаут запроса к шлюзу": "Gateway request timeout",
   "Время аренды порта": "Port lease lifetime",
-  "Панель задаёт адрес статистики при запуске ядра.":
-    "The panel sets the statistics address when starting the engine.",
+  "Панель задаёт адрес статистики при запуске экземпляра.":
+    "The panel sets the statistics address when starting the instance.",
   "Панель создаёт секрет статистики автоматически.":
     "The panel generates the statistics secret automatically.",
   "Удалить подключение": "Remove outbound",

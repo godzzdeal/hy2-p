@@ -1,5 +1,6 @@
+import { Notice } from "@/components/ui/feedback";
 import { CertificateRow } from "@/components/configuration/structured/CertificateRow";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { useCertificates } from "@/hooks/configuration/use-certificates";
 import { useTranslation } from "react-i18next";
 export function CertificateStatus() {
@@ -18,9 +19,9 @@ export function CertificateStatus() {
         <CertificateRow key={certificate.path} certificate={certificate} />
       ))}
       {query.data?.certificates.length === 0 && (
-        <p className="config-note">
-          {t("Сертификаты пока не найдены. Для ACME проверьте запуск ядра, DNS и журнал выдачи.")}
-        </p>
+        <Notice>
+          {t("Сертификаты пока не найдены. Для ACME проверьте запуск экземпляра, DNS и журнал выдачи.")}
+        </Notice>
       )}
     </section>
   );

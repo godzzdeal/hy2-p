@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { chooseTheme, mockPanel } from "../fixtures";
+import { chooseTheme, expandSettings, mockPanel } from "../fixtures";
 const LATEST = {
   current: "v0.2.1",
   latest: "v0.5.0",
@@ -8,6 +8,25 @@ const LATEST = {
   publishedAt: "2026-11-06T00:00:00Z",
   checkedAt: "2026-11-06T01:00:00Z",
 };
+test("expanded settings keep hidden selects inside the content and footer at the viewport edge", async ({ page }, info) => {
+  if (info.project.name === "desktop") await page.setViewportSize({ width: 1024, height: 800 });
+  await mockPanel(page);
+  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
+  const footer = page.getByRole("contentinfo");
+  const initial = (await footer.boundingBox())!;
+  await expect(page.locator('.content select[aria-hidden="true"]').first()).toBeAttached();
+  expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBeLessThanOrEqual(page.viewportSize()!.height);
+  await page.locator(".content").evaluate(element => element.scrollTo(0, element.scrollHeight));
+  await page.mouse.move(initial.x + initial.width / 2, initial.y + initial.height / 2);
+  await page.mouse.wheel(0, 1600);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
+  const bounds = (await footer.boundingBox())!;
+  expect(bounds.y).toBe(initial.y);
+  expect(Math.abs(bounds.y + bounds.height - page.viewportSize()!.height)).toBeLessThanOrEqual(1);
+  expect(await page.locator(".content").evaluate(element => element.scrollTop)).toBeGreaterThan(0);
+  await page.screenshot({ path: info.outputPath("footer-scroll.png") });
+});
 test("the branded footer fits both themes and links to the project and author", async ({ page }, info) => {
   await mockPanel(page);
   const footer = page.getByRole("contentinfo");

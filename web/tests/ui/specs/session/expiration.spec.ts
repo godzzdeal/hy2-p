@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { expandSettings } from "../../fixtures";
 import { mockSession } from "./fixture";
 
 test("an expired session returns to login and can authenticate again", async ({ page }) => {
@@ -34,6 +35,7 @@ test("changing credentials returns to login without hanging", async ({ page }) =
     await route.fulfill({ json: { username: "owner", loginRequired: true } });
   });
   await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
   await page.getByLabel("Логин", { exact: true }).fill("owner");
   await page.getByLabel("Текущий пароль", { exact: true }).fill("test-password-only");
   await page.getByRole("button", { name: "Изменить данные входа", exact: true }).click();

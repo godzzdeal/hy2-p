@@ -1,0 +1,101 @@
+// Match the cascade level of CodeMirror's injected base styles.
+.yaml-code .cm-editor {
+  height: 100%;
+  color: var(--foreground);
+  background: var(--input);
+  font: var(--text-code)/1.6 var(--font-mono);
+}
+.yaml-code .cm-scroller {
+  overflow: auto;
+  font-family: var(--font-mono);
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+.yaml-code .cm-content {
+  padding-block: var(--space-4);
+  caret-color: var(--foreground);
+}
+.yaml-code .cm-line {
+  padding-inline: var(--space-4);
+}
+.yaml-code .cm-gutters {
+  background: var(--surface);
+  color: var(--muted);
+  border-color: var(--line);
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
+}
+.yaml-code .cm-activeLine,
+.yaml-code .cm-activeLineGutter {
+  background: var(--surface-soft);
+}
+.yaml-code .cm-cursor {
+  border-color: var(--foreground);
+}
+.yaml-code .cm-selectionBackground,
+.yaml-code .cm-editor.cm-focused .cm-selectionBackground {
+  background: var(--editor-selection);
+}
+.yaml-code .cm-searchMatch {
+  background: var(--editor-selection);
+  outline: 1px solid var(--accent);
+}
+.yaml-code .cm-panels,
+.yaml-code .cm-tooltip {
+  color: var(--foreground);
+  background: var(--surface);
+  border-color: var(--line);
+  font-family: var(--font-mono);
+}
+.yaml-code .cm-search {
+  padding: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.yaml-code .cm-search label {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.yaml-code .cm-search input:not([type="checkbox"]) {
+  width: 160px;
+  font: var(--text-code)/1.5 var(--font-mono);
+  min-height: var(--space-8);
+  margin: 0;
+}
+.yaml-code .cm-search button {
+  font-family: var(--font-body);
+  background: var(--surface-soft);
+  color: var(--foreground);
+  border: 1px solid var(--line);
+}
+.yaml-code .cm-search input[type="checkbox"] {
+  width: var(--space-6);
+  margin: 0;
+}
+.yaml-code .yaml-key {
+  color: var(--accent);
+}
+.yaml-code .yaml-string {
+  color: var(--syntax-string);
+}
+.yaml-code .yaml-number {
+  color: var(--syntax-number);
+}
+.yaml-code .yaml-comment,
+.yaml-code .yaml-punctuation {
+  color: var(--muted);
+}
+.yaml-code .cm-lineNumbers .cm-gutterElement {
+  min-width: var(--space-12);
+  padding-inline: var(--space-3);
+  text-align: right;
+}
+.yaml-code .cm-activeLineGutter {
+  color: var(--accent);
+  font-weight: 600;
+  box-shadow: inset var(--space-1) 0 var(--accent);
+}

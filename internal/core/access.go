@@ -64,7 +64,7 @@ func (handler *Handler) Activate(ctx context.Context, path string, run bool) err
 		case <-ticker.C:
 		}
 		if !handler.Running() {
-			return errors.New("новое ядро завершилось во время проверки")
+			return errors.New("новый экземпляр завершился во время проверки")
 		}
 		request, err := http.NewRequestWithContext(ctx, "GET", handler.StatsURL()+"/online", nil)
 		if err != nil {

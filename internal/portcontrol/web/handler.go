@@ -42,7 +42,7 @@ func (handler *Handler) Apply(w http.ResponseWriter, r *http.Request) {
 	// UDP preflight still checks the mapping before normal startup is allowed.
 	if (handler.Core.Running() || handler.Core.Watchdog.Snapshot().DesiredRunning) &&
 		(!handler.Core.PortChangesOnly(settings) || !handler.Core.Healthy(r.Context())) {
-		transport.Fail(w, errors.New("Остановите ядро или примените остальные настройки его перезапуском"), 409)
+		transport.Fail(w, errors.New("Остановите экземпляр или примените остальные настройки его перезапуском"), 409)
 		return
 	}
 	input.InstanceID = handler.InstanceID

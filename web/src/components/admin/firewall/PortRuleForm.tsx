@@ -1,7 +1,7 @@
-import { Select } from "@/components/ui/select/Select";
+import { Form, FormSelect } from "@/components/ui/forms";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { type IPortRule } from "@/services/admin/firewall/api";
-import { useState, type FormEvent } from "react";
+import { useRuleForm } from "@/hooks/admin/firewall/use-rule-form";
 import { useTranslation } from "react-i18next";
 export function PortRuleForm({
   isPending,
@@ -11,17 +11,9 @@ export function PortRuleForm({
   onApply: (rule: IPortRule) => void;
 }) {
   const { t } = useTranslation();
-  const [port, setPort] = useState("");
-  const [protocol, setProtocol] = useState<"tcp" | "udp">("tcp");
-  const [action, setAction] = useState<"allow" | "deny">("allow");
-  function onSubmit(event: FormEvent) {
-    event.preventDefault();
-    if (action === "deny" && !window.confirm(t("Закрыть порт? Существующие подключения могут прерваться.")))
-      return;
-    onApply({ port: Number(port), protocol, action });
-  }
+  const { form, onSubmit } = useRuleForm(onApply);
   return (
-    <form onSubmit={onSubmit}>
+    <Form form={form} onSubmit={onSubmit}>
       <div className="field-grid">
         <label>
           {t("Порт")}
@@ -30,41 +22,28 @@ export function PortRuleForm({
             min={1}
             max={65535}
             required
-            value={port}
-            onChange={(event) => setPort(event.target.value)}
+            {...form.register("port", { valueAsNumber: true, required: true, min: 1, max: 65535 })}
             disabled={isPending}
           />
         </label>
         <label>
           {t("Протокол")}
-          <Select
-            value={protocol}
-            onValueChange={(value) => {
-              if (value === "tcp" || value === "udp") setProtocol(value);
-            }}
-            disabled={isPending}
-          >
+          <FormSelect control={form.control} name="protocol" label={t("Протокол")} disabled={isPending}>
             <SelectOption value="tcp">TCP</SelectOption>
             <SelectOption value="udp">UDP</SelectOption>
-          </Select>
+          </FormSelect>
         </label>
         <label>
           {t("Действие")}
-          <Select
-            value={action}
-            onValueChange={(value) => {
-              if (value === "allow" || value === "deny") setAction(value);
-            }}
-            disabled={isPending}
-          >
+          <FormSelect control={form.control} name="action" label={t("Действие")} disabled={isPending}>
             <SelectOption value="allow">{t("Открыть порт")}</SelectOption>
             <SelectOption value="deny">{t("Закрыть порт")}</SelectOption>
-          </Select>
+          </FormSelect>
         </label>
       </div>
       <button className="primary" disabled={isPending}>
         {t(isPending ? "Применяем…" : "Применить правило")}
       </button>
-    </form>
+    </Form>
   );
 }

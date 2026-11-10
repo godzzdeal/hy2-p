@@ -6,10 +6,17 @@ export async function request<T>(path: string, options: IRequest = {}): Promise<
   try {
     response = await fetch("/api" + path, {
       method: options.method ?? "GET",
+      signal: options.signal,
       headers: { "Content-Type": "application/json", "X-Panel-Request": "1" },
       body: options.body === undefined ? undefined : JSON.stringify(options.body),
     });
   } catch {
+    if (
+      options.signal?.aborted &&
+      options.signal.reason instanceof Error &&
+      options.signal.reason.name === "AbortError"
+    )
+      throw options.signal.reason;
     throw new ApiError("Панель недоступна. Проверьте соединение и повторите действие.", 0);
   }
   let data: unknown;

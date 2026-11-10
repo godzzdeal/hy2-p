@@ -77,6 +77,11 @@ wait_healthy() {
   done
   return 1
 }
+restart_panel() {
+  sync_listener "$1" || return 1
+  if [[ $2 == restart-panel ]]; then compose "$1" stop panel || return 1; fi
+  compose "$1" up -d --no-build --pull never --no-deps panel && wait_healthy "$1"
+}
 start_release() {
   local before
   compose "$1" up -d --no-build --pull never && wait_healthy "$1" || return 1

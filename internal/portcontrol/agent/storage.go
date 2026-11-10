@@ -1,6 +1,8 @@
 package agent
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/transport"
@@ -96,4 +98,12 @@ func prune(directory string) {
 	for _, entry := range entries[:len(entries)-retainedOperations] {
 		os.Remove(filepath.Join(directory, entry.Name()))
 	}
+}
+
+func randomToken() string {
+	var data [16]byte
+	if _, err := rand.Read(data[:]); err != nil {
+		panic(err)
+	}
+	return hex.EncodeToString(data[:])
 }

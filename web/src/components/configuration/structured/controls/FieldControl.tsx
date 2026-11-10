@@ -23,7 +23,7 @@ export function FieldControl({
   if (field.kind === "password")
     return (
       <PasswordField
-        inputId={id}
+        id={id}
         hasLabel={false}
         minLength={0}
         label={t(field.label)}

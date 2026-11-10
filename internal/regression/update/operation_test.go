@@ -34,6 +34,16 @@ func newService(t *testing.T, runtime *testRuntime, source *testSource) *update.
 	}
 	return service
 }
+func writeState(t *testing.T, path string, state update.State) {
+	t.Helper()
+	payload, err := json.Marshal(state)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(path, payload, 0600); err != nil {
+		t.Fatal(err)
+	}
+}
 func TestSuccessfulUpdateAndManualRollback(t *testing.T) {
 	runtime := &testRuntime{isRunning: true, path: "original"}
 	service := newService(t, runtime, &testSource{})
@@ -83,8 +93,7 @@ func TestInterruptedUpdateChoosesConfirmedVersion(t *testing.T) {
 	directory := t.TempDir()
 	os.MkdirAll(filepath.Join(directory, "core"), 0700)
 	state := update.State{Current: update.Entry{Path: "original", Version: "app/v2.12.3"}, Pending: &update.Entry{Path: "candidate", Version: "app/v2.13.0"}}
-	payload, _ := json.Marshal(state)
-	os.WriteFile(filepath.Join(directory, "core", "state.json"), payload, 0600)
+	writeState(t, filepath.Join(directory, "core", "state.json"), state)
 	runtime := &testRuntime{}
 	service, err := update.New(directory, "original", runtime, &testSource{})
 	if err != nil {

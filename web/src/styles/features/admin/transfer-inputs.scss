@@ -1,25 +1,6 @@
 @layer components {
   .configuration-file {
-    display: grid;
-    gap: var(--space-3);
-    padding: var(--space-4);
-    border: 1px solid var(--line);
-    background: var(--surface);
     margin-block: var(--space-4);
-  }
-  .configuration-file input {
-    min-width: 0;
-    width: 100%;
-  }
-  .transfer-file input::file-selector-button,
-  .configuration-file input::file-selector-button {
-    font: inherit;
-    color: var(--foreground);
-    background: var(--surface-soft);
-    border: 1px solid var(--line);
-    padding: var(--space-1) var(--space-2);
-    margin-right: var(--space-2);
-    cursor: pointer;
   }
   .transfer-form > .row-actions {
     align-items: end;
@@ -27,17 +8,5 @@
   .notifications {
     max-height: calc(100dvh - var(--space-8));
     overflow-y: auto;
-  }
-}
-@layer components {
-  .transfer-form > .row-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: end;
-  }
-  @media (max-width: 760px) {
-    .transfer-form > .row-actions {
-      grid-template-columns: minmax(0, 1fr);
-    }
   }
 }

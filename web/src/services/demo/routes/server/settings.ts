@@ -30,6 +30,7 @@ export function demoSettings(path: string, instanceId: string, { method = "GET",
     return {
       mode: "acme",
       automaticRenewal: true,
+      pinSHA256: "ab".repeat(32),
       certificates: [
         {
           path: "/data/acme/demo.crt",

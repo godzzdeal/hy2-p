@@ -3,8 +3,8 @@ export const ENGINE: Record<string, string> = {
     ". Access is blocked when the quota is exhausted until you increase it or reset the counters.",
   "; ошибка сохранения: ": "; could not save: ",
   "ACL и исходящие подключения": "ACL and outbounds",
-  "ACME продлевает сертификаты, пока ядро работает. DNS-проверка не занимает порты 80/443 и удобна, если на них работает веб-панель.":
-    "Hysteria2 renews ACME certificates while the engine is running. DNS validation leaves ports 80/443 available for the web panel.",
+  "ACME продлевает сертификаты, пока экземпляр работает. DNS-проверка не занимает порты 80/443 и удобна, если на них работает веб-панель.":
+    "Hysteria2 renews ACME certificates while the instance is running. DNS validation leaves ports 80/443 available for the web panel.",
   "ACME: выпуск и автопродление": "ACME: issuance and renewal",
   "API статистики недоступен": "Statistics API unavailable",
   "CA клиентских сертификатов (mTLS)": "Client certificate CA (mTLS)",
@@ -32,20 +32,20 @@ export const ENGINE: Record<string, string> = {
   "URL внешней HTTP-аутентификации": "External HTTP authentication URL",
   "URL сайта маскировки": "Masquerade website URL",
   "Watchdog активен": "Watchdog active",
-  "Watchdog восстановил предыдущее ядро после неудачных перезапусков":
-    "Watchdog restored the previous engine after failed restart attempts",
+  "Watchdog восстановил предыдущий экземпляр после неудачных перезапусков":
+    "Watchdog restored the previous instance after failed restart attempts",
   "Watchdog ожидает запуска": "Watchdog waiting for startup",
   "Watchdog откатывает версию": "Watchdog is rolling back",
-  "Watchdog перезапускает ядро": "Watchdog is restarting the engine",
+  "Watchdog перезапускает экземпляр": "Watchdog is restarting the instance",
   "Watchdog следит за процессом": "Watchdog is monitoring the process",
-  "Watchdog: перезапуски не помогли, восстанавливаем предыдущее ядро":
-    "Watchdog: restarts failed; restoring the previous engine",
+  "Watchdog: перезапуски не помогли, восстанавливаем предыдущий экземпляр":
+    "Watchdog: restarts failed; restoring the previous instance",
   "XDP-режим": "XDP mode",
   "tls и acme нельзя использовать одновременно": "tls and acme cannot be used together",
   "» и его подписка будут удалены без возможности восстановления.":
     "” and their subscription will be permanently deleted.",
-  "Автовосстановление выключено: ядро остановлено вручную":
-    "Automatic recovery disabled: engine stopped manually",
+  "Автовосстановление выключено: экземпляр остановлен вручную":
+    "Automatic recovery disabled: instance stopped manually",
   Администратор: "Administrator",
   "Адрес DNS ": "DNS address ",
   "Адрес веб-панели": "Web panel bind address",
@@ -101,6 +101,6 @@ export const ENGINE: Record<string, string> = {
   "Для mTLS требуется клиентский сертификат; экспорт ссылки недоступен":
     "mTLS requires a client certificate; a connection URL cannot be exported",
   "Для отката": "Rollback version",
-  "Для проверки нужен рабочий TLS-конфиг. Даже остановленное ядро будет запущено на время проверки, затем остановлено снова.":
-    "A working TLS configuration is required. A stopped engine will be started for the trial and stopped again afterwards.",
+  "Для проверки нужен рабочий TLS-конфиг. Даже остановленный экземпляр будет запущен на время проверки, затем остановлен снова.":
+    "A working TLS configuration is required. A stopped instance will be started for the trial and stopped again afterwards.",
 };

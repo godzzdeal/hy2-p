@@ -1,5 +1,5 @@
 import { Dashboard } from "@/components/layout/Dashboard";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { useInstall } from "@/hooks/install/use-install";
 import { useSession } from "@/hooks/session/use-session";
 import { useTheme } from "@/hooks/use-theme";
@@ -8,7 +8,7 @@ export function App() {
   useTheme();
   useInstall();
   const session = useSession();
-  if (session.isLoading) return <QueryState isLoading />;
+  if (session.isLoading) return <QueryState isLoading className="startup-loader" />;
   if (session.error) return <QueryState isLoading={false} error={session.error} />;
   return <>{session.isAuthorized ? <Dashboard /> : <LoginPage />}</>;
 }

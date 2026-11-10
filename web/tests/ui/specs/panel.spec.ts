@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { chooseTheme, mockPanel } from "../fixtures";
+import { expandSettings, chooseTheme, mockPanel } from "../fixtures";
 test("phone installation metadata and manual steps are available", async ({ page }) => {
   await mockPanel(page);
   await expect(page.getByRole("link", { name: "GitHub", exact: true })).toHaveAttribute(
@@ -15,6 +15,7 @@ test("phone installation metadata and manual steps are available", async ({ page
   expect(manifest.icons.map((icon) => icon.sizes)).toContain("192x192");
   expect(manifest.icons.map((icon) => icon.sizes)).toContain("512x512");
   await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
   await page.getByRole("button", { name: "Установить панель", exact: true }).click();
   const help = page.getByRole("dialog", { name: "Панель на главном экране", exact: true });
   await expect(help).toContainText("Safari");
@@ -33,10 +34,11 @@ test("the install button uses the browser prompt and installed event", async ({ 
     window.dispatchEvent(event);
   });
   await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
   await page.getByRole("button", { name: "Установить панель", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("data-install-prompt-called", "true");
   await page.evaluate(() => window.dispatchEvent(new Event("appinstalled")));
-  await expect(page.getByText("Панель уже установлена", { exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Установить панель", exact: true })).toHaveCount(0);
 });
 test("login has a simple password label and accessible language choice", async ({ page }, info) => {
   await mockPanel(page, false);
@@ -53,8 +55,8 @@ test("login has a simple password label and accessible language choice", async (
 
 test("logs support Unicode, search, level filters, pause and clearing", async ({ page }, info) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Ядро и журнал", exact: true }).click();
-  const region = page.getByRole("region", { name: "Сообщения ядра" });
+  await page.getByRole("button", { name: "Управление HY2", exact: true }).click();
+  const region = page.getByRole("region", { name: "Сообщения экземпляра" });
   expect(await region.evaluate((element) => getComputedStyle(element).fontFamily)).toContain("Epilepsy Sans");
   await expect(region).toContainText("Сертификат обновлён ✓");
   await page.getByRole("searchbox", { name: "Поиск в журнале" }).fill("ACME");
@@ -73,6 +75,7 @@ test("logs support Unicode, search, level filters, pause and clearing", async ({
 test("the panel displays the server build version", async ({ page }) => {
   await mockPanel(page);
   await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
   await expect(page.getByRole("status", { name: "Версия панели" }).last()).toHaveText("v0.2.1");
   await expect(page.getByRole("status", { name: "Версия панели" }).last()).toHaveAttribute(
     "title",
@@ -99,6 +102,7 @@ test("pixel themes and the emoji menu work with keyboard navigation", async ({ p
     );
   }
   await page.getByRole("button", { name: "Подписки", exact: true }).click();
+  await expandSettings(page);
   await page.getByRole("button", { name: "Выбрать эмодзи", exact: true }).click();
   await page.getByLabel("Поиск эмодзи", { exact: true }).fill("ракета");
   await page.getByRole("gridcell", { name: "ракета", exact: true }).focus();

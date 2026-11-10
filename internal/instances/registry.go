@@ -30,7 +30,7 @@ func (registry *Registry) Add(name string, settings configuration.Settings) (*In
 		return nil, err
 	}
 	if len(registry.definitions) >= MaxInstances {
-		return nil, errors.New("Достигнут предел: 8 ядер")
+		return nil, errors.New("Достигнут предел: 8 экземпляров")
 	}
 	slot := 1
 	used := map[int]bool{}
@@ -71,7 +71,13 @@ func (registry *Registry) Add(name string, settings configuration.Settings) (*In
 		return nil, err
 	}
 	registry.attach(instance)
-	return instance, nil
+	return snapshot(instance), nil
+}
+
+// Copy mutable registry metadata while its lock is held; runtimes remain shared.
+func snapshot(instance *Instance) *Instance {
+	result := *instance
+	return &result
 }
 
 func (registry *Registry) Remove(ctx context.Context, id string) (*protocol.Status, error) {
@@ -79,10 +85,10 @@ func (registry *Registry) Remove(ctx context.Context, id string) (*protocol.Stat
 	defer registry.mu.Unlock()
 	instance := registry.instances[id]
 	if id == DefaultID || instance == nil {
-		return nil, errors.New("Основное ядро нельзя удалить")
+		return nil, errors.New("Основный экземпляр нельзя удалить")
 	}
 	if instance.Core.Running() || instance.Core.Watchdog.Snapshot().DesiredRunning || instance.Core.Updates.Snapshot().Busy {
-		return nil, errors.New("Сначала остановите ядро и дождитесь завершения его обновления")
+		return nil, errors.New("Сначала остановите экземпляр и дождитесь завершения его обновления")
 	}
 	public, target := deployment.Published(id)
 	if public == "" && !instance.Removing {

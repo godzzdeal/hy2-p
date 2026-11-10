@@ -1,18 +1,17 @@
+import { Notice } from "@/components/ui/feedback";
 import { useCoreTools } from "@/hooks/configuration/tools/use-core-tools";
-import { useUiStore } from "@/store/ui-store";
-import { copyValue } from "@/utils/clipboard";
+import { CopyButton } from "@/components/elements/copy";
 import { useTranslation } from "react-i18next";
 export function StatsSecret() {
   const { t } = useTranslation();
   const { stats } = useCoreTools();
-  const { notify, showError } = useUiStore();
   return (
     <section className="configuration-tools">
-      <p className="config-note">
+      <Notice>
         {t(
-          "Панель задаёт trafficStats.listen и trafficStats.secret при запуске ядра. Ниже можно получить фактические значения панели.",
+          "Панель задаёт trafficStats.listen и trafficStats.secret при запуске экземпляра. Ниже можно получить фактические значения панели.",
         )}
-      </p>
+      </Notice>
       <button
         type="button"
         className="secondary"
@@ -27,7 +26,11 @@ export function StatsSecret() {
             {t("Адрес статистики")}: {stats.data.listen}
           </p>
           <p className="caption">
-            {t(stats.data.running ? "Ядро запущено" : "Ядро остановлено. Значения применятся при запуске.")}
+            {t(
+              stats.data.running
+                ? "Экземпляр запущен"
+                : "Экземпляр остановлен. Значения применятся при запуске.",
+            )}
           </p>
           <label>
             trafficStats.secret
@@ -39,17 +42,7 @@ export function StatsSecret() {
               spellCheck={false}
             />
           </label>
-          <button
-            type="button"
-            className="secondary"
-            onClick={() =>
-              void copyValue(stats.data!.secret)
-                .then(() => notify("Скопировано"))
-                .catch(showError)
-            }
-          >
-            {t("Скопировать секрет")}
-          </button>
+          <CopyButton value={stats.data.secret} label="Скопировать секрет" />
         </>
       )}
       <p className="caption">

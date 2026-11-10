@@ -11,6 +11,7 @@ import (
 )
 
 const Format = "hy2-p/1"
+const ExcludeProfile = "skip"
 const MaxUsers = 10000
 const MaxBytes = 16 << 20
 const OperationTimeout = 5 * time.Minute

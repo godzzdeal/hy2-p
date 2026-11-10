@@ -1,8 +1,9 @@
 import { expect, test } from "@playwright/test";
-import { mockPanel } from "../../fixtures";
+import { expandSettings, mockPanel } from "../../fixtures";
 test("announcement checkbox supports its label, keyboard and saving", async ({ page }, info) => {
   const panel = await mockPanel(page);
   await page.getByRole("button", { name: "Подписки", exact: true }).click();
+  await expandSettings(page);
   const checkbox = page.getByRole("checkbox", { name: "Показывать объявление в подписках" });
   await expect(checkbox).not.toBeChecked();
   await page.getByText("Показывать объявление в подписках", { exact: true }).click();
@@ -22,20 +23,21 @@ test("announcement checkbox supports its label, keyboard and saving", async ({ p
   await expect.poll(() => panel.subscription().enabled).toBe(true);
   expect(panel.subscription().text).toBe("Технические работы завтра");
 });
-test("subscription title and country flag are saved together", async ({ page }, info) => {
+test("subscription title keeps emoji without a separate flag selector", async ({ page }, info) => {
   const panel = await mockPanel(page);
   await page.getByRole("button", { name: "Подписки", exact: true }).click();
+  await expandSettings(page);
   const title = page.getByLabel("Название подписки", { exact: true });
   await title.fill("Сервер");
-  await page.getByRole("combobox", { name: "Флаг", exact: true }).click();
-  await page.getByRole("option", { name: /Германия/ }).click();
+  await expect(page.getByRole("combobox", { name: "Флаг", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("combobox", { name: "Общий флаг пользователей", exact: true })).toBeVisible();
   await expect(title).toHaveValue("Сервер");
   if (info.project.name === "desktop") {
-    const flagBounds = await page.getByRole("combobox", { name: "Флаг", exact: true }).boundingBox();
+    const titleBounds = await title.boundingBox();
     const emojiBounds = await page.getByRole("button", { name: "Выбрать эмодзи", exact: true }).boundingBox();
-    expect(flagBounds).not.toBeNull();
+    expect(titleBounds).not.toBeNull();
     expect(emojiBounds).not.toBeNull();
-    expect(Math.abs(flagBounds!.y - emojiBounds!.y)).toBeLessThanOrEqual(1);
+    expect(Math.abs(titleBounds!.y - emojiBounds!.y)).toBeLessThanOrEqual(1);
   }
   await page.getByRole("button", { name: "Выбрать эмодзи", exact: true }).click();
   const popup = page.getByRole("dialog", { name: "Меню эмодзи", exact: true });
@@ -58,6 +60,6 @@ test("subscription title and country flag are saved together", async ({ page }, 
       .getByRole("img", { name: "🚀", exact: true }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Сохранить настройки подписки", exact: true }).click();
-  await expect.poll(() => panel.subscription().profileTitle).toBe("🇩🇪 🚀 Сервер");
+  await expect.poll(() => panel.subscription().profileTitle).toBe("🚀 Сервер");
   await page.screenshot({ path: info.outputPath("subscription-title.png"), fullPage: true });
 });

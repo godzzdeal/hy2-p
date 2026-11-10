@@ -1,5 +1,5 @@
 import { Modal } from "@/components/ui/modal/Modal";
-import { QueryState } from "@/components/ui/QueryState";
+import { QueryState } from "@/components/ui/loading";
 import { useConfiguration } from "@/hooks/configuration/use-configuration";
 import { useInstanceCommands } from "@/hooks/instances/use-commands";
 import { useUiStore } from "@/store/ui-store";
@@ -32,14 +32,14 @@ export function CreateInstanceDialog({
     }
   }
   return (
-    <Modal title={t("Добавить ядро")} onClose={onClose}>
+    <Modal title={t("Добавить экземпляр")} onClose={onClose}>
       <p className="muted">
-        {t("Настройки будут скопированы из выбранного ядра. Новое ядро останется остановленным.")}
+        {t("Настройки будут скопированы из выбранного экземпляра. Новый экземпляр останется остановленным.")}
       </p>
       <QueryState isLoading={source.isPending} error={source.error} />
       <form onSubmit={onSubmit} className="instance-form">
         <label>
-          {t("Название ядра")}
+          {t("Название экземпляра")}
           <input
             required
             maxLength={100}
@@ -61,7 +61,7 @@ export function CreateInstanceDialog({
         </label>
         <p className="caption">
           {t(
-            "Каждому ядру нужен свободный UDP-порт. После создания проверьте конфигурацию, запустите ядро и примените порт.",
+            "Каждому экземпляру нужен свободный UDP-порт. После создания проверьте конфигурацию, запустите экземпляр и примените порт.",
           )}
         </p>
         <div className="form-actions">
@@ -69,7 +69,7 @@ export function CreateInstanceDialog({
             {t("Отмена")}
           </button>
           <button className="primary" disabled={create.isPending || !source.data}>
-            {t("Создать ядро")}
+            {t("Создать экземпляр")}
           </button>
         </div>
       </form>

@@ -12,7 +12,7 @@ const API = "https://api.github.com/repos/HyNetworks/hysteria/releases"
 const MaxBinarySize int64 = 128 << 20
 const MaxMetadataSize int64 = 8 << 20
 
-var VersionPattern = regexp.MustCompile("^app/v2\\.[0-9]+\\.[0-9]+$")
+var VersionPattern = regexp.MustCompile(`^app/v2\.[0-9]+\.[0-9]+$`)
 
 type Asset struct {
 	Name   string `json:"name"`

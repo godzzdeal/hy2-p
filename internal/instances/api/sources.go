@@ -48,7 +48,7 @@ func Profiles(registry *instances.Registry) func() ([]subscriptions.Profile, err
 				}
 				settings.Port = public
 			}
-			result = append(result, subscriptions.Profile{ID: definition.ID, Name: definition.Name, Settings: settings})
+			result = append(result, subscriptions.Profile{ID: definition.ID, Name: definition.Name, Data: instance.Core.Data, Settings: settings})
 		}
 		return result, nil
 	}

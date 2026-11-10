@@ -26,7 +26,7 @@ export function InstanceCard({
   function onRemove() {
     if (
       window.confirm(
-        t("Удалить ядро «{{name}}» и его конфигурацию? Пользователи останутся в панели.", {
+        t("Удалить экземпляр «{{name}}» и его конфигурацию? Пользователи останутся в панели.", {
           name: instance.name,
         }),
       )
@@ -81,7 +81,7 @@ export function InstanceCard({
           {t("Конфигурация")}
         </button>
         <button disabled={isPending || !!instance.removing} onClick={onLogs}>
-          {t("Ядро и журнал")}
+          {t("Управление HY2")}
         </button>
         <button
           disabled={isBusy}

@@ -12,3 +12,10 @@ export async function chooseUserAction(page: Page, user: string, action: string)
   if (await trigger.isVisible()) await trigger.click();
   await page.getByRole("button", { name: action + " " + user, exact: true }).click();
 }
+
+export async function expandSettings(page: Page): Promise<void> {
+  await page.locator(".settings-toggle").first().waitFor();
+  for (const toggle of await page.locator(".settings-toggle").all()) {
+    if ((await toggle.getAttribute("aria-expanded")) === "false") await toggle.click();
+  }
+}

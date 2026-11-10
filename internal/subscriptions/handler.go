@@ -60,12 +60,12 @@ func (handler *Handler) Serve(writer http.ResponseWriter, request *http.Request)
 	}
 	user.Password, err = handler.Users.Vault.OpenPassword(user.Password)
 	if err != nil {
-		http.Error(writer, "Unavailable", 503)
+		http.Error(writer, "Unavailable", http.StatusServiceUnavailable)
 		return
 	}
 	connections, err := handler.connections(user)
 	if err != nil {
-		http.Error(writer, "Server configuration does not support URI export", 503)
+		http.Error(writer, "Server configuration does not support URI export", http.StatusServiceUnavailable)
 		return
 	}
 	if len(connections) == 0 {
@@ -80,11 +80,11 @@ func (handler *Handler) Serve(writer http.ResponseWriter, request *http.Request)
 		}
 		connections, err = handler.connections(user)
 		if err != nil {
-			http.Error(writer, "Unavailable", 503)
+			http.Error(writer, "Unavailable", http.StatusServiceUnavailable)
 			return
 		}
 		if len(connections) == 0 {
-			http.Error(writer, "No available connections", 403)
+			http.Error(writer, "No available connections", http.StatusForbidden)
 			return
 		}
 	}

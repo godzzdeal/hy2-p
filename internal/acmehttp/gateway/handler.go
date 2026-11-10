@@ -3,7 +3,6 @@ package gateway
 import (
 	"hy2-panel/internal/acmehttp"
 	"hy2-panel/internal/acmehttp/gateway/backends"
-	"hy2-panel/internal/configuration"
 	"net"
 	"net/http"
 	"regexp"
@@ -37,9 +36,6 @@ func (handler Handler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 		return
 	}
 	buffered.flush(writer)
-}
-func Server(host string, port int, web *http.Server, config *configuration.Handler) *http.Server {
-	return ServerFor(host, port, web, func() []backends.Source { return []backends.Source{{Config: config, Port: acmehttp.CorePort}} })
 }
 func ServerFor(host string, port int, web *http.Server, sources func() []backends.Source) *http.Server {
 	webHandler := http.NotFoundHandler()

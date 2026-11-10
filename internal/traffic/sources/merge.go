@@ -11,9 +11,19 @@ func delta(current, previous uint64) uint64 {
 	}
 	return current - previous
 }
-func (collector *Collector) merge(samples []Sample) Result {
+func (collector *Collector) merge(samples []Sample, sources []Source) Result {
 	collector.mu.Lock()
 	defer collector.mu.Unlock()
+	live := make(map[string]bool, len(sources))
+	for _, source := range sources {
+		live[source.ID] = true
+	}
+	for id := range collector.baselines {
+		if !live[id] {
+			delete(collector.baselines, id)
+			delete(collector.generations, id)
+		}
+	}
 	result := Result{Counters: map[string]Counter{}, Online: map[string]int{}}
 	for _, sample := range samples {
 		if sample.Source.Runtime == nil {
