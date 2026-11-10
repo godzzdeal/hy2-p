@@ -19,6 +19,7 @@ export const SYSTEM = {
   "Версии панели": "Panel releases",
   "Остальные файлы": "Other files",
   "Образы Docker": "Docker images",
+  "Архив образа для отката": "Rollback image archive",
   "Показан каталог данных панели. Для размеров бэкапов и образов нужен помощник Docker.":
     "Panel data directory. Backup and image sizes require the Docker helper.",
   "Размер файлов подсчитан не полностью": "File sizes are partially available",

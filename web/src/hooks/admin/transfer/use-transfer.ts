@@ -2,6 +2,7 @@ import { transferApi, TRANSFER_LIMIT } from "@/services/admin/transfer/api";
 import { useUiStore } from "@/store/ui-store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { downloadFile } from "@/utils/files";
 export function useTransfer() {
   const [bundle, setBundle] = useState<unknown>(null);
   const client = useQueryClient();
@@ -37,14 +38,10 @@ export function useTransfer() {
   const download = useMutation({
     mutationFn: async () => {
       const data = await transferApi.export();
-      const url = URL.createObjectURL(
+      await downloadFile(
         new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }),
+        "hy2-p.json",
       );
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "hy2-p.json";
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
     },
     onSuccess: () => notify("Файл экспорта подготовлен."),
     onError: showError,

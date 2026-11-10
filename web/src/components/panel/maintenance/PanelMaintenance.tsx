@@ -75,7 +75,7 @@ export function PanelMaintenance() {
         <Button
           type="button"
           variant="secondary"
-          disabled={!model.canRollback}
+          disabled={model.isBusy}
           onClick={() => model.setConfirmation({ action: "cleanup" })}
         >
           {t("Удалить старые образы")}

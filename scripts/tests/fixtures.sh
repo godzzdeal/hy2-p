@@ -59,6 +59,7 @@ wait_healthy() {
   [[ $1 != "$NEW" || $FAIL_NEW != true ]] && [[ $1 != "$OLD" || $FAIL_OLD != true ]]
 }
 prepare_image() { compose "$1" build --pull panel; }
+restore_image() { :; }
 fetch_release() { printf '%s\n' "$NEW"; }
 sync_listener() { :; }
 show_access() { :; }

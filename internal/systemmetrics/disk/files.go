@@ -2,6 +2,7 @@ package disk
 
 import (
 	"context"
+	"hy2-panel/internal/systemmetrics/disk/images"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -58,6 +59,8 @@ func Scan(ctx context.Context, options Options) Usage {
 					kind = "backups"
 				case "releases":
 					kind = "releases"
+				case "image-archives":
+					kind = "archives"
 				default:
 					kind = "other"
 				}
@@ -69,6 +72,8 @@ func Scan(ctx context.Context, options Options) Usage {
 				result.Backups += bytes
 			case "releases":
 				result.Releases += bytes
+			case "archives":
+				result.Archives += bytes
 			default:
 				result.Other += bytes
 			}
@@ -82,9 +87,9 @@ func Scan(ctx context.Context, options Options) Usage {
 	walk(options.Data, "data")
 	walk(options.Root, "root")
 	if options.Root != "" {
-		images, count, err := imageSizes(ctx, options.Root)
+		bytes, count, err := images.Measure(ctx, options.Root)
 		if err == nil {
-			result.Images = images
+			result.Images = bytes
 			result.ImageCount = count
 		} else {
 			result.Message = "Размер образов Docker недоступен"

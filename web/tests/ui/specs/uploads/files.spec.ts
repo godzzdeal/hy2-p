@@ -1,8 +1,51 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Download } from "@playwright/test";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
 import { expandSettings, mockPanel } from "../../fixtures";
 import { dropFiles } from "./drop";
 
 const YAML = "listen: :62000\ntls:\n  cert: /certs/server.crt\n  key: /certs/server.key\n";
+
+async function downloadedFile(download: Download, suffix: string) {
+  const path = await download.path();
+  if (!path) throw new Error("Download file was not saved");
+  const buffer = await readFile(path);
+  const fingerprint = createHash("sha256").update(buffer).digest("hex").slice(0, 12);
+  const name = download.suggestedFilename();
+  expect(name).toMatch(/^panel\.test_\d{8}T\d{6}\.\d{3}Z_/);
+  expect(name.endsWith("_" + fingerprint + "_" + suffix)).toBe(true);
+  return { name, buffer };
+}
+
+test("downloads have server/time/content identity and exports can be imported with the full name", async ({
+  page,
+}, info) => {
+  await mockPanel(page);
+  const bundle = { format: "hy2-p/1", profiles: [], users: [] };
+  await page.route("http://panel.test/api/admin/transfer", (route) => route.fulfill({ json: bundle }));
+  let imported: unknown;
+  await page.route("http://panel.test/api/admin/transfer/preview", (route) => {
+    imported = route.request().postDataJSON().bundle;
+    return route.fulfill({ json: { rows: [], fingerprint: "preview" } });
+  });
+  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
+  const jsonEvent = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Экспортировать данные", exact: true }).click();
+  const file = await downloadedFile(await jsonEvent, "hy2-p.json");
+  await page
+    .getByLabel("Файл импорта HY2-P", { exact: true })
+    .setInputFiles({ ...file, mimeType: "application/json" });
+  await expect.poll(() => imported).toEqual(bundle);
+  const zone = page.getByRole("button", { name: "Выбрать файл: Файл импорта HY2-P", exact: true });
+  await expect(zone).toContainText(file.name);
+  expect(await zone.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+  await zone.screenshot({ path: info.outputPath("named-file-import.png") });
+  await page.getByRole("button", { name: "Управление HY2", exact: true }).click();
+  const logEvent = page.waitForEvent("download");
+  await page.locator(".log-toolbar").getByRole("button", { name: "Скачать", exact: true }).click();
+  await downloadedFile(await logEvent, "hysteria2.log");
+});
 
 test("YAML supports drag feedback, keyboard selection and invalid-file notifications", async ({
   page,

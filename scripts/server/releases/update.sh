@@ -8,6 +8,7 @@ recover_pending() {
   previous=$(jq -r '.previous // ""' "$ROOT/update.pending")
   previous_backup=$(jq -r '.previousBackup // ""' "$ROOT/update.pending")
   valid_sha "$old" && valid_sha "$next" || die "Повреждён журнал обновления."
+  restore_image "$old" || return 1
   log "Возвращаем предыдущую версию после неудачного или прерванного обновления."
   compose "$next" stop panel || return 1
   restore_backup "$snapshot" "$old" || return 1

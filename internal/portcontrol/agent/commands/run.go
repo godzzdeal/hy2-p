@@ -29,11 +29,13 @@ func Run(root, operationID, probeToken string, arguments ...string) error {
 	command := exec.CommandContext(ctx, "bash", append([]string{filepath.Join(root, "releases", commit, "scripts/server/manage.sh")}, arguments...)...)
 	processcontrol.Configure(command)
 	command.WaitDelay = time.Second
-	command.Env = append(os.Environ(), "HY2_INSTALL_DIR="+root,
-		protocol.ProbeTokenEnv+"="+probeToken, protocol.ProbeIDEnv+"="+operationID)
+	// Only apply-udp sends a UDP probe. Maintenance must also clear inherited tokens.
+	token, id, port := "", "", ""
 	if len(arguments) > 3 && arguments[0] == "apply-udp" {
-		command.Env = append(command.Env, protocol.ProbePortEnv+"="+arguments[3])
+		token, id, port = probeToken, operationID, arguments[3]
 	}
+	command.Env = append(os.Environ(), "HY2_INSTALL_DIR="+root,
+		protocol.ProbeTokenEnv+"="+token, protocol.ProbeIDEnv+"="+id, protocol.ProbePortEnv+"="+port)
 	// Deployment output stays in the helper log, never in the public operation status.
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr

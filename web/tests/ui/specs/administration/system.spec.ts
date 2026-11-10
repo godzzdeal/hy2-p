@@ -21,6 +21,7 @@ test("overview refreshes server charts and reports panel storage", async ({ page
   await expect(section.getByText("Обновление каждые 3 секунды", { exact: true })).toBeVisible();
   await expect(section.getByText("Резервные копии", { exact: true })).toBeVisible();
   await expect(section.getByText("Образы Docker", { exact: true })).toBeVisible();
+  await expect(section.getByText("Архив образа для отката", { exact: true })).toBeVisible();
   await section.scrollIntoViewIfNeeded();
   const geometry = await page.evaluate(() => ({
     width: document.documentElement.scrollWidth,
@@ -72,6 +73,7 @@ test("overview refreshes server charts and reports panel storage", async ({ page
   const chart = grid.locator(".system-chart").first();
   expect((await chart.boundingBox())!.x).toBe((await grid.boundingBox())!.x);
   await page.screenshot({ path: info.outputPath("system-overview.png") });
+  await section.locator(".system-storage").screenshot({ path: info.outputPath("image-storage.png") });
 });
 
 test("unavailable Linux metrics preserve disk usage without fake charts", async ({ page }) => {

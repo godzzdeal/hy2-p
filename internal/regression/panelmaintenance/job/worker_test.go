@@ -3,12 +3,50 @@ package job_test
 import (
 	"hy2-panel/internal/panelmaintenance/job"
 	"hy2-panel/internal/panelmaintenance/storage"
+	"hy2-panel/internal/portcontrol/agent/commands"
 	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/testutil/managed"
+	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
 )
+
+func TestOnlyPortApplicationReceivesUDPProbeEnvironment(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Linux deployment commands")
+	}
+	for _, arguments := range [][]string{
+		{"update", "v0.9.0"}, {"rollback", "--yes"}, {"restart-panel"}, {"start-panel"},
+		{"cleanup-images"}, {"recover-udp", strings.Repeat("c", 32)},
+		{"apply-udp", strings.Repeat("c", 32), "61254", "8443", "default"},
+	} {
+		t.Run(arguments[0], func(t *testing.T) {
+			install := managed.New(t)
+			// Stale values must not leak from the helper into unrelated operations.
+			for _, name := range []string{protocol.ProbeTokenEnv, protocol.ProbeIDEnv, protocol.ProbePortEnv} {
+				t.Setenv(name, "stale")
+			}
+			install.Command("bash", `printf '%s\n' "$PANEL_UDP_PROBE_TOKEN" "$PANEL_UDP_PROBE_ID" "$PANEL_UDP_PROBE_PORT" > "$HY2_INSTALL_DIR/probe-env"`)
+			id, token := strings.Repeat("c", 32), strings.Repeat("d", 32)
+			if err := commands.Run(install.Root, id, token, arguments...); err != nil {
+				t.Fatal(err)
+			}
+			data, err := os.ReadFile(filepath.Join(install.Root, "probe-env"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			expected := "\n\n\n"
+			if arguments[0] == "apply-udp" {
+				expected = token + "\n" + id + "\n8443\n"
+			}
+			if string(data) != expected {
+				t.Fatalf("unexpected probe environment: %q", data)
+			}
+		})
+	}
+}
 
 func TestWorkerChecksInstalledVersionAndReportsAutomaticRollback(t *testing.T) {
 	if runtime.GOOS == "windows" {

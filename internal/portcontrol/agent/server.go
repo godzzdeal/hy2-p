@@ -105,6 +105,7 @@ func (agent *Agent) Serve() error {
 	ctx, cancel := context.WithCancel(context.Background())
 	var workers sync.WaitGroup
 	workers.Go(func() { agent.system.Run(ctx) })
+	workers.Go(func() { agent.panel.Maintain(ctx) })
 	defer func() { cancel(); workers.Wait() }()
 	directory := filepath.Dir(protocol.Socket)
 	if err := os.MkdirAll(directory, 0750); err != nil {

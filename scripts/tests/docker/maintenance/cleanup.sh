@@ -12,8 +12,12 @@ test_image_cleanup() {
   if sudo docker image inspect "hy2-panel:$stale" >/dev/null 2>&1; then
     printf 'Unused old image was not removed.\n' >&2; return 1
   fi
-  sudo docker image inspect "hy2-panel:$current" "hy2-panel:$previous" >/dev/null
+  sudo docker image inspect "hy2-panel:$current" >/dev/null
+  if sudo docker image inspect "hy2-panel:$previous" >/dev/null 2>&1; then
+    printf 'Archived image still occupies Docker storage.\n' >&2; return 1
+  fi
+  sudo gzip -t "$ROOT/image-archives/$previous/image.tar.gz"
   curl -fsS -b "$WORK/cookies" "$URL/api/session" | jq -e '.ok' >/dev/null
-  curl -fsS -b "$WORK/cookies" "$URL/api/system" | jq -e '.storage.imageCount == 2' >/dev/null
+  curl -fsS -b "$WORK/cookies" "$URL/api/system" | jq -e '.storage.imageCount == 1 and .storage.archives > 0' >/dev/null
   printf 'Web image cleanup preserved the active image, rollback and session.\n'
 }

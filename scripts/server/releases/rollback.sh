@@ -10,6 +10,7 @@ rollback_panel() {
     read -r -p 'Продолжить? [yes/NO]: ' answer </dev/tty
     [[ $answer == yes ]] || return 0
   fi
+  restore_image "$previous" || return 1
   compose "$current" stop panel
   if ! safety=$(create_backup "$current"); then
     start_release "$current" || true

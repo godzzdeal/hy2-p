@@ -6,6 +6,8 @@ import (
 	"hy2-panel/internal/transfer/model"
 	"hy2-panel/internal/transport"
 	"io"
+	"mime"
+	"net"
 	"net/http"
 	"time"
 )
@@ -27,7 +29,12 @@ func (service *Service) Download(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Cache-Control", "no-store")
-	w.Header().Set("Content-Disposition", `attachment; filename="hy2-p.json"`)
+	server := r.Host
+	if host, _, err := net.SplitHostPort(server); err == nil {
+		server = host
+	}
+	filename := model.DownloadFilename(server, "hy2-p.json", payload, time.Now())
+	w.Header().Set("Content-Disposition", mime.FormatMediaType("attachment", map[string]string{"filename": filename}))
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(payload)
 }

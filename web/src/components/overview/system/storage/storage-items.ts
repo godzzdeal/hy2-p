@@ -7,5 +7,6 @@ export function storageItems(value: ISystemStorage) {
     { label: "Версии панели", bytes: value.releases },
     { label: "Остальные файлы", bytes: value.other },
     { label: "Образы Docker", bytes: value.images },
+    { label: "Архив образа для отката", bytes: value.archives ?? 0 },
   ];
 }

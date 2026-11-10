@@ -107,7 +107,8 @@ test("image cleanup is confirmed, preserves the session and refreshes disk usage
   await expandSettings(page);
   await page.getByRole("button", { name: "Удалить старые образы", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Удалить старые образы?", exact: true });
-  await expect(dialog).toContainText("предыдущий для отката");
+  await expect(dialog).toContainText("сжатом архиве");
+  await expect(dialog).toContainText("Данные и резервные копии сохранятся");
   expect(submitted).toBeUndefined();
   await dialog.screenshot({ path: info.outputPath("image-cleanup-confirmation.png") });
   await dialog.getByRole("button", { name: "Удалить", exact: true }).click();
