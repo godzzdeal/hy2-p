@@ -4,8 +4,11 @@ prepare_image() {
   image=$(image_for "$sha")
   if [[ $(engine image inspect --format '{{index .Config.Labels "io.hy2-panel.commit"}}' "$image" 2>/dev/null || true) == "$sha" ]]; then return 0; fi
   if [[ ${HY2_BUILD_FROM_SOURCE:-false} == true ]]; then compose "$sha" build --pull panel; return; fi
-  arch=$(dpkg --print-architecture)
-  [[ $arch == amd64 || $arch == arm64 ]] || die "Готовый образ доступен для amd64 и arm64."
+  case $(uname -m) in
+    x86_64) arch=amd64 ;;
+    aarch64|arm64) arch=arm64 ;;
+    *) die "Готовый образ доступен для amd64 и arm64." ;;
+  esac
   version=$(cat "$ROOT/image-version-$sha" 2>/dev/null || true)
   [[ $version =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || die "Для этой версии нет готового релизного образа. Для разработки задайте HY2_BUILD_FROM_SOURCE=true."
   directory=$(mktemp -d "$ROOT/.image.XXXXXX")

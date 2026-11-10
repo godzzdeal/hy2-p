@@ -1,4 +1,6 @@
 export const API_ROUTES = {
+  panelMaintenance: "/panel/maintenance",
+  panelVersions: "/panel/versions",
   system: "/system",
   panelRestart: "/panel/restart",
   panelRestartStatus: (ticket: string) => "/panel/restart/" + encodeURIComponent(ticket),
@@ -48,6 +50,10 @@ export const API_ROUTES = {
   control: (action: string) => "/core/" + action,
 } as const;
 export const QUERY_KEYS = {
+  ech: ["ech"],
+  panelMaintenance: ["panel-maintenance"],
+  panelVersions: ["panel-versions"],
+  panelOperation: ["panel-operation"],
   system: ["system"],
   connection: ["connection"],
   instances: ["instances"],
@@ -73,8 +79,10 @@ export const QUERY_KEYS = {
   coreVersions: ["core-versions"],
   coreUpdate: ["core-update"],
 } as const;
+export const MUTATION_KEYS = { coreControl: ["core-control"] } as const;
 export const NETWORK = {
   systemPollMs: 5000,
+  storagePollMs: 60000,
   restartPollMs: 1000,
   restartTimeoutMs: 120000,
   restartRequestMs: 10000,

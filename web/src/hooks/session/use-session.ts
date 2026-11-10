@@ -3,6 +3,7 @@ import { endSession } from "@/hooks/session/end-session";
 import { ApiError } from "@/services/http/ApiError";
 import { sessionApi } from "@/services/session/session-api";
 import { useUiStore } from "@/store/ui-store";
+import { usePanelOperationStore } from "@/store/core/panel-operation-store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 export function useSession() {
@@ -15,7 +16,7 @@ export function useSession() {
   const showError = useUiStore((state) => state.showError);
   useEffect(() => {
     const onExpired = () => {
-      if (useUiStore.getState().isPanelRestarting) return;
+      if (useUiStore.getState().isPanelRestarting || usePanelOperationStore.getState().active) return;
       endSession(client);
     };
     window.addEventListener("session-expired", onExpired);

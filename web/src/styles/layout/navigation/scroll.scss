@@ -22,7 +22,7 @@
   }
   .scroll-navigation {
     position: fixed;
-    inset: 50% var(--space-2) auto auto;
+    inset: 50% calc(var(--scrollbar-size) + var(--space-2)) auto auto;
     transform: translateY(-50%);
     z-index: var(--layer-navigation);
     display: flex;
@@ -94,7 +94,7 @@
     .scroll-point-label {
       display: none;
     }
-    .content {
+    .page-content {
       padding-right: var(--space-4);
       padding-bottom: var(--space-4);
     }

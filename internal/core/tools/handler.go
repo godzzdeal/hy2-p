@@ -4,6 +4,7 @@ import (
 	"errors"
 	"gopkg.in/yaml.v3"
 	"hy2-panel/internal/configuration"
+	"hy2-panel/internal/core/tools/ech"
 	"hy2-panel/internal/transport"
 	"net/http"
 )
@@ -35,11 +36,19 @@ func (handler Handler) Read(w http.ResponseWriter, r *http.Request) {
 		transport.Fail(w, err, 400)
 		return
 	}
-	if config.ECH.KeyPath == "" {
+	path := config.ECH.KeyPath
+	if requested := r.URL.Query().Get("keyPath"); requested != "" && requested != path {
+		if !ech.IsGenerated(handler.Data, requested) {
+			transport.Fail(w, errors.New("Сначала сохраните путь к внешнему файлу ECH"), 400)
+			return
+		}
+		path = requested
+	}
+	if path == "" {
 		transport.Respond(w, ECH{})
 		return
 	}
-	result, err := Inspect(config.ECH.KeyPath)
+	result, err := Inspect(path)
 	if err != nil {
 		transport.Fail(w, err, 422)
 		return

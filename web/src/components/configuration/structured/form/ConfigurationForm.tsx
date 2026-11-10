@@ -96,7 +96,13 @@ export function ConfigurationForm({
               />
             )}
             {active.id === "auth" && <AuthSettings value={value} onChange={onChange} />}
-            {active.id === "ech" && <EchTools key={instanceId} onSet={onSet} />}
+            {active.id === "ech" && (
+              <EchTools
+                key={instanceId}
+                keyPath={String(readField(document, "ech.keyPath") ?? "")}
+                onSet={onSet}
+              />
+            )}
             {active.id === "trafficStats" && <StatsSecret key={instanceId} />}
             {active.id === "mimic" && (
               <Notice>

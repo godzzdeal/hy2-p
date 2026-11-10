@@ -1,5 +1,4 @@
 import { Notice } from "@/components/ui/feedback";
-import { CompatibilityNotice } from "@/components/elements/CompatibilityNotice";
 import { EmojiText } from "@/components/elements/emoji/text/EmojiText";
 import { RefreshCw } from "@/components/elements/icons";
 import { CopyButton } from "@/components/elements/copy";
@@ -86,9 +85,6 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
             value={value}
             name={user.displayName ?? user.name}
             isSubscription={activeFormat === "subscription"}
-          />
-          <CompatibilityNotice
-            isVisible={links.data.connections?.some((item) => item.uri.includes("ech=")) ?? false}
           />
           <p className="share-help">
             {t("В Happ нажмите + и импортируйте ссылку из буфера или отсканируйте QR-код.")}

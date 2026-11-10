@@ -1,5 +1,6 @@
 import { SettingsSection } from "@/components/admin/SettingsSection";
 import { RestartDialog } from "@/components/admin/maintenance/RestartDialog";
+import { PanelMaintenance } from "@/components/panel/maintenance";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -9,6 +10,7 @@ export function RestartSettings() {
   return (
     <SettingsSection id="panel-maintenance" title={t("Обслуживание")}>
       <div className="form-body">
+        <PanelMaintenance />
         <button type="button" className="secondary" onClick={() => setOpen(true)}>
           {t("Перезапустить панель")}
         </button>

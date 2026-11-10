@@ -6,11 +6,12 @@ import { i18n } from "@/config/i18n/setup";
 import { type Query } from "@tanstack/react-query";
 import { type IUpdateStatus } from "@/services/core/updates/update-types";
 import { usePortOperationStore } from "@/store/core/port-operation-store";
+import { usePanelOperationStore } from "@/store/core/panel-operation-store";
 const crashes = new Map<string, string>();
 const updates = new Map<string, string>();
 const queryErrors = new Map<string, string>();
 export function notifyQueryError(error: Error, query: Query<unknown, unknown, unknown>) {
-  if (useUiStore.getState().isPanelRestarting) return;
+  if (useUiStore.getState().isPanelRestarting || usePanelOperationStore.getState().active) return;
   if (error instanceof ApiError && error.status === 401) return;
   // The deployment monitor survives the expected container restart itself.
   if (query.queryKey[0] === QUERY_KEYS.udpOperation[0]) return;
@@ -49,7 +50,14 @@ export function notifyQuerySuccess(data: unknown, query: Query<unknown, unknown,
     }
     if (!instance.error) crashes.delete("config:" + instance.id);
     const watchdog = instance.watchdog;
-    if (instance.updating || !watchdog?.desiredRunning) continue;
+    if (
+      instance.updating ||
+      !watchdog?.desiredRunning ||
+      instance.running ||
+      watchdog.state === "watching" ||
+      watchdog.state === "idle"
+    )
+      continue;
     const stamp = watchdog.lastCrash + watchdog.lastError;
     if ((!watchdog.lastCrash && !watchdog.lastError) || crashes.get(instance.id) === stamp) continue;
     crashes.set(instance.id, stamp);

@@ -47,6 +47,6 @@ update_panel() {
     compose "$next" logs --tail=80 panel >&2 || true
     recover_pending || die "Автоматический откат не удался; журнал и резервная копия сохранены."
     log "Новая панель не запустилась. Предыдущая версия возвращена."
-    return 1
+    return 10
   fi
 }

@@ -1,9 +1,12 @@
 import { Notification } from "@/components/ui/feedback/Notification";
 import { useNotifications } from "@/store/notifications";
-export function Feedback() {
+import { cn } from "@/utils/cn";
+import { type ComponentProps } from "react";
+export function Feedback({ children, className, ...props }: ComponentProps<"div">) {
   const items = useNotifications((state) => state.items);
   return (
-    <div className="notifications">
+    <div {...props} className={cn("notifications", className)}>
+      {children}
       {items.map((item) => (
         <Notification key={item.id} item={item} />
       ))}

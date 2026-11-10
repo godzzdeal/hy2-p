@@ -93,8 +93,7 @@ export function initialDemoState(): IDemoState {
       ]),
     ),
     logs: {
-      default:
-        'INFO  server mode\nINFO  server up and running {"listen":":8443"}\nINFO  client connected {"addr":"192.0.2.10:51000"}\n',
+      default: `INFO  server mode\nINFO  server up and running {"listen":":8443"}\nINFO  client connected {"addr":"192.0.2.10:51000","id":"${users[0].id}"}\n`,
       example: 'INFO  server up and running {"listen":":9443"}\n',
     },
     traffic: {

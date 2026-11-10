@@ -11,7 +11,10 @@ import { INSTANCES } from "@/config/i18n/english/settings/panel/instances";
 import { TRANSFER } from "@/config/i18n/english/settings/panel/transfer";
 import { NETWORK } from "@/config/i18n/english/settings/network";
 import { SYSTEM } from "@/config/i18n/english/settings/system";
+import { PANEL_OPERATIONS, CHART_PREFERENCES } from "@/config/i18n/english/settings/maintenance";
 export const ENGLISH = {
+  ...PANEL_OPERATIONS,
+  ...CHART_PREFERENCES,
   ...SYSTEM,
   ...NETWORK,
   ...TRANSFER,

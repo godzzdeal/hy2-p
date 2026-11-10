@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"hy2-panel/internal/firewall"
+	"hy2-panel/internal/panelmaintenance"
 	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/systemmetrics"
@@ -24,6 +25,7 @@ type Agent struct {
 	mu     sync.Mutex
 	status protocol.Status
 	system *systemmetrics.Service
+	panel  *panelmaintenance.Service
 }
 
 var rootPattern = regexp.MustCompile("^/[a-zA-Z0-9/_.-]+$")
@@ -35,6 +37,7 @@ func New(root string) (*Agent, error) {
 		return nil, errors.New("некорректная папка установки")
 	}
 	agent := &Agent{root: root}
+	agent.panel = &panelmaintenance.Service{Root: root, Mu: &agent.mu, PortsBusy: func() bool { return agent.status.Busy }}
 	agent.system = systemmetrics.New(systemmetrics.Options{Data: security.Env("PANEL_DATA", "/panel-data"), Root: root, Scope: "host"})
 	agent.read()
 	return agent, nil
@@ -47,12 +50,19 @@ func (agent *Agent) Handler() http.Handler {
 	mux.HandleFunc("GET /udp", func(w http.ResponseWriter, r *http.Request) {
 		agent.mu.Lock()
 		defer agent.mu.Unlock()
+		if operation := agent.panel.Status(); operation.Busy {
+			transport.Respond(w, operation)
+			return
+		}
 		transport.Respond(w, agent.status)
 	})
 	mux.HandleFunc("POST /udp", agent.start)
 	mux.HandleFunc("GET /udp/{ticket}", agent.history)
 	mux.HandleFunc("POST "+protocol.RestartPath, agent.restartPanel)
 	mux.HandleFunc("GET "+protocol.SystemPath, agent.system.Read)
+	mux.HandleFunc("POST "+protocol.StorageRefreshPath, agent.system.RefreshStorage)
+	mux.HandleFunc("GET "+protocol.MaintenancePath, agent.panel.Read)
+	mux.HandleFunc("POST "+protocol.MaintenancePath, agent.panel.Begin)
 	return mux
 }
 func (agent *Agent) start(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +83,7 @@ func (agent *Agent) start(w http.ResponseWriter, r *http.Request) {
 	}
 	agent.mu.Lock()
 	defer agent.mu.Unlock()
-	if agent.status.Busy {
+	if agent.status.Busy || agent.panel.Busy() {
 		w.WriteHeader(409)
 		transport.Respond(w, agent.status)
 		return
@@ -126,5 +136,6 @@ func (agent *Agent) Serve() error {
 		}
 	}
 	server := &http.Server{Handler: agent.Handler(), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 5 * time.Second, WriteTimeout: 30 * time.Second}
+	go agent.panel.Recover()
 	return server.Serve(listener)
 }

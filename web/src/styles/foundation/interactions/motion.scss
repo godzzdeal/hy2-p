@@ -38,8 +38,8 @@
   }
   .overlay,
   .page-heading,
-  .content > .card,
-  .content > .overview-grid,
+  .page-content > .card,
+  .page-content > .overview-grid,
   .group-users:not([hidden]) {
     animation: panel-fade var(--motion-normal) var(--motion-ease);
   }

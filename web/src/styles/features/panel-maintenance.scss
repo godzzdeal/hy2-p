@@ -1,0 +1,27 @@
+@layer components {
+  .panel-maintenance {
+    display: grid;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+  .panel-maintenance label {
+    margin: 0;
+  }
+  .panel-maintenance .row-actions {
+    flex-wrap: wrap;
+  }
+  .panel-operation {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .panel-operation p {
+    margin: 0;
+  }
+  .footer-new-release {
+    padding-inline: 0;
+    color: var(--accent);
+    height: auto;
+    min-height: var(--control-height);
+    text-align: left;
+  }
+}
