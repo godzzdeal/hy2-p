@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { mockPanel } from "../../fixtures";
+import { expandSettings, mockPanel } from "../../fixtures";
 
 test("Escape dismisses only the current confirmation inside panel maintenance", async ({ page }) => {
   await mockPanel(page);
@@ -32,4 +32,30 @@ test("Escape dismisses only the current confirmation inside panel maintenance", 
   await expect(parent).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(parent).toHaveCount(0);
+});
+
+test("opening settings keeps its target when a late section is inserted", async ({ page }) => {
+  await page.setContent("<main></main>");
+  await page.evaluate(() => {
+    function appendSection(id: string): HTMLButtonElement {
+      const button = document.createElement("button");
+      button.className = "settings-toggle";
+      button.textContent = id;
+      button.setAttribute("aria-controls", id);
+      button.setAttribute("aria-expanded", "false");
+      button.addEventListener("click", () => button.setAttribute("aria-expanded", "true"));
+      document.querySelector("main")!.append(button);
+      return button;
+    }
+    const first = appendSection("first");
+    appendSection("second");
+    appendSection("maintenance");
+    first.addEventListener("click", () => document.querySelector("main")!.prepend(appendSection("late")), {
+      once: true,
+    });
+  });
+  await expandSettings(page);
+  for (const name of ["first", "second", "maintenance"]) {
+    await expect(page.getByRole("button", { name, exact: true })).toHaveAttribute("aria-expanded", "true");
+  }
 });
