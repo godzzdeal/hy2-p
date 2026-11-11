@@ -6,6 +6,9 @@ permissions:
 jobs:
   web:
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.65.0-noble
+      options: --init --shm-size=1g
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -17,8 +20,6 @@ jobs:
       - run: bun install --frozen-lockfile
         working-directory: web
       - run: bun run test && bun run lint && bun run build
-        working-directory: web
-      - run: bunx playwright install --with-deps chromium
         working-directory: web
       - run: bun run test:ui
         working-directory: web
