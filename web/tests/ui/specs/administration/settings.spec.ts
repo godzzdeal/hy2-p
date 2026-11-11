@@ -2,11 +2,29 @@ import { expect, test } from "@playwright/test";
 import { expandSettings, mockPanel } from "../../fixtures";
 import { INITIAL_SETTINGS, WEB_SETTINGS } from "../../fixtures/data";
 
+test("section navigation expands a collapsed settings section before scrolling",async({page},info)=>{
+ test.skip(info.project.name!=="desktop");
+ await mockPanel(page);await page.emulateMedia({reducedMotion:"reduce"});
+ await page.getByRole("link",{name:"Настройки",exact:true}).click();
+ const section=page.locator("#panel-network");
+ const toggle=section.getByRole("button",{name:"Настройки панели",exact:true});
+ await expect(toggle).toHaveAttribute("aria-expanded","false");
+ await page.getByRole("button",{name:"Перейти к разделу Настройки панели",exact:true}).click();
+ await expect(toggle).toHaveAttribute("aria-expanded","true");
+ await expect(section.locator(".form-body").first()).toBeVisible();
+ await expect.poll(()=>section.evaluate(element=>{
+  const content=element.closest(".content")!;
+  const target=element.getBoundingClientRect().top-content.getBoundingClientRect().top+content.scrollTop;
+  return Math.abs(content.scrollTop-Math.min(target,content.scrollHeight-content.clientHeight));
+ })).toBeLessThanOrEqual(4);
+ await page.reload();await expect(toggle).toHaveAttribute("aria-expanded","true");
+});
+
 test("settings collapse keeps drafts, remembers state and leaves room for fixed bars", async ({
   page,
 }, info) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   const account = page.locator("#panel-account");
   const toggle = account.getByRole("button", { name: "Учётная запись администратора", exact: true });
   await expect(page.locator('.settings-toggle[aria-expanded="true"]')).toHaveCount(0);
@@ -18,8 +36,8 @@ test("settings collapse keeps drafts, remembers state and leaves room for fixed 
   await toggle.click();
   await expect(account.getByLabel("Логин", { exact: true })).toHaveValue("draft-name");
   await toggle.click();
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
   const header = await page.locator(".app-header").boundingBox();
   await page.locator(".content").evaluate((element) => element.scrollTo(0, element.scrollHeight));
@@ -34,10 +52,7 @@ test("settings collapse keeps drafts, remembers state and leaves room for fixed 
   expect(last!.y + last!.height).toBeLessThanOrEqual(footer!.y);
   expect(footer!.y + footer!.height).toBeLessThanOrEqual(page.viewportSize()!.height);
   if (info.project.name === "mobile") {
-    const navigation = (await page.locator(".scroll-navigation").boundingBox())!;
-    const content = (await page.locator(".content").boundingBox())!;
-    expect(navigation.y).toBeGreaterThanOrEqual(content.y + content.height);
-    expect(navigation.y + navigation.height).toBeLessThanOrEqual(footer!.y);
+    await expect(page.locator(".scroll-navigation")).toBeHidden();
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: info.outputPath("fixed-bars.png") });
@@ -56,14 +71,15 @@ test("passwords use a single input with a reversible visibility toggle", async (
   await expect(page.locator(".generated-password")).toHaveCount(0);
 });
 
-test("section navigation keeps the header and footer fixed", async ({ page }) => {
+test("section navigation keeps the header and footer fixed", async ({ page }, info) => {
   await mockPanel(page);
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   const header = (await page.locator(".app-header").boundingBox())!.y;
   const footer = (await page.getByRole("contentinfo").boundingBox())!.y;
-  await page.getByRole("button", { name: "Перейти к разделу Firewall", exact: true }).click();
+  if (info.project.name === "mobile") await page.locator(".content").evaluate(element => element.scrollTo(0, element.scrollHeight));
+  else await page.getByRole("button", { name: "Перейти к разделу Firewall", exact: true }).click();
   await expect
     .poll(() => page.locator(".content").evaluate((element) => element.scrollTop))
     .toBeGreaterThan(0);
@@ -75,15 +91,15 @@ test("section navigation keeps the header and footer fixed", async ({ page }) =>
 test("HTTP requires no domain and ACME accepts an IP in the form", async ({ page }, info) => {
   await mockPanel(page);
   let saved: unknown;
-  await page.route("http://panel.test/api/admin/web", async (route) => {
+  await page.route("**/api/admin/web", async (route) => {
     if (route.request().method() === "PUT") saved = route.request().postDataJSON();
     await route.fulfill({
       json: saved ? { ...WEB_SETTINGS, config: saved, restartRequired: true } : WEB_SETTINGS,
     });
   });
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   const network = page.locator("#panel-network");
-  await network.getByRole("button", { name: "Порт, домен и HTTPS веб-панели", exact: true }).click();
+  await network.getByRole("button", { name: "Настройки панели", exact: true }).click();
   await expect(network.getByLabel("Домен или IP веб-панели", { exact: true })).toHaveCount(0);
   await network
     .getByLabel("Публичный URL панели и подписок", { exact: true })
@@ -102,7 +118,7 @@ test("HTTP requires no domain and ACME accepts an IP in the form", async ({ page
 
 test("a new instance reuses the panel address while custom addresses remain editable", async ({ page }) => {
   await mockPanel(page, true, { ...INITIAL_SETTINGS, host: "", sni: "" });
-  await page.route("http://panel.test/api/admin/web", (route) =>
+  await page.route("**/api/admin/web", (route) =>
     route.fulfill({
       json: {
         ...WEB_SETTINGS,
@@ -110,7 +126,7 @@ test("a new instance reuses the panel address while custom addresses remain edit
       },
     }),
   );
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await expect(page.getByLabel("Публичный адрес", { exact: true })).toHaveValue("panel.example.com");
   await expect(page.getByLabel("SNI", { exact: true })).toHaveValue("panel.example.com");
   await page.getByLabel("Публичный адрес", { exact: true }).fill("");

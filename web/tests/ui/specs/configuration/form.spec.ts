@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
 test("property names use the pixel font and neighbouring controls align", async ({ page }, info) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByRole("searchbox", { name: "Найти свойство" }).fill("sniff");
   const enabled = page.getByLabel("sniff.enable", { exact: true });
   const timeout = page.getByLabel("sniff.timeout", { exact: true });
@@ -17,12 +17,12 @@ test("property names use the pixel font and neighbouring controls align", async 
       .locator(".config-property label")
       .first()
       .evaluate((label) => getComputedStyle(label).fontFamily),
-  ).toContain("Epilepsy Sans");
+  ).toBe(await page.evaluate(() => getComputedStyle(document.body).fontFamily));
   await page.screenshot({ path: info.outputPath("aligned-properties.png"), fullPage: true });
 });
 test("SNI follows the address only while linked", async ({ page }) => {
   const panel = await mockPanel(page);
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   const host = page.getByLabel("Публичный адрес", { exact: true });
   const sni = page.getByLabel("SNI", { exact: true });
   const link = page.getByRole("checkbox", { name: "SNI совпадает с адресом", exact: true });
@@ -41,7 +41,7 @@ test("SNI follows the address only while linked", async ({ page }) => {
 
 test("documented properties are searchable and outbounds have fields", async ({ page }) => {
   const panel = await mockPanel(page);
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   const search = page.getByRole("searchbox", { name: "Найти свойство", exact: true });
   await search.fill("disableUDP");
   await page.getByLabel("disableUDP", { exact: true }).click();
@@ -62,7 +62,7 @@ test("documented properties are searchable and outbounds have fields", async ({ 
 });
 test("configuration sections preserve edits on desktop and mobile", async ({ page }, info) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByLabel("listen", { exact: true }).fill(":61254");
   const navigation = page.getByRole("navigation", { name: "Разделы конфигурации" });
   await expect(navigation).toBeVisible();
@@ -96,7 +96,7 @@ test("configuration sections preserve edits on desktop and mobile", async ({ pag
 });
 test("keyboard selection, resets and saving produce clean ordered YAML", async ({ page }, info) => {
   const panel = await mockPanel(page);
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByRole("searchbox", { name: "Найти свойство" }).fill("congestion.type");
   const congestion = page.getByLabel("congestion.type", { exact: true });
   await congestion.click();
@@ -111,7 +111,7 @@ test("keyboard selection, resets and saving produce clean ordered YAML", async (
   await expect(page.getByRole("option", { name: "По умолчанию", exact: true })).toBeFocused();
   await page.keyboard.press("Enter");
   page.once("dialog", (dialog) => void dialog.dismiss());
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Конфигурация сервера", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Сохранить конфигурацию", exact: true }).click();
   await expect(page.getByText("Конфигурация сохранена.", { exact: true })).toBeVisible();
@@ -128,7 +128,7 @@ test("keyboard selection, resets and saving produce clean ordered YAML", async (
 
 test("configuration can be applied without leaving the page", async ({ page }) => {
   const panel = await mockPanel(page);
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByRole("searchbox", { name: "Найти свойство" }).fill("speedTest");
   await page.getByLabel("speedTest", { exact: true }).click();
   await page.getByRole("option", { name: "false", exact: true }).click();

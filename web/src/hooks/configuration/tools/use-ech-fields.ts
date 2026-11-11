@@ -19,7 +19,10 @@ export function useEchFields(keyPath: string) {
     mutationFn: (name: string) => coreToolsApi.generate(name, id),
     gcTime: 0,
     onSuccess: (result: IEch, name) => {
-      client.setQueryData(key(result.keyPath), { ...result, publicName: result.publicName || name });
+      client.setQueryData(key(result.keyPath), {
+        ...result,
+        publicName: result.publicName || name,
+      });
       setEdited(null);
     },
   });

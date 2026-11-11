@@ -3,7 +3,7 @@ import { mockPanel } from "../../fixtures";
 
 export async function mockSession(page: Page, isAuthorized = false) {
   await mockPanel(page, isAuthorized);
-  await page.route("http://panel.test/api/**", async (route) => {
+  await page.route("**/api/**", async (route) => {
     const endpoint = new URL(route.request().url()).pathname;
     if (endpoint === "/api/login") {
       isAuthorized = true;

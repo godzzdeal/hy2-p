@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
 test("ECH generation changes only the draft and exposes public config", async ({ page }, info) => {
   await mockPanel(page);
-  await page.route("http://panel.test/api/tools/ech*", (route) =>
+  await page.route("**/api/tools/ech*", (route) =>
     route.fulfill({
       json: {
         keyPath: "/data/ech/test/ech.pem",
@@ -11,7 +11,7 @@ test("ECH generation changes only the draft and exposes public config", async ({
       },
     }),
   );
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByRole("button", { name: "ECH", exact: true }).click();
   await page.getByLabel("Внешнее имя SNI для ECH", { exact: true }).fill("public.example.com");
   await page.getByRole("button", { name: "Создать ключ ECH", exact: true }).click();
@@ -36,7 +36,7 @@ test("saved ECH public name survives reload without generating another key", asy
     config: INITIAL_SETTINGS.config + "ech:\n  keyPath: /data/ech/saved/ech.pem\n",
   });
   let creates = 0;
-  await page.route("http://panel.test/api/tools/ech*", async (route) => {
+  await page.route("**/api/tools/ech*", async (route) => {
     if (route.request().method() === "POST") creates++;
     await route.fulfill({
       json: {
@@ -47,7 +47,7 @@ test("saved ECH public name survives reload without generating another key", asy
     });
   });
   for (let attempt = 0; attempt < 2; attempt++) {
-    await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+    await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
     await page.getByRole("button", { name: "ECH", exact: true }).click();
     await expect(page.getByLabel("Внешнее имя SNI для ECH", { exact: true })).toHaveValue(
       "saved.example.com",

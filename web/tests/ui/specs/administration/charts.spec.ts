@@ -23,7 +23,7 @@ test("charts have numerical scales and visibility survives reload", async ({ pag
 test("hiding every chart pauses frequent system polling", async ({ page }) => {
   await mockPanel(page);
   let reads = 0;
-  await page.route("http://panel.test/api/system", (route) => {
+  await page.route("**/api/system", (route) => {
     reads++;
     return route.fulfill({ json: demoSystem() });
   });

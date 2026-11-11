@@ -21,6 +21,11 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
   }
   return (
     <div className="user-devices min-w-0">
+      <Notice variant="warning">
+        {t(
+          "После включения лимита обновите подписку в используемом приложении. Одиночные ссылки перестанут работать.",
+        )}
+      </Notice>
       {effectiveLimit !== data.limit && (
         <Notice>
           {t("Действующий лимит с учётом группы:")} {effectiveLimit}
@@ -51,9 +56,6 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
           {t(commands.limit.isPending ? "Сохраняем…" : "Сохранить")}
         </Button>
       </form>
-      <Notice>
-        {t("После включения лимита обновите подписку в Happ. Одиночные ссылки перестанут работать.")}
-      </Notice>
       <h3>
         {t("Зарегистрированные устройства")}{" "}
         <Badge
@@ -63,7 +65,9 @@ export function DeviceForm({ userId, data }: { userId: string; data: IDevices })
         />
       </h3>
       {data.devices.length === 0 && (
-        <p className="muted">{t("Устройства появятся после обновления подписки в Happ.")}</p>
+        <p className="muted">
+          {t("Устройства появятся после обновления подписки в используемом приложении.")}
+        </p>
       )}
       <div className="device-list grid gap-3 my-3">
         {data.devices.map((device) => (

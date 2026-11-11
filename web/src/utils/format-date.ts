@@ -4,6 +4,9 @@ export function formatDate(value: string): string {
 }
 export function formatDateTime(value: string): string {
   return value
-    ? new Date(value).toLocaleString(i18n.language, { dateStyle: "short", timeStyle: "short" })
+    ? new Date(value).toLocaleString(i18n.language, {
+        dateStyle: "short",
+        timeStyle: "short",
+      })
     : i18n.t("Пока нет");
 }

@@ -6,6 +6,7 @@ import { PIXEL } from "@/config/i18n/english/settings/interface/presentation/pix
 import { TOOLS } from "@/config/i18n/english/settings/interface/presentation/tools";
 import { CLOUD, MEMBERSHIP, PORT_HELP } from "@/config/i18n/english/settings/management";
 export const INTERFACE = {
+  "Тема и язык": "Theme and language",
   ...GENERAL,
   ...PORTS,
   ...EMOJI,

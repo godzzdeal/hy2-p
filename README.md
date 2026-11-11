@@ -1,107 +1,94 @@
-<div align="center">
-  <img src="web/assets/pwa/icons/icon-192.png" width="80" height="80" alt="">
-  <h1>HY2-P</h1>
-  <p>Панель управления Hysteria2 для вашего сервера</p><p><a href="https://hy2-p.vercel.app" title="Открыть демоверсию HY2-P на Vercel"><img src="https://img.shields.io/badge/Live_Demo-Открыть_панель-071320?style=for-the-badge&amp;logo=vercel&amp;logoColor=white&amp;labelColor=096d79" alt="Открыть демоверсию HY2-P на Vercel"></a><br><sub>Без установки, с учебными данными. После выхода логин и пароль: <code>demo</code> / <code>demo</code>.</sub></p>
-  <p><a href="https://github.com/godzzdeal/hy2-p/releases/latest"><img src="https://img.shields.io/github/v/release/godzzdeal/hy2-p?style=flat-square&amp;color=096d79&amp;label=release" alt="Последний релиз"></a> <a href="https://github.com/godzzdeal/hy2-p/actions/workflows/ci.yml"><img src="https://github.com/godzzdeal/hy2-p/actions/workflows/ci.yml/badge.svg" alt="Проверки и сборка"></a> <a href="https://github.com/godzzdeal/hy2-p/stargazers"><img src="https://img.shields.io/github/stars/godzzdeal/hy2-p?style=flat-square&amp;color=096d79" alt="Поддержать звездой"></a></p>
+<div align="center"> <img src="web/assets/pwa/icons/icon-192.png" width="80" height="80" alt=""> <h1>HY2-P</h1> <p>Ваш Hysteria2. Пользователи, подключения и сервер в одной панели.</p> <p>   <a href="https://hy2-p.vercel.app"><img src="https://img.shields.io/badge/Открыть_демо-096d79?style=for-the-badge&amp;logo=vercel&amp;logoColor=white" alt="Открыть демоверсию"></a>   <a href="docs/install.md"><img src="https://img.shields.io/badge/Установка-071320?style=for-the-badge&amp;logo=docker&amp;logoColor=white" alt="Установка"></a> </p> <p>   <a href="https://github.com/godzzdeal/hy2-p/releases/latest"><img src="https://img.shields.io/github/v/release/godzzdeal/hy2-p?style=flat-square&amp;label=release&amp;color=096d79" alt="Последний релиз"></a>   <a href="https://github.com/godzzdeal/hy2-p/actions/workflows/ci.yml"><img src="https://github.com/godzzdeal/hy2-p/actions/workflows/ci.yml/badge.svg" alt="Проверки"></a>   <a href="https://github.com/godzzdeal/hy2-p/stargazers"><img src="https://img.shields.io/github/stars/godzzdeal/hy2-p?style=flat-square&amp;color=096d79" alt="GitHub Stars"></a> </p> <p><a href="docs/install.md">Установка</a> | <a href="docs/management.md">Управление</a> | <a href="docs/install.md#бесплатный-домен-freedns">FreeDNS</a> | <a href="https://github.com/godzzdeal/hy2-p/releases">Релизы</a> | <a href="ROADMAP.md">Roadmap</a></p>
 </div>
 
-**[Демоверсия на Vercel](https://hy2-p.vercel.app) | [Установка](docs/install.md) | [Бесплатный домен FreeDNS](docs/install.md#бесплатный-домен-freedns) | [Управление](docs/management.md) | [Релизы](https://github.com/godzzdeal/hy2-p/releases) | [Roadmap](ROADMAP.md)**
+Панель для Ubuntu с установкой в Docker. Работает на AMD64 и ARM64, не требует сборки на сервере. Русский и английский интерфейс, светлая и тёмная темы.
 
-Создавайте пользователей, выдавайте подписки и управляйте несколькими экземплярами HY2 из браузера. Панель устанавливается в Docker на Ubuntu и работает с Happ на телефоне и компьютере.
+<p align="center"><a href="https://hy2-p.vercel.app"><img src="docs/images/overview.png" width="100%" alt="HY2-P: обзор сервера. Открыть демо"></a></p>
 
-## Что умеет панель
+Демо доступно без установки. Данные учебные; после выхода используйте логин и пароль `demo` / `demo`.
 
-- **Экземпляры HY2.** До 8 независимых конфигураций со своими портами, версиями и журналами.
-- **Управление доступом.** Пользователи и группы, срок действия, лимиты трафика и выбор экземпляров для подписки.
-- **Подключение за пару нажатий.** Подписки Happ, ссылки `hy2://`, QR-коды, флаги и эмодзи.
-- **Учёт устройств.** Лимит через подписку Happ, модель, ОС, IP и состояние подключения.
-- **Обновления и откат.** Обновление панели из браузера с резервной копией и откатом. Выбор версии Hysteria2 и watchdog для экземпляров.
-- **Настройка сервера.** Свойства из документации Hysteria2, редактор YAML, TLS/ACME, ECH и Traffic Stats.
-- **Доступ с телефона.** Русский и английский языки, светлая и тёмная темы, установка как веб-приложения.
-- **Firewall Ubuntu.** Просмотр и изменение правил UFW через локального помощника.
-- **Облачный пароль.** Дополнительный пароль на втором шаге входа в панель.
-- **Перенос данных.** Импорт и экспорт конфигураций, пользователей и групп через панель или терминал.
-- **Обзор сервера.** Графики CPU, памяти, нагрузки и сети со шкалами и выбором видимости; трафик пользователей и размер данных, резервных копий и образов.
-- **Журнал.** Имена пользователей рядом с ID клиента, поиск и фильтры по пользователю и уровню сообщений.
+## Возможности
 
-<p align="center"><a href="https://hy2-p.vercel.app" title="Попробовать HY2-P в браузере"><img src="docs/images/overview.png" width="100%" alt="Главная страница HY2-P в тёмной теме. Нажмите, чтобы открыть демоверсию"></a></p>
-<p align="center"><a href="docs/images/users.png"><img src="docs/images/users.png" width="49%" alt="Пользователи и группы"></a> <a href="docs/images/configuration.png"><img src="docs/images/configuration.png" width="49%" alt="Конфигурация Hysteria2 в светлой теме"></a></p>
+**Подключения и доступ**
+
+- Пользователи и группы, срок действия и лимиты трафика.
+- Подписки, ссылки `hy2://` и QR-коды. Выбор доступных экземпляров для каждого пользователя.
+- Учёт устройств через Happ: модель, ОС, IP, лимит и состояние подключения.
+
+**Сервер и конфигурации**
+
+- До 8 экземпляров HY2 со своими настройками, портами и версиями.
+- Свойства Hysteria2, редактор YAML, TLS/ACME, ECH и Traffic Stats.
+- Графики нагрузки и сети, учёт трафика, журнал с поиском и фильтром по пользователю.
+
+**Обслуживание**
+
+- Обновление панели и HY2 из браузера, резервные копии, откат и watchdog.
+- Импорт и экспорт конфигураций, пользователей и групп.
+- Управление UFW через помощника, дополнительный облачный пароль и установка панели как PWA.
+
+<details>
+<summary><strong>Посмотреть интерфейс</strong></summary>
+
+<p><a href="docs/images/users.png"><img src="docs/images/users.png" width="49%" alt="Пользователи и группы"></a> <a href="docs/images/configuration.png"><img src="docs/images/configuration.png" width="49%" alt="Настройки Hysteria2"></a></p>
+
+</details>
 
 ## Установка
 
-Нужен сервер с публичным IP, Ubuntu 22.04 или новее и доступ по SSH с правами sudo. Поддерживаются amd64 и arm64. Установщик скачивает готовый Docker-образ, собирать проект на сервере не нужно.
+Нужны Ubuntu 22.04 или новее, публичный IP и доступ по SSH с правами sudo.
 
-**1. Выберите адрес.** Используйте публичный IP сервера или домен с A-записью на этот IP. Бесплатный поддомен можно создать в [FreeDNS](docs/install.md#бесплатный-домен-freedns).
-
-**2. Разрешите порты.** По умолчанию используются TCP `9443` для панели, TCP `80` для проверки ACME и UDP `8443` для Hysteria2. Откройте их в firewall сервера и хостинга. Сохраните доступ к своему SSH-порту.
-
-**3. Установка.** Выполните на сервере:
+1. Используйте IP сервера или домен с A-записью на этот IP. [Как получить бесплатный домен](docs/install.md#бесплатный-домен-freedns).
+2. Откройте TCP `9443` для панели, TCP `80` для проверки ACME и UDP `8443` для HY2 в firewall сервера и хостинга. Сохраните доступ к SSH.
+3. Запустите установщик:
 
 ```bash
 curl -fsSL https://hy2-p.vercel.app/install.sh -o /tmp/hy2-install.sh
 sudo bash /tmp/hy2-install.sh
 ```
 
-Мастер установки спросит адрес и предложит HTTPS или HTTP, при необходимости установит Docker и покажет адрес панели, логин и случайный пароль. Сохраните их. Логин по умолчанию: `admin`.
+Мастер установки спросит адрес, предложит HTTPS или HTTP, установит Docker при необходимости и покажет адрес панели с данными входа. Логин по умолчанию: `admin`. Пароль создаётся случайно, сохраните его.
+
+[Все параметры установщика](docs/install.md) | [Ручной запуск в Docker](docs/docker.md)
 
 ## Первое подключение
 
-1. Войдите в панель и откройте **Конфигурацию** выбранного экземпляра.
-2. Задайте публичный адрес и UDP-порт. Включите **SNI совпадает с адресом**, если используете этот же домен для сертификата.
-3. В **TLS / ACME** укажите сертификат с ключом или настройте ACME для своего домена.
-4. В **Authentication** оставьте **Пользователи панели**, сохраните конфигурацию и запустите экземпляр.
-5. Если меняли UDP-порт, нажмите **Применить UDP-порт** и дождитесь проверки.
-6. Создайте пользователя, откройте **Подключение** в его меню и импортируйте подписку в Happ.
+1. Откройте **Конфигурацию** выбранного экземпляра. Задайте адрес и UDP-порт.
+2. Включите **SNI совпадает с адресом**, если используете тот же домен для сертификата.
+3. В **TLS / ACME** укажите сертификат с ключом или настройте ACME.
+4. В **Authentication** оставьте **Пользователи панели**, сохраните настройки и запустите экземпляр.
+5. Если меняли порт, нажмите **Применить UDP-порт** и дождитесь проверки.
+6. Добавьте пользователя. В его меню откройте **Подключение** и импортируйте подписку в приложение.
 
-Сертификаты панели и экземпляров HY2 настраиваются отдельно. Для HTTP-проверки ACME нужен доступный извне TCP-порт `80`.
+Сертификаты панели и HY2 настраиваются отдельно. Для HTTP-проверки ACME нужен TCP-порт `80`, доступный извне.
 
-## Happ
+## Подключение
 
-**[Сайт Happ](https://happ.info/ru/) | [App Store](https://apps.apple.com/us/app/happ-proxy-utility/id6504287215) | [Документация](https://github.com/HappDev/happ_su)**
+Используйте приложение с поддержкой Hysteria2. Отсканируйте QR-код или добавьте адрес подписки из буфера обмена. Доступные пользователю экземпляры появятся в одной подписке.
 
-HY2-P хорошо работает с Happ. Скопируйте подписку пользователя, нажмите **+** в Happ и добавьте её из буфера обмена. Также можно отсканировать QR-код. Если пользователю доступны несколько экземпляров, они появятся в одной подписке.
-
-На iPhone и iPad установите **Happ Proxy Utility** из [App Store](https://apps.apple.com/us/app/happ-proxy-utility/id6504287215). Если приложение недоступно в регионе вашего Apple Account, воспользуйтесь [инструкцией разработчиков Happ](https://happ.info/ru/apple-region/?ref=rus).
-
-После смены адреса, порта или пароля обновите подписку в приложении. При включённом лимите устройств нужна именно подписка. Модель и ОС сообщает Happ, поэтому это учёт устройств, а не защита от копирования профиля.
+После смены адреса, порта или пароля обновите подписку. Лимит устройств требует передачи ID устройства приложением; эта возможность проверена с Happ.
 
 ## Пример конфигурации
 
-Использую этот конфиг с Happ. Он не универсальный: в другой сети или у другого оператора могут понадобиться изменения.
+Использую этот конфиг у себя. Он не универсальный: в другой сети или у другого оператора могут понадобиться изменения.
 
 <details>
 <summary><strong>Открыть YAML</strong></summary>
 
 ```yaml
 listen: :61254
-acme:
-  domains:
-    - vpn.example.com
-  email: admin@example.com
-  ca: letsencrypt
-  dir: /data/acme-hy2
+acme: domains:   - vpn.example.com email: admin@example.com ca: letsencrypt dir: /data/acme-hy2
 
-obfs:
-  type: salamander
-  salamander:
-    password: REPLACE_WITH_YOUR_RANDOM_OBFS_PASSWORD
+obfs: type: salamander salamander:   password: REPLACE_WITH_YOUR_RANDOM_OBFS_PASSWORD
 
-quic:
-  maxIdleTimeout: 30s
-  disablePathMTUDiscovery: false
+quic: maxIdleTimeout: 30s disablePathMTUDiscovery: false
 
 ignoreClientBandwidth: true
-congestion:
-  type: bbr
-  bbrProfile: standard
+congestion: type: bbr bbrProfile: standard
 
 disableUDP: false
 udpIdleTimeout: 60s
-masquerade:
-  type: proxy
-  proxy:
-    url: https://reuters.com
-    rewriteHost: true
+masquerade: type: proxy proxy:   url: https://reuters.com   rewriteHost: true
 ```
 
 </details>
@@ -110,41 +97,32 @@ masquerade:
 
 ## Обновление и откат
 
-**[Команды, резервные копии и восстановление](docs/management.md)**
-
-Откройте **Настройки → Обслуживание**, выберите версию панели и нажмите **Обновить**. Здесь же доступны перезапуск и **Откатить**. Обновление из браузера работает для установки через установщик HY2-P.
-
-После обновления предыдущий образ автоматически сохраняется в сжатом архиве для отката. Старые образы и завершённые контейнеры HY2-P удаляются. Запустить очистку вручную можно кнопкой **Удалить старые образы**. Данные и резервные копии сохраняются.
-
-Из терминала:
+В **Настройки → Обслуживание** выберите версию и нажмите **Обновить**. Здесь же доступны перезапуск и откат. Для обновления из браузера панель должна быть установлена установщиком HY2-P.
 
 ```bash
 sudo hy2-panel update
 ```
 
-Перед обновлением создаётся резервная копия. Если новая панель не запускается, установщик пробует восстановить предыдущую версию. Для ручного отката:
+Перед обновлением создаётся резервная копия. Предыдущий образ хранится в сжатом архиве, старые образы и завершённые контейнеры HY2-P удаляются. При неудачном запуске выполняется автоматический откат. Вручную:
 
 ```bash
 sudo hy2-panel rollback
 ```
 
-Откат возвращает и данные из копии перед обновлением. Новые изменения после этой копии не сохранятся. Hysteria2 обновляется отдельно в разделе **Управление HY2**.
+Откат возвращает данные из копии перед обновлением. HY2 обновляется отдельно в **Управление HY2**.
 
 ## Firewall
 
-При установленном и настроенном UFW подключите помощник:
+Для установленного UFW подключите помощника и откройте **Настройки → Firewall**:
 
 ```bash
 sudo hy2-panel firewall-setup
 ```
 
-Откройте **Настройки → Firewall**. Помощник не включает UFW автоматически; SSH-порты и порт панели защищены от изменения. Опубликованные порты Docker могут обходить UFW. Правила хостинга настраиваются в личном кабинете провайдера.
+Помощник не включает UFW автоматически. SSH-порты и порт панели защищены от изменения. Опубликованные порты Docker могут обходить UFW; firewall хостинга настраивается у провайдера.
 
-После обновления с 0.7.0 повторите `sudo hy2-panel firewall-setup`, чтобы заменить помощник версией на Go. Правила UFW сохранятся.
+## Помощь
 
-## Документация и помощь
+**[Установка и FreeDNS](docs/install.md) | [Команды и восстановление](docs/management.md) | [Документация Hysteria2](https://v2.hysteria.network/docs/getting-started/Installation/) | [Сообщить об ошибке](https://github.com/godzzdeal/hy2-p/issues)**
 
-- [Подробная установка](docs/install.md), включая бесплатный домен FreeDNS.
-- [Ручной запуск в Docker](docs/docker.md).
-- [Документация Hysteria2](https://v2.hysteria.network/docs/getting-started/Installation/).
-- [Сообщить об ошибке](https://github.com/godzzdeal/hy2-p/issues). Приложите версию панели и журнал без паролей, ключей и ссылок подписки.
+При сообщении об ошибке приложите версию панели и журнал без паролей, ключей и ссылок подписки.

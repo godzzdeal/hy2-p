@@ -18,15 +18,15 @@ for (const action of ["update", "rollback"] as const) {
     await mockPanel(page);
     let submitted: unknown;
     let isFinished = false;
-    await page.route("http://panel.test/api/panel/maintenance", (route) => {
+    await page.route("**/api/panel/maintenance", (route) => {
       if (route.request().method() === "GET") return route.fulfill({ json: INSTALLATION });
       submitted = route.request().postDataJSON();
       return route.fulfill({ status: 202, json: { id: TICKET, busy: true, phase: "queued" } });
     });
-    await page.route("http://panel.test/api/panel/versions", (route) =>
+    await page.route("**/api/panel/versions", (route) =>
       route.fulfill({ json: [{ version: "v0.7.6" }, { version: "v0.7.5" }] }),
     );
-    await page.route("http://panel.test/api/deployment/udp/status/*", (route) =>
+    await page.route("**/api/deployment/udp/status/*", (route) =>
       route.fulfill({
         json: {
           id: TICKET,
@@ -36,7 +36,7 @@ for (const action of ["update", "rollback"] as const) {
         },
       }),
     );
-    await page.getByRole("button", { name: "Настройки", exact: true }).click();
+    await page.getByRole("link", { name: "Настройки", exact: true }).click();
     await expandSettings(page);
     const update = page.getByRole("button", { name: "Обновить панель", exact: true });
     await page.getByRole("combobox", { name: "Версия панели", exact: true }).click();
@@ -74,7 +74,7 @@ test("image cleanup is confirmed, preserves the session and refreshes disk usage
   await mockPanel(page);
   let submitted: unknown;
   let isFinished = false;
-  await page.route("http://panel.test/api/panel/maintenance", (route) => {
+  await page.route("**/api/panel/maintenance", (route) => {
     if (route.request().method() === "GET")
       return route.fulfill({
         json: {
@@ -88,10 +88,10 @@ test("image cleanup is confirmed, preserves the session and refreshes disk usage
     submitted = route.request().postDataJSON();
     return route.fulfill({ status: 202, json: { id: TICKET, busy: true, phase: "cleaning" } });
   });
-  await page.route("http://panel.test/api/panel/versions", (route) =>
+  await page.route("**/api/panel/versions", (route) =>
     route.fulfill({ json: [{ version: "v0.7.5" }] }),
   );
-  await page.route("http://panel.test/api/deployment/udp/status/*", (route) =>
+  await page.route("**/api/deployment/udp/status/*", (route) =>
     route.fulfill({
       json: {
         id: TICKET,
@@ -103,7 +103,7 @@ test("image cleanup is confirmed, preserves the session and refreshes disk usage
       },
     }),
   );
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   await page.getByRole("button", { name: "Удалить старые образы", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Удалить старые образы?", exact: true });
@@ -115,7 +115,7 @@ test("image cleanup is confirmed, preserves the session and refreshes disk usage
   await expect(page.getByLabel("Обслуживание панели", { exact: true })).toBeVisible();
   expect(submitted).toEqual({ action: "cleanup" });
   await page.reload();
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   await expect(page.getByRole("button", { name: "Удалить старые образы", exact: true })).toBeDisabled();
   isFinished = true;
@@ -124,6 +124,6 @@ test("image cleanup is confirmed, preserves the session and refreshes disk usage
   ).toBeVisible();
   await expect(page.getByLabel("Обслуживание панели", { exact: true })).toHaveCount(0);
   await expect(page.getByLabel("Пароль", { exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "Обзор", exact: true }).click();
+  await page.getByRole("link", { name: "Обзор", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Ваш сервер", exact: true })).toBeVisible();
 });

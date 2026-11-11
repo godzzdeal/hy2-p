@@ -8,7 +8,10 @@ import { useEffect, useState } from "react";
 export function usePanelMaintenance() {
   const client = useQueryClient();
   const active = usePanelOperationStore((state) => state.active);
-  const installation = useQuery({ queryKey: QUERY_KEYS.panelMaintenance, queryFn: panelMaintenanceApi.read });
+  const installation = useQuery({
+    queryKey: QUERY_KEYS.panelMaintenance,
+    queryFn: panelMaintenanceApi.read,
+  });
   const versions = useQuery({
     queryKey: QUERY_KEYS.panelVersions,
     queryFn: panelMaintenanceApi.versions,

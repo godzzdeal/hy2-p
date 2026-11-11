@@ -13,5 +13,8 @@ export interface ICloudPasswordChange {
 export const cloudPasswordApi = {
   read: () => request<ICloudPasswordSettings>(API_ROUTES.cloudPassword),
   save: (body: ICloudPasswordChange) =>
-    request<{ loginRequired: boolean }>(API_ROUTES.cloudPassword, { method: "PUT", body }),
+    request<{ loginRequired: boolean }>(API_ROUTES.cloudPassword, {
+      method: "PUT",
+      body,
+    }),
 };

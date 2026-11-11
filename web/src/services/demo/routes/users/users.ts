@@ -41,7 +41,11 @@ export function demoUsers(path: string, options: IRequest): unknown {
       return { ok: true };
     }
     const input = demoInput<IUserUpdate>(body);
-    Object.assign(user, { name: input.name, enabled: input.enabled, expires: input.expires });
+    Object.assign(user, {
+      name: input.name,
+      enabled: input.enabled,
+      expires: input.expires,
+    });
     return displayUser(user);
   }
   if (path === API_ROUTES.userGroup(userId)) {
@@ -66,5 +70,8 @@ export function demoUsers(path: string, options: IRequest): unknown {
   return demoDevices(userId, path, options);
 }
 function displayUser(user: IUser): IUser {
-  return { ...user, displayName: withDefaultFlag(user.name, demoState.announcement.defaultUserFlag ?? "") };
+  return {
+    ...user,
+    displayName: withDefaultFlag(user.name, demoState.announcement.defaultUserFlag ?? ""),
+  };
 }

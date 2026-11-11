@@ -9,8 +9,8 @@ export function InstanceSelector() {
   const { id, select, isPending } = useInstanceSelection();
   useInstanceRecovery();
   return (
-    <Field className="instance-selector flex items-center gap-3 mb-4 min-w-0 max-tablet:items-stretch max-tablet:flex-col max-tablet:gap-1">
-      <span>{t("Выбранный экземпляр")}</span>
+    <Field className="instance-selector flex items-center gap-3 mb-4 min-w-0 max-tablet:gap-2">
+      <span className="max-tablet:hidden">{t("Выбранный экземпляр")}</span>
       <Select
         className="w-60 max-w-full max-tablet:w-full"
         aria-label={t("Выбранный экземпляр")}

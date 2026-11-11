@@ -2,7 +2,9 @@ import { type TUserDialog } from "@/services/users/dialog-types";
 import { lazy, Suspense } from "react";
 import { Loader } from "@/components/ui/loading";
 const UserEditor = lazy(() =>
-  import("@/components/users/dialogs/editor/UserEditor").then((module) => ({ default: module.UserEditor })),
+  import("@/components/users/dialogs/editor/UserEditor").then((module) => ({
+    default: module.UserEditor,
+  })),
 );
 const ConnectionDialog = lazy(() =>
   import("@/components/users/dialogs/ConnectionDialog").then((module) => ({
@@ -10,7 +12,9 @@ const ConnectionDialog = lazy(() =>
   })),
 );
 const DeleteDialog = lazy(() =>
-  import("@/components/users/dialogs/DeleteDialog").then((module) => ({ default: module.DeleteDialog })),
+  import("@/components/users/dialogs/DeleteDialog").then((module) => ({
+    default: module.DeleteDialog,
+  })),
 );
 const TrafficDialog = lazy(() =>
   import("@/components/users/traffic/editor/TrafficDialog").then((module) => ({
@@ -23,7 +27,9 @@ const UserAccessDialog = lazy(() =>
   })),
 );
 const DevicesDialog = lazy(() =>
-  import("@/components/users/devices/DevicesDialog").then((module) => ({ default: module.DevicesDialog })),
+  import("@/components/users/devices/DevicesDialog").then((module) => ({
+    default: module.DevicesDialog,
+  })),
 );
 export function UserDialogs({ dialog, onClose }: { dialog: TUserDialog; onClose: () => void }) {
   if (!dialog) return null;

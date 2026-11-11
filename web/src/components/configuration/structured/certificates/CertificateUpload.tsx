@@ -19,7 +19,7 @@ export function CertificateUpload({ onUploaded }: { onUploaded: (cert: string, k
     else setPrivateKey(text);
   }
   return (
-    <div className="certificate-upload p-4 border-t border-line">
+    <div className="certificate-upload grid gap-3 min-w-0">
       <FileDropzone
         label={t("Сертификат PEM")}
         hint={t("PEM, CRT или CER, до 1 МБ")}

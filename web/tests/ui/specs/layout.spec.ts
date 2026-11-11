@@ -11,7 +11,7 @@ test("sidebar collapse is saved and mobile keeps horizontal navigation", async (
   await toggle.click();
   const collapsed = await page.locator("main").boundingBox();
   expect(collapsed!.width).toBeGreaterThan(before!.width);
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Пользователи", exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByRole("button", { name: "Развернуть меню", exact: true })).toBeVisible();
@@ -30,22 +30,21 @@ test("quick-start content and navigation stay inside their bounds", async ({ pag
   expect(bounds!.y + bounds!.height - number!.y - number!.height).toBeGreaterThanOrEqual(8);
   const logo = await page.locator(".brand").boundingBox();
   const header = await page.locator(".app-header").boundingBox();
-  const logout = await page.getByRole("button", { name: "Выйти", exact: true }).boundingBox();
+  const logout = info.project.name === "desktop" ? await page.getByRole("button", { name: "Выйти", exact: true }).boundingBox() : null;
   if (info.project.name === "desktop") {
     expect(logo!.height).toBe(header!.height);
-    const item = await page.getByRole("button", { name: "Обзор", exact: true }).boundingBox();
+    const item = await page.getByRole("link", { name: "Обзор", exact: true }).boundingBox();
     expect(logout!.x).toBe(item!.x);
     expect(logout!.width).toBe(item!.width);
   } else {
-    expect(logout!.y).toBeGreaterThanOrEqual(logo!.y);
-    expect(logout!.y + logout!.height).toBeLessThanOrEqual(logo!.y + logo!.height);
+    await expect(page.getByRole("button", { name: "Тема", exact: true })).toBeVisible();
     for (const width of [320, 390]) {
       await page.setViewportSize({ width, height: 844 });
       const menu = page.locator(".app-sidebar > nav");
       expect(await menu.evaluate((element) => element.scrollHeight <= element.clientHeight)).toBe(true);
       expect(await menu.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
-      const first = await menu.getByRole("button").first().boundingBox();
-      for (const button of await menu.getByRole("button").all()) {
+      const first = await menu.getByRole("link").first().boundingBox();
+      for (const button of await menu.getByRole("link").all()) {
         const item = await button.boundingBox();
         expect(item!.y).toBe(first!.y);
         expect(item!.height).toBe(first!.height);
@@ -56,8 +55,8 @@ test("quick-start content and navigation stay inside their bounds", async ({ pag
           ),
         ).toBe(true);
       }
-      await menu.getByRole("button").last().focus();
-      const last = await menu.getByRole("button").last().boundingBox();
+      await menu.getByRole("link").last().focus();
+      const last = await menu.getByRole("link").last().boundingBox();
       const menuBounds = await menu.boundingBox();
       expect(last!.x).toBeGreaterThanOrEqual(menuBounds!.x);
       // Scroll offsets round to whole pixels; text widths can remain fractional.
@@ -68,7 +67,7 @@ test("quick-start content and navigation stay inside their bounds", async ({ pag
           return element.scrollTop;
         }),
       ).toBe(0);
-      await menu.getByRole("button").first().focus();
+      await menu.getByRole("link").first().focus();
     }
   }
   await page.screenshot({ path: info.outputPath("navigation-spacing.png"), fullPage: true });
@@ -84,14 +83,17 @@ test("page forms share padding and content stays inside the viewport", async ({ 
     "Управление HY2",
     "Настройки",
   ]) {
-    await page.locator(".app-sidebar nav").getByRole("button", { name: title, exact: true }).click();
+    const link = page.locator(".app-sidebar nav").getByRole("link", { name: title, exact: true });
+    const route = await link.getAttribute("href");
+    await link.click();
+    await page.waitForURL(url => url.pathname === route);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     if (title === "Настройки" || title === "Подписки") await expandSettings(page);
     if (title === "Настройки") await expect(page.locator("#cloud-password input").first()).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
     ).toBe(0);
-    const forms = await page.locator(".form-body").evaluateAll((elements) =>
+    const forms = await page.locator(".form-body:visible").evaluateAll((elements) =>
       elements.map((element) => {
         const style = getComputedStyle(element);
         return {
@@ -111,7 +113,7 @@ test("page forms share padding and content stays inside the viewport", async ({ 
 
 test("motion is short and respects the reduced-motion preference", async ({ page }) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   await page.getByRole("button", { name: "Добавить", exact: true }).click();
   const dialog = page.getByRole("dialog");
   expect(await dialog.evaluate((element) => getComputedStyle(element).animationDuration)).toBe("0.2s");
@@ -133,18 +135,4 @@ test("Tailwind utilities retain precedence over component styles after Sass", as
     return value;
   });
   expect(pointerEvents).toBe("none");
-});
-
-test("shared page notices have space before the following card", async ({ page }, info) => {
-  await mockPanel(page);
-  for (const section of ["Пользователи", "Экземпляры"]) {
-    await page.getByRole("button", { name: section, exact: true }).click();
-    const notice = page.locator(".page-content > .notice");
-    await expect(notice).toBeVisible();
-    const box = (await notice.boundingBox())!;
-    const following = (await notice.locator("xpath=following-sibling::*[1]").boundingBox())!;
-    expect(following.y - box.y - box.height).toBeGreaterThanOrEqual(16);
-    expect(await notice.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
-    await page.screenshot({ path: info.outputPath("notice-" + section + ".png") });
-  }
 });

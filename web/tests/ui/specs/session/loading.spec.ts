@@ -7,7 +7,7 @@ test("startup loader spins, announces loading and respects reduced motion", asyn
   const pending = new Promise<void>((resolve) => {
     release = resolve;
   });
-  await page.route("http://panel.test/api/session", async (route) => {
+  await page.route("**/api/session", async (route) => {
     await pending;
     await route.fulfill({ json: { ok: true } });
   });
@@ -39,13 +39,13 @@ test("API waits use the same loader and leave no spinner after completion", asyn
   const pending = new Promise<void>((resolve) => {
     release = resolve;
   });
-  await page.route("http://panel.test/api/users", async (route) => {
+  await page.route("**/api/users", async (route) => {
     await pending;
     await route.fulfill({ json: [] });
   });
   try {
     await page.reload();
-    await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+    await page.getByRole("link", { name: "Пользователи", exact: true }).click();
     const loader = page.locator("#users-list .loader");
     await expect(loader).toBeVisible();
     await expect(loader.locator(".spinner")).toBeVisible();

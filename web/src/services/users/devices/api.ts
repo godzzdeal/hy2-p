@@ -6,7 +6,13 @@ export const devicesApi = {
     request<IDevices>(API_ROUTES.userDevice(id, device), { method: "DELETE" }),
   read: (id: string) => request<IDevices>(API_ROUTES.userDevices(id)),
   limit: (id: string, limit: number) =>
-    request<IDevices>(API_ROUTES.userDevices(id), { method: "PUT", body: { limit } }),
+    request<IDevices>(API_ROUTES.userDevices(id), {
+      method: "PUT",
+      body: { limit },
+    }),
   edit: (id: string, device: string, blocked: boolean) =>
-    request<IDevices>(API_ROUTES.userDevice(id, device), { method: "PATCH", body: { blocked } }),
+    request<IDevices>(API_ROUTES.userDevice(id, device), {
+      method: "PATCH",
+      body: { blocked },
+    }),
 };

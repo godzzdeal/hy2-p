@@ -11,13 +11,13 @@ export const DEVICES: Record<string, string> = {
   "Устройства пользователя": "User devices",
   "Лимит устройств": "Device limit",
   "0 отключает лимит. Учитываются устройства с подпиской.":
-    "0 means unlimited. Registered Happ devices are counted.",
+    "0 means unlimited. Registered devices are counted.",
   "Сохранить лимит устройств": "Save device limit",
-  "После включения лимита обновите подписку в Happ. Одиночные ссылки перестанут работать.":
-    "After enabling a limit, refresh the subscription in Happ on every device. Old standalone connection links will stop working.",
+  "После включения лимита обновите подписку в используемом приложении. Одиночные ссылки перестанут работать.":
+    "After enabling a limit, refresh the subscription in your app on every device. Old standalone connection links will stop working.",
   "Зарегистрированные устройства": "Registered devices",
-  "Устройства появятся после обновления подписки в Happ.":
-    "Devices will appear after refreshing the subscription in Happ.",
+  "Устройства появятся после обновления подписки в используемом приложении.":
+    "Devices will appear after refreshing the subscription in your app.",
   "Модель и ОС сообщает приложение. Показано время последнего подключения.":
     "The client reports its model, OS and app. The time shown is the last connection, not live device status.",
   "Без лимита одиночные ссылки работают без определения устройства.":
@@ -42,6 +42,6 @@ export const DEVICES: Record<string, string> = {
   "Укажите состояние доступа устройства": "Specify device access status",
   "Достигнут лимит устройств. Попросите администратора освободить место":
     "Device limit reached. Ask the administrator to free a slot",
-  "Включён лимит устройств. Импортируйте подписку в Happ, чтобы получить персональный ключ устройства.":
-    "A device limit is enabled. Import the subscription in Happ to receive a device-specific key.",
+  "Включён лимит устройств. Импортируйте подписку в используемом приложении, чтобы получить персональный ключ устройства.":
+    "A device limit is enabled. Import the subscription in your app to receive a device-specific key.",
 };

@@ -39,3 +39,5 @@ export { Undo as RotateCcw, Undo as Undo2 } from "pixelarticons/react/Undo.js";
 export { User as UserRound } from "pixelarticons/react/User.js";
 export { Users } from "pixelarticons/react/Users.js";
 export { WarningDiamond as TriangleAlert } from "pixelarticons/react/WarningDiamond.js";
+
+export { Languages } from "pixelarticons/react/Languages.js";

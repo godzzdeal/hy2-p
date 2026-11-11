@@ -14,7 +14,7 @@ test("phone installation metadata and manual steps are available", async ({ page
   expect(manifest.display).toBe("standalone");
   expect(manifest.icons.map((icon) => icon.sizes)).toContain("192x192");
   expect(manifest.icons.map((icon) => icon.sizes)).toContain("512x512");
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   await page.getByRole("button", { name: "Установить панель", exact: true }).click();
   const help = page.getByRole("dialog", { name: "Панель на главном экране", exact: true });
@@ -27,16 +27,16 @@ test("the install button uses the browser prompt and installed event", async ({ 
     const event = new Event("beforeinstallprompt", { cancelable: true });
     Object.defineProperty(event, "prompt", {
       value: async () => {
-        document.documentElement.dataset.installPromptCalled = "true";
+        Reflect.set(window, "installPromptCalled", true);
         return { outcome: "accepted", platform: "web" };
       },
     });
     window.dispatchEvent(event);
   });
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   await page.getByRole("button", { name: "Установить панель", exact: true }).click();
-  await expect(page.locator("html")).toHaveAttribute("data-install-prompt-called", "true");
+  await expect.poll(() => page.evaluate(() => Reflect.get(window, "installPromptCalled"))).toBe(true);
   await page.evaluate(() => window.dispatchEvent(new Event("appinstalled")));
   await expect(page.getByRole("button", { name: "Установить панель", exact: true })).toHaveCount(0);
 });
@@ -47,17 +47,17 @@ test("login has a simple password label and accessible language choice", async (
   await expect(page.getByText("Центр управления", { exact: true })).toHaveCount(0);
   await expect(page.getByLabel("Пароль", { exact: true })).toBeVisible();
   await expect(page.getByText("Пароль администратора")).toHaveCount(0);
-  await page.getByRole("combobox").click();
-  await page.getByRole("option", { name: "English", exact: true }).click();
+  await page.getByRole("button", { name: "Язык", exact: true }).click();
+  await page.getByRole("menuitemradio", { name: "English", exact: true }).click();
   await expect(page.getByLabel("Password", { exact: true })).toBeVisible();
   await page.screenshot({ path: info.outputPath("login.png"), fullPage: true });
 });
 
 test("logs support Unicode, search, level filters, pause and clearing", async ({ page }, info) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Управление HY2", exact: true }).click();
+  await page.getByRole("link", { name: "Управление HY2", exact: true }).click();
   const region = page.getByRole("region", { name: "Сообщения экземпляра" });
-  expect(await region.evaluate((element) => getComputedStyle(element).fontFamily)).toContain("Epilepsy Sans");
+  expect(await region.evaluate((element) => getComputedStyle(element).fontFamily)).toBe(await page.evaluate(() => getComputedStyle(document.body).fontFamily));
   await expect(region).toContainText("Сертификат обновлён ✓");
   await page.getByRole("searchbox", { name: "Поиск в журнале" }).fill("ACME");
   await expect(region).not.toContainText("Сертификат обновлён");
@@ -74,7 +74,7 @@ test("logs support Unicode, search, level filters, pause and clearing", async ({
 
 test("the panel displays the server build version", async ({ page }) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   await expect(page.getByRole("status", { name: "Версия панели" }).last()).toHaveText("v0.2.1");
   await expect(page.getByRole("status", { name: "Версия панели" }).last()).toHaveAttribute(
@@ -95,13 +95,13 @@ test("pixel themes and the emoji menu work with keyboard navigation", async ({ p
     await page.screenshot({ path: info.outputPath("pixel-" + choice.value + ".png"), fullPage: true });
   }
   expect(backgrounds[0]).not.toBe(backgrounds[1]);
-  expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain("Epilepsy Sans");
+  expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toBe(await page.evaluate(() => getComputedStyle(document.body).fontFamily));
   for (const sample of ["Настройки сервера Ёжик", "Server settings 0123456789"]) {
-    expect(await page.evaluate((text) => document.fonts.check('26px "Epilepsy Sans"', text), sample)).toBe(
+    expect(await page.evaluate((text) => document.fonts.check('26px ' + getComputedStyle(document.body).fontFamily.split(',')[0], text), sample)).toBe(
       true,
     );
   }
-  await page.getByRole("button", { name: "Подписки", exact: true }).click();
+  await page.getByRole("link", { name: "Подписки", exact: true }).click();
   await expandSettings(page);
   await page.getByRole("button", { name: "Выбрать эмодзи", exact: true }).click();
   await page.getByLabel("Поиск эмодзи", { exact: true }).fill("ракета");

@@ -1,25 +1,10 @@
-import { useState } from "react";
-
-const STORAGE_PREFIX = "hy2.settings-section.v2.";
+import { CLOSED_SECTION, useUiStore } from "@/store/ui-store";
 
 export function useSettingsSection(id: string) {
-  const key = STORAGE_PREFIX + id;
-  const [state, setState] = useState(() => {
-    try {
-      const isOpen = localStorage.getItem(key) === "open";
-      return { isOpen, hasOpened: isOpen };
-    } catch {
-      return { isOpen: false, hasOpened: false };
-    }
-  });
+  const state = useUiStore((value) => value.settingsSections[id] ?? CLOSED_SECTION);
+  const setSettingsSection = useUiStore((value) => value.setSettingsSection);
   function onToggle() {
-    const next = !state.isOpen;
-    setState({ isOpen: next, hasOpened: state.hasOpened || next });
-    try {
-      localStorage.setItem(key, next ? "open" : "closed");
-    } catch {
-      // Collapsing remains available when browser storage is disabled.
-    }
+    setSettingsSection(id, !state.isOpen);
   }
   return { ...state, onToggle };
 }

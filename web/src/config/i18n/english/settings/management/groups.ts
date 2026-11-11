@@ -1,8 +1,8 @@
 export const MEMBERSHIP = {
   "Выберите участников. Пользователи из других групп будут перемещены.":
     "Select members. Users from other groups will be moved here.",
-  "Снятая отметка убирает из группы. При лимите устройств обновите подписку в Happ.":
-    "Unchecking removes group membership. Refresh the Happ subscription when using device limits.",
+  "Снятая отметка убирает из группы. При лимите устройств обновите подписку в используемом приложении.":
+    "Unchecking removes group membership. Refresh the subscription when using device limits.",
   "Участники группы {{name}}": "Members of {{name}}",
   Участники: "Members",
   "Выбрать {{name}}": "Select {{name}}",
@@ -13,8 +13,8 @@ export const MEMBERSHIP = {
   "Снять найденные": "Deselect matches",
   "Выбрать найденных": "Select matches",
   "Пользователи не найдены": "No users found",
-  "Правила доступа обновятся в течение нескольких секунд. При включении лимита устройств обновите подписку в Happ.":
-    "Access rules update within a few seconds. Refresh the Happ subscription when enabling a device limit.",
+  "Правила доступа обновятся в течение нескольких секунд. При включении лимита устройств обновите подписку в используемом приложении.":
+    "Access rules update within a few seconds. Refresh the subscription when enabling a device limit.",
   "Сохранить участников": "Save members",
   "Укажите список пользователей": "Provide a list of users",
   "Слишком много участников группы": "Too many group members",

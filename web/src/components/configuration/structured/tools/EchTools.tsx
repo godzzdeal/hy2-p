@@ -25,7 +25,7 @@ export function EchTools({
     notify("Ключ ECH создан. Сохраните конфигурацию и перезапустите экземпляр.");
   }
   return (
-    <section className="configuration-tools grid gap-4 p-4 min-w-0">
+    <section className="configuration-tools grid gap-4 min-w-0">
       <Notice>
         {t(
           "ACME обновляет TLS-сертификат. ECH создаётся отдельно; клиентам передаётся только публичный tls.ech.",

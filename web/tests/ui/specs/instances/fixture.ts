@@ -41,7 +41,7 @@ export async function mockInstances(page: Page, withExtra = false) {
   };
   if (withExtra) instances.push({ ...second });
   const requests: string[] = [];
-  await page.route("http://panel.test/api/instances**", async (route) => {
+  await page.route("**/api/instances**", async (route) => {
     const request = route.request(),
       url = new URL(request.url()),
       method = request.method();

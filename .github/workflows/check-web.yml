@@ -1,0 +1,28 @@
+name: Check web
+on:
+  workflow_call: {}
+permissions:
+  contents: read
+jobs:
+  web:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with:
+          bun-version: 1.4.3
+      - run: bun install --frozen-lockfile
+        working-directory: web
+      - run: bun run test && bun run lint && bun run build
+        working-directory: web
+      - run: bunx playwright install --with-deps chromium
+        working-directory: web
+      - run: bun run test:ui
+        working-directory: web
+      - name: Check browser-only demo
+        run: bun run build:demo && bunx playwright test --config
+          tests/demo/playwright.config.ts
+        working-directory: web

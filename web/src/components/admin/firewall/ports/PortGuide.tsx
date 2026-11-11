@@ -1,4 +1,5 @@
 import { Caption } from "@/components/elements/Caption";
+import { Notice } from "@/components/ui/feedback";
 import { Button } from "@/components/ui/button/Button";
 import { PortRow } from "@/components/admin/firewall/ports/PortRow";
 import { PortHelp } from "@/components/admin/firewall/ports/PortHelp";
@@ -13,6 +14,11 @@ export function PortGuide() {
   return (
     <section className="firewall-guide mb-4 pb-4 border-b border-line" aria-label={t("Какие порты открыть")}>
       <h3>{t("Какие порты открыть")}</h3>
+      {!!query.data?.warnings?.length && (
+        <Notice variant="warning">
+          {t("Не удалось прочитать настройки экземпляров:")} {query.data.warnings.join(", ")}
+        </Notice>
+      )}
       <Caption>{t("Порты из настроек панели и экземпляров. Доступность извне не проверена.")}</Caption>
       <QueryState isLoading={query.isPending} error={query.error} />
       {query.error && (
@@ -25,11 +31,6 @@ export function PortGuide() {
           <PortRow key={`${port.port}/${port.protocol}`} port={port} />
         ))}
       </ul>
-      {!!query.data?.warnings?.length && (
-        <p className="inline-error text-danger text-lg py-3 px-0 wrap-anywhere">
-          {t("Не удалось прочитать настройки экземпляров:")} {query.data.warnings.join(", ")}
-        </p>
-      )}
       <PortHelp />
     </section>
   );

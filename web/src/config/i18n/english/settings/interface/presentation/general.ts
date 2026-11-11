@@ -6,12 +6,12 @@ export const INTERFACE = {
   "Версия Hysteria2": "Hysteria2 version",
   Отменить: "Cancel",
   Сохранить: "Save",
-  "Объявление в Happ": "Announcement in Happ",
+  Объявление: "Announcement",
   "Показывать объявление в подписках": "Show announcement in subscriptions",
   "Текст объявления": "Announcement text",
   "Обновление подписки (часы)": "Subscription update interval (hours)",
-  "Happ показывает объявление после обновления подписки. Это не push-уведомление; фоновое обновление зависит от приложения и ОС.":
-    "Happ displays the announcement after a subscription update. This is not a push notification; background updates depend on the app and operating system.",
+  "Совместимое приложение показывает объявление после обновления подписки. Это не push-уведомление; фоновое обновление зависит от приложения и ОС.":
+    "Compatible apps display the announcement after a subscription update. This is not a push notification; background updates depend on the app and operating system.",
   "Сообщение получат пользователи подписки. При импорте только ссылки сервера объявление не передаётся.":
     "The message is delivered to subscription users. Importing only a server link does not deliver announcements.",
   "Сохранить объявление": "Save announcement",
@@ -56,10 +56,10 @@ export const INTERFACE = {
   "Настройки Hysteria2": "Hysteria2 configuration",
   "Пользователи панели не применяются. Доступ определяют параметры auth ниже.":
     "Panel users are not applied. Access is controlled by the auth settings below.",
-  "Пользователи хранятся в панели. Happ получает пароль по ссылке подключения, а HY2 проверяет его через панель. Добавлять пользователей в YAML и перезапускать экземпляр не нужно.":
-    "Users are stored in the panel. Happ receives the password through the connection link and Hysteria2 checks it with the panel. You do not need to add users to YAML or restart the instance.",
-  "Пользователи хранятся в панели и работают сразу после добавления. Для Happ скопируйте подписку или откройте QR-код.":
-    "Users are stored in the panel and work as soon as they are added. Copy a subscription or open the QR code for Happ.",
+  "Пользователи хранятся в панели. Приложение получает пароль по ссылке подключения, а HY2 проверяет его через панель. Добавлять пользователей в YAML и перезапускать экземпляр не нужно.":
+    "Users are stored in the panel. The app receives the password through the connection link and Hysteria2 checks it with the panel. You do not need to add users to YAML or restart the instance.",
+  "Пользователи хранятся в панели и работают сразу после добавления. Для подключения скопируйте подписку или откройте QR-код.":
+    "Users are stored in the panel and work as soon as they are added. Copy a subscription or open the QR code to connect.",
   Упорядочить: "Sort",
   Открыть: "Open",
   "Есть несохранённые изменения": "You have unsaved changes",

@@ -1,4 +1,3 @@
-import { styleClass } from "@/styles/runtime";
 import { ChevronDown } from "@/components/elements/icons";
 import { EMPTY_SELECT_VALUE, encodeSelectValue } from "@/components/ui/select/select-value";
 import { cn } from "@/utils/cn";
@@ -43,31 +42,29 @@ export function Select({
     >
       <Primitive.Trigger
         {...triggerProps}
-        className={styleClass(
-          cn(
-            "select-trigger inline-flex h-control items-center justify-between gap-3 py-0 text-left font-normal aria-expanded:border-accent",
-            CONTROL_STYLES,
-            className,
-          ),
+        className={cn(
+          "select-trigger inline-flex h-control items-center justify-between gap-3 py-0 text-left font-normal aria-expanded:border-accent",
+          CONTROL_STYLES,
+          className,
         )}
       >
         <span data-select-value className="min-w-0 flex-1 truncate">
           <Primitive.Value />
         </span>
         <Primitive.Icon asChild>
-          <ChevronDown width={24} height={24} className={styleClass("shrink-0 text-muted")} aria-hidden />
+          <ChevronDown width={24} height={24} className={cn("shrink-0 text-muted")} aria-hidden />
         </Primitive.Icon>
       </Primitive.Trigger>
       <Primitive.Portal>
         <Primitive.Content
-          className={styleClass(
+          className={cn(
             "select-popup z-60 overflow-hidden border-2 border-line bg-surface text-foreground shadow-pixel",
           )}
           position="popper"
           sideOffset={4}
           collisionPadding={8}
         >
-          <Primitive.Viewport className={styleClass("min-h-0 overscroll-contain scroll-auto p-1")}>
+          <Primitive.Viewport className={cn("min-h-0 overscroll-contain scroll-auto p-1")}>
             {children}
           </Primitive.Viewport>
         </Primitive.Content>

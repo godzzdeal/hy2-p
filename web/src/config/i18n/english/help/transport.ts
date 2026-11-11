@@ -54,9 +54,9 @@ export const TRANSPORT_HELP = {
   "Расширенная настройка QUIC. Для обычного сервера оставьте значение по умолчанию.":
     "Advanced QUIC setting. Keep the default for normal use.",
   "Маскировка трафика": "Traffic obfuscation",
-  "Меняет внешний вид UDP-пакетов. Для импорта в Happ выберите Salamander. После смены обновите подписку клиента.":
-    "Changes the appearance of UDP packets. Choose Salamander for Happ URI import. Refresh client subscriptions after changing it.",
+  "Меняет внешний вид UDP-пакетов. Для экспорта ссылки выберите Salamander. После смены обновите подписку клиента.":
+    "Changes the appearance of UDP packets. Choose Salamander for connection link export. Refresh client subscriptions after changing it.",
   "Пароль маскировки": "Obfuscation password",
-  "Этот пароль должен совпадать на сервере и в Happ. Панель добавит его в ссылку подключения.":
-    "This password must match on the server and in Happ. The panel includes it in connection links.",
+  "Этот пароль должен совпадать на сервере и в приложении. Панель добавит его в ссылку подключения.":
+    "This password must match on the server and in your app. The panel includes it in connection links.",
 };

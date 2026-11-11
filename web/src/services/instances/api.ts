@@ -8,7 +8,10 @@ export const instancesApi = {
   create: (body: { name: string; settings: IConfiguration }) =>
     request<{ id: string }>(API_ROUTES.instances, { method: "POST", body }),
   rename: (id: string, name: string) =>
-    request<{ ok: boolean }>(API_ROUTES.instance(id), { method: "PATCH", body: { name } }),
+    request<{ ok: boolean }>(API_ROUTES.instance(id), {
+      method: "PATCH",
+      body: { name },
+    }),
   remove: (id: string) =>
     request<{ removed: boolean; operation: IPortOperation | null }>(API_ROUTES.instance(id), {
       method: "DELETE",

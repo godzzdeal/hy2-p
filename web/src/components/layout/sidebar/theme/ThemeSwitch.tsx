@@ -1,29 +1,21 @@
-import { ThemeOption } from "@/components/layout/sidebar/theme/ThemeOption";
-import { THEME_OPTIONS } from "@/components/layout/sidebar/theme/theme-options";
-import { useUiStore } from "@/store/ui-store";
+import { Button } from "@/components/ui/button/Button";
+import { useThemeSwitch } from "./use-theme-switch";
 import { useTranslation } from "react-i18next";
-
 export function ThemeSwitch() {
   const { t } = useTranslation();
-  const theme = useUiStore((state) => state.theme);
-  const setTheme = useUiStore((state) => state.setTheme);
+  const { current, next, onSwitchTheme } = useThemeSwitch();
+  const Icon = current.icon;
   return (
-    <div
-      className="theme-control grid min-w-0 gap-2 my-4 text-lg max-tablet:my-0 tablet:group-data-collapsed/app:hidden"
-      role="group"
+    <Button
+      type="button"
+      size="icon"
+      className="theme-control"
       aria-label={t("Тема")}
+      title={`${t(current.label)} → ${t(next.label)}`}
+      data-theme-mode={current.value}
+      onClick={onSwitchTheme}
     >
-      <span>{t("Тема")}</span>
-      <div className="grid grid-cols-3 gap-1">
-        {THEME_OPTIONS.map((option) => (
-          <ThemeOption
-            key={option.value}
-            option={option}
-            isSelected={theme === option.value}
-            onSelect={setTheme}
-          />
-        ))}
-      </div>
-    </div>
+      <Icon width={24} height={24} aria-hidden />
+    </Button>
   );
 }

@@ -12,7 +12,11 @@ export const CERTIFICATE_SECTIONS: readonly IConfigSection[] = [
         kind: "select",
         options: ["dns-san", "strict", "disable"],
       },
-      { path: "tls.clientCA", label: "CA клиентских сертификатов (mTLS)", kind: "text" },
+      {
+        path: "tls.clientCA",
+        label: "CA клиентских сертификатов (mTLS)",
+        kind: "text",
+      },
       { path: "ech.keyPath", label: "Путь к ключу ECH", kind: "text" },
     ],
   },
@@ -20,11 +24,28 @@ export const CERTIFICATE_SECTIONS: readonly IConfigSection[] = [
     id: "acme",
     title: "Автоматический сертификат",
     fields: [
-      { path: "acme.domains", label: "Домены, по одному в строке", kind: "lines" },
+      {
+        path: "acme.domains",
+        label: "Домены, по одному в строке",
+        kind: "lines",
+      },
       { path: "acme.email", label: "Email для ACME", kind: "text" },
-      { path: "acme.ca", label: "Центр сертификации", kind: "select", options: ["letsencrypt", "zerossl"] },
-      { path: "acme.dir", label: "Каталог ACME на постоянном томе", kind: "text" },
-      { path: "acme.listenHost", label: "Адрес прослушивания проверки домена", kind: "text" },
+      {
+        path: "acme.ca",
+        label: "Центр сертификации",
+        kind: "select",
+        options: ["letsencrypt", "zerossl"],
+      },
+      {
+        path: "acme.dir",
+        label: "Каталог ACME на постоянном томе",
+        kind: "text",
+      },
+      {
+        path: "acme.listenHost",
+        label: "Адрес прослушивания проверки домена",
+        kind: "text",
+      },
       {
         path: "acme.type",
         label: "Проверка владения доменом",

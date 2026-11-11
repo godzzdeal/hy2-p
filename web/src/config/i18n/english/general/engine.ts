@@ -61,8 +61,8 @@ export const ENGINE: Record<string, string> = {
   "Быстрый старт": "Getting started",
   "В Docker также измените опубликованный порт в Compose: PANEL_PORT должен соответствовать выбранному порту.":
     "In Docker, also update the published Compose port: PANEL_PORT must match the selected port.",
-  "В Happ нажмите + и импортируйте ссылку из буфера или отсканируйте QR-код.":
-    "In Happ, tap + to import from the clipboard or scan the QR code.",
+  "Импортируйте ссылку из буфера обмена или отсканируйте QR-код в используемом приложении.":
+    "Import the link from your clipboard or scan the QR code in your app.",
   "В сети": "Online",
   "Ваш сервер.": "Your server.",
   "Ваши правила.": "Your rules.",

@@ -4,7 +4,7 @@ import { CLOUD_PASSWORD, MAIN_PASSWORD, mockCloud, signIn } from "./fixture";
 
 test("cloud settings confirm the password and require both steps after enabling", async ({ page }, info) => {
   const fixture = await mockCloud(page, false, true);
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   const section = page.locator("#cloud-password");
   await section.getByLabel("Основной пароль", { exact: true }).fill(MAIN_PASSWORD);
@@ -19,12 +19,12 @@ test("cloud settings confirm the password and require both steps after enabling"
   await expect(page.getByLabel("Пароль", { exact: true })).toBeVisible();
   expect(fixture.enabled()).toBe(true);
   await signIn(page, CLOUD_PASSWORD);
-  await expect(page.getByRole("heading", { name: "Настройки панели", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Настройки панели", level: 1, exact: true })).toBeVisible();
 });
 
 test("disabling cloud password requires the current cloud password", async ({ page }) => {
   const fixture = await mockCloud(page, true, true);
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   const section = page.locator("#cloud-password");
   await section.getByLabel("Основной пароль", { exact: true }).fill(MAIN_PASSWORD);
@@ -35,12 +35,12 @@ test("disabling cloud password requires the current cloud password", async ({ pa
   await expect(page.getByLabel("Пароль", { exact: true })).toBeVisible();
   expect(fixture.enabled()).toBe(false);
   await signIn(page);
-  await expect(page.getByRole("heading", { name: "Настройки панели", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Настройки панели", level: 1, exact: true })).toBeVisible();
 });
 
 test("cloud password content has padding and its reset command can be copied", async ({ page }, info) => {
   await mockCloud(page, false, true);
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   const section = page.locator("#cloud-password");
   const geometry = await section.locator(".form-body").evaluate(element => {

@@ -5,14 +5,14 @@ test("panel restart requires confirmation and survives the expected outage", asy
   await mockPanel(page);
   let starts = 0;
   let polls = 0;
-  await page.route("http://panel.test/api/panel/restart", async (route) => {
+  await page.route("**/api/panel/restart", async (route) => {
     starts++;
     await route.fulfill({
       status: 202,
       json: { id: "a".repeat(32), busy: true, phase: "restarting", message: "Перезапуск" },
     });
   });
-  await page.route("http://panel.test/api/deployment/udp/status/*", async (route) => {
+  await page.route("**/api/deployment/udp/status/*", async (route) => {
     polls++;
     if (polls === 1) {
       await page.evaluate(() => window.dispatchEvent(new Event("session-expired")));
@@ -22,7 +22,7 @@ test("panel restart requires confirmation and survives the expected outage", asy
       json: { id: "a".repeat(32), busy: false, phase: "success", message: "Панель перезапущена" },
     });
   });
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   await page.getByRole("button", { name: "Перезапустить панель", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Перезапустить панель?", exact: true });
@@ -43,10 +43,10 @@ test("panel restart requires confirmation and survives the expected outage", asy
 
 test("restart errors are shown as notifications and allow retry", async ({ page }) => {
   await mockPanel(page);
-  await page.route("http://panel.test/api/panel/restart", (route) =>
+  await page.route("**/api/panel/restart", (route) =>
     route.fulfill({ status: 503, json: { error: "Помощник Docker недоступен" } }),
   );
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   await page.getByRole("button", { name: "Перезапустить панель", exact: true }).click();
   const button = page.getByRole("dialog").getByRole("button", { name: "Перезапустить", exact: true });

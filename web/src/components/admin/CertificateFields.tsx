@@ -1,6 +1,8 @@
 import { Caption } from "@/components/elements/Caption";
 import { CardBody } from "@/components/ui/cards/CardBody";
 import { Field } from "@/components/ui/fields/Field";
+import { InfoField } from "@/components/ui/fields/information";
+import { useId } from "react";
 import { Input } from "@/components/ui/fields/controls/Input";
 import { PemFileField } from "@/components/elements/security/PemFileField";
 import { Select } from "@/components/ui/select/Select";
@@ -17,6 +19,7 @@ export function CertificateFields({
   hasPrivateKey: boolean;
 }) {
   const { t } = useTranslation();
+  const id = useId();
   return (
     <CardBody>
       <Field>
@@ -76,22 +79,28 @@ export function CertificateFields({
               onChange={(event) => onChange({ ...value, email: event.target.value })}
             />
           </Field>
-          <Field>
-            {t("Внутренний HTTP-порт ACME")}
+          <InfoField
+            htmlFor={id}
+            label={t("Внутренний HTTP-порт ACME")}
+            description={t(
+              "Входящий TCP 80 должен вести на этот порт. Для домена проверьте DNS, для IP укажите публичный адрес сервера.",
+            )}
+          >
             <Input
+              id={id}
               type="number"
               required
               min={1}
               max={65535}
               value={value.challengePort}
-              onChange={(event) => onChange({ ...value, challengePort: Number(event.target.value) })}
+              onChange={(event) =>
+                onChange({
+                  ...value,
+                  challengePort: Number(event.target.value),
+                })
+              }
             />
-            <small>
-              {t(
-                "Входящий TCP 80 должен вести на этот порт. Для домена проверьте DNS, для IP укажите публичный адрес сервера.",
-              )}
-            </small>
-          </Field>
+          </InfoField>
           <Field isInline>
             <Input
               type="checkbox"

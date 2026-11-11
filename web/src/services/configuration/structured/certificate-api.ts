@@ -23,5 +23,8 @@ export interface ICertificateUpload {
 export const certificateApi = {
   read: (id?: string) => request<ICertificateStatus>(instanceRoute(API_ROUTES.hy2Certificates, id)),
   upload: (body: { certificate: string; privateKey: string }, id?: string) =>
-    request<ICertificateUpload>(instanceRoute(API_ROUTES.hy2Certificates, id), { method: "POST", body }),
+    request<ICertificateUpload>(instanceRoute(API_ROUTES.hy2Certificates, id), {
+      method: "POST",
+      body,
+    }),
 };

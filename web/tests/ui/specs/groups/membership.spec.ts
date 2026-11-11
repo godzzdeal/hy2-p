@@ -13,9 +13,9 @@ test("membership filters users and deleting a group keeps its users", async ({ p
   await page.getByRole("combobox", { name: "Фильтр по группе", exact: true }).click();
   await page.getByRole("option", { name: GROUP.name, exact: true }).click();
   await expect(page.locator(".group-users tr")).toHaveCount(1);
-  await expect(page.locator("tbody .country-flag")).toHaveAttribute("src", "/flags/nl.svg");
+  await expect(page.locator("tbody .country-flag")).toHaveAttribute("src", /\/flags\/nl\.svg$/);
   await chooseUserAction(page, USERS[0].name, "Трафик");
-  await expect(page.getByRole("dialog").locator("h2 .country-flag")).toHaveAttribute("src", "/flags/nl.svg");
+  await expect(page.getByRole("dialog").locator("h2 .country-flag")).toHaveAttribute("src", /\/flags\/nl\.svg$/);
   await page.getByRole("button", { name: "Закрыть", exact: true }).click();
   await page.getByRole("button", { name: "Группы", exact: true }).click();
   page.once("dialog", (dialog) => dialog.accept());

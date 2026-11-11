@@ -8,6 +8,7 @@ import (
 	"hy2-panel/internal/transfer"
 	"hy2-panel/internal/transfer/local"
 	"hy2-panel/internal/transfer/model"
+	"hy2-panel/internal/transport"
 	"io"
 	"net/http"
 	"os"
@@ -59,7 +60,7 @@ func transferCommand(mode string, mappings []string) error {
 	return transferCall(client, "POST", "/apply", body, os.Stdout)
 }
 func transferCall(client *http.Client, method, suffix string, body []byte, target io.Writer) error {
-	request, err := http.NewRequest(method, "http://127.0.0.1:8081/transfer"+suffix, bytes.NewReader(body))
+	request, err := http.NewRequest(method, "http://"+transport.InternalAddress()+"/transfer"+suffix, bytes.NewReader(body))
 	if err != nil {
 		return err
 	}

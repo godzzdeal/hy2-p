@@ -10,7 +10,7 @@ import { useAccountForm } from "@/hooks/admin/forms";
 import { useTranslation } from "react-i18next";
 export function AccountForm({ username }: { username: string }) {
   const { t } = useTranslation();
-  const { form, isPending, onSubmit } = useAccountForm(username);
+  const { form, canSubmit, onSubmit } = useAccountForm(username);
   return (
     <SettingsSection id="panel-account" title={t("Учётная запись администратора")}>
       <Form form={form} className="settings-form" onSubmit={onSubmit}>
@@ -23,7 +23,7 @@ export function AccountForm({ username }: { username: string }) {
               minLength={3}
               maxLength={64}
               {...form.register("username", {
-                required: t("Заполните это поле"),
+                required: t("Заполните поле «{{field}}».", { field: t("Логин") }),
                 minLength: 3,
                 maxLength: 64,
               })}
@@ -50,7 +50,7 @@ export function AccountForm({ username }: { username: string }) {
               "Оставьте новый пароль пустым, чтобы изменить только логин. После сохранения все сессии будут завершены.",
             )}
           </Caption>
-          <Button aria-label={t("Изменить данные входа")} variant="primary" disabled={isPending}>
+          <Button aria-label={t("Изменить данные входа")} variant="primary" disabled={!canSubmit}>
             {t("Изменить")}
           </Button>
           <AccountRecovery />

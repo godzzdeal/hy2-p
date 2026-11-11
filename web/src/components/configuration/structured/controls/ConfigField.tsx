@@ -1,5 +1,6 @@
 import { Fieldset } from "@/components/ui/fields/Fieldset";
 import { Field } from "@/components/ui/fields/Field";
+import { FieldInfo } from "@/components/ui/fields/information";
 import { Button } from "@/components/ui/button/Button";
 import { FieldControl } from "@/components/configuration/structured/controls/FieldControl";
 import { RotateCcw } from "@/components/elements/icons";
@@ -13,11 +14,9 @@ export function ConfigField({
   field,
   value,
   onChange,
-  showDescription = true,
   disabledReason = "",
 }: {
   field: IConfigField;
-  showDescription?: boolean;
   disabledReason?: string;
   value: unknown;
   onChange: (value: unknown) => void;
@@ -32,17 +31,26 @@ export function ConfigField({
   const isSet = value !== undefined && value !== null;
   return (
     <div
-      className={cn("config-field min-w-0 grid grid-rows-subgrid row-span-3 gap-y-2", {
+      className={cn("config-field min-w-0 grid grid-rows-subgrid row-span-2 gap-y-2", {
         "col-span-full": field.kind === "json" || field.kind === "pairs",
       })}
     >
-      <div className="config-property flex items-center justify-between gap-2 min-h-control pl-2 border-l-4 border-accent bg-surface-soft">
-        <Field htmlFor={id} id={id + "-label"} className="m-0">
+      <div className="config-property flex items-center justify-between gap-1 min-h-control pl-2 border-l-4 border-accent bg-surface-soft">
+        <Field htmlFor={id} id={id + "-label"} className="m-0 flex-1">
           {field.path}
         </Field>
+        <FieldInfo label={field.path}>
+          {disabledReason && <p className="text-accent">{t(disabledReason)}</p>}
+          <p>{t(displayField.hint)}</p>
+          {FIELD_DEFAULTS[field.path] !== undefined && (
+            <p className="text-muted">
+              {t("По умолчанию: {{value}}", { value: String(FIELD_DEFAULTS[field.path]) })}
+            </p>
+          )}
+        </FieldInfo>
         <Button
           type="button"
-          className="field-reset w-control min-w-control p-1"
+          className="field-reset w-control min-w-control p-1 disabled:hidden"
           disabled={!isSet || !!disabledReason}
           aria-label={t("Сбросить {{field}}", { field: t(displayField.label) })}
           title={t("Вернуть значение по умолчанию")}
@@ -54,15 +62,6 @@ export function ConfigField({
       <Fieldset className="config-control m-0 p-0 border-0 min-w-0" disabled={!!disabledReason}>
         <FieldControl id={id} field={displayField} value={value} onChange={onChange} />
       </Fieldset>
-      <div className="config-field-help">
-        {disabledReason && <small className="field-hint">{t(disabledReason)}</small>}
-        {showDescription && <small className="field-hint">{t(displayField.hint)}</small>}
-        {FIELD_DEFAULTS[field.path] !== undefined && (
-          <small className="field-default block mt-2 text-muted">
-            {t("По умолчанию: {{value}}", { value: String(FIELD_DEFAULTS[field.path]) })}
-          </small>
-        )}
-      </div>
     </div>
   );
 }

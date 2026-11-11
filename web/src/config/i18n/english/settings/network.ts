@@ -1,4 +1,11 @@
 export const NETWORK = {
+  Предупреждение: "Warning",
+  "Информация о поле {{field}}": "About {{field}}",
+  "Закрыть подсказку": "Close field information",
+  "Выберите, на каких сетевых интерфейсах доступна панель. Локальный адрес подходит для reverse proxy.":
+    "Choose the network interfaces the panel listens on. A loopback address works with a reverse proxy.",
+  "Порт для входа в веб-панель. После изменения сохраните настройки и перезапустите панель.":
+    "The port used to access the panel. Save the settings and restart the panel after changing it.",
   "До 8 экземпляров на одном сервере.": "Up to 8 instances per server.",
   "Вычислять по сертификату": "Calculate from certificate",
   "После получения сертификата": "After the certificate is issued",
@@ -29,7 +36,9 @@ export const NETWORK = {
   "PEM или KEY, до 1 МБ": "PEM or KEY, up to 1 MB",
   "Скопируйте значение вручную": "Select the value and copy it manually",
   "Страницы списка": "List pages",
-  "Заполните это поле": "Fill out this field",
+  "Заполните поле «{{field}}».": "Fill in the {{field}} field.",
+  "Поле «{{field}}»: не менее {{count}} символов.": "{{field}}: at least {{count}} characters.",
+  "Поле «{{field}}»: не более {{count}} символов.": "{{field}}: no more than {{count}} characters.",
   "Проверьте заполнение полей": "Check the form fields",
   "Не менее {{count}} символов": "At least {{count}} characters",
   "Не более {{count}} символов": "No more than {{count}} characters",
@@ -56,8 +65,8 @@ export const NETWORK = {
     "Files are verified with SHA-256. The previous version is kept for rollback.",
   "Общий флаг пользователей": "Default user flag",
   "Общий флаг": "Default flag",
-  "Используется в панели и подписках, если у пользователя не выбран свой флаг. Имена пользователей сохраняются. После изменения обновите подписку в Happ.":
-    "Used in the panel and subscriptions when a user has no individual flag. User names are kept unchanged. Refresh the Happ subscription after changing it.",
+  "Используется в панели и подписках, если у пользователя не выбран свой флаг. Имена пользователей сохраняются. После изменения обновите подписку в используемом приложении.":
+    "Used in the panel and subscriptions when a user has no individual flag. User names are kept unchanged. Refresh the subscription after changing it.",
   "HTTP без сертификата": "HTTP without a certificate",
   "Домен или IP веб-панели": "Panel domain or IP address",
   "Домен и сертификат не нужны. Для входа по IP укажите публичный URL с http://. Соединение HTTP не зашифровано.":

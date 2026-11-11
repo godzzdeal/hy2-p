@@ -22,7 +22,10 @@ export function GroupEditor({ group, onClose }: { group?: IGroup; onClose: () =>
           <Input
             required
             maxLength={100}
-            {...form.register("name", { required: t("Заполните это поле"), maxLength: 100 })}
+            {...form.register("name", {
+              required: t("Заполните поле «{{field}}».", { field: t("Название группы") }),
+              maxLength: 100,
+            })}
           />
         </Field>
         <Controller

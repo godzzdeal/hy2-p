@@ -3,8 +3,7 @@
     @apply flex flex-col h-dvh min-w-0 ml-sidebar;
     width: calc(100% - var(--sidebar-width));
   }
-  .breadcrumbs,
-  .admin {
+  .breadcrumbs {
     @apply text-muted text-lg;
   }
   .page-content {

@@ -6,7 +6,7 @@ test("overview refreshes server charts and reports panel storage", async ({ page
   if (info.project.name === "desktop") await page.setViewportSize({ width: 900, height: 1000 });
   await mockPanel(page);
   let cpu = 12.5;
-  await page.route("http://panel.test/api/system", (route) => {
+  await page.route("**/api/system", (route) => {
     const data = demoSystem();
     data.samples.at(-1)!.cpu = cpu;
     return route.fulfill({ json: data });
@@ -78,7 +78,7 @@ test("overview refreshes server charts and reports panel storage", async ({ page
 
 test("unavailable Linux metrics preserve disk usage without fake charts", async ({ page }) => {
   await mockPanel(page);
-  await page.route("http://panel.test/api/system", (route) =>
+  await page.route("**/api/system", (route) =>
     route.fulfill({
       json: {
         ...demoSystem(),

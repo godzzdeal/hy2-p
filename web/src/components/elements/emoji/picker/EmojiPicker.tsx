@@ -8,7 +8,9 @@ import { Popover } from "@/components/ui/overlays/Popover";
 import { lazy, Suspense, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 const EmojiMenu = lazy(() =>
-  import("@/components/elements/emoji/picker/EmojiMenu").then((module) => ({ default: module.EmojiMenu })),
+  import("@/components/elements/emoji/picker/EmojiMenu").then((module) => ({
+    default: module.EmojiMenu,
+  })),
 );
 export function EmojiPicker({ value, onChange }: { value: string; onChange: (emoji: string) => void }) {
   const { t } = useTranslation();
@@ -40,7 +42,10 @@ export function EmojiPicker({ value, onChange }: { value: string; onChange: (emo
             <span>{t(emoji ? "Изменить" : "Выбрать")}</span>
           </Button>
         }
-        contentProps={{ className: "emoji-popup", "aria-label": t("Меню эмодзи") }}
+        contentProps={{
+          className: "emoji-popup",
+          "aria-label": t("Меню эмодзи"),
+        }}
       >
         <Suspense fallback={<Loader label="Загружаем эмодзи…" />}>
           <EmojiMenu onSelect={onSelect} />

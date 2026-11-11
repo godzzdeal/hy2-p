@@ -21,7 +21,7 @@ export function UserEditor({ user, onClose }: IUserEditor) {
         <Controller
           control={form.control}
           name="name"
-          rules={{ required: t("Заполните это поле"), maxLength: 80 }}
+          rules={{ required: t("Заполните поле «{{field}}».", { field: t("Имя") }), maxLength: 80 }}
           render={({ field }) => (
             <UserNameField
               value={field.value}

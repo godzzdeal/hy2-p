@@ -4,7 +4,7 @@ import { chooseUserAction, mockPanel } from "../../fixtures";
 import { EXTRA_ID, mockInstances } from "../instances/fixture";
 test("refresh updates total counts and filtering keeps the total", async ({ page }, info) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   const counters = page.getByLabel("Всего пользователей: 0", { exact: true });
   await expect(counters).toHaveCount(2);
   const users = Array.from({ length: 6 }, (_, index) => ({
@@ -15,12 +15,12 @@ test("refresh updates total counts and filtering keeps the total", async ({ page
     created: "",
   }));
   let trafficRequests = 0;
-  await page.route("http://panel.test/api/users", (route) => route.fulfill({ json: users }));
-  await page.route("http://panel.test/api/traffic", (route) => {
+  await page.route("**/api/users", (route) => route.fulfill({ json: users }));
+  await page.route("**/api/traffic", (route) => {
     trafficRequests++;
     return route.fulfill({ json: { available: true, users: {}, updated: "" } });
   });
-  const request = page.waitForRequest("http://panel.test/api/users");
+  const request = page.waitForRequest("**/api/users");
   await page.getByRole("button", { name: "Обновить", exact: true }).click();
   await request;
   await expect(page.getByLabel("Всего пользователей: 6", { exact: true })).toHaveCount(2);
@@ -33,7 +33,7 @@ test("refresh updates total counts and filtering keeps the total", async ({ page
 });
 test("users have a flag icon and emoji remain in their name", async ({ page }, info) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   await expect
     .poll(() =>
       page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth),
@@ -55,7 +55,7 @@ test("users have a flag icon and emoji remain in their name", async ({ page }, i
     .screenshot({ path: info.outputPath("user-editor.png") });
   await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();
   const row = page.getByRole("row").filter({ hasText: "Телефон" });
-  await expect(row.locator(".avatar img")).toHaveAttribute("src", "/flags/de.svg");
+  await expect(row.locator(".avatar img")).toHaveAttribute("src", /\/flags\/de\.svg$/);
   await expect(row.locator("img.emoji-image")).toHaveAttribute("src", "/emoji/1f469-1f3fd-200d-1f4bb.svg");
   await expect(
     row.getByRole("button", {
@@ -76,11 +76,11 @@ test("users have a flag icon and emoji remain in their name", async ({ page }, i
 test("user engine access is selectable and survives reopening", async ({ page }, info) => {
   await mockInstances(page, true);
   let access: IUserAccess = { mode: "all", instances: [] };
-  await page.route("http://panel.test/api/users/test-user/cores", async (route) => {
+  await page.route("**/api/users/test-user/cores", async (route) => {
     if (route.request().method() === "PUT") access = route.request().postDataJSON() as IUserAccess;
     await route.fulfill({ json: access });
   });
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   await page.getByRole("button", { name: "Добавить", exact: true }).click();
   await page.getByLabel("Имя", { exact: true }).fill("Phone");
   await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();
@@ -109,7 +109,7 @@ test("user engine access is selectable and survives reopening", async ({ page },
 test("user actions stay compact and the mobile popup preserves dialog focus", async ({ page }, info) => {
   await mockPanel(page);
   if (info.project.name === "mobile") await page.setViewportSize({ width: 320, height: 844 });
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   await page.getByRole("button", { name: "Добавить", exact: true }).click();
   await page.getByLabel("Имя", { exact: true }).fill("Phone");
   await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();

@@ -22,7 +22,9 @@ export function MemberRow({ user, groupName, isChecked, onToggle }: IMemberRow) 
       <Input
         type="checkbox"
         checked={isChecked}
-        aria-label={t("Выбрать {{name}}", { name: user.displayName ?? user.name })}
+        aria-label={t("Выбрать {{name}}", {
+          name: user.displayName ?? user.name,
+        })}
         onChange={(event) => onToggle(user.id, event.target.checked)}
       />
       <UserAvatar name={user.displayName ?? user.name} />

@@ -31,5 +31,11 @@ export function useCloudForm() {
   const confirmationRules = {
     validate: (value: string) => value === form.getValues("password") || t("Пароли не совпадают"),
   };
-  return { form, isDisabling, isPending: save.isPending, confirmationRules, onSubmit };
+  return {
+    form,
+    isDisabling,
+    isPending: save.isPending,
+    confirmationRules,
+    onSubmit,
+  };
 }

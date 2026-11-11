@@ -5,7 +5,7 @@ test("log client IDs resolve to users and device IDs and can be filtered", async
   await mockPanel(page);
   const first = "a".repeat(16),
     second = "b".repeat(16);
-  await page.route("http://panel.test/api/users", (route) =>
+  await page.route("**/api/users", (route) =>
     route.fulfill({
       json: [
         { id: first, name: "Алексей", enabled: true, expires: "", created: "" },
@@ -14,11 +14,11 @@ test("log client IDs resolve to users and device IDs and can be filtered", async
     }),
   );
   const logs = `2026-11-10 INFO client connected {"id":"${first}"}\n2026-11-10 WARN TCP error {"id":"${first}.${"c".repeat(32)}.${"d".repeat(16)}"}\n2026-11-10 INFO client connected {"id":"${second}"}\n2026-11-10 INFO server up and running`;
-  await page.route("http://panel.test/api/core", (route) =>
+  await page.route("**/api/core", (route) =>
     route.fulfill({ json: { available: true, running: true, binary: "hysteria", logs } }),
   );
   await page.reload();
-  await page.getByRole("button", { name: "Управление HY2", exact: true }).click();
+  await page.getByRole("link", { name: "Управление HY2", exact: true }).click();
   const region = page.getByRole("region", { name: "Сообщения экземпляра", exact: true });
   await expect(region.locator(".log-client")).toHaveCount(3);
   await expect(region).toContainText("Устройство: cccccccc");
@@ -49,7 +49,7 @@ test("log controls share a height with plain, decorated and long user names", as
       displayName: "🇩🇪 🛰️ Очень длинное имя сотрудника из регионального подразделения",
     },
   ];
-  await page.route("http://panel.test/api/users", (route) =>
+  await page.route("**/api/users", (route) =>
     route.fulfill({ json: users.map((user) => ({ ...user, enabled: true, expires: "", created: "" })) }),
   );
   await page.reload();
@@ -58,7 +58,7 @@ test("log controls share a height with plain, decorated and long user names", as
     { label: "Тёмная", value: "dark" },
   ]) {
     await chooseTheme(page, theme);
-    await page.getByRole("button", { name: "Управление HY2", exact: true }).click();
+    await page.getByRole("link", { name: "Управление HY2", exact: true }).click();
     const toolbar = page.locator(".log-toolbar");
     const filter = toolbar.getByRole("button", { name: "Пользователь в журнале", exact: true });
     for (const [index, user] of [undefined, ...users].entries()) {
@@ -100,6 +100,6 @@ test("log controls share a height with plain, decorated and long user names", as
       }
       await toolbar.screenshot({ path: info.outputPath("toolbar-" + theme.value + "-" + index + ".png") });
     }
-    await page.getByRole("button", { name: "Обзор", exact: true }).click();
+    await page.getByRole("link", { name: "Обзор", exact: true }).click();
   }
 });

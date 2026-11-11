@@ -5,8 +5,8 @@ import { dropFiles } from "./drop";
 test("certificate pins are client settings and can follow the certificate automatically", async ({page},info) => {
   const panel = await mockPanel(page);
   const pin = "ab".repeat(32);
-  await page.route("http://panel.test/api/certificates/hysteria",route => route.fulfill({json:{mode:"tls",automaticRenewal:false,certificates:[],pinSHA256:pin,pinError:""}}));
-  await page.getByRole("button",{name:"Конфигурация",exact:true}).click();
+  await page.route("**/api/certificates/hysteria",route => route.fulfill({json:{mode:"tls",automaticRenewal:false,certificates:[],pinSHA256:pin,pinError:""}}));
+  await page.getByRole("link", { name: "Конфигурация",exact:true}).click();
   const input = page.getByRole("textbox",{name:"pinSHA256",exact:true});
   await expect(input).toBeVisible();
   await expect(page.locator("#config-fields").getByRole("textbox",{name:"pinSHA256",exact:true})).toHaveCount(0);
@@ -24,7 +24,7 @@ test("certificate pins are client settings and can follow the certificate automa
 test("HY2 certificate fields share the drop zone and preserve the upload payload", async ({ page }, info) => {
   await mockPanel(page);
   let uploaded: unknown;
-  await page.route("http://panel.test/api/certificates/hysteria", async (route) => {
+  await page.route("**/api/certificates/hysteria", async (route) => {
     if (route.request().method() !== "POST") return route.fallback();
     uploaded = route.request().postDataJSON();
     await route.fulfill({
@@ -35,7 +35,7 @@ test("HY2 certificate fields share the drop zone and preserve the upload payload
       },
     });
   });
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByRole("button", { name: "TLS / ACME", exact: true }).click();
   const certificate = page.getByRole("button", { name: "Выбрать файл: Сертификат PEM", exact: true });
   const key = page.getByRole("button", { name: "Выбрать файл: Приватный ключ PEM", exact: true });
@@ -65,7 +65,7 @@ test("panel certificate upload rejects oversized files and keeps its layout with
   page,
 }, info) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   const network = page.locator("#panel-network");
   await network.getByRole("combobox", { name: "HTTPS веб-панели", exact: true }).click();
@@ -74,7 +74,7 @@ test("panel certificate upload rejects oversized files and keeps its layout with
   await dropFiles(zone, [
     { name: "large.pem", type: "application/x-pem-file", text: "x".repeat(1024 * 1024 + 1) },
   ]);
-  await expect(page.getByRole("alert")).toContainText("Файл сертификата слишком большой");
+  await expect(page.locator(".notifications").getByRole("alert")).toContainText("Файл сертификата слишком большой");
   await dropFiles(zone, [{ name: "valid.pem", type: "application/x-pem-file", text: "fixture-certificate" }]);
   await expect(zone).toContainText("valid.pem");
   const bounds = (await network.boundingBox())!;

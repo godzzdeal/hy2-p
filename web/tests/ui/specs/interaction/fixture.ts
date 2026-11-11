@@ -8,7 +8,7 @@ export async function mockUsers(page: Page, count: number): Promise<void> {
     name: "🇳🇱 🚀 Phone " + index,
     enabled: true, expires: "", created: "",
   }));
-  await page.route("http://panel.test/api/users", (route) => route.fulfill({ json: users }));
+  await page.route("**/api/users", (route) => route.fulfill({ json: users }));
   await page.reload();
 }
 

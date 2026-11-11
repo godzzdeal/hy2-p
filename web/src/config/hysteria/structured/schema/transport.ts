@@ -17,9 +17,22 @@ export const TRANSPORT_SECTIONS: readonly IConfigSection[] = [
         hint: "Например 100 mbps. Скорость загрузки клиента.",
       },
       { path: "bandwidth.down", label: "Приём сервера", kind: "text" },
-      { path: "bandwidth.disableLossCompensation", label: "Отключить компенсацию потерь", kind: "toggle" },
-      { path: "ignoreClientBandwidth", label: "Игнорировать скорость клиента", kind: "toggle" },
-      { path: "congestion.type", label: "Контроль перегрузки", kind: "select", options: ["bbr", "reno"] },
+      {
+        path: "bandwidth.disableLossCompensation",
+        label: "Отключить компенсацию потерь",
+        kind: "toggle",
+      },
+      {
+        path: "ignoreClientBandwidth",
+        label: "Игнорировать скорость клиента",
+        kind: "toggle",
+      },
+      {
+        path: "congestion.type",
+        label: "Контроль перегрузки",
+        kind: "select",
+        options: ["bbr", "reno"],
+      },
       {
         path: "congestion.bbrProfile",
         label: "Профиль BBR",
@@ -27,7 +40,11 @@ export const TRANSPORT_SECTIONS: readonly IConfigSection[] = [
         options: ["standard", "conservative", "aggressive"],
       },
       { path: "speedTest", label: "Тест скорости", kind: "toggle" },
-      { path: "disableUDP", label: "Отключить UDP-проксирование", kind: "toggle" },
+      {
+        path: "disableUDP",
+        label: "Отключить UDP-проксирование",
+        kind: "toggle",
+      },
       { path: "udpIdleTimeout", label: "Таймаут UDP", kind: "text" },
     ],
   },
@@ -41,17 +58,38 @@ export const TRANSPORT_SECTIONS: readonly IConfigSection[] = [
         "initConnReceiveWindow",
         "maxConnReceiveWindow",
         "maxIncomingStreams",
-      ].map((name) => ({ path: "quic." + name, label: name, kind: "number" as const })),
-      { path: "quic.maxIdleTimeout", label: "QUIC: таймаут простоя", kind: "text" },
-      { path: "quic.disablePathMTUDiscovery", label: "Отключить определение MTU", kind: "toggle" },
-      { path: "quic.disableStatelessReset", label: "Отключить stateless reset", kind: "toggle" },
+      ].map((name) => ({
+        path: "quic." + name,
+        label: name,
+        kind: "number" as const,
+      })),
+      {
+        path: "quic.maxIdleTimeout",
+        label: "QUIC: таймаут простоя",
+        kind: "text",
+      },
+      {
+        path: "quic.disablePathMTUDiscovery",
+        label: "Отключить определение MTU",
+        kind: "toggle",
+      },
+      {
+        path: "quic.disableStatelessReset",
+        label: "Отключить stateless reset",
+        kind: "toggle",
+      },
     ],
   },
   {
     id: "obfs",
     title: "Маскировка трафика",
     fields: [
-      { path: "obfs.type", label: "Тип обфускации", kind: "select", options: ["salamander", "gecko"] },
+      {
+        path: "obfs.type",
+        label: "Тип обфускации",
+        kind: "select",
+        options: ["salamander", "gecko"],
+      },
       {
         path: "obfs.salamander.password",
         label: "Пароль Salamander",

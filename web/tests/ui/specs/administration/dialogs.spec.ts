@@ -3,10 +3,10 @@ import { expandSettings, mockPanel } from "../../fixtures";
 
 test("Escape dismisses only the current confirmation inside panel maintenance", async ({ page }) => {
   await mockPanel(page);
-  await page.route("http://panel.test/api/panel/update", (route) =>
+  await page.route("**/api/panel/update", (route) =>
     route.fulfill({ json: { current: "v0.8.0", latest: "v0.9.0", state: "update_available" } }),
   );
-  await page.route("http://panel.test/api/panel/maintenance", (route) =>
+  await page.route("**/api/panel/maintenance", (route) =>
     route.fulfill({
       json: {
         available: true,
@@ -18,7 +18,7 @@ test("Escape dismisses only the current confirmation inside panel maintenance", 
       },
     }),
   );
-  await page.route("http://panel.test/api/panel/versions", (route) =>
+  await page.route("**/api/panel/versions", (route) =>
     route.fulfill({ json: [{ version: "v0.9.0" }] }),
   );
   await page.reload();

@@ -20,11 +20,14 @@ test("long select lists scroll and highlight without moving under the pointer", 
   await mockPanel(page);
   for (const theme of [{ label: "Светлая", value: "light" }, { label: "Тёмная", value: "dark" }]) {
     await chooseTheme(page, theme);
-    await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+    await page.getByRole("link", { name: "Пользователи", exact: true }).click();
     await page.getByRole("button", { name: "Добавить", exact: true }).click();
     await page.getByRole("combobox", { name: "Флаг", exact: true }).click();
     const popup = page.locator(".select-popup");
     const viewport = popup.locator("[data-radix-select-viewport]");
+    await page.getByRole("dialog", { includeHidden: true }).evaluate((element) =>
+      Promise.all(element.getAnimations().map((animation) => animation.finished)),
+    );
     const position = (await popup.boundingBox())!;
     await expectHover(page, popup.getByRole("option").nth(1));
     await viewport.hover();
@@ -45,6 +48,6 @@ test("long select lists scroll and highlight without moving under the pointer", 
     await popup.screenshot({ path: info.outputPath("select-" + theme.value + ".png") });
     await page.keyboard.press("Escape");
     await page.getByRole("button", { name: "Закрыть", exact: true }).click();
-    await page.getByRole("button", { name: "Обзор", exact: true }).click();
+    await page.getByRole("link", { name: "Обзор", exact: true }).click();
   }
 });

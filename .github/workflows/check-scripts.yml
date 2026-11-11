@@ -1,0 +1,20 @@
+name: Check scripts
+on:
+  workflow_call: {}
+permissions:
+  contents: read
+jobs:
+  scripts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Check deployment scripts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq shellcheck jq
+          find scripts -name '*.sh' -exec bash -n {} \;
+          find scripts -name '*.sh' -print0 | xargs -0 shellcheck -S warning
+          bash scripts/tests/run.sh

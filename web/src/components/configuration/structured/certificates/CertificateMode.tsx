@@ -1,5 +1,6 @@
 import { Caption } from "@/components/elements/Caption";
-import { Field } from "@/components/ui/fields/Field";
+import { InfoField } from "@/components/ui/fields/information";
+import { useId } from "react";
 import { Select } from "@/components/ui/select/Select";
 import { CommandBlock } from "@/components/elements/copy";
 import { SelectOption } from "@/components/ui/select/SelectOption";
@@ -18,12 +19,19 @@ export function CertificateMode({
   email?: string;
 }) {
   const { t } = useTranslation();
+  const id = useId();
   const isAcme = parseDocument(source).has("acme");
   return (
-    <div className="config-note border-l-4 border-accent text-muted py-3 px-4 bg-surface-soft">
-      <Field>
-        {t("Сертификат Hysteria2")}
+    <div className="grid min-w-0 gap-3">
+      <InfoField
+        htmlFor={id}
+        label={t("Сертификат Hysteria2")}
+        description={t(
+          "ACME продлевает сертификаты, пока экземпляр работает. HTTP-проверке нужен TCP 80, TLS-проверке TCP 443. DNS-проверка не требует входящих портов.",
+        )}
+      >
         <Select
+          id={id}
           value={isAcme ? "acme" : "tls"}
           onValueChange={(nextValue) =>
             onChange(certificateMode(source, nextValue, { host: address, email }))
@@ -32,12 +40,7 @@ export function CertificateMode({
           <SelectOption value="tls">{t("Собственный TLS-сертификат")}</SelectOption>
           <SelectOption value="acme">{t("Автоматический сертификат ACME")}</SelectOption>
         </Select>
-      </Field>
-      <p>
-        {t(
-          "ACME продлевает сертификаты, пока экземпляр работает. HTTP-проверке нужен TCP 80, TLS-проверке TCP 443. DNS-проверка не требует входящих портов.",
-        )}
-      </p>
+      </InfoField>
       {isAcme && (
         <div className="certificate-restart grid gap-2 mt-3">
           <Caption>{t("После включения общего HTTP-порта ACME перезапустите панель:")}</Caption>

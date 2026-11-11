@@ -75,3 +75,30 @@ func TestCredentialChangeInvalidatesSessions(t *testing.T) {
 		t.Fatal("new credentials rejected", result.Body.String())
 	}
 }
+
+func TestUnchangedCredentialsKeepSession(t *testing.T) {
+	app := testutil.New(t)
+	login := httptest.NewRecorder()
+	app.Auth.Login(login, testutil.Request("POST", "/api/login", `{"username":"admin","password":"a-long-test-password"}`))
+	if login.Code != http.StatusOK {
+		t.Fatal(login.Body.String())
+	}
+	cookie := login.Result().Cookies()[0]
+	for _, input := range []string{
+		`{"currentPassword":"a-long-test-password","username":"admin","password":""}`,
+		`{"currentPassword":"a-long-test-password","username":" admin ","password":"a-long-test-password"}`,
+	} {
+		change := httptest.NewRecorder()
+		app.Auth.ChangeAccount(change, testutil.Request("PUT", "/api/admin/account", input))
+		if change.Code != http.StatusBadRequest || len(change.Result().Cookies()) != 0 {
+			t.Fatal("unchanged credentials were saved or cleared the session", change.Code)
+		}
+		request := testutil.Request("GET", "/api/session", "")
+		request.AddCookie(cookie)
+		response := httptest.NewRecorder()
+		app.Auth.Protect(app.Auth.Session)(response, request)
+		if response.Code != http.StatusOK {
+			t.Fatal("unchanged credentials invalidated the session", response.Code)
+		}
+	}
+}

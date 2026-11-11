@@ -29,7 +29,13 @@ export function useGroupForm(group: IGroup | undefined, onClose: () => void) {
   const save = useSaveGroup();
   function onSubmit({ trafficGigabytes, ...value }: IGroupForm) {
     save.mutate(
-      { id: group?.id, body: { ...value, trafficLimit: Math.round(trafficGigabytes * BYTE_UNITS.gigabyte) } },
+      {
+        id: group?.id,
+        body: {
+          ...value,
+          trafficLimit: Math.round(trafficGigabytes * BYTE_UNITS.gigabyte),
+        },
+      },
       { onSuccess: onClose },
     );
   }

@@ -37,7 +37,9 @@ export function SavedConfiguration({
         variant="primary"
         disabled={control.isPending || !core.data?.available}
         onClick={() =>
-          control.mutate(isRunning ? "restart" : "start", { onSuccess: () => onApplied(sequence) })
+          control.mutate(isRunning ? "restart" : "start", {
+            onSuccess: () => onApplied(sequence),
+          })
         }
       >
         <Icon width={24} height={24} aria-hidden />

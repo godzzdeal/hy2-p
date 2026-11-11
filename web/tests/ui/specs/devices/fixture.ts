@@ -24,7 +24,7 @@ export async function mockDevices(page: Page) {
       },
     ],
   };
-  await page.route("http://panel.test/api/users/test-user/devices**", async (route) => {
+  await page.route("**/api/users/test-user/devices**", async (route) => {
     const request = route.request();
     if (request.method() === "PUT")
       data = { ...data, limit: (request.postDataJSON() as { limit: number }).limit };
@@ -40,7 +40,7 @@ export async function mockDevices(page: Page) {
     if (request.method() === "DELETE") data = { ...data, devices: [] };
     await route.fulfill({ json: data });
   });
-  await page.route("http://panel.test/api/users/test-user/links", (route) =>
+  await page.route("**/api/users/test-user/links", (route) =>
     route.fulfill({
       json: {
         uri: data.limit > 0 ? "" : "hysteria2://fixture@vpn.example.org:8443/",
@@ -50,7 +50,7 @@ export async function mockDevices(page: Page) {
       },
     }),
   );
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   await page.getByRole("button", { name: "Добавить", exact: true }).click();
   await page.getByLabel("Имя", { exact: true }).fill("Phone");
   await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();

@@ -7,7 +7,10 @@ export function useTransfer() {
   const [bundle, setBundle] = useState<unknown>(null);
   const client = useQueryClient();
   const { notify, showError } = useUiStore();
-  const preview = useMutation({ mutationFn: transferApi.preview, onError: showError });
+  const preview = useMutation({
+    mutationFn: transferApi.preview,
+    onError: showError,
+  });
   const apply = useMutation({
     mutationFn: () => transferApi.apply(bundle, preview.data?.fingerprint ?? ""),
     onSuccess: (result) => {

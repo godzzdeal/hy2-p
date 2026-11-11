@@ -13,7 +13,7 @@ test("expanded settings keep hidden selects inside the content and footer at the
 }, info) => {
   if (info.project.name === "desktop") await page.setViewportSize({ width: 1024, height: 800 });
   await mockPanel(page);
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   const footer = page.getByRole("contentinfo");
   const initial = (await footer.boundingBox())!;
@@ -31,14 +31,11 @@ test("expanded settings keep hidden selects inside the content and footer at the
   expect(await page.locator(".content").evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
   await page.screenshot({ path: info.outputPath("footer-scroll.png") });
 });
-test("the branded footer fits both themes and links to the project and author", async ({ page }, info) => {
+test("the branded footer fits both themes and links to the project", async ({ page }, info) => {
   await mockPanel(page);
   const footer = page.getByRole("contentinfo");
   await expect(footer).toContainText("HY2-P");
-  await expect(footer.getByRole("link", { name: "godzzdeal", exact: true })).toHaveAttribute(
-    "href",
-    "https://github.com/godzzdeal",
-  );
+  await expect(footer.getByRole("link", { name: "godzzdeal", exact: true, includeHidden: true })).toHaveCount(0);
   await expect(footer.getByRole("link", { name: "GitHub", exact: true })).toHaveAttribute(
     "href",
     "https://github.com/godzzdeal/hy2-p",
@@ -62,7 +59,7 @@ test("manual checks show pending feedback and open web update controls", async (
   const pending = new Promise<void>((resolve) => {
     finishCheck = resolve;
   });
-  await page.route("http://panel.test/api/panel/update", async (route) => {
+  await page.route("**/api/panel/update", async (route) => {
     await pending;
     await route.fulfill({ json: LATEST });
   });
@@ -81,14 +78,14 @@ test("a failed release check stays local and can be retried", async ({ page }) =
   await mockPanel(page);
   const footer = page.getByRole("contentinfo");
   await expect(footer).toContainText("Установлена последняя версия");
-  await page.route("http://panel.test/api/panel/update", (route) =>
+  await page.route("**/api/panel/update", (route) =>
     route.fulfill({ status: 502, json: { error: "GitHub unavailable" } }),
   );
   const check = page.getByRole("button", { name: "Проверить обновления панели", exact: true });
   await check.click();
   await expect(footer).toContainText("Не удалось проверить обновления");
   await expect(page.getByRole("heading", { name: "Ваш сервер", exact: true })).toBeVisible();
-  await page.unroute("http://panel.test/api/panel/update");
+  await page.unroute("**/api/panel/update");
   await check.click();
   await expect(footer).toContainText("Установлена последняя версия");
 });
@@ -96,7 +93,7 @@ test("development builds are not presented as an available update", async ({ pag
   await mockPanel(page);
   const footer = page.getByRole("contentinfo");
   await expect(footer).toContainText("Установлена последняя версия");
-  await page.route("http://panel.test/api/panel/update", (route) =>
+  await page.route("**/api/panel/update", (route) =>
     route.fulfill({ json: { ...LATEST, state: "ahead" } }),
   );
   await page.getByRole("button", { name: "Проверить обновления панели", exact: true }).click();

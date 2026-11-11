@@ -42,7 +42,10 @@ export function LogUserFilter({ users, userId, onUser }: ILogUserFilter) {
           <ChevronDown width={24} height={24} aria-hidden />
         </Button>
       }
-      contentProps={{ className: "log-user-picker", "aria-label": t("Выбрать пользователя") }}
+      contentProps={{
+        className: "log-user-picker",
+        "aria-label": t("Выбрать пользователя"),
+      }}
     >
       <Input
         type="search"

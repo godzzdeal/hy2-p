@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { expandSettings, mockPanel } from "../../fixtures";
 test("firewall status and port rule use the protected API", async ({ page }, info) => {
   await mockPanel(page);
-  await page.route("http://panel.test/api/firewall/ports", (route) =>
+  await page.route("**/api/firewall/ports", (route) =>
     route.fulfill({
       json: {
         ports: [
@@ -14,11 +14,11 @@ test("firewall status and port rule use the protected API", async ({ page }, inf
     }),
   );
   let applied: unknown;
-  await page.route("http://panel.test/api/firewall", (route) => {
+  await page.route("**/api/firewall", (route) => {
     if (route.request().method() === "POST") applied = route.request().postDataJSON();
     return route.fulfill({ json: { active: true, output: "Status: active\n8088/tcp ALLOW IN Anywhere" } });
   });
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   await expect(
     page.getByRole("button", { name: "Скопировать команду для 61254/udp", exact: true }),
@@ -39,13 +39,13 @@ test("firewall status and port rule use the protected API", async ({ page }, inf
 
 test("shared ports are grouped and commands have contrast, copy and a manual fallback", async ({ page }, info) => {
   await mockPanel(page);
-  await page.route("http://panel.test/api/firewall/ports", route => route.fulfill({ json: { ports: [
+  await page.route("**/api/firewall/ports", route => route.fulfill({ json: { ports: [
     { port: 80, protocol: "tcp", purpose: "acme-http", source: "HY2-P", pending: false },
     { port: 80, protocol: "tcp", purpose: "acme-http", source: "Основной", pending: false },
     { port: 80, protocol: "tcp", purpose: "acme-http", source: "Запасной", pending: false },
     { port: 61254, protocol: "udp", purpose: "vpn", source: "Основной", pending: false },
   ], warnings: [] } }));
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   const guide = page.getByRole("region", { name: "Какие порты открыть", exact: true });
   await expect(guide.locator(".firewall-port-row")).toHaveCount(2);

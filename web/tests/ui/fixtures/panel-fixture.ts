@@ -2,9 +2,8 @@ import { type IAnnouncement } from "@/services/admin/announcement";
 import { type IConfiguration } from "@/services/configuration/configuration-types";
 import { type IUser } from "@/services/users/user-types";
 import { type Page } from "@playwright/test";
-import path from "node:path";
 import { INITIAL_SETTINGS, PANEL_METADATA, WEB_SETTINGS } from "./data";
-const DIST = path.resolve(process.cwd(), "dist");
+const FRONTEND = process.env.PLAYWRIGHT_FRONTEND_URL ?? "http://127.0.0.1:3000";
 export async function mockPanel(page: Page, isAuthorized = true, initial: IConfiguration = INITIAL_SETTINGS) {
   let settings = { ...initial };
   const coreActions: string[] = [];
@@ -14,14 +13,8 @@ export async function mockPanel(page: Page, isAuthorized = true, initial: IConfi
   let polls = 0;
   let operation: Record<string, unknown> | undefined;
   let logs = "2026-11-06 INFO Сертификат обновлён ✓\n2026-11-06 ERROR ACME: проверка домена не пройдена\n";
-  await page.route("http://panel.test/**", async (route) => {
+  await page.route("**/api/**", async (route) => {
     const url = new URL(route.request().url());
-    if (!url.pathname.startsWith("/api/")) {
-      await route.fulfill({
-        path: path.join(DIST, url.pathname === "/" ? "index.html" : url.pathname.slice(1)),
-      });
-      return;
-    }
     let response: unknown = PANEL_METADATA[url.pathname] ?? {};
     if (/^\/api\/core\/(start|stop|restart)$/.test(url.pathname)) {
       const action = url.pathname.split("/").at(-1) ?? "";
@@ -144,7 +137,7 @@ export async function mockPanel(page: Page, isAuthorized = true, initial: IConfi
     }
     await route.fulfill({ json: response });
   });
-  await page.goto("http://panel.test");
+  await page.goto(FRONTEND);
   await page.evaluate(() => document.fonts.ready);
   return { saved: () => settings, subscription: () => announcement, coreActions };
 }

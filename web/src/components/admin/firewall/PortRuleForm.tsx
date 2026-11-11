@@ -26,7 +26,12 @@ export function PortRuleForm({
             min={1}
             max={65535}
             required
-            {...form.register("port", { valueAsNumber: true, required: true, min: 1, max: 65535 })}
+            {...form.register("port", {
+              valueAsNumber: true,
+              required: true,
+              min: 1,
+              max: 65535,
+            })}
             disabled={isPending}
           />
         </Field>

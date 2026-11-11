@@ -14,7 +14,11 @@ export function useInstanceCommands() {
       client.invalidateQueries({ queryKey: QUERY_KEYS.core }),
       client.invalidateQueries({ queryKey: ["connection"] }),
     ]);
-  const create = useMutation({ mutationFn: instancesApi.create, onSuccess: refresh, onError: showError });
+  const create = useMutation({
+    mutationFn: instancesApi.create,
+    onSuccess: refresh,
+    onError: showError,
+  });
   const rename = useMutation({
     mutationFn: (input: { id: string; name: string }) => instancesApi.rename(input.id, input.name),
     onSuccess: refresh,

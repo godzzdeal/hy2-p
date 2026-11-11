@@ -7,7 +7,7 @@
   .emoji-popup {
     @apply border-line shadow-pixel;
   }
-  nav button.selected {
+  nav a.selected {
     box-shadow: inset var(--space-1) 0 0 var(--accent);
   }
   .brand-mark,
@@ -28,7 +28,6 @@
   .metric small {
     @apply leading-normal;
   }
-  .field-hint,
   .share-help {
     @apply leading-snug;
   }

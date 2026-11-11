@@ -9,8 +9,8 @@ export const CERTIFICATES_HELP = {
   "Проверяет, совпадает ли имя из запроса с именем сертификата. Стандартный режим подходит большинству серверов.":
     "Checks the requested server name against the certificate. The default suits most servers.",
   "Сертификаты доверенных клиентов": "Trusted client certificates",
-  "Нужно только для входа по клиентскому сертификату. Обычным ссылкам Happ это не требуется.":
-    "Only needed for client certificate authentication. Regular Happ links do not require this.",
+  "Нужно только для входа по клиентскому сертификату. Обычным ссылкам подключения это не требуется.":
+    "Only needed for client certificate authentication. Regular connection links do not require this.",
   "Ключ ECH": "ECH key",
   "Путь к ключу шифрования имени сервера. Требуется совместимый клиент и отдельная настройка.":
     "Key file for encrypted server names. Requires a compatible client and additional setup.",

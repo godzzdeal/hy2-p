@@ -1,17 +1,17 @@
 import { expect, test } from "@playwright/test";
-import { expandSettings } from "../../fixtures";
+import { expandSettings, waitForAppearance } from "../../fixtures";
 import { mockSession } from "./fixture";
 
 test("an expired session returns to login and can authenticate again", async ({ page }) => {
   const session = await mockSession(page, true);
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   await expect(
     page.getByText("Добавьте первого пользователя для получения ссылки подключения."),
   ).toBeVisible();
-  await page.route("http://panel.test/api/users", async (route) => {
+  await page.route("**/api/users", async (route) => {
     session.expire();
     await route.fulfill({ status: 401, json: { error: "Сессия завершена" } });
-    await page.unroute("http://panel.test/api/users");
+    await page.unroute("**/api/users");
   });
   await page.getByRole("button", { name: "Обновить", exact: true }).click();
   await expect(page.getByLabel("Пароль", { exact: true })).toBeVisible();
@@ -23,18 +23,19 @@ test("an expired session returns to login and can authenticate again", async ({ 
 
 test("logging out does not leave session observers waiting", async ({ page }) => {
   await mockSession(page, true);
+  await waitForAppearance(page);
   await page.getByRole("button", { name: "Выйти", exact: true }).click();
   await expect(page.getByLabel("Пароль", { exact: true })).toBeVisible();
 });
 
 test("changing credentials returns to login without hanging", async ({ page }) => {
   const session = await mockSession(page, true);
-  await page.route("http://panel.test/api/admin/account", async (route) => {
+  await page.route("**/api/admin/account", async (route) => {
     if (route.request().method() !== "PUT") return route.fallback();
     session.expire();
     await route.fulfill({ json: { username: "owner", loginRequired: true } });
   });
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   await page.getByLabel("Логин", { exact: true }).fill("owner");
   await page.getByLabel("Текущий пароль", { exact: true }).fill("test-password-only");

@@ -29,15 +29,15 @@ export function FirewallSettings() {
       }
     >
       <CardBody>
-        <PortGuide />
-        <Caption>
-          {t("Правила UFW для входящих TCP/UDP-портов Ubuntu. Порты SSH и панели защищены от закрытия.")}
-        </Caption>
-        <Notice>
+        <Notice variant="warning">
           {t(
             "Опубликованные порты Docker могут обходить UFW. Панель не выдаёт такие порты за закрытые. Firewall хостинга настраивается отдельно.",
           )}
         </Notice>
+        <PortGuide />
+        <Caption>
+          {t("Правила UFW для входящих TCP/UDP-портов Ubuntu. Порты SSH и панели защищены от закрытия.")}
+        </Caption>
         {!result && (
           <div className="firewall-helper grid gap-2">
             <Caption>{t("Для подключения помощника выполните на сервере:")}</Caption>

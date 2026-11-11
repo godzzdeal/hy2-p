@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button/Button";
 import { ChevronRight, Earth, LogOut, Server } from "@/components/elements/icons";
-import { LanguageSelect } from "@/components/elements/LanguageSelect";
 import { NavigationItem } from "@/components/layout/sidebar/NavigationItem";
-import { ThemeSwitch } from "@/components/layout/sidebar/theme";
 import { NAVIGATION } from "@/config/navigation";
 import { useConfiguration } from "@/hooks/configuration/use-configuration";
 import { useSession } from "@/hooks/session/use-session";
@@ -47,17 +45,16 @@ export function Sidebar() {
           <NavigationItem key={item.id} item={item} />
         ))}
       </nav>
-      <div className="aside-bottom max-tablet:grid max-tablet:grid-cols-2 max-tablet:items-center max-tablet:gap-3 max-tablet:pt-3 mt-auto pt-4">
-        <LanguageSelect />
-        <ThemeSwitch />
+      <div className="aside-bottom mt-auto pt-4 max-tablet:p-0">
         <Button
-          className="w-full justify-start max-tablet:w-control max-tablet:justify-center max-tablet:px-0 tablet:group-data-collapsed/app:justify-center tablet:group-data-collapsed/app:px-2"
+          variant="danger"
+          className="w-full justify-start tablet:group-data-collapsed/app:justify-center tablet:group-data-collapsed/app:px-2 max-tablet:absolute max-tablet:mt-0 max-tablet:top-0 max-tablet:right-3 max-tablet:size-12 max-tablet:justify-center max-tablet:p-0"
           aria-label={t("Выйти")}
           disabled={logout.isPending}
           onClick={() => logout.mutate()}
         >
           <LogOut width={24} height={24} aria-hidden />
-          <span className="logout-label">{t("Выйти")}</span>
+          <span className="logout-label max-tablet:hidden">{t("Выйти")}</span>
         </Button>
       </div>
     </aside>

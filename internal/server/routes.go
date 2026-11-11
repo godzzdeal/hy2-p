@@ -14,11 +14,11 @@ import (
 	"hy2-panel/internal/instances"
 	instanceapi "hy2-panel/internal/instances/api"
 	portweb "hy2-panel/internal/portcontrol/web"
-	"hy2-panel/internal/security"
 	"hy2-panel/internal/subscriptions"
 	"hy2-panel/internal/systemmetrics"
 	"hy2-panel/internal/traffic"
 	"hy2-panel/internal/transfer"
+	"hy2-panel/internal/transfer/local"
 	"hy2-panel/internal/transport"
 	useraccess "hy2-panel/internal/useraccess/integration"
 	"hy2-panel/internal/users"
@@ -31,7 +31,7 @@ import (
 	"time"
 )
 
-func routes(auth *auth.Handler, users *users.Handler, registry *instances.Registry, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, access *useraccess.Handler, devices *deviceapi.Handler, groups *groupapi.Handler, transfer *transfer.Service, metrics *systemmetrics.Service) http.Handler {
+func routes(auth *auth.Handler, users *users.Handler, registry *instances.Registry, subscriptions *subscriptions.Handler, traffic *traffic.Service, web *websettings.Handler, access *useraccess.Handler, devices *deviceapi.Handler, groups *groupapi.Handler, transfer *transfer.Service, metrics *systemmetrics.Service, frontend http.Handler) http.Handler {
 	mux := http.NewServeMux()
 	panelUpdates := updates.New(buildinfo.Version())
 	panelVersions := catalog.New()
@@ -94,7 +94,7 @@ func routes(auth *auth.Handler, users *users.Handler, registry *instances.Regist
 	mux.HandleFunc("/api/", func(writer http.ResponseWriter, request *http.Request) {
 		transport.Fail(writer, errors.New("Маршрут не найден"), 404)
 	})
-	mux.Handle("/", http.FileServer(http.Dir(security.Env("PANEL_WEB", "web/dist"))))
+	mux.Handle("/", frontend)
 	return transport.Headers(mux)
 }
 func awaitShutdown(failures <-chan error, servers []*http.Server) error {
@@ -132,4 +132,14 @@ func background(parent context.Context, loops ...func(context.Context)) func() {
 
 func httpServer(address string, handler http.Handler) *http.Server {
 	return &http.Server{Addr: address, Handler: handler, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second, IdleTimeout: 60 * time.Second}
+}
+
+func registerLocalTransfer(mux *http.ServeMux, data string, transfer *transfer.Service) error {
+	handler, err := local.New(data, transfer.Download, transfer.Import)
+	if err != nil {
+		return err
+	}
+	mux.Handle("/transfer", handler)
+	mux.Handle("/transfer/", handler)
+	return nil
 }

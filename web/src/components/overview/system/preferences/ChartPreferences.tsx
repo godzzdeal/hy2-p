@@ -14,7 +14,10 @@ export function ChartPreferences() {
           {t("Графики")}
         </Button>
       }
-      contentProps={{ className: "chart-preferences", "aria-label": t("Видимость графиков") }}
+      contentProps={{
+        className: "chart-preferences",
+        "aria-label": t("Видимость графиков"),
+      }}
     >
       {CHART_OPTIONS.map((option) => (
         <ChartChoice

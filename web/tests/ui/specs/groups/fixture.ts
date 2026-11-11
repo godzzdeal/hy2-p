@@ -17,8 +17,8 @@ export const GROUP: IGroup = {
 export async function mockGroups(page: Page, initial: IGroups = { groups: [], memberships: {} }) {
   await mockPanel(page);
   let state = structuredClone(initial);
-  await page.route("http://panel.test/api/users", (route) => route.fulfill({ json: USERS }));
-  await page.route("http://panel.test/api/groups**", async (route) => {
+  await page.route("**/api/users", (route) => route.fulfill({ json: USERS }));
+  await page.route("**/api/groups**", async (route) => {
     const request = route.request();
     const id = new URL(request.url()).pathname.split("/").at(-1) ?? "";
     if (id === "members" && request.method() === "PUT") {
@@ -53,7 +53,7 @@ export async function mockGroups(page: Page, initial: IGroups = { groups: [], me
     else delete state.memberships[id];
     await route.fulfill({ json: state });
   });
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   await page.getByRole("button", { name: "Обновить", exact: true }).click();
   return { saved: () => state };
 }

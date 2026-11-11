@@ -16,8 +16,12 @@ export interface ICoreControlInput {
 }
 export const coreApi = {
   clearLogs: (id?: string) =>
-    request<{ logs: string }>(instanceRoute(API_ROUTES.logs, id), { method: "DELETE" }),
+    request<{ logs: string }>(instanceRoute(API_ROUTES.logs, id), {
+      method: "DELETE",
+    }),
   read: (id?: string) => request<ICore>(instanceRoute(API_ROUTES.core, id)),
   control: (action: TCoreAction, id?: string) =>
-    request<ICore>(instanceRoute(API_ROUTES.control(action), id), { method: "POST" }),
+    request<ICore>(instanceRoute(API_ROUTES.control(action), id), {
+      method: "POST",
+    }),
 };

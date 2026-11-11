@@ -18,6 +18,9 @@ export const coreToolsApi = {
       instanceRoute(API_ROUTES.ech, id) + (keyPath ? "?keyPath=" + encodeURIComponent(keyPath) : ""),
     ),
   generate: (publicName: string, id?: string) =>
-    request<IEch>(instanceRoute(API_ROUTES.ech, id), { method: "POST", body: { publicName } }),
+    request<IEch>(instanceRoute(API_ROUTES.ech, id), {
+      method: "POST",
+      body: { publicName },
+    }),
   stats: (id?: string) => request<IStatsSecret>(instanceRoute(API_ROUTES.statsSecret, id)),
 };

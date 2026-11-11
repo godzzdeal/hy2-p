@@ -5,7 +5,9 @@ export function InstallHelp({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
   return (
     <Modal title="Панель на главном экране" onClose={onClose}>
-      <Notice>{t("Для установки откройте панель по HTTPS с действительным сертификатом.")}</Notice>
+      <Notice variant="warning">
+        {t("Для установки откройте панель по HTTPS с действительным сертификатом.")}
+      </Notice>
       <h3>iPhone / iPad</h3>
       <ol className="install-steps mt-3 mb-5 pl-6">
         <li>{t("Откройте панель в Safari и нажмите «Поделиться».")}</li>

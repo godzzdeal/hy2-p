@@ -5,7 +5,10 @@ import { useUiStore } from "@/store/ui-store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useCloudPassword() {
-  return useQuery({ queryKey: QUERY_KEYS.cloudPassword, queryFn: cloudPasswordApi.read });
+  return useQuery({
+    queryKey: QUERY_KEYS.cloudPassword,
+    queryFn: cloudPasswordApi.read,
+  });
 }
 export function useSaveCloudPassword() {
   const client = useQueryClient();

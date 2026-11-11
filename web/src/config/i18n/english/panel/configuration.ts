@@ -1,7 +1,6 @@
 export const DOCUMENTATION = {
   "Найти свойство": "Find property",
   "Найдено свойств: {{count}}": "Properties found: {{count}}",
-  "Показывать пояснения": "Show explanations",
   Документация: "Documentation",
   "Свойства не найдены. Попробуйте имя из документации.":
     "No properties found. Try a property name from the documentation.",

@@ -49,7 +49,7 @@ func ConnectionURI(settings configuration.Settings, user users.User, data string
 		kind, _ := obfs["type"].(string)
 		if kind != "" {
 			if kind != "salamander" {
-				return "", errors.New("Экспорт для Happ поддерживает только Salamander; измените obfs")
+				return "", errors.New("Экспорт ссылки поддерживает только Salamander; измените obfs")
 			}
 			settings, _ := obfs[kind].(map[string]any)
 			pw, _ := settings["password"].(string)

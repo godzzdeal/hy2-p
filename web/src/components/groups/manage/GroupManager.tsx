@@ -27,7 +27,9 @@ export function GroupManager({ onClose }: { onClose: () => void }) {
   );
   return (
     <Modal
-      className={cn({ "group-members-dialog flex flex-col w-160 shrink-0": !!members })}
+      className={cn({
+        "group-members-dialog flex flex-col w-160 shrink-0": !!members,
+      })}
       title={members ? t("Участники группы {{name}}", { name: members.name }) : t("Группы пользователей")}
       onClose={onClose}
     >

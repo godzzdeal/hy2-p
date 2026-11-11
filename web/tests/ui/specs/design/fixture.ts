@@ -1,9 +1,10 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
+export { mockPanel, chooseTheme } from "../../fixtures";
 
 export async function mockDesign(page: Page): Promise<void> {
   await mockPanel(page);
-  await page.route("http://panel.test/api/panel/maintenance", (route) =>
+  await page.route("**/api/panel/maintenance", (route) =>
     route.fulfill({
       json: {
         available: true,
@@ -14,7 +15,7 @@ export async function mockDesign(page: Page): Promise<void> {
       },
     }),
   );
-  await page.route("http://panel.test/api/panel/versions", (route) =>
+  await page.route("**/api/panel/versions", (route) =>
     route.fulfill({ json: [{ version: "v0.8.0" }] }),
   );
 }

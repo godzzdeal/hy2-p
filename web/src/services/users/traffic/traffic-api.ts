@@ -13,5 +13,9 @@ export const trafficApi = {
     upload?: number;
     download?: number;
     limit: number;
-  }) => request<IUserUsage>(API_ROUTES.userTraffic(id), { method: "PUT", body: { upload, download, limit } }),
+  }) =>
+    request<IUserUsage>(API_ROUTES.userTraffic(id), {
+      method: "PUT",
+      body: { upload, download, limit },
+    }),
 };

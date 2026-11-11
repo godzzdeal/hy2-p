@@ -29,7 +29,7 @@ export const NAVIGATION = [
     id: PageEnum.Subscriptions,
     label: "Подписки",
     title: "Подписки",
-    description: "Название, эмодзи и объявления для пользователей Happ.",
+    description: "Название, эмодзи и объявления для пользователей.",
     icon: Rss,
   },
   {
@@ -61,3 +61,13 @@ export const NAVIGATION = [
     icon: Settings2,
   },
 ] as const;
+
+export const PAGE_ROUTES: Record<TPage, string> = {
+  overview: "/",
+  users: "/users",
+  config: "/configuration",
+  core: "/hy2",
+  instances: "/instances",
+  subscriptions: "/subscriptions",
+  admin: "/settings",
+};
