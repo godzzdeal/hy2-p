@@ -64,36 +64,57 @@ sudo bash /tmp/hy2-install.sh
 
 ## Подключение
 
-Используйте приложение с поддержкой Hysteria2. Отсканируйте QR-код или добавьте адрес подписки из буфера обмена. Доступные пользователю экземпляры появятся в одной подписке.
-
-После смены адреса, порта или пароля обновите подписку. Лимит устройств требует передачи ID устройства приложением; эта возможность проверена с Happ.
+Используйте приложение с поддержкой Hysteria2. Отсканируйте QR-код или добавьте адрес подписки из буфера обмена. Доступные пользователю экземпляры появятся в одной подписке. После смены адреса, порта или пароля обновите подписку. Лимит устройств требует передачи ID устройства приложением; эта возможность проверена с Happ.
 
 ## Пример конфигурации
 
 Использую этот конфиг у себя. Он не универсальный: в другой сети или у другого оператора могут понадобиться изменения.
 
 <details>
-<summary><strong>Открыть YAML</strong></summary>
+<summary><strong>Конфигурация сервера</strong></summary>
 
 ```yaml
-listen: :61254
-acme: domains:   - vpn.example.com email: admin@example.com ca: letsencrypt dir: /data/acme-hy2
+listen: :8443
 
-obfs: type: salamander salamander:   password: REPLACE_WITH_YOUR_RANDOM_OBFS_PASSWORD
+acme:
+  domains:
+    - vpn.example.com
+  email: admin@example.com
+  ca: letsencrypt
+  dir: /data/acme-hy2
+ech:
+  keyPath: /data/ech/REPLACE_WITH_KEY_DIRECTORY/ech.pem
 
-quic: maxIdleTimeout: 30s disablePathMTUDiscovery: false
+obfs:
+  type: salamander
+  salamander:
+    password: REPLACE_WITH_YOUR_RANDOM_OBFS_PASSWORD
+
+quic:
+  maxIdleTimeout: 30s
+  disablePathMTUDiscovery: false
 
 ignoreClientBandwidth: true
-congestion: type: bbr bbrProfile: standard
+congestion:
+  type: bbr
+  bbrProfile: standard
+speedTest: true
 
 disableUDP: false
 udpIdleTimeout: 60s
-masquerade: type: proxy proxy:   url: https://reuters.com   rewriteHost: true
+
+masquerade:
+  type: proxy
+  proxy:
+    url: https://reuters.com
+    rewriteHost: true
 ```
 
 </details>
 
-Замените домен и email, сгенерируйте пароли. При необходимости измените порт.
+Замените домен и email, сгенерируйте пароль и укажите путь к созданному ключу ECH. [Как повторить настройку](docs/configuration.md).
+
+**ECH скрывает имя сервера в TLS и помогает минимизировать риск блокировок по SNI.** Это не 100% гарантия доступности: IP сервера остаётся видимым и может быть заблокирован отдельно.
 
 ## Обновление и откат
 
