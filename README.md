@@ -64,9 +64,7 @@ sudo bash /tmp/hy2-install.sh
 
 ## Подключение
 
-Используйте приложение с поддержкой Hysteria2. Отсканируйте QR-код или добавьте адрес подписки из буфера обмена. Доступные пользователю экземпляры появятся в одной подписке.
-
-После смены адреса, порта или пароля обновите подписку. Лимит устройств требует передачи ID устройства приложением; эта возможность проверена с Happ.
+Используйте приложение с поддержкой Hysteria2. Отсканируйте QR-код или добавьте адрес подписки из буфера обмена. Доступные пользователю экземпляры появятся в одной подписке. После смены адреса, порта или пароля обновите подписку. Лимит устройств требует передачи ID устройства приложением; эта возможность проверена с Happ.
 
 ## Пример конфигурации
 
@@ -77,6 +75,7 @@ sudo bash /tmp/hy2-install.sh
 
 ```yaml
 listen: :8443
+
 acme:
   domains:
     - vpn.example.com
@@ -85,20 +84,25 @@ acme:
   dir: /data/acme-hy2
 ech:
   keyPath: /data/ech/REPLACE_WITH_KEY_DIRECTORY/ech.pem
+
 obfs:
   type: salamander
   salamander:
     password: REPLACE_WITH_YOUR_RANDOM_OBFS_PASSWORD
+
 quic:
   maxIdleTimeout: 30s
   disablePathMTUDiscovery: false
+
 ignoreClientBandwidth: true
 congestion:
   type: bbr
   bbrProfile: standard
 speedTest: true
+
 disableUDP: false
 udpIdleTimeout: 60s
+
 masquerade:
   type: proxy
   proxy:
