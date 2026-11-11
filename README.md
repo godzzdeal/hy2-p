@@ -71,7 +71,7 @@ sudo bash /tmp/hy2-install.sh
 Использую этот конфиг у себя. Он не универсальный: в другой сети или у другого оператора могут понадобиться изменения.
 
 <details>
-<summary><strong>Открыть YAML</strong></summary>
+<summary><strong>Конфигурация сервера</strong></summary>
 
 ```yaml
 listen: :8443
