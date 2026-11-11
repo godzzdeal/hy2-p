@@ -3,7 +3,7 @@ import { chooseTheme, mockPanel } from "..";
 
 test("selected version stays on one line and the list exposes its full value", async ({ page }, info) => {
   await mockPanel(page);
-  await page.route("http://panel.test/api/core/versions", (route) =>
+  await page.route("**/api/core/versions", (route) =>
     route.fulfill({ json: [{ tag: "v2.13.0", published: "2026-11-08T10:00:00Z", available: true }] }),
   );
   for (const theme of [
@@ -11,7 +11,7 @@ test("selected version stays on one line and the list exposes its full value", a
     { label: "Тёмная", value: "dark" },
   ]) {
     await chooseTheme(page, theme);
-    await page.getByRole("button", { name: "Управление HY2", exact: true }).click();
+    await page.getByRole("link", { name: "Управление HY2", exact: true }).click();
     const select = page.getByRole("combobox", { name: "Версия HY2", exact: true });
     await expect(select).toContainText("2.13.0 (08.11.2026) (установлена)");
     const geometry = await select.evaluate((element) => {
@@ -47,6 +47,6 @@ test("selected version stays on one line and the list exposes its full value", a
     ).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(page.getByRole("listbox")).toHaveCount(0);
-    await page.getByRole("button", { name: "Обзор", exact: true }).click();
+    await page.getByRole("link", { name: "Обзор", exact: true }).click();
   }
 });

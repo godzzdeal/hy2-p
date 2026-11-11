@@ -31,8 +31,8 @@ export const TOOLS: Record<string, string> = {
   "Все группы": "All groups",
   "Без группы": "No group",
   "Изменить группу пользователя {{id}}": "Change group for user {{id}}",
-  "Лимиты группы дополняют личные. После смены группы подключение перезапустится; при включённом лимите устройств обновите подписку в Happ.":
-    "Group limits supplement personal limits. Changing groups restarts the connection; refresh the Happ subscription if a device limit is enabled.",
+  "Лимиты группы дополняют личные. После смены группы подключение перезапустится; при включённом лимите устройств обновите подписку в используемом приложении.":
+    "Group limits supplement personal limits. Changing groups restarts the connection; refresh the subscription if a device limit is enabled.",
   "Лимит группы:": "Group limit:",
   "Личный лимит может быть только строже.": "The personal limit can only be stricter.",
   "Действующий лимит с учётом группы:": "Effective limit including the group:",

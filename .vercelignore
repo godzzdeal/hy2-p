@@ -10,8 +10,16 @@
 /web/dist-demo/
 /web/test-results/
 /web/playwright-report/
-/mk-arch-demo/
+/demo-example/
 *.exe
 *.pem
 *.key
 *.crt
+/web-react/
+
+/web/.next/
+/web/public/
+/web/next-env.d.ts
+/web/tsconfig.tsbuildinfo
+/web/.next-demo/
+/web/src/config/hysteria/order.generated.json

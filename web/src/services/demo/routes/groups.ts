@@ -19,7 +19,10 @@ export function demoGroups(path: string, { method = "GET", body }: IRequest): un
   if (!group) return undefined;
   if (path === API_ROUTES.groupMembers(group.id) && method === "PUT") {
     const input = demoInput<{ userIds: string[] }>(body);
-    demoState.groups = replaceGroupMembers(demoState.groups, { groupId: group.id, userIds: input.userIds });
+    demoState.groups = replaceGroupMembers(demoState.groups, {
+      groupId: group.id,
+      userIds: input.userIds,
+    });
   } else if (method === "PUT") {
     Object.assign(group, demoInput<IGroupInput>(body), { id: group.id });
   } else if (method === "DELETE") {

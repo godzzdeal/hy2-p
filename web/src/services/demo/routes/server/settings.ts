@@ -57,7 +57,11 @@ export function demoSettings(path: string, instanceId: string, { method = "GET",
     };
   }
   if (path === API_ROUTES.statsSecret)
-    return { listen: "127.0.0.1:9999", secret: "DEMO-NOT-A-REAL-SECRET", running: true };
+    return {
+      listen: "127.0.0.1:9999",
+      secret: "DEMO-NOT-A-REAL-SECRET",
+      running: true,
+    };
   if (path === API_ROUTES.ech || path === API_ROUTES.udpApply) return unavailable();
   return undefined;
 }

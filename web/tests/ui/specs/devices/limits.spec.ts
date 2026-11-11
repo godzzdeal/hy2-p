@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { chooseUserAction } from "../../fixtures";
 import { mockDevices } from "./fixture";
-test("device limit saves and share dialog supplies the Happ subscription", async ({ page }) => {
+test("device limit saves and share dialog supplies the subscription", async ({ page }) => {
   const fixture = await mockDevices(page);
   await chooseUserAction(page, "Phone", "Устройства");
   await page.getByLabel("Лимит устройств", { exact: true }).fill("1");
@@ -9,13 +9,13 @@ test("device limit saves and share dialog supplies the Happ subscription", async
   await expect.poll(() => fixture.saved().limit).toBe(1);
   await page.getByRole("button", { name: "Закрыть", exact: true }).click();
   await chooseUserAction(page, "Phone", "Подключение");
-  await expect(page.getByRole("button", { name: "Подключение / Happ", exact: true })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Ссылка подключения", exact: true })).toBeDisabled();
   await expect(page.getByRole("textbox", { name: "Ссылка подключения", exact: true })).toHaveValue(
     "https://panel.test/sub/fixture",
   );
   await expect(
     page.getByText(
-      "Включён лимит устройств. Импортируйте подписку в Happ, чтобы получить персональный ключ устройства.",
+      "Включён лимит устройств. Импортируйте подписку в используемом приложении, чтобы получить персональный ключ устройства.",
       { exact: true },
     ),
   ).toBeVisible();

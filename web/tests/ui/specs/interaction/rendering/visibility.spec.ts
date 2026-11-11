@@ -6,7 +6,7 @@ test("offscreen charts retain their geometry and refresh when shown again", asyn
   await mockPanel(page);
   let cpu = 12.5;
   let polls = 0;
-  await page.route("http://panel.test/api/system", (route) => {
+  await page.route("**/api/system", (route) => {
     polls++;
     const data = demoSystem();
     data.samples.at(-1)!.cpu = cpu;

@@ -10,7 +10,6 @@ export function SectionFields({
   isNative,
   isManagedHttp,
   search,
-  showDescription,
   onSet,
 }: {
   fields: readonly IConfigField[];
@@ -18,11 +17,10 @@ export function SectionFields({
   isNative: boolean;
   isManagedHttp: boolean;
   search: string;
-  showDescription: boolean;
   onSet: (path: string, value: unknown) => void;
 }) {
   return (
-    <FieldGrid columns={2}>
+    <FieldGrid columns={2} className="p-0">
       {fields
         .filter((field) => search || fieldAvailability(field, document, isNative, isManagedHttp).isVisible)
         .map((field) => (
@@ -30,7 +28,6 @@ export function SectionFields({
             key={field.path}
             field={field}
             value={readField(document, field.path)}
-            showDescription={showDescription}
             disabledReason={fieldAvailability(field, document, isNative, isManagedHttp).reason}
             onChange={(value) => onSet(field.path, value)}
           />

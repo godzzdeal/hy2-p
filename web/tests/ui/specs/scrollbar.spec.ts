@@ -5,10 +5,11 @@ test("the main scrollbar stays at the viewport edge with a separate gap for cont
   page,
 }, info) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByRole("button", { name: "QUIC parameters", exact: true }).click();
   await expect(page.getByLabel("quic.maxIdleTimeout", { exact: true })).toBeVisible();
-  await expect(page.locator(".scroll-navigation")).toBeVisible();
+  if (info.project.name === "desktop") await expect(page.locator(".scroll-navigation")).toBeVisible();
+  else await expect(page.locator(".scroll-navigation")).toBeHidden();
   const widths = info.project.name === "mobile" ? [320, 390] : [900, 1440, 1920, 2560];
   for (const width of widths) {
     await page.setViewportSize({ width, height: info.project.name === "mobile" ? 844 : 1000 });
@@ -40,7 +41,7 @@ test("the main scrollbar stays at the viewport edge with a separate gap for cont
     if (info.project.name === "desktop") {
       expect(geometry.trackLeft - geometry.navRight).toBeGreaterThanOrEqual(8);
       expect(geometry.navLeft - geometry.cardRight).toBeGreaterThanOrEqual(8);
-    } else expect(geometry.navTop).toBeGreaterThanOrEqual(geometry.bottom);
+    }
     await page.locator(".content").evaluate((element) => element.scrollTo(0, element.scrollHeight));
     expect(await page.evaluate(() => scrollY)).toBe(0);
     await page.screenshot({ path: info.outputPath(`scrollbar-${width}.png`) });

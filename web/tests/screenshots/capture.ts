@@ -10,7 +10,7 @@ export async function captureScreenshots(): Promise<void> {
   const browser = await chromium.launch({ args: ["--disable-lcd-text"] });
   try {
     const context = await browser.newContext({
-      viewport: { width: 1600, height: 1040 },
+      viewport: { width: 1536, height: 936 },
       deviceScaleFactor: 1,
       colorScheme: "dark",
       locale: "ru-RU",
@@ -27,23 +27,20 @@ export async function captureScreenshots(): Promise<void> {
       if (response.status() >= 400) errors.push(response.url());
     });
     await prepareScreenshots(page, version);
-    await page.route("http://preview.test/**", (route) =>
-      route.fulfill({ contentType: "text/html", body: MACOS_WINDOW }),
-    );
-    await page.goto("http://preview.test/");
-    const app = page.frameLocator("iframe");
+    await page.reload();
+    const app = page;
+    await app.getByRole("link", { name: "Обзор", exact: true }).click();
     await app.getByRole("heading", { name: "Ваш сервер", exact: true }).waitFor();
     await app.locator("body").evaluate(() => document.fonts.ready);
     await mkdir(output, { recursive: true });
     await page.mouse.move(800, 52);
-    await page.screenshot({ path: path.join(output, "overview.png") });
-    await app.getByRole("button", { name: "Пользователи", exact: true }).click();
+    await saveScreenshot("overview.png");
+    await app.getByRole("link", { name: "Пользователи", exact: true }).click();
     await app.locator(".group-users tr").first().waitFor();
-    await app.locator(".user-group-toggle").filter({ hasText: "Команда" }).click();
     await page.mouse.move(800, 52);
-    await page.screenshot({ path: path.join(output, "users.png") });
+    await saveScreenshot("users.png");
     await page.emulateMedia({ colorScheme: "light" });
-    await app.getByRole("button", { name: "Конфигурация", exact: true }).click();
+    await app.getByRole("link", { name: "Конфигурация", exact: true }).click();
     await app.getByRole("button", { name: "QUIC parameters", exact: true }).click();
     await app.getByLabel("quic.maxIdleTimeout", { exact: true }).waitFor();
     await app.locator(".content").evaluate((content) => {
@@ -61,9 +58,18 @@ export async function captureScreenshots(): Promise<void> {
       }));
     if (geometry.scrollY !== 0 || geometry.header !== 0 || Math.abs(geometry.footer - geometry.viewport) > 1)
       throw new Error("Screenshot bars moved: " + JSON.stringify(geometry));
-    await page.screenshot({ path: path.join(output, "configuration.png") });
+    await saveScreenshot("configuration.png");
     if (errors.length) throw new Error("Screenshot resources failed: " + errors.join(", "));
     console.log("Updated macOS screenshots:", output);
+    async function saveScreenshot(name: string): Promise<void> {
+      const screenshot = await page.screenshot();
+      const frame = await context.newPage();
+      await frame.setViewportSize({ width: 1600, height: 1040 });
+      await frame.setContent(MACOS_WINDOW.replace("SCREENSHOT", "data:image/png;base64," + screenshot.toString("base64")));
+      await frame.locator("img").evaluate((image: HTMLImageElement) => image.decode());
+      await frame.screenshot({ path: path.join(output, name) });
+      await frame.close();
+    }
   } finally {
     await browser.close();
   }

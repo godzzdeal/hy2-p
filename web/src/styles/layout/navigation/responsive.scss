@@ -6,20 +6,14 @@
     .sidebar-collapsed {
       --sidebar-width: var(--space-16);
     }
-    .sidebar-collapsed .brand > span,
-    .sidebar-collapsed .workspace,
     .sidebar-collapsed .nav-item-label,
-    .sidebar-collapsed .aside-bottom > label,
     .sidebar-collapsed .logout-label {
       @apply hidden;
-    }
-    .sidebar-collapsed .brand {
-      @apply justify-center;
     }
     .sidebar-collapsed .sidebar-toggle {
       @apply m-0;
     }
-    .sidebar-collapsed nav button,
+    .sidebar-collapsed nav a,
     .sidebar-collapsed .aside-bottom > button {
       @apply justify-center px-2 relative;
     }
@@ -28,6 +22,9 @@
     }
   }
   @variant max-tablet {
+    .brand {
+      @apply h-header;
+    }
     .app-sidebar {
       padding: 0 var(--space-3) var(--space-3);
     }
@@ -35,12 +32,12 @@
       @apply hidden;
     }
     .app-sidebar nav {
-      @apply flex items-center overflow-x-auto overflow-y-hidden scrollbar-thin py-1 mt-2;
+      @apply flex items-center overflow-x-auto overflow-y-hidden scrollbar-thin py-1;
     }
-    .app-sidebar nav button {
+    .app-sidebar nav a {
       @apply flex-none min-w-0 h-control p-1 gap-1 text-left;
     }
-    .app-sidebar nav button:focus-visible {
+    .app-sidebar nav a:focus-visible {
       @apply -outline-offset-2;
     }
     .app-sidebar nav .user-count {
@@ -50,10 +47,7 @@
       @apply min-w-0;
     }
     .aside-bottom > button {
-      @apply absolute top-1 right-3 w-control p-0 justify-center;
-    }
-    .logout-label {
-      @apply hidden;
+      @apply static w-full justify-start mt-3;
     }
   }
 }

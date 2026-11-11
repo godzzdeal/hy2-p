@@ -5,7 +5,7 @@ test("latest version is not replaced by an older default and update controls are
   page,
 }, info) => {
   await mockPanel(page);
-  await page.route("http://panel.test/api/core/versions", (route) =>
+  await page.route("**/api/core/versions", (route) =>
     route.fulfill({
       json: [
         { tag: "app/v2.13.0", available: true, published: "2026-11-01T00:00:00Z" },
@@ -13,7 +13,7 @@ test("latest version is not replaced by an older default and update controls are
       ],
     }),
   );
-  await page.getByRole("button", { name: "Управление HY2", exact: true }).click();
+  await page.getByRole("link", { name: "Управление HY2", exact: true }).click();
   const card = page.locator(".version-card");
   await expect(card.getByRole("button", { name: "Установлена", exact: true })).toBeDisabled();
   await expect(card.getByText("Установлена последняя версия", { exact: true })).toBeVisible();

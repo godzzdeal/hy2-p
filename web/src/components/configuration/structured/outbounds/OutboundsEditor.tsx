@@ -39,7 +39,7 @@ export function OutboundsEditor({
     );
   const entries = isOutboundList(value) ? value : [];
   return (
-    <div className="outbounds-editor">
+    <div className="outbounds-editor grid min-w-0 gap-3">
       <Notice>{t("Исходящие подключения используются в ACL по имени. Порядок списка сохраняется.")}</Notice>
       {entries.map((entry, index) => (
         <OutboundRow key={index} value={entry} index={index} search={search} onEdit={onEdit} />

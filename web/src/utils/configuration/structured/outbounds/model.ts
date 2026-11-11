@@ -3,8 +3,17 @@ import { orderConfiguration } from "@/utils/configuration/structured/yaml/orderi
 import { isMap, isSeq, parseDocument } from "yaml";
 export const OUTBOUND_TYPES = ["direct", "socks5", "http"] as const;
 export const OUTBOUND_FIELDS: readonly IConfigField[] = [
-  { path: "name", label: "Имя исходящего подключения для правил ACL.", kind: "text" },
-  { path: "type", label: "Тип исходящего подключения.", kind: "select", options: OUTBOUND_TYPES },
+  {
+    path: "name",
+    label: "Имя исходящего подключения для правил ACL.",
+    kind: "text",
+  },
+  {
+    path: "type",
+    label: "Тип исходящего подключения.",
+    kind: "select",
+    options: OUTBOUND_TYPES,
+  },
   {
     path: "direct.mode",
     label: "Порядок выбора IPv4 / IPv6.",

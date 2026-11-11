@@ -4,7 +4,9 @@ import { useTranslation } from "react-i18next";
 
 export function useRuleForm(onApply: (rule: IPortRule) => void) {
   const { t } = useTranslation();
-  const form = useForm<IPortRule>({ defaultValues: { port: 0, protocol: "tcp", action: "allow" } });
+  const form = useForm<IPortRule>({
+    defaultValues: { port: 0, protocol: "tcp", action: "allow" },
+  });
   function onSubmit(value: IPortRule) {
     if (
       value.action === "deny" &&

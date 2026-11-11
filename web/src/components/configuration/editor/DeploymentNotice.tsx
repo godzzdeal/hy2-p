@@ -7,10 +7,21 @@ export function DeploymentNotice() {
   const { t } = useTranslation();
   const query = useDeployment();
   const status = query.data;
-  if (query.error) return <Notice role="alert">{t("Не удалось проверить UDP-порты Docker.")}</Notice>;
+  if (query.error)
+    return (
+      <Notice variant="danger" role="alert" className="mx-4 mt-4 mb-0">
+        {t("Не удалось проверить UDP-порты Docker.")}
+      </Notice>
+    );
   if (!status?.container) return null;
   return (
-    <Notice role="status">
+    <Notice
+      role="status"
+      variant={
+        status.udpWarning || status.udpRestartRequired || !status.publishedUdpPort ? "warning" : "info"
+      }
+      className="mx-4 mt-4 mb-0"
+    >
       <p>
         {status.publishedUdpPort
           ? t("Сейчас Docker принимает UDP {{public}} и передаёт его экземпляру на порт {{target}}.", {

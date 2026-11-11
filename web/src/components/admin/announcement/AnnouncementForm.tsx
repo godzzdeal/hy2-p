@@ -37,7 +37,7 @@ export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
           />
           <Caption>
             {t(
-              "Используется в панели и подписках, если у пользователя не выбран свой флаг. Имена пользователей сохраняются. После изменения обновите подписку в Happ.",
+              "Используется в панели и подписках, если у пользователя не выбран свой флаг. Имена пользователей сохраняются. После изменения обновите подписку в используемом приложении.",
             )}
           </Caption>
           <Field isInline>
@@ -52,7 +52,10 @@ export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
               required={isEnabled}
               aria-describedby="announcement-count"
               {...form.register("text", {
-                validate: (value) => !isEnabled || !!value.trim() || t("Заполните это поле"),
+                validate: (value) =>
+                  !isEnabled ||
+                  !!value.trim() ||
+                  t("Заполните поле «{{field}}».", { field: t("Текст объявления") }),
               })}
             />
             <small id="announcement-count" role="status">
@@ -76,7 +79,9 @@ export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
             />
           </Field>
           <Caption>
-            {t("Сообщение появится в Happ после обновления подписки. Мгновенной рассылки нет.")}
+            {t(
+              "Сообщение появится после обновления подписки в приложениях с поддержкой объявлений. Мгновенной рассылки нет.",
+            )}
           </Caption>
           <Caption>{t("При добавлении только отдельной ссылки сервера сообщение не передаётся.")}</Caption>
           <Button variant="primary" disabled={isPending || isTooLong}>

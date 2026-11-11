@@ -24,7 +24,14 @@ export function useUserCommands() {
       const previous = client.getQueryData<IUser[]>(QUERY_KEYS.users);
       client.setQueryData<IUser[]>(QUERY_KEYS.users, (users) =>
         users?.map((user) =>
-          user.id === id ? { ...user, name: body.name, enabled: body.enabled, expires: body.expires } : user,
+          user.id === id
+            ? {
+                ...user,
+                name: body.name,
+                enabled: body.enabled,
+                expires: body.expires,
+              }
+            : user,
         ),
       );
       return { previous };

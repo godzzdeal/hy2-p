@@ -17,7 +17,7 @@ export function useSaveAnnouncement() {
     onSuccess: (result) => {
       client.setQueryData(QUERY_KEYS.announcement, result);
       void client.invalidateQueries({ queryKey: QUERY_KEYS.users });
-      notify("Настройки подписки сохранены. Обновите подписку в Happ.");
+      notify("Настройки подписки сохранены. Обновите подписку в используемом приложении.");
     },
   });
 }

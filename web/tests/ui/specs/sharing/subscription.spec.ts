@@ -2,14 +2,14 @@ import { expect, test } from "@playwright/test";
 import { expandSettings, mockPanel } from "../../fixtures";
 test("announcement checkbox supports its label, keyboard and saving", async ({ page }, info) => {
   const panel = await mockPanel(page);
-  await page.getByRole("button", { name: "Подписки", exact: true }).click();
+  await page.getByRole("link", { name: "Подписки", exact: true }).click();
   await expandSettings(page);
   const checkbox = page.getByRole("checkbox", { name: "Показывать объявление в подписках" });
   await expect(checkbox).not.toBeChecked();
   await page.getByText("Показывать объявление в подписках", { exact: true }).click();
   await expect(checkbox).toBeChecked();
   expect(await checkbox.evaluate((element) => getComputedStyle(element, "::before").maskImage)).toContain(
-    "/icons/check.",
+    "/check.svg",
   );
   await checkbox.focus();
   await checkbox.press("Space");
@@ -25,7 +25,7 @@ test("announcement checkbox supports its label, keyboard and saving", async ({ p
 });
 test("subscription title keeps emoji without a separate flag selector", async ({ page }, info) => {
   const panel = await mockPanel(page);
-  await page.getByRole("button", { name: "Подписки", exact: true }).click();
+  await page.getByRole("link", { name: "Подписки", exact: true }).click();
   await expandSettings(page);
   const title = page.getByLabel("Название подписки", { exact: true });
   await title.fill("Сервер");

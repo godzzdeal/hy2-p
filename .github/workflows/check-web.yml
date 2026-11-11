@@ -1,0 +1,27 @@
+name: Check web
+on:
+  workflow_call: {}
+permissions:
+  contents: read
+jobs:
+  web:
+    runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.65.0-noble
+      options: --init --shm-size=1g
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - run: npm install --global bun@1.4.3
+      - run: bun install --frozen-lockfile
+        working-directory: web
+      - run: bun run test && bun run lint && bun run build
+        working-directory: web
+      - run: bun run test:ui
+        working-directory: web
+      - name: Check browser-only demo
+        run: bun run build:demo && bunx playwright test --config
+          tests/demo/playwright.config.ts
+        working-directory: web

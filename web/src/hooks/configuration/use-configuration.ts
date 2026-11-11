@@ -19,7 +19,9 @@ export function useSaveConfiguration() {
   return useMutation({
     mutationFn: (body: IConfiguration) => configurationApi.save(body, id),
     onMutate: async (next) => {
-      await client.cancelQueries({ queryKey: instanceKey(QUERY_KEYS.settings, id) });
+      await client.cancelQueries({
+        queryKey: instanceKey(QUERY_KEYS.settings, id),
+      });
       const previous = client.getQueryData<IConfiguration>(instanceKey(QUERY_KEYS.settings, id));
       client.setQueryData(instanceKey(QUERY_KEYS.settings, id), next);
       return { previous };
@@ -36,10 +38,16 @@ export function useSaveConfiguration() {
       Promise.all([
         client.invalidateQueries({ queryKey: QUERY_KEYS.instances }),
         client.invalidateQueries({ queryKey: ["connection"] }),
-        client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.history, id) }),
-        client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.hy2Certificates, id) }),
+        client.invalidateQueries({
+          queryKey: instanceKey(QUERY_KEYS.history, id),
+        }),
+        client.invalidateQueries({
+          queryKey: instanceKey(QUERY_KEYS.hy2Certificates, id),
+        }),
         client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.ech, id) }),
-        client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.deployment, id) }),
+        client.invalidateQueries({
+          queryKey: instanceKey(QUERY_KEYS.deployment, id),
+        }),
       ]),
   });
 }

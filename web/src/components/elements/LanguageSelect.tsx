@@ -1,16 +1,23 @@
-import { Field } from "@/components/ui/fields/Field";
-import { Select } from "@/components/ui/select/Select";
-import { SelectOption } from "@/components/ui/select/SelectOption";
+import { IconMenu } from "@/components/ui/menu";
+import { Languages } from "@/components/elements/icons";
+import { useUiStore } from "@/store/ui-store";
 import { useTranslation } from "react-i18next";
+const LANGUAGES = [
+  { value: "ru", label: "Русский" },
+  { value: "en", label: "English" },
+] as const;
 export function LanguageSelect() {
   const { t, i18n } = useTranslation();
   return (
-    <Field className="language-control text-lg mb-3 max-tablet:m-0 max-tablet:flex-1 tablet:group-data-collapsed/app:hidden">
-      {t("Язык")}
-      <Select value={i18n.language} onValueChange={(nextValue) => void i18n.changeLanguage(nextValue)}>
-        <SelectOption value="ru">Русский</SelectOption>
-        <SelectOption value="en">English</SelectOption>
-      </Select>
-    </Field>
+    <IconMenu
+      className="language-control"
+      label={t("Язык")}
+      icon={Languages}
+      value={i18n.resolvedLanguage === "en" ? "en" : "ru"}
+      options={LANGUAGES}
+      onValueChange={(value) => {
+        void i18n.changeLanguage(value).catch(useUiStore.getState().showError);
+      }}
+    />
   );
 }

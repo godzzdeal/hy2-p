@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { mockInstances } from "./fixture";
 test("create, configure, rename and remove an independent core", async ({ page }, info) => {
   const fixture = await mockInstances(page);
-  await page.getByRole("button", { name: "Экземпляры", exact: true }).click();
+  await page.getByRole("link", { name: "Экземпляры", exact: true }).click();
   await page.getByRole("button", { name: "Добавить экземпляр", exact: true }).click();
   await page.getByLabel("Название экземпляра", { exact: true }).fill("Второй");
   await page.getByLabel("UDP-порт", { exact: true }).fill("8444");
@@ -12,7 +12,7 @@ test("create, configure, rename and remove an independent core", async ({ page }
   await page.getByRole("button", { name: "Сохранить конфигурацию", exact: true }).click();
   await expect.poll(() => fixture.extra().host).toBe("new.example.org");
   expect(fixture.panel.saved().host).toBe("vpn.example.org");
-  await page.getByRole("button", { name: "Экземпляры", exact: true }).click();
+  await page.getByRole("link", { name: "Экземпляры", exact: true }).click();
   const card = page.getByRole("region", { name: "Второй", exact: true });
   await expect(card).toBeVisible();
   await card.getByRole("button", { name: "Запустить", exact: true }).click();

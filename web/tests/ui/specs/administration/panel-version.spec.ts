@@ -4,7 +4,7 @@ import { expandSettings, mockPanel } from "../../fixtures";
 test("panel update is available only for a newer version, including stale catalogs", async ({ page }) => {
   await mockPanel(page);
   let candidate = "v0.7.5";
-  await page.route("http://panel.test/api/panel/maintenance", (route) =>
+  await page.route("**/api/panel/maintenance", (route) =>
     route.fulfill({
       json: {
         available: true,
@@ -16,7 +16,7 @@ test("panel update is available only for a newer version, including stale catalo
       },
     }),
   );
-  await page.route("http://panel.test/api/panel/versions", (route) =>
+  await page.route("**/api/panel/versions", (route) =>
     route.fulfill({ json: [{ version: candidate }] }),
   );
   for (const scenario of [
@@ -27,7 +27,7 @@ test("panel update is available only for a newer version, including stale catalo
   ]) {
     candidate = scenario.version;
     await page.reload();
-    await page.getByRole("button", { name: "Настройки", exact: true }).click();
+    await page.getByRole("link", { name: "Настройки", exact: true }).click();
     await expandSettings(page);
     await expect(page.getByRole("combobox", { name: "Версия панели", exact: true })).toContainText(
       candidate.slice(1),

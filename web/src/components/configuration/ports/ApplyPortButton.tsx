@@ -19,7 +19,10 @@ export function ApplyPortButton({ status }: { status: IDeployment }) {
         variant="primary"
         disabled={!canApply}
         onClick={() =>
-          mutation.mutate({ publicPort: status.udpPublicPort, listenPort: status.udpListenPort })
+          mutation.mutate({
+            publicPort: status.udpPublicPort,
+            listenPort: status.udpListenPort,
+          })
         }
       >
         <PlugZap width={24} height={24} aria-hidden />

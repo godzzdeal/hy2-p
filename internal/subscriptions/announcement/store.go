@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"hy2-panel/internal/records"
-	"hy2-panel/internal/subscriptions/announcement/flags"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -44,7 +43,7 @@ func Open(data string) (*Store, error) {
 	return store, nil
 }
 func validate(settings Settings) error {
-	if !flags.Valid(settings.DefaultUserFlag) {
+	if !validFlag(settings.DefaultUserFlag) {
 		return errors.New("выберите корректный флаг пользователей")
 	}
 	if !utf8.ValidString(settings.ProfileTitle) || utf8.RuneCountInString(settings.ProfileTitle) > MaxProfileTitleLength {
@@ -70,7 +69,7 @@ func (store *Store) Current() Settings {
 	return store.settings
 }
 func (store *Store) UserName(name string) string {
-	return flags.Apply(name, store.Current().DefaultUserFlag)
+	return applyFlag(name, store.Current().DefaultUserFlag)
 }
 func (store *Store) Headers(headers http.Header) {
 	settings := store.Current()

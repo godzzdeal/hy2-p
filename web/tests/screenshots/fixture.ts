@@ -22,8 +22,8 @@ export async function prepareScreenshots(page: Page, version: string): Promise<v
     groups: [family, work],
     memberships: Object.fromEntries(users.map((user, index) => [user.id, index < 2 ? family.id : work.id])),
   });
-  await page.route("http://panel.test/api/users", (route) => route.fulfill({ json: users }));
-  await page.route("http://panel.test/api/traffic", (route) =>
+  await page.route("**/api/users", (route) => route.fulfill({ json: users }));
+  await page.route("**/api/traffic", (route) =>
     route.fulfill({
       json: {
         available: true,
@@ -43,13 +43,13 @@ export async function prepareScreenshots(page: Page, version: string): Promise<v
       },
     }),
   );
-  await page.route("http://panel.test/api/core", (route) =>
+  await page.route("**/api/core", (route) =>
     route.fulfill({ json: { running: true, available: true, logs: "", binary: "/usr/local/bin/hysteria" } }),
   );
-  await page.route("http://panel.test/api/version", (route) =>
+  await page.route("**/api/version", (route) =>
     route.fulfill({ json: { version, revision: "preview" } }),
   );
-  await page.route("http://panel.test/api/panel/update", (route) =>
+  await page.route("**/api/panel/update", (route) =>
     route.fulfill({
       json: {
         current: version,

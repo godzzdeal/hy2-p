@@ -11,5 +11,7 @@ export const updateApi = {
       body: { version },
     }),
   rollback: (id?: string) =>
-    request<IUpdateStatus>(instanceRoute(API_ROUTES.coreRollback, id), { method: "POST" }),
+    request<IUpdateStatus>(instanceRoute(API_ROUTES.coreRollback, id), {
+      method: "POST",
+    }),
 };

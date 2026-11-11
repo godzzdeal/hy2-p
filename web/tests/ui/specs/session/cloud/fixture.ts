@@ -8,7 +8,7 @@ export async function mockCloud(page: Page, isEnabled = true, isAuthorized = fal
   let password = CLOUD_PASSWORD;
   let challenge = "";
   let counter = 0;
-  await page.route("http://panel.test/api/**", async (route) => {
+  await page.route("**/api/**", async (route) => {
     const endpoint = new URL(route.request().url()).pathname;
     if (endpoint === "/api/login") {
       if (isEnabled) {

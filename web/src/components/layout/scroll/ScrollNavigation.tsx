@@ -8,7 +8,7 @@ export function ScrollNavigation({ root, page }: { root: RefObject<HTMLDivElemen
   if (sections.length < 2) return null;
   return (
     <nav
-      className="scroll-navigation shadow-pixel rounded-none fixed -translate-y-1/2 z-10 flex flex-col gap-0 p-1 m-0 overflow-visible border border-line bg-surface max-tablet:static max-tablet:transform-none max-tablet:translate-y-0 max-tablet:self-center max-tablet:shrink-0 max-tablet:my-2 max-tablet:mx-4 max-tablet:flex-row"
+      className="scroll-navigation shadow-pixel rounded-none fixed -translate-y-1/2 z-10 flex flex-col gap-0 p-1 m-0 overflow-visible border border-line bg-surface max-tablet:hidden max-tablet:static max-tablet:transform-none max-tablet:translate-y-0 max-tablet:self-center max-tablet:shrink-0 max-tablet:my-2 max-tablet:mx-4 max-tablet:flex-row"
       aria-label={t("Блоки страницы")}
     >
       {sections.map((section) => (

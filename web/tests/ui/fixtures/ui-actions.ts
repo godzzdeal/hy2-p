@@ -1,12 +1,16 @@
 import { expect, type Page } from "@playwright/test";
-export async function chooseTheme(page: Page, choice: { label: string; value: string }): Promise<void> {
-  await page
-    .getByRole("group", { name: "Тема", exact: true })
-    .getByRole("button", { name: choice.label, exact: true })
-    .click();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", choice.value);
-  await page.evaluate(() => document.fonts.ready);
+export async function chooseTheme(page: Page, choice: {label:string;value:string}):Promise<void> {
+ const button = page.getByRole("button",{name:"Тема",exact:true});
+ await expect(button).toHaveAttribute("data-theme-mode",/system|light|dark/);
+ for (let attempt = 0; attempt < 3 && await button.getAttribute("data-theme-mode") !== choice.value; attempt++) {
+  await button.click();
+ }
+ const expected=choice.value === "system" ? await page.evaluate(()=>matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light") : choice.value;
+ await expect(page.locator("html")).toHaveAttribute("data-theme",expected);
+ await expect.poll(()=>page.evaluate(()=>localStorage.getItem("hy2.theme"))).toBe(choice.value);
+ await page.evaluate(()=>document.fonts.ready);
 }
+export async function waitForAppearance(page:Page):Promise<void> { await page.locator(".appearance-controls").waitFor(); }
 
 export async function chooseUserAction(page: Page, user: string, action: string): Promise<void> {
   const trigger = page.getByRole("button", { name: "Действия " + user, exact: true, includeHidden: true });

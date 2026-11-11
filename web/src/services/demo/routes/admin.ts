@@ -62,8 +62,20 @@ export function demoAdmin(path: string, { method = "GET", body }: IRequest): unk
     return {
       warnings: [],
       ports: [
-        { port: 9443, protocol: "tcp", purpose: "panel", source: "HY2-P", pending: false },
-        { port: 80, protocol: "tcp", purpose: "acme-http", source: "ACME", pending: false },
+        {
+          port: 9443,
+          protocol: "tcp",
+          purpose: "panel",
+          source: "HY2-P",
+          pending: false,
+        },
+        {
+          port: 80,
+          protocol: "tcp",
+          purpose: "acme-http",
+          source: "ACME",
+          pending: false,
+        },
         ...demoState.instances.map((instance) => ({
           port: Number(instance.port),
           protocol: "udp",

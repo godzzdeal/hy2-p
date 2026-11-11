@@ -7,8 +7,8 @@ export const ERRORS: Record<string, string> = {
   "Файл правил ACL": "ACL rules file",
   "Файл сертификата слишком большой": "Certificate file is too large",
   "Центр сертификации": "Certificate authority",
-  "Экспорт для Happ поддерживает только Salamander; измените obfs":
-    "Happ export supports Salamander only; change obfs",
+  "Экспорт ссылки поддерживает только Salamander; измените obfs":
+    "Connection link export supports Salamander only; change obfs",
   "Экспорт режима Realm пока не поддерживается": "Realm export is not supported yet",
   "Экземпляр восстановлен, но состояние не сохранено: ": "Instance restored, but state could not be saved: ",
   "Экземпляр готов к работе. Управляйте запуском и версиями ниже.":

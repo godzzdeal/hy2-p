@@ -18,10 +18,14 @@ export function UserAccessDialog({ user, onClose }: { user: IUser; onClose: () =
   return (
     <Modal title={t("Доступные экземпляры")} onClose={onClose}>
       <p className="muted">
-        <EmojiText value={t("Пользователь: {{name}}", { name: user.displayName ?? user.name })} />
+        <EmojiText
+          value={t("Пользователь: {{name}}", {
+            name: user.displayName ?? user.name,
+          })}
+        />
       </p>
       {group && (
-        <Notice>
+        <Notice variant="warning">
           {t("Группа дополнительно ограничивает доступные экземпляры:")} {group.name}
         </Notice>
       )}

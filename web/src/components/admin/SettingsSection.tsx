@@ -1,4 +1,3 @@
-import { styleClass } from "@/styles/runtime";
 import { Card } from "@/components/ui/cards/Card";
 import { CardHeader } from "@/components/ui/cards/CardHeader";
 import { Button } from "@/components/ui/button/Button";
@@ -6,18 +5,22 @@ import { ChevronRight } from "pixelarticons/react/ChevronRight.js";
 import { useSettingsSection } from "@/hooks/layout/use-settings-section";
 import { cn } from "@/utils/cn";
 import { Activity, type ReactNode } from "react";
-
 interface ISettingsSection {
   id: string;
   title: string;
   action?: ReactNode;
   children: ReactNode;
 }
-
 export function SettingsSection({ id, title, action, children }: ISettingsSection) {
   const { isOpen, hasOpened, onToggle } = useSettingsSection(id);
   return (
-    <Card className="settings-section" id={id} data-scroll-section data-scroll-label={title}>
+    <Card
+      className="settings-section"
+      id={id}
+      data-settings-section
+      data-scroll-section
+      data-scroll-label={title}
+    >
       <CardHeader>
         <h2>
           <Button
@@ -28,7 +31,7 @@ export function SettingsSection({ id, title, action, children }: ISettingsSectio
             onClick={onToggle}
           >
             <ChevronRight
-              className={styleClass(cn("settings-chevron w-6 h-6 shrink-0", isOpen && "is-expanded"))}
+              className={cn("settings-chevron w-6 h-6 shrink-0", isOpen && "is-expanded")}
               aria-hidden="true"
             />
             <span>{title}</span>

@@ -16,6 +16,12 @@ export interface ITraffic {
   updated: string;
   error: string;
 }
-export const EMPTY_USAGE: IUserUsage = { upload: 0, download: 0, limit: 0, online: 0, lastSeen: "" };
+export const EMPTY_USAGE: IUserUsage = {
+  upload: 0,
+  download: 0,
+  limit: 0,
+  online: 0,
+  lastSeen: "",
+};
 export const TRAFFIC_POLL_MS = 5000;
 export { BYTE_UNITS, formatBytes } from "./byte-format";

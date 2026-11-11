@@ -23,7 +23,11 @@ export function groupUsers(users: IUser[], state: IGroups): IUserGroupSection[] 
     users: [],
     total: 0,
   }));
-  const ungrouped: IUserGroupSection = { id: GROUP_FILTERS.ungrouped, users: [], total: 0 };
+  const ungrouped: IUserGroupSection = {
+    id: GROUP_FILTERS.ungrouped,
+    users: [],
+    total: 0,
+  };
   const lookup = new Map(groups.map((section) => [section.id, section]));
   for (const user of users) {
     const section = lookup.get(state.memberships?.[user.id]) ?? ungrouped;

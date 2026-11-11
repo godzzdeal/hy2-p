@@ -47,7 +47,10 @@ export function OutboundRow({
           .map((field) => (
             <ConfigField
               key={field.path}
-              field={{ ...field, path: "outbounds[" + index + "]." + field.path }}
+              field={{
+                ...field,
+                path: "outbounds[" + index + "]." + field.path,
+              }}
               value={outboundValue(value, field.path)}
               onChange={(next) => onEdit({ type: "set", index, path: field.path, value: next })}
             />

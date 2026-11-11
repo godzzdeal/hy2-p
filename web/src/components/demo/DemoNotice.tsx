@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button/Button";
 import { RefreshCw } from "@/components/elements/icons";
 import { DEFAULT_INSTANCE } from "@/services/instances/types";
+import { PAGE_ROUTES, PageEnum } from "@/config/navigation";
 import { useInstanceStore } from "@/store/core/instance-store";
 import { useTranslation } from "react-i18next";
 export function DemoNotice() {
   const { t } = useTranslation();
   function onReset() {
     useInstanceStore.getState().setId(DEFAULT_INSTANCE);
-    window.location.reload();
+    window.location.assign(PAGE_ROUTES[PageEnum.Overview]);
   }
   return (
     <aside

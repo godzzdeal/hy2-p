@@ -1,6 +1,6 @@
-import { styleClass } from "@/styles/runtime";
+import { cn } from "@/utils/cn";
 import { Emoji } from "@/components/elements/emoji/Emoji";
-import { useUiStore } from "@/store/ui-store";
+import { useTheme } from "next-themes";
 import { emojiAsset, leadingEmoji } from "@/utils/emoji/model";
 import { useEmojiLabels } from "@/utils/emoji/picker/labels";
 import Picker from "emoji-picker-react";
@@ -22,16 +22,16 @@ function getEmojiUrl(unified: string): string {
 }
 export function EmojiMenu({ onSelect }: { onSelect: (emoji: string) => void }) {
   const { i18n } = useTranslation();
-  const theme = useUiStore((state) => state.theme);
+  const { resolvedTheme } = useTheme();
   const labels = useEmojiLabels();
   return (
     <Picker
       unstyled
-      className={styleClass("emoji-grid relative inset-auto p-0 w-full min-h-64")}
+      className={cn("emoji-grid relative inset-auto p-0 w-full min-h-64")}
       width="100%"
       height="100%"
       emojiStyle="twitter"
-      colorScheme={theme === "system" ? "auto" : theme}
+      colorScheme={resolvedTheme === "dark" ? "dark" : "light"}
       emojiVersion="15.0"
       getEmojiUrl={getEmojiUrl}
       emojiData={i18n.language.startsWith("ru") ? loadRussian : undefined}

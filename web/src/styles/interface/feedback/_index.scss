@@ -1,0 +1,8 @@
+@layer components {
+  .notice {
+    @apply my-4 first:mt-0 last:mb-0;
+  }
+  .form-body .notice {
+    @apply my-0;
+  }
+}

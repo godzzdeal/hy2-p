@@ -23,6 +23,10 @@ export function useSystemMetrics() {
   return {
     read,
     hasVisibleCharts,
-    traffic: { upload, download, isAvailable: traffic.data?.available ?? false },
+    traffic: {
+      upload,
+      download,
+      isAvailable: traffic.data?.available ?? false,
+    },
   };
 }

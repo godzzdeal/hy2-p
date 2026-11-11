@@ -5,6 +5,9 @@ import { instanceRoute } from "@/services/instances/scope";
 export const configurationApi = {
   read: (id?: string) => request<IConfiguration>(instanceRoute(API_ROUTES.settings, id)),
   save: (body: IConfiguration, id?: string) =>
-    request<IConfiguration>(instanceRoute(API_ROUTES.settings, id), { method: "PUT", body }),
+    request<IConfiguration>(instanceRoute(API_ROUTES.settings, id), {
+      method: "PUT",
+      body,
+    }),
   history: (id?: string) => request<IRevision[]>(instanceRoute(API_ROUTES.history, id)),
 };

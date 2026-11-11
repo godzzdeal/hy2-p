@@ -1,4 +1,3 @@
-import { styleClass } from "@/styles/runtime";
 import { Button } from "@/components/ui/button/Button";
 import { Download } from "@/components/elements/icons";
 import { useInstallStore } from "@/store/install-store";
@@ -37,7 +36,7 @@ export function InstallButton({ onHelp, isCompact = false }: { onHelp: () => voi
       disabled={isOpening}
       onClick={() => void onInstall()}
     >
-      <Download width={24} height={24} className={styleClass(cn(isCompact && "hidden"))} aria-hidden />
+      <Download width={24} height={24} className={cn(isCompact && "hidden")} aria-hidden />
       <span>{t(isOpening ? "Открываем…" : isCompact ? "PWA" : "Установить панель")}</span>
     </Button>
   );

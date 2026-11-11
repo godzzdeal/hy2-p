@@ -19,24 +19,11 @@ export function WebForm({ initial }: { initial: IWebSettings }) {
     mutation.mutate(draft);
   }
   return (
-    <SettingsSection id="panel-network" title={t("Порт, домен и HTTPS веб-панели")}>
+    <SettingsSection id="panel-network" title={t("Настройки панели")}>
       <form className="settings-form" onSubmit={onSubmit}>
-        <NetworkFields value={draft} onChange={(next) => setDraft(updateWebConfig(draft, next))} />
-        <CertificateFields
-          value={draft}
-          onChange={(next) => setDraft(updateWebConfig(draft, next))}
-          hasPrivateKey={current.hasPrivateKey}
-        />
-        <CardBody>
-          <Button
-            aria-label={t("Сохранить настройки веб-панели")}
-            variant="primary"
-            disabled={mutation.isPending}
-          >
-            {t("Сохранить")}
-          </Button>
-          {current.restartRequired && (
-            <Notice>
+        {current.restartRequired && (
+          <CardBody>
+            <Notice variant="warning">
               <strong>{t("Нужен перезапуск панели")}</strong>
               <p>
                 {t(
@@ -51,7 +38,22 @@ export function WebForm({ initial }: { initial: IWebSettings }) {
                 </p>
               )}
             </Notice>
-          )}
+          </CardBody>
+        )}
+        <NetworkFields value={draft} onChange={(next) => setDraft(updateWebConfig(draft, next))} />
+        <CertificateFields
+          value={draft}
+          onChange={(next) => setDraft(updateWebConfig(draft, next))}
+          hasPrivateKey={current.hasPrivateKey}
+        />
+        <CardBody>
+          <Button
+            aria-label={t("Сохранить настройки веб-панели")}
+            variant="primary"
+            disabled={mutation.isPending}
+          >
+            {t("Сохранить")}
+          </Button>
         </CardBody>
       </form>
     </SettingsSection>

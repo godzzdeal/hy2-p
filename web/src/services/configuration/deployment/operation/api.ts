@@ -15,6 +15,9 @@ export interface IPortOperation {
 }
 export const portOperationApi = {
   apply: (ports: { publicPort: string; listenPort: string }, id?: string) =>
-    request<IPortOperation>(instanceRoute(API_ROUTES.udpApply, id), { method: "POST", body: ports }),
+    request<IPortOperation>(instanceRoute(API_ROUTES.udpApply, id), {
+      method: "POST",
+      body: ports,
+    }),
   status: (ticket: string) => request<IPortOperation>(API_ROUTES.udpStatus(ticket)),
 };

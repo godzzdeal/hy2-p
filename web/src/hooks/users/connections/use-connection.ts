@@ -7,7 +7,11 @@ export function useConnection(userId: string) {
   const client = useQueryClient();
   const { notify, showError } = useUiStore();
   const queryKey = [...QUERY_KEYS.connection, userId];
-  const links = useQuery({ queryKey, queryFn: () => userApi.links(userId), staleTime: 0 });
+  const links = useQuery({
+    queryKey,
+    queryFn: () => userApi.links(userId),
+    staleTime: 0,
+  });
   const rotate = useMutation({
     mutationFn: () => userApi.rotate(userId),
     onSuccess: async () => {

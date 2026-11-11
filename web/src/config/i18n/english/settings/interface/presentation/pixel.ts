@@ -13,8 +13,8 @@ export const PIXEL = {
   "Обновляем…": "Refreshing…",
   "Раздел конфигурации": "Configuration section",
   "Экземпляр остановлен.": "Instance stopped.",
-  "Экземпляр запускается. Проверьте подключение в Happ.":
-    "The instance is starting. Check your connection in Happ.",
+  "Экземпляр запускается. Проверьте подключение в используемом приложении.":
+    "The instance is starting. Check your connection in your app.",
   "Конфигурация сохранена": "Configuration saved",
   "Перезапуск включит новые настройки и ненадолго прервёт подключения.":
     "Restarting applies the new settings and briefly interrupts connections.",
@@ -31,14 +31,14 @@ export const PIXEL = {
   "Правила трафика": "Traffic rules",
   "Сайт маскировки": "Masquerade website",
   "Особые режимы": "Special modes",
-  "Создайте пользователя, затем откройте его QR-код или скопируйте подписку для Happ.":
-    "Create a user, then open their QR code or copy the Happ subscription.",
-  "Сообщение появится в Happ после обновления подписки. Мгновенной рассылки нет.":
-    "The message appears in Happ after a subscription refresh. There is no instant broadcast.",
+  "Создайте пользователя, затем откройте и отсканируйте QR-код или скопируйте адрес подписки в используемое приложение.":
+    "Create a user, then open and scan the QR code or copy the subscription URL into your app.",
+  "Сообщение появится после обновления подписки в приложениях с поддержкой объявлений. Мгновенной рассылки нет.":
+    "The message appears after a subscription refresh in apps that support announcements. There is no instant broadcast.",
   "При добавлении только отдельной ссылки сервера сообщение не передаётся.":
     "Messages are not delivered when only a standalone server link is imported.",
   "Обновлять подписку каждые (часов)": "Refresh the subscription every (hours)",
-  "Название, эмодзи и объявления для пользователей Happ.": "Name, emoji and announcements for Happ users.",
+  "Название, эмодзи и объявления для пользователей.": "Name, emoji and announcements for users.",
   "Центр управления": "Control center",
   "Ваш сервер": "Your server",
   "Вход в панель": "Sign in",
@@ -50,10 +50,10 @@ export const PIXEL = {
   "Имя в сертификате (SNI)": "Certificate name (SNI)",
   "Домен, на который выпущен сертификат. Обычно совпадает с публичным адресом.":
     "The domain covered by the certificate. Usually the same as the public address.",
-  "Адрес, к которому будет подключаться Happ. Например vpn.example.com.":
-    "The address Happ connects to. For example vpn.example.com.",
-  "Порт, к которому подключается Happ. После изменения сохраните и нажмите «Применить UDP-порт».":
-    "The port Happ connects to. Save the change, then select Apply UDP port.",
+  "Адрес сервера для подключения. Например vpn.example.com.":
+    "The server address to connect to. For example vpn.example.com.",
+  "Порт для подключения клиента. После изменения сохраните и нажмите «Применить UDP-порт».":
+    "The client connection port. Save the change, then select Apply UDP port.",
   "Hysteria2 установлен": "Hysteria2 is installed",
   "Установите HY2 в разделе «Управление HY2».": "Install Hysteria2 in HY2 control.",
   "Сохранение не прерывает подключения. Чтобы применить настройки, перезапустите экземпляр.":

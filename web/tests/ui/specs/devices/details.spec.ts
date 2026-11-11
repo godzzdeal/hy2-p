@@ -4,12 +4,12 @@ import { mockDevices } from "./fixture";
 test("device load failure can be retried without exposing a save form", async ({ page }) => {
   await mockDevices(page);
   let hasFailed = true;
-  await page.route("http://panel.test/api/users/test-user/devices", async (route) => {
+  await page.route("**/api/users/test-user/devices", async (route) => {
     if (hasFailed) return route.fulfill({ status: 503, json: { error: "Устройства временно недоступны" } });
     return route.fallback();
   });
   await chooseUserAction(page, "Phone", "Устройства");
-  await expect(page.getByRole("alert")).toContainText("Устройства временно недоступны");
+  await expect(page.locator(".notifications").getByRole("alert")).toContainText("Устройства временно недоступны");
   await expect(page.getByRole("button", { name: "Сохранить лимит устройств", exact: true })).toHaveCount(0);
   hasFailed = false;
   await page.getByRole("button", { name: "Повторить", exact: true }).click();
@@ -20,7 +20,7 @@ test("an empty device list explains how devices are discovered", async ({ page }
   fixture.set({ limit: 0, devices: [] });
   await chooseUserAction(page, "Phone", "Устройства");
   await expect(
-    page.getByText("Устройства появятся после обновления подписки в Happ.", { exact: true }),
+    page.getByText("Устройства появятся после обновления подписки в используемом приложении.", { exact: true }),
   ).toBeVisible();
   await expect(
     page.getByText("Модель и ОС сообщает приложение. Статус подключения обновляется автоматически.", {

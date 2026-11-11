@@ -1,6 +1,8 @@
 import { defineConfig } from "@playwright/test";
 export default defineConfig({
-  testDir: "../../.cache/tests/demo", testMatch: "*.spec.ts", fullyParallel: true, timeout: 30000,
+  webServer: { command: "bun run start:demo", url: "http://127.0.0.1:3001", reuseExistingServer: !process.env.CI, timeout: 30000 },
+  testDir: ".", testMatch: "*.spec.ts", fullyParallel: true,
+  workers: process.env.CI ? 4 : undefined, timeout: 30000,
   forbidOnly: !!process.env.CI, retries: 0, outputDir: "../../test-results/demo",
   use: { headless: true, screenshot: "only-on-failure", trace: "retain-on-failure" },
   projects: [

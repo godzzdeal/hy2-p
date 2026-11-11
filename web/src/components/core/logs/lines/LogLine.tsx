@@ -9,7 +9,7 @@ export function LogLine({ text, client, search }: ILogEntry & { search: string }
     <div
       className={cn("log-line py-1 px-2 whitespace-pre-wrap wrap-anywhere", {
         "log-error text-danger": level === "error",
-        "log-warning bg-surface-soft": level === "warn",
+        "log-warning bg-warning-bg text-warning": level === "warn",
       })}
     >
       {client && <LogClient client={client} />}

@@ -42,7 +42,9 @@ export function GroupSection({ section, onMembers, traffic, ...actions }: IGroup
                 <Button
                   type="button"
                   variant="secondary"
-                  aria-label={t("Участники группы {{name}}", { name: section.group.name })}
+                  aria-label={t("Участники группы {{name}}", {
+                    name: section.group.name,
+                  })}
                   onClick={() => section.group && onMembers(section.group)}
                 >
                   <Users width={24} height={24} aria-hidden />

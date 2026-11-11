@@ -1,9 +1,10 @@
 name: Checks
 on:
   push:
-    branches: [main, 'feature/**', 'bugfix/**']
-  pull_request:
-  workflow_dispatch:
+    branches:
+      - main
+  pull_request: null
+  workflow_dispatch: null
 permissions:
   contents: read
 concurrency:
@@ -11,48 +12,19 @@ concurrency:
   cancel-in-progress: true
 jobs:
   checks:
+    needs:
+      - go
+      - web
+      - scripts
+    if: always()
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-        with:
-          go-version: "1.26.x"
-          check-latest: true
-          cache: true
-      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-        with:
-          bun-version: "1.4.3"
-      - run: go test -race ./...
-      - name: Install Go audit tools
-        run: |
-          go install honnef.co/go/tools/cmd/staticcheck@v0.8.2
-          go install golang.org/x/tools/cmd/deadcode@v0.52.0
-          go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
-      - run: bash scripts/check-go.sh
-      - run: bun install --frozen-lockfile
-        working-directory: web
-      - run: bun run test && bun run lint && bun run build
-        working-directory: web
-      - run: bunx playwright install --with-deps chromium
-        working-directory: web
-      - run: bun run test:ui
-        working-directory: web
-      - name: Check browser-only demo
-        run: bun run build:demo && bunx playwright test --config tests/demo/playwright.config.ts
-        working-directory: web
-      - name: Check deployment scripts
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq shellcheck jq
-          find scripts -name '*.sh' -exec bash -n {} \;
-          find scripts -name '*.sh' -print0 | xargs -0 shellcheck -S warning
-          bash scripts/tests/run.sh
+      - name: Require every check
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: echo "$RESULTS" | jq -e 'all(.[]; .result == "success")'
   images:
     if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    needs: checks
     strategy:
       fail-fast: false
       matrix:
@@ -68,28 +40,33 @@ jobs:
         with:
           persist-credentials: false
       - name: Build ready-to-load Docker image
-        run: |
-          docker build --pull --build-arg PANEL_REVISION="$GITHUB_SHA" -t "hy2-panel:$GITHUB_SHA" .
-          docker save "hy2-panel:$GITHUB_SHA" | gzip -1 > "hy2-panel-linux-${{ matrix.arch }}.tar.gz"
-          sha256sum "hy2-panel-linux-${{ matrix.arch }}.tar.gz" > "hy2-panel-linux-${{ matrix.arch }}.tar.gz.sha256"
+        run: >
+          docker build --pull --build-arg PANEL_REVISION="$GITHUB_SHA" -t
+          "hy2-panel:$GITHUB_SHA" .
+
+          docker save "hy2-panel:$GITHUB_SHA" | gzip -1 > "hy2-panel-linux-${{
+          matrix.arch }}.tar.gz"
+
+          sha256sum "hy2-panel-linux-${{ matrix.arch }}.tar.gz" >
+          "hy2-panel-linux-${{ matrix.arch }}.tar.gz.sha256"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: image-${{ matrix.arch }}
           path: hy2-panel-linux-${{ matrix.arch }}.tar.gz*
           compression-level: 0
-
   docker-install:
     needs: images
-    if: (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') && github.repository == 'godzzdeal/hy2-p'
+    if: (github.ref == 'refs/heads/main' || github.event_name ==
+      'workflow_dispatch') && github.repository == 'godzzdeal/hy2-p'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
         with:
-          go-version: "1.26.x"
+          go-version: 1.26.x
           check-latest: true
           cache: true
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
@@ -99,3 +76,9 @@ jobs:
       - run: docker load --input .ci-images/hy2-panel-linux-amd64.tar.gz
       - name: Install from GitHub, start core, restart and back up
         run: bash scripts/tests/docker/run.sh
+  go:
+    uses: ./.github/workflows/check-go.yml
+  web:
+    uses: ./.github/workflows/check-web.yml
+  scripts:
+    uses: ./.github/workflows/check-scripts.yml

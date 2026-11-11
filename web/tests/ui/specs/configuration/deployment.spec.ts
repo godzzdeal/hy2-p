@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
 test("UDP application survives reload and expired login", async ({ page }) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByLabel("Публичный UDP-порт", { exact: true }).fill("61254");
   await page.getByLabel("listen", { exact: true }).fill(":61254");
   await page.getByRole("button", { name: "Сохранить конфигурацию", exact: true }).click();

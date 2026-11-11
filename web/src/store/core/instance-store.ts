@@ -5,7 +5,10 @@ interface IInstanceState {
   setId: (id: string) => void;
 }
 export const useInstanceStore = create<IInstanceState>((set) => ({
-  id: localStorage.getItem("hy2.instance") || DEFAULT_INSTANCE,
+  id:
+    typeof window === "undefined"
+      ? DEFAULT_INSTANCE
+      : localStorage.getItem("hy2.instance") || DEFAULT_INSTANCE,
   setId: (id) => {
     localStorage.setItem("hy2.instance", id);
     set({ id });

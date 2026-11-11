@@ -56,7 +56,11 @@ export function initialDemoState(): IDemoState {
     ],
     settings: {
       default: settings,
-      example: { ...settings, port: "9443", config: settings.config.replace(":8443", ":9443") },
+      example: {
+        ...settings,
+        port: "9443",
+        config: settings.config.replace(":8443", ":9443"),
+      },
     },
     history: {},
     access: {},
@@ -113,6 +117,11 @@ export function initialDemoState(): IDemoState {
         ]),
       ),
     },
-    announcement: { enabled: false, text: "", updateInterval: 1, profileTitle: "🚀 HY2-P Demo" },
+    announcement: {
+      enabled: false,
+      text: "",
+      updateInterval: 1,
+      profileTitle: "🚀 HY2-P Demo",
+    },
   };
 }

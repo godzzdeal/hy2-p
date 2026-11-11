@@ -38,5 +38,9 @@ export function usePortProgress() {
     void client.invalidateQueries({ queryKey: QUERY_KEYS.deployment });
     void client.invalidateQueries({ queryKey: QUERY_KEYS.core });
   }, [phase, client]);
-  return { ...query, ticket, isMissing: query.error instanceof ApiError && query.error.status === 404 };
+  return {
+    ...query,
+    ticket,
+    isMissing: query.error instanceof ApiError && query.error.status === 404,
+  };
 }

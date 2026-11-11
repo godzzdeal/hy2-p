@@ -27,7 +27,11 @@ export function chartTimes(times: readonly number[], locale: string): string[] {
   if (!times.length) return [];
   let formatter = TIME_FORMATTERS.get(locale);
   if (!formatter) {
-    formatter = new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+    formatter = new Intl.DateTimeFormat(locale, {
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    });
     TIME_FORMATTERS.set(locale, formatter);
   }
   return [times[0], times.at(-1)!].map((time) => formatter.format(time));

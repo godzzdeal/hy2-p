@@ -23,7 +23,9 @@ export function PortRow({ port }: { port: IPortSummary }) {
       <CommandBlock
         command={command}
         label={t("Команда открытия порта")}
-        copyLabel={t("Скопировать команду для {{port}}", { port: `${port.port}/${port.protocol}` })}
+        copyLabel={t("Скопировать команду для {{port}}", {
+          port: `${port.port}/${port.protocol}`,
+        })}
       />
     </li>
   );

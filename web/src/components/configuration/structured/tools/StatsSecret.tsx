@@ -10,7 +10,7 @@ export function StatsSecret() {
   const { t } = useTranslation();
   const { stats } = useCoreTools();
   return (
-    <section className="configuration-tools grid gap-4 p-4 min-w-0">
+    <section className="configuration-tools grid gap-4 min-w-0">
       <Notice>
         {t(
           "Панель задаёт trafficStats.listen и trafficStats.secret при запуске экземпляра. Ниже можно получить фактические значения панели.",

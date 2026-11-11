@@ -20,7 +20,8 @@ import (
 	"hy2-panel/internal/systemmetrics"
 	"hy2-panel/internal/traffic"
 	"hy2-panel/internal/transfer"
-	"hy2-panel/internal/transfer/local"
+	"hy2-panel/internal/transport"
+	"hy2-panel/internal/transport/frontend"
 	useraccess "hy2-panel/internal/useraccess/integration"
 	"hy2-panel/internal/users"
 	"hy2-panel/internal/websettings"
@@ -104,7 +105,11 @@ func Run() error {
 	users.DisplayName = announcements.UserName
 	subscriptions := &subscriptions.Handler{Announcements: announcements, DB: db, Users: users, Sources: instanceapi.Profiles(registry), AllowCore: access.Allows, DeviceLimit: devices.Store.Limit, PrepareSubscription: devices.Prepare, PublicURL: strings.TrimRight(web.Active().URL(), "/")}
 	transfer := &transfer.Service{Users: users, Registry: registry, Groups: groups.Store, Access: access.Store, Devices: devices.Store, Traffic: traffic}
-	public := httpServer(web.Active().Address(), routes(auth, users, registry, subscriptions, traffic, web, access, devices, groups, transfer, metrics))
+	frontend, err := frontend.New(os.Getenv("PANEL_FRONTEND_URL"))
+	if err != nil {
+		return err
+	}
+	public := httpServer(web.Active().Address(), routes(auth, users, registry, subscriptions, traffic, web, access, devices, groups, transfer, metrics, frontend.Handler()))
 	tlsConfig, challenge, err := web.TLS()
 	if err != nil {
 		return err
@@ -114,17 +119,14 @@ func Run() error {
 	}
 	public.TLSConfig = tlsConfig
 	internalMux := http.NewServeMux()
-	localTransfer, err := local.New(data, transfer.Download, transfer.Import)
-	if err != nil {
+	if err := registerLocalTransfer(internalMux, data, transfer); err != nil {
 		return err
 	}
-	internalMux.Handle("/transfer", localTransfer)
-	internalMux.Handle("/transfer/", localTransfer)
-	internalMux.HandleFunc("GET /health", func(writer http.ResponseWriter, request *http.Request) { writer.WriteHeader(http.StatusNoContent) })
+	internalMux.HandleFunc("GET /health", frontend.Health)
 	internalMux.HandleFunc("GET /deployment", instanceapi.Handler{Registry: registry}.Deployment)
 	internalMux.HandleFunc("POST /auth", access.Authenticate)
 	internalMux.HandleFunc("POST /auth/{instance}", access.Authenticate)
-	internal := httpServer("127.0.0.1:8081", internalMux)
+	internal := httpServer(transport.InternalAddress(), internalMux)
 	failures := make(chan error, 3)
 	servers := []*http.Server{public, internal}
 	if challenge != nil {

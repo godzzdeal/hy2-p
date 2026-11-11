@@ -8,8 +8,8 @@
     --motion-normal: 200ms;
     --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
     color-scheme: light dark;
-    --font-body: "Epilepsy Sans", sans-serif;
-    --font-heading: "Epilepsy Sans", sans-serif;
+    --font-body: var(--font-pixel), sans-serif;
+    --font-heading: var(--font-pixel), sans-serif;
     --font-mono-family: ui-monospace, "Cascadia Code", Consolas, monospace;
     --font-mono: var(--font-mono-family);
     --star-color: #91a8aa;
@@ -29,6 +29,8 @@
     --accent-text: #fffdf4;
     --danger: #a52d23;
     --danger-bg: #fff0ed;
+    --warning: #9b6200;
+    --warning-bg: #fff4d6;
     --success-bg: #e3f4f8;
     --backdrop: #101510a6;
     --shadow: #b3c3bc;
@@ -55,6 +57,7 @@
     --text-heading: 24px;
     --sidebar-width: 240px;
     --configuration-navigation-width: 208px;
+    --configuration-min-height: 320px;
     --control-height: 36px;
     --header-height: 48px;
     --icon-size: 24px;
@@ -89,6 +92,8 @@
       --accent-text: #052c34;
       --danger: #ffb4a9;
       --danger-bg: #322321;
+      --warning: #e9b95f;
+      --warning-bg: #302719;
       --success-bg: #172f3b;
       --backdrop: #06090dbd;
       --shadow: #020914;
@@ -113,6 +118,8 @@
     --accent-text: #052c34;
     --danger: #ffb4a9;
     --danger-bg: #322321;
+    --warning: #e9b95f;
+    --warning-bg: #302719;
     --success-bg: #172f3b;
     --backdrop: #06090dbd;
     --shadow: #020914;

@@ -28,7 +28,9 @@ export function useUpdateCommands() {
   const showError = useUiStore((state) => state.showError);
   const onSuccess = (data: IUpdateStatus) => {
     client.setQueryData(instanceKey(QUERY_KEYS.coreUpdate, id), data);
-    void client.invalidateQueries({ queryKey: instanceKey(QUERY_KEYS.core, id) });
+    void client.invalidateQueries({
+      queryKey: instanceKey(QUERY_KEYS.core, id),
+    });
   };
   const install = useMutation({
     mutationFn: (version: string) => updateApi.install(version, id),

@@ -19,5 +19,10 @@ export function setConnectionAddress(
       source = updateField(source, "acme.domains", host ? [host] : []);
     }
   }
-  return { ...value, host, sni: isSniLinked ? host : value.sni, config: source };
+  return {
+    ...value,
+    host,
+    sni: isSniLinked ? host : value.sni,
+    config: source,
+  };
 }

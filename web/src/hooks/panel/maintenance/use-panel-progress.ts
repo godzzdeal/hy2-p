@@ -40,7 +40,9 @@ export function usePanelProgress() {
       if (active.action === "cleanup") {
         setActive(null);
         void client.invalidateQueries({ queryKey: QUERY_KEYS.system });
-        void client.invalidateQueries({ queryKey: QUERY_KEYS.panelMaintenance });
+        void client.invalidateQueries({
+          queryKey: QUERY_KEYS.panelMaintenance,
+        });
         return;
       }
       if (active.action === "restart") setActive(null);

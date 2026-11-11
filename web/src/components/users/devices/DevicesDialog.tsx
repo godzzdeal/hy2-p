@@ -12,7 +12,11 @@ export function DevicesDialog({ user, onClose }: { user: IUser; onClose: () => v
   return (
     <Modal title={t("Устройства пользователя")} onClose={onClose}>
       <p className="muted">
-        <EmojiText value={t("Пользователь: {{name}}", { name: user.displayName ?? user.name })} />
+        <EmojiText
+          value={t("Пользователь: {{name}}", {
+            name: user.displayName ?? user.name,
+          })}
+        />
       </p>
       <QueryState isLoading={query.isPending} error={query.error} />
       {query.error && <Button onClick={() => void query.refetch()}>{t("Повторить")}</Button>}

@@ -5,7 +5,11 @@ import { useUiStore } from "@/store/ui-store";
 import { replaceGroupMembers } from "@/services/groups/membership";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export function useGroups() {
-  return useQuery({ queryKey: QUERY_KEYS.groups, queryFn: groupsApi.list, refetchInterval: NETWORK.staleMs });
+  return useQuery({
+    queryKey: QUERY_KEYS.groups,
+    queryFn: groupsApi.list,
+    refetchInterval: NETWORK.staleMs,
+  });
 }
 export function useSetGroupMembers() {
   return useGroupChange(groupsApi.members, replaceGroupMembers);

@@ -23,7 +23,7 @@ test("transfer previews duplicates, imports users and keeps controls inside the 
 }, info) => {
   await mockPanel(page);
   let applied: unknown;
-  await page.route("http://panel.test/api/admin/transfer/**", (route) => {
+  await page.route("**/api/admin/transfer/**", (route) => {
     if (route.request().url().endsWith("/apply")) {
       applied = route.request().postDataJSON();
       return route.fulfill({
@@ -35,7 +35,7 @@ test("transfer previews duplicates, imports users and keeps controls inside the 
     }
     return route.fulfill({ json: { rows, fingerprint: "preview" } });
   });
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   const card = page
     .locator("section")
@@ -64,23 +64,23 @@ test("transfer previews duplicates, imports users and keeps controls inside the 
 });
 test("invalid JSON reports a dismissible notification without revealing file contents", async ({ page }) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   await page.getByLabel("Файл импорта HY2-P", { exact: true }).setInputFiles({
     name: "broken.json",
     mimeType: "application/json",
     buffer: Buffer.from("not-json-secret-password"),
   });
-  await expect(page.getByRole("alert")).toContainText("Не удалось прочитать JSON-файл HY2-P");
+  await expect(page.locator(".notifications").getByRole("alert")).toContainText("Не удалось прочитать JSON-файл HY2-P");
   await expect(page.locator("body")).not.toContainText("not-json-secret-password");
   await page.getByRole("button", { name: "Закрыть уведомление", exact: true }).click();
-  await expect(page.getByRole("alert")).toHaveCount(0);
+  await expect(page.locator(".notifications").getByRole("alert")).toHaveCount(0);
 });
 
 test("each imported instance can be excluded before applying", async ({ page }) => {
   await mockPanel(page);
   let applied: unknown;
-  await page.route("http://panel.test/api/admin/transfer/**", async (route) => {
+  await page.route("**/api/admin/transfer/**", async (route) => {
     const input = route.request().postDataJSON() as {
       bundle: { targets?: Record<string, string> };
       fingerprint?: string;
@@ -101,7 +101,7 @@ test("each imported instance can be excluded before applying", async ({ page }) 
       },
     });
   });
-  await page.getByRole("button", { name: "Настройки", exact: true }).click();
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
   await expandSettings(page);
   await page.getByLabel("Файл импорта HY2-P", { exact: true }).setInputFiles({
     name: "hy2-p.json",

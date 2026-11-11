@@ -2,6 +2,7 @@ package useraccess
 
 import (
 	"hy2-panel/internal/portcontrol/protocol"
+	"hy2-panel/internal/transport"
 	"slices"
 	"sync"
 )
@@ -35,5 +36,5 @@ func CallbackURL(instance string) string {
 	if !protocol.InstancePattern.MatchString(instance) {
 		return ""
 	}
-	return "http://127.0.0.1:8081/auth/" + instance
+	return "http://" + transport.InternalAddress() + "/auth/" + instance
 }

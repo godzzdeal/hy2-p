@@ -52,6 +52,6 @@ export const NETWORK_HELP = {
   "Дополнительный режим Hysteria2 с отдельной подготовкой сети сервера. Оставьте выключенным, если его не настраивали.":
     "Additional Hysteria2 mode requiring server network setup. Leave disabled unless configured.",
   "Дополнительные серверы Realm": "Realm servers",
-  "Расширенная настройка соединения с другими серверами Hysteria2. Ссылки Happ для этого режима не создаются.":
-    "Advanced Hysteria2 server chaining. Happ URI export is unavailable for this mode.",
+  "Расширенная настройка соединения с другими серверами Hysteria2. Ссылки подключения для этого режима не создаются.":
+    "Advanced Hysteria2 server chaining. Connection link export is unavailable for this mode.",
 };

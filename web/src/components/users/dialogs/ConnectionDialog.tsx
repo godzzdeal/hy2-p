@@ -39,6 +39,21 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
       <QueryState isLoading={links.isPending} error={links.error} />
       {links.data && (
         <>
+          {!isUserActive(user) && <Notice variant="danger">{t("Доступ отключён или истёк.")}</Notice>}
+          {(links.data.deviceLimit ?? 0) > 0 && (
+            <Notice variant="warning">
+              {t(
+                "Включён лимит устройств. Импортируйте подписку в используемом приложении, чтобы получить персональный ключ устройства.",
+              )}
+            </Notice>
+          )}
+          {!links.data.uri && !(links.data.deviceLimit ?? 0) && (
+            <Notice variant="danger">
+              {t(
+                "Нет доступных подключений. Проверьте доступ пользователя к экземплярам и публикацию портов.",
+              )}
+            </Notice>
+          )}
           <div className="share-tabs grid grid-cols-2 items-stretch gap-1 border-2 border-line p-1">
             <Button
               disabled={!links.data.uri}
@@ -48,7 +63,7 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
               })}
               onClick={() => setFormat("uri")}
             >
-              {t("Подключение / Happ")}
+              {t("Ссылка подключения")}
             </Button>
             <Button
               className={cn("h-auto min-h-control w-full px-2 py-2 text-lg whitespace-normal", {
@@ -60,20 +75,6 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
               {t("Подписка")}
             </Button>
           </div>
-          {(links.data.deviceLimit ?? 0) > 0 && (
-            <Notice>
-              {t(
-                "Включён лимит устройств. Импортируйте подписку в Happ, чтобы получить персональный ключ устройства.",
-              )}
-            </Notice>
-          )}
-          {!links.data.uri && !(links.data.deviceLimit ?? 0) && (
-            <p className="alert bg-danger-bg text-danger border border-danger p-4 rounded-none flex justify-between items-center gap-4 mb-5">
-              {t(
-                "Нет доступных подключений. Проверьте доступ пользователя к экземплярам и публикацию портов.",
-              )}
-            </p>
-          )}
           {activeFormat === "uri" && (links.data.connections?.length ?? 0) > 1 && (
             <Field>
               {t("Экземпляр")}
@@ -96,13 +97,8 @@ export function ConnectionDialog({ user, onClose }: { user: IUser; onClose: () =
             isSubscription={activeFormat === "subscription"}
           />
           <p className="share-help text-center text-muted mb-4">
-            {t("В Happ нажмите + и импортируйте ссылку из буфера или отсканируйте QR-код.")}
+            {t("Импортируйте ссылку из буфера обмена или отсканируйте QR-код в используемом приложении.")}
           </p>
-          {!isUserActive(user) && (
-            <p className="alert bg-danger-bg text-danger border border-danger p-4 rounded-none flex justify-between items-center gap-4 mb-5">
-              {t("Доступ отключён или истёк.")}
-            </p>
-          )}
           <Textarea
             className="share-url h-24 resize-none break-all mb-4"
             readOnly

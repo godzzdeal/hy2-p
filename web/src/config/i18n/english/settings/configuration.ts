@@ -14,8 +14,8 @@ export const CONFIGURATION: Record<string, string> = {
     "For automatic Docker forwarding, set a single UDP port in listen, for example :61254.",
   "Экземпляр слушает только внутри контейнера. Для подключения снаружи укажите listen без 127.0.0.1, например :61254.":
     "The instance listens on container loopback only. To accept external connections, set listen without 127.0.0.1, for example :61254.",
-  "Порт для подключения Happ. Проброс Docker показан ниже.":
-    "The port Happ connects to. Docker forwarding is shown below.",
+  "Порт для подключения клиента. Проброс Docker показан ниже.":
+    "The client connection port. Docker forwarding is shown below.",
   "Добавить параметр": "Add entry",
   "Добавьте первого пользователя для получения ссылки подключения.":
     "Add your first user to get a connection URL.",

@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { mockPanel } from "../../fixtures";
 test("YAML window highlights syntax, catches errors and keeps the draft", async ({ page }, info) => {
   const panel = await mockPanel(page);
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByRole("button", { name: "Открыть", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Редактор YAML", exact: true });
   const editor = dialog.getByRole("textbox", { name: "Конфигурация Hysteria2 YAML", exact: true });
@@ -10,7 +10,7 @@ test("YAML window highlights syntax, catches errors and keeps the draft", async 
   await expect(dialog.locator(".yaml-key").first()).toBeVisible();
   await expect(dialog.locator(".cm-lineNumbers")).toBeVisible();
   const gutter = await dialog.locator(".cm-gutters").evaluate(element => ({font:getComputedStyle(element).fontFamily,background:getComputedStyle(element).backgroundColor,surface:getComputedStyle(element).getPropertyValue("--surface").trim()}));
-  expect(gutter.font).toContain("Epilepsy Sans");
+  expect(gutter.font).toBe(await page.evaluate(() => getComputedStyle(document.body).fontFamily));
   expect(gutter.background).not.toBe("rgb(245, 245, 245)");
   await dialog.screenshot({ path: info.outputPath("yaml-gutters.png") });
   await editor.fill("listen: [");
@@ -31,7 +31,7 @@ test("YAML window highlights syntax, catches errors and keeps the draft", async 
 
 test("YAML search closes before the editor window", async ({ page }) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByRole("button", { name: "Открыть", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Редактор YAML", exact: true });
   const editor = dialog.getByRole("textbox", { name: "Конфигурация Hysteria2 YAML", exact: true });
@@ -46,7 +46,7 @@ test("YAML search closes before the editor window", async ({ page }) => {
 
 test("multiline properties stay inside their column after resizing", async ({ page }, info) => {
   await mockPanel(page);
-  await page.getByRole("button", { name: "Конфигурация", exact: true }).click();
+  await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByRole("searchbox", { name: "Найти свойство" }).fill("acme.domains");
   await page.getByRole("combobox", { name: "Сертификат Hysteria2", exact: true }).click();
   await page.getByRole("option", { name: "Автоматический сертификат ACME", exact: true }).click();

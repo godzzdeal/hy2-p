@@ -17,8 +17,8 @@ export const COMMON: Record<string, string> = {
   "Без флага": "No flag",
   "Название появится в приложении после обновления подписки. Можно добавить эмодзи.":
     "The name appears in the app after refreshing the subscription. You can add an emoji.",
-  "Настройки подписки сохранены. Обновите подписку в Happ.":
-    "Subscription settings saved. Update the subscription in Happ.",
+  "Настройки подписки сохранены. Обновите подписку в используемом приложении.":
+    "Subscription settings saved. Update the subscription in your app.",
   "название подписки: не более 25 символов": "subscription name: maximum 25 characters",
   "название подписки не должно содержать управляющие символы":
     "subscription name must not contain control characters",
@@ -85,7 +85,7 @@ export const COMMON: Record<string, string> = {
   "Подготовка…": "Preparing…",
   Подключение: "Connection",
   "Подключение ": "Connection ",
-  "Подключение / Happ": "Connection / Happ",
+  "Ссылка подключения": "Connection link",
   "Подключения кратковременно прервутся. Панель проверит запуск и локальный API экземпляра. При ошибке она попытается автоматически восстановить предыдущий экземпляр.":
     "Connections will briefly disconnect. The panel checks startup and the local instance API, then tries to restore the previous instance if the check fails.",
   "Подключите устройство": "Connect your device",
@@ -107,7 +107,6 @@ export const COMMON: Record<string, string> = {
   "Пользователь сохранён": "User saved",
   "Пользователь удалён": "User deleted",
   "Порт веб-панели": "Web panel port",
-  "Порт, домен и HTTPS веб-панели": "Web panel port, domain and HTTPS",
   "Потом переключение.": "Then switch.",
   "Правила ACL, по одному в строке": "ACL rules, one per line",
   "Предыдущая версия восстановлена": "Previous version restored",

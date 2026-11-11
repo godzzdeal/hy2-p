@@ -38,7 +38,10 @@ export function yamlExtensions(actions: IEditorActions): Extension[] {
     EditorView.lineWrapping,
     syntaxHighlighting(YAML_HIGHLIGHT),
     EditorState.phrases.of(actions.phrases),
-    EditorView.contentAttributes.of({ "aria-label": actions.label, spellcheck: "false" }),
+    EditorView.contentAttributes.of({
+      "aria-label": actions.label,
+      spellcheck: "false",
+    }),
     keymap.of([
       {
         key: "Mod-s",

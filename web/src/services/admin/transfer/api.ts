@@ -17,7 +17,10 @@ export interface ITransferPreview {
 export const transferApi = {
   export: () => request<unknown>(API_ROUTES.transfer),
   preview: (bundle: unknown) =>
-    request<ITransferPreview>(API_ROUTES.transferMode("preview"), { method: "POST", body: { bundle } }),
+    request<ITransferPreview>(API_ROUTES.transferMode("preview"), {
+      method: "POST",
+      body: { bundle },
+    }),
   apply: (bundle: unknown, fingerprint: string) =>
     request<ITransferPreview>(API_ROUTES.transferMode("apply"), {
       method: "POST",

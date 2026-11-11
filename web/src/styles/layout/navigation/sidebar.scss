@@ -12,10 +12,13 @@
   .app-sidebar nav {
     @apply grid gap-1;
   }
-  .app-sidebar nav button {
+  .app-sidebar nav a {
     @apply justify-start text-base min-h-control;
   }
-  .app-sidebar nav button.selected {
+  .app-sidebar nav a > svg {
+    @apply shrink-0;
+  }
+  .app-sidebar nav a.selected {
     @apply bg-surface-soft text-accent shadow-none;
   }
   .aside-bottom > button {

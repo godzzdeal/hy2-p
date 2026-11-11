@@ -43,7 +43,9 @@ export function useYamlEditor(options: IYamlCode) {
     if (!view || view.state.doc.toString() === options.value) return;
     view.dispatch({
       changes: { from: 0, to: view.state.doc.length, insert: options.value },
-      selection: { anchor: Math.min(view.state.selection.main.head, options.value.length) },
+      selection: {
+        anchor: Math.min(view.state.selection.main.head, options.value.length),
+      },
     });
   }, [options.value]);
   return parent;

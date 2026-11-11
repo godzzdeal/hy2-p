@@ -19,5 +19,9 @@ export function useCopy(value: string, fallback: string) {
       setPending(false);
     }
   }
-  return { isCopied: copiedValue === value, isPending, onCopy: () => void onCopy() };
+  return {
+    isCopied: copiedValue === value,
+    isPending,
+    onCopy: () => void onCopy(),
+  };
 }

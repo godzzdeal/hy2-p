@@ -2,7 +2,7 @@
   body::before {
     @apply fixed inset-0 -z-20 pointer-events-none bg-star-color opacity-55;
     content: "";
-    mask-image: url("@assets/starfield.svg");
+    mask-image: url("/starfield.svg");
     mask-size: 2048px 1536px;
   }
   .space-scene > * {

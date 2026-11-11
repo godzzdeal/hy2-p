@@ -11,7 +11,9 @@ export function UserCount() {
       variant="accent"
       count={users.data.length}
       title={t("Всего пользователей: {{count}}", { count: users.data.length })}
-      aria-label={t("Всего пользователей: {{count}}", { count: users.data.length })}
+      aria-label={t("Всего пользователей: {{count}}", {
+        count: users.data.length,
+      })}
     />
   );
 }

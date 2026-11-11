@@ -4,7 +4,10 @@ import { adminApi } from "@/services/admin/admin-api";
 import { useUiStore } from "@/store/ui-store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export function useAccount() {
-  return useQuery({ queryKey: QUERY_KEYS.adminAccount, queryFn: adminApi.account });
+  return useQuery({
+    queryKey: QUERY_KEYS.adminAccount,
+    queryFn: adminApi.account,
+  });
 }
 export function useWebSettings() {
   return useQuery({ queryKey: QUERY_KEYS.adminWeb, queryFn: adminApi.web });

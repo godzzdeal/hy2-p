@@ -1,6 +1,6 @@
 export const EMOJI = {
-  "Флаг станет иконкой подключения в Happ. Эмодзи можно добавить прямо в имя. После изменения обновите подписку.":
-    "The flag becomes the Happ connection icon. Add emoji directly to the name. Refresh the subscription after changing it.",
+  "Флаг станет иконкой подключения в совместимых приложениях. Эмодзи можно добавить прямо в имя. После изменения обновите подписку.":
+    "The flag becomes the connection icon in compatible apps. Add emoji directly to the name. Refresh the subscription after changing it.",
   "Выбрать эмодзи": "Choose emoji",
   "Изменить эмодзи": "Change emoji",
   "Меню эмодзи": "Emoji menu",
@@ -23,16 +23,12 @@ export const EMOJI = {
   "Средне-тёмный тон кожи": "Medium-dark skin tone",
   "Тёмный тон кожи": "Dark skin tone",
   "Предпросмотр названия подписки": "Subscription name preview",
-  "Эмодзи отображается в названии Happ. Отдельной иконкой Happ может сделать только флаг.":
-    "Emoji appears in the Happ name. Happ can use a flag as a separate icon.",
   Эмодзи: "Emoji",
   "Без эмодзи": "No emoji",
   "Свой эмодзи": "Custom emoji",
   "Или вставьте свой": "Or paste your own",
   "Один эмодзи": "One emoji",
   "Вставьте один эмодзи без текста.": "Paste one emoji without text.",
-  "Эмодзи появится рядом с пользователем и в названии подключения Happ после обновления подписки.":
-    "The emoji appears beside the user and in the Happ connection name after a subscription refresh.",
   Ракета: "Rocket",
   Кот: "Cat",
   Алмаз: "Diamond",

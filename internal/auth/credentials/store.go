@@ -64,6 +64,9 @@ func (store *Store) Change(currentPassword, username, password string) error {
 	if len(username) < 3 || len(username) > 64 || strings.IndexFunc(username, unicode.IsSpace) >= 0 {
 		return errors.New("логин: от 3 до 64 символов без пробелов")
 	}
+	if username == store.value.Username && (password == "" || password == currentPassword) {
+		return errors.New("нет изменений данных входа")
+	}
 	next := Value{Username: username, Hash: store.value.Hash, CloudHash: store.value.CloudHash}
 	if password != "" {
 		if len(password) < MinAdminPassword || len(password) > MaxPasswordBytes {

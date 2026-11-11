@@ -15,14 +15,8 @@
   .config-control .password-input {
     @apply mt-0;
   }
-  .config-field-help > :first-child {
-    @apply mt-0;
-  }
   .configuration-section-title a {
     @apply text-accent;
-  }
-  .connection-sni .checkbox {
-    @apply mt-3;
   }
   .install-steps li {
     @apply my-2;

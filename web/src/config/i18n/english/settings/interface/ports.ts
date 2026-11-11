@@ -4,10 +4,7 @@ export const PORTS = {
   "Версия недоступна": "Version unavailable",
   "Проверяем версию…": "Checking version…",
   "Например, Германия": "For example, Germany",
-  "Флаг появится рядом с пользователем и в названии подключения Happ после обновления подписки.":
-    "The flag appears beside the user and in the Happ connection name after a subscription refresh.",
   Подписки: "Subscriptions",
-  "Название, флаг и сообщения для пользователей Happ.": "Name, flag and messages for Happ users.",
   "Применение UDP-порта": "Applying UDP port",
   "Применяем и проверяем UDP-порт": "Applying and checking UDP port",
   "UDP-порт применён": "UDP port applied",

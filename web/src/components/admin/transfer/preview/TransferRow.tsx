@@ -1,6 +1,10 @@
 import { type ITransferRow } from "@/services/admin/transfer/api";
 import { useTranslation } from "react-i18next";
-const KINDS = { core: "Экземпляр", group: "Группа", user: "Пользователь" } as const;
+const KINDS = {
+  core: "Экземпляр",
+  group: "Группа",
+  user: "Пользователь",
+} as const;
 const ACTIONS = {
   add: "Будет добавлено",
   added: "Добавлено",

@@ -4,20 +4,6 @@
     @apply font-mono text-lg;
     font-variant-ligatures: none;
   }
-  @font-face {
-    font-family: "Epilepsy Sans";
-    src: url("@assets/epilepsy-sans/EpilepsySans.ttf") format("truetype");
-    font-style: normal;
-    font-weight: 400 500;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Epilepsy Sans";
-    src: url("@assets/epilepsy-sans/EpilepsySansBold.ttf") format("truetype");
-    font-style: normal;
-    font-weight: 600 900;
-    font-display: swap;
-  }
   body {
     font-synthesis: none;
     font-kerning: none;
@@ -37,7 +23,7 @@
   }
   h3,
   .eyebrow,
-  .app-sidebar nav button {
+  .app-sidebar nav a {
     @apply text-xl;
   }
   .user-name-hint,

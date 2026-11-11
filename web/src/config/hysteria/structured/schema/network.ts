@@ -113,7 +113,11 @@ export const NETWORK_SECTIONS: readonly IConfigSection[] = [
     title: "Особые режимы",
     fields: [
       { path: "realm", label: "Hysteria Realms (JSON)", kind: "json" },
-      { path: "mimic.enabled", label: "Включить Mimic (требует отдельной настройки Linux)", kind: "toggle" },
+      {
+        path: "mimic.enabled",
+        label: "Включить Mimic (требует отдельной настройки Linux)",
+        kind: "toggle",
+      },
       { path: "mimic.interface", label: "Интерфейс Mimic", kind: "text" },
       { path: "mimic.xdpMode", label: "XDP-режим", kind: "select", options: ["native", "skb"] },
       { path: "mimic.path", label: "Путь к программе Mimic", kind: "text" },

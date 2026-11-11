@@ -28,8 +28,8 @@ test("styled QR codes decode to the exact URI and subscription", async ({ page }
       encodeURIComponent("🇩🇪 🚀 Player"),
     subscription: "https://panel.example.com/sub/example-token-for-tests",
   };
-  await page.route("http://panel.test/api/users/test-user/links", (route) => route.fulfill({ json: links }));
-  await page.getByRole("button", { name: "Пользователи", exact: true }).click();
+  await page.route("**/api/users/test-user/links", (route) => route.fulfill({ json: links }));
+  await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   await page.getByRole("button", { name: "Добавить", exact: true }).click();
   await page.getByLabel("Имя", { exact: true }).fill("Player");
   await page.getByRole("button", { name: "Сохранить пользователя", exact: true }).click();

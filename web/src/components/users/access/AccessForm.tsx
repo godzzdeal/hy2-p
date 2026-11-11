@@ -2,6 +2,7 @@ import { Fieldset } from "@/components/ui/fields/Fieldset";
 import { Caption } from "@/components/elements/Caption";
 import { Field } from "@/components/ui/fields/Field";
 import { Button } from "@/components/ui/button/Button";
+import { Notice } from "@/components/ui/feedback";
 import { Select } from "@/components/ui/select/Select";
 import { SelectOption } from "@/components/ui/select/SelectOption";
 import { CoreOption } from "@/components/users/access/CoreOption";
@@ -44,6 +45,11 @@ export function AccessForm({
   }
   return (
     <form className="user-core-access" onSubmit={onSubmit}>
+      {mode === AccessMode.Selected && ids.length === 0 && (
+        <Notice variant="warning">
+          {t("Ни один экземпляр не выбран. Подключения пользователя будут запрещены.")}
+        </Notice>
+      )}
       <Field>
         {t("Режим доступа к экземплярам")}
         <Select
@@ -71,11 +77,6 @@ export function AccessForm({
           />
         ))}
       </Fieldset>
-      {mode === AccessMode.Selected && ids.length === 0 && (
-        <p className="alert bg-danger-bg text-danger border border-danger p-4 rounded-none flex justify-between items-center gap-4 mb-5">
-          {t("Ни один экземпляр не выбран. Подключения пользователя будут запрещены.")}
-        </p>
-      )}
       <Caption>
         {t(
           "В подписке будут только разрешённые опубликованные экземпляры. При снятии доступа активное подключение к этому экземпляру отключается.",

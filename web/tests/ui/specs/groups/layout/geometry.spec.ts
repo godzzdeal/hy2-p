@@ -21,7 +21,7 @@ test("expanding groups does not introduce a desktop scrollbar", async ({ page },
 
 test("member cards align with the search control without an unused scrollbar gutter", async ({ page }) => {
   const { users } = await mockMembers(page);
-  await page.route("http://panel.test/api/users", (route) => route.fulfill({ json: users.slice(0, 4) }));
+  await page.route("**/api/users", (route) => route.fulfill({ json: users.slice(0, 4) }));
   await page.getByRole("button", { name: "Обновить", exact: true }).click();
   await page.getByRole("button", { name: "Участники группы Friends", exact: true }).click();
   const dialog = page.getByRole("dialog");

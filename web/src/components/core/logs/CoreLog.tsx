@@ -106,7 +106,12 @@ export function CoreLog() {
         role="status"
       >
         <span>{isFollowing ? t("Показываем новые сообщения") : t("Автопрокрутка на паузе")}</span>
-        <span>{t("Показано {{visible}} из {{total}}", { visible: visible.length, total })}</span>
+        <span>
+          {t("Показано {{visible}} из {{total}}", {
+            visible: visible.length,
+            total,
+          })}
+        </span>
       </div>
     </Card>
   );

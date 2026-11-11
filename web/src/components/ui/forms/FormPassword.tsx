@@ -24,6 +24,7 @@ export function FormPassword<T extends FieldValues>({
   name,
   rules,
   required,
+  label = "Пароль",
   minLength = PASSWORD_MIN_LENGTH,
   maxLength = PASSWORD_MAX_LENGTH,
   ...props
@@ -33,11 +34,14 @@ export function FormPassword<T extends FieldValues>({
     control,
     name,
     rules: {
-      required: required ? t("Заполните это поле") : false,
-      minLength: { value: minLength, message: t("Не менее {{count}} символов", { count: minLength }) },
+      required: required ? t("Заполните поле «{{field}}».", { field: t(label) }) : false,
+      minLength: {
+        value: minLength,
+        message: t("Поле «{{field}}»: не менее {{count}} символов.", { field: t(label), count: minLength }),
+      },
       maxLength: {
         value: maxLength,
-        message: t("Не более {{count}} символов", { count: maxLength }),
+        message: t("Поле «{{field}}»: не более {{count}} символов.", { field: t(label), count: maxLength }),
       },
       ...rules,
     },
@@ -45,6 +49,7 @@ export function FormPassword<T extends FieldValues>({
   return (
     <PasswordField
       {...props}
+      label={label}
       name={field.name}
       ref={field.ref}
       onBlur={field.onBlur}

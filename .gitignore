@@ -23,4 +23,12 @@
 /AGENTS.md
 /.cursor/rules/ui-layout.mdc
 __pycache__/
-/mk-arch-demo/
+/demo-example/
+/web-react/
+
+/web/.next/
+/web/public/
+/web/next-env.d.ts
+/web/tsconfig.tsbuildinfo
+/web/.next-demo/
+/web/src/config/hysteria/order.generated.json

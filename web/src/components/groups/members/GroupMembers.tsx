@@ -59,7 +59,9 @@ export function GroupMembers({ group, onClose }: { group: IGroup; onClose: () =>
         <Pagination page={selection.current} pageCount={selection.pageCount} onChange={selection.setPage} />
       </Fieldset>
       <Caption>
-        {t("Снятая отметка убирает из группы. При лимите устройств обновите подписку в Happ.")}
+        {t(
+          "Снятая отметка убирает из группы. При лимите устройств обновите подписку в используемом приложении.",
+        )}
       </Caption>
       <Actions>
         <Button type="button" variant="secondary" onClick={onClose} disabled={save.isPending}>
