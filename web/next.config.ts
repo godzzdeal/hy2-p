@@ -7,7 +7,7 @@ const config: NextConfig = {
   poweredByHeader: false,
   devIndicators: false,
   env: { NEXT_PUBLIC_HY2_PANEL_VERSION: version },
-  distDir: process.env.NEXT_PUBLIC_HY2_DEMO === "true" ? ".next-demo" : ".next",
+  distDir: process.env.NEXT_PUBLIC_HY2_DEMO === "true" && process.env.VERCEL !== "1" ? ".next-demo" : ".next",
   async rewrites() {
     return [
       { source: "/api/:path*", destination: backend + "/api/:path*" },
