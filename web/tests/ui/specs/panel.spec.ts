@@ -23,6 +23,8 @@ test("phone installation metadata and manual steps are available", async ({ page
 });
 test("the install button uses the browser prompt and installed event", async ({ page }) => {
   await mockPanel(page);
+  await page.getByRole("link", { name: "Настройки", exact: true }).click();
+  await expandSettings(page);
   await page.evaluate(() => {
     const event = new Event("beforeinstallprompt", { cancelable: true });
     Object.defineProperty(event, "prompt", {
@@ -33,8 +35,6 @@ test("the install button uses the browser prompt and installed event", async ({ 
     });
     window.dispatchEvent(event);
   });
-  await page.getByRole("link", { name: "Настройки", exact: true }).click();
-  await expandSettings(page);
   await page.getByRole("button", { name: "Установить панель", exact: true }).click();
   await expect.poll(() => page.evaluate(() => Reflect.get(window, "installPromptCalled"))).toBe(true);
   await page.evaluate(() => window.dispatchEvent(new Event("appinstalled")));
