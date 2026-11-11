@@ -41,7 +41,10 @@ sudo env HY2_ADMIN_PASSWORD=integration-test-password-only \
 manager() { sudo "$ROOT/hy2-panel" "$@"; }
 manager status
 URL=http://127.0.0.1:19080
-curl -fsS "$URL/" | grep -q '<html'
+curl -fsS -D "$WORK/interface.headers" "$URL/" -o "$WORK/interface.html"
+grep -q '<html' "$WORK/interface.html"
+grep -q '/_next/' "$WORK/interface.html"
+grep -qi "content-security-policy:.*nonce-" "$WORK/interface.headers"
 curl -fsS "$URL/api/version" | jq -e --arg commit "$GITHUB_SHA" --arg version "$(cat internal/buildinfo/VERSION)" \
   '.revision == $commit and .version == $version' >/dev/null
 # shellcheck source=/dev/null
