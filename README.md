@@ -76,24 +76,39 @@ sudo bash /tmp/hy2-install.sh
 <summary><strong>Открыть YAML</strong></summary>
 
 ```yaml
-listen: :61254
-acme: domains:   - vpn.example.com email: admin@example.com ca: letsencrypt dir: /data/acme-hy2
-
-obfs: type: salamander salamander:   password: REPLACE_WITH_YOUR_RANDOM_OBFS_PASSWORD
-
-quic: maxIdleTimeout: 30s disablePathMTUDiscovery: false
-
+listen: :8443
+acme:
+  domains:
+    - vpn.example.com
+  email: admin@example.com
+  ca: letsencrypt
+  dir: /data/acme-hy2
+ech:
+  keyPath: /data/ech/REPLACE_WITH_KEY_DIRECTORY/ech.pem
+obfs:
+  type: salamander
+  salamander:
+    password: REPLACE_WITH_YOUR_RANDOM_OBFS_PASSWORD
+quic:
+  maxIdleTimeout: 30s
+  disablePathMTUDiscovery: false
 ignoreClientBandwidth: true
-congestion: type: bbr bbrProfile: standard
-
+congestion:
+  type: bbr
+  bbrProfile: standard
+speedTest: true
 disableUDP: false
 udpIdleTimeout: 60s
-masquerade: type: proxy proxy:   url: https://reuters.com   rewriteHost: true
+masquerade:
+  type: proxy
+  proxy:
+    url: https://reuters.com
+    rewriteHost: true
 ```
 
 </details>
 
-Замените домен и email, сгенерируйте пароли. При необходимости измените порт.
+Замените домен и email, сгенерируйте пароль и укажите путь к созданному ключу ECH. [Как повторить настройку](docs/configuration.md).
 
 ## Обновление и откат
 
