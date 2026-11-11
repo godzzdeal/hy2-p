@@ -1,0 +1,57 @@
+name: Publish release
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Successful main Checks run containing both Docker images
+        required: true
+        type: string
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: publish-release
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RUN_ID: ${{ inputs.run_id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Verify source and wait for checks
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          [[ $GITHUB_REF == refs/heads/main && $RUN_ID =~ ^[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID" |
+            jq -e --arg sha "$GITHUB_SHA" '.head_sha == $sha and .head_branch == "main" and .event == "push" and .path == ".github/workflows/ci.yml"'
+          gh run watch "$RUN_ID" --interval 30 --exit-status
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.run_id }}
+          pattern: image-*
+          merge-multiple: true
+          path: release-assets
+      - name: Verify and publish prepared release
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          version=$(tr -d '\r\n' < internal/buildinfo/VERSION)
+          [[ $version =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          gh release view "$version" --json isDraft,targetCommitish |
+            jq -e --arg sha "$GITHUB_SHA" '.isDraft and .targetCommitish == $sha'
+          cp scripts/install.sh release-assets/install.sh
+          cd release-assets
+          for arch in amd64 arm64; do
+            sha256sum --check "hy2-panel-linux-$arch.tar.gz.sha256"
+            gzip -t "hy2-panel-linux-$arch.tar.gz"
+          done
+          sha256sum hy2-panel-linux-amd64.tar.gz hy2-panel-linux-arm64.tar.gz install.sh > SHA256SUMS
+          gh release upload "$version" ./* --clobber
+          gh release edit "$version" --draft=false --latest
