@@ -4,9 +4,11 @@ import (
 	"encoding/base64"
 	"errors"
 	"hy2-panel/internal/records"
+	"hy2-panel/internal/subscriptions/routing"
 	"net/http"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -20,11 +22,12 @@ const MaxUpdateHours = 168
 const DefaultUpdateHours = 6
 
 type Settings struct {
-	DefaultUserFlag string `json:"defaultUserFlag,omitempty"`
-	ProfileTitle    string `json:"profileTitle,omitempty"`
-	Enabled         bool   `json:"enabled"`
-	Text            string `json:"text"`
-	UpdateInterval  int    `json:"updateInterval"`
+	Routing         *routing.Settings `json:"routing,omitempty"`
+	DefaultUserFlag string            `json:"defaultUserFlag,omitempty"`
+	ProfileTitle    string            `json:"profileTitle,omitempty"`
+	Enabled         bool              `json:"enabled"`
+	Text            string            `json:"text"`
+	UpdateInterval  int               `json:"updateInterval"`
 }
 type Store struct {
 	mu        sync.RWMutex
@@ -43,6 +46,11 @@ func Open(data string) (*Store, error) {
 	return store, nil
 }
 func validate(settings Settings) error {
+	if settings.Routing != nil {
+		if _, err := routing.Normalize(*settings.Routing); err != nil {
+			return err
+		}
+	}
 	if !validFlag(settings.DefaultUserFlag) {
 		return errors.New("выберите корректный флаг пользователей")
 	}
@@ -66,13 +74,24 @@ func validate(settings Settings) error {
 func (store *Store) Current() Settings {
 	store.mu.RLock()
 	defer store.mu.RUnlock()
-	return store.settings
+	result := store.settings
+	if result.Routing != nil {
+		copy := *result.Routing
+		copy.Domains = slices.Clone(copy.Domains)
+		result.Routing = &copy
+	}
+	return result
 }
 func (store *Store) UserName(name string) string {
 	return applyFlag(name, store.Current().DefaultUserFlag)
 }
 func (store *Store) Headers(headers http.Header) {
 	settings := store.Current()
+	if settings.Routing != nil {
+		if link := routing.Link(*settings.Routing); link != "" {
+			headers.Set("routing", link)
+		}
+	}
 	if settings.ProfileTitle != "" {
 		headers.Set("profile-title", "base64:"+base64.StdEncoding.EncodeToString([]byte(settings.ProfileTitle)))
 	}

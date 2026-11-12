@@ -35,6 +35,8 @@ test("log flags emoji and names share one line without overflowing", async ({ pa
       },
     }),
   );
+  // Register mock users before a fresh query cache is populated.
+  await page.reload();
   for (const choice of [
     { label: "Светлая", value: "light" },
     { label: "Тёмная", value: "dark" },

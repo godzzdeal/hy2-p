@@ -9,6 +9,7 @@ export function useAnnouncementForm(initial: IAnnouncement) {
       ...initial,
       profileTitle: initial.profileTitle ?? "",
       defaultUserFlag: initial.defaultUserFlag ?? "",
+      routing: initial.routing ?? { enabled: false, domains: [] },
     },
   });
   const [text, title, isEnabled] = useWatch({
@@ -24,6 +25,6 @@ export function useAnnouncementForm(initial: IAnnouncement) {
     isEnabled,
     isPending: save.isPending,
     isTooLong: count > ANNOUNCEMENT_LIMIT || titleCount > PROFILE_TITLE_LIMIT,
-    onSubmit: (value: IAnnouncement) => save.mutate(value),
+    onSubmit: (value: IAnnouncement) => save.mutate(value, { onSuccess: (result) => form.reset(result) }),
   };
 }
