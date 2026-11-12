@@ -5,12 +5,15 @@ export const PanelActionEnum = {
   Rollback: "rollback",
   Restart: "restart",
   Cleanup: "cleanup",
+  Backup: "backup",
+  CloudBackup: "backup-cloud",
 } as const;
 export type TPanelAction = (typeof PanelActionEnum)[keyof typeof PanelActionEnum];
 export type TPanelRequest =
   | { action: "update"; version: string }
   | { action: "rollback"; restoreData: true }
-  | { action: "restart" }
+  | { action: "restart"; targetURL?: string }
+  | { action: "backup" | "backup-cloud" }
   | { action: "cleanup" };
 export interface IPanelOperation extends Omit<IPortOperation, "phase"> {
   phase: IPortOperation["phase"] | "queued" | "updating" | "rolling_back" | "cleaning";

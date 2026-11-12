@@ -101,11 +101,10 @@ test("HTTP requires no domain and ACME accepts an IP in the form", async ({ page
   const network = page.locator("#panel-network");
   await network.getByRole("button", { name: "Настройки панели", exact: true }).click();
   await expect(network.getByLabel("Домен или IP веб-панели", { exact: true })).toHaveCount(0);
-  await network
-    .getByLabel("Публичный URL панели и подписок", { exact: true })
-    .fill("http://203.0.113.10:9443");
+  await expect(network.getByLabel("Публичный URL панели и подписок", { exact: true })).toHaveValue("http://panel.test:9443");
   await network.getByRole("button", { name: "Сохранить настройки веб-панели", exact: true }).click();
-  expect(saved).toMatchObject({ mode: "http", domain: "", publicURL: "http://203.0.113.10:9443" });
+  expect(saved).toMatchObject({ mode: "http", domain: "", publicURL: "http://panel.test:9443" });
+  await page.getByRole("dialog").getByRole("button", { name: "Отмена", exact: true }).click();
   await network.getByRole("combobox", { name: "HTTPS веб-панели", exact: true }).click();
   await page.getByRole("option", { name: "HTTPS с автоматическим сертификатом", exact: true }).click();
   await network.getByLabel("Домен или IP веб-панели", { exact: true }).fill("8.8.8.8");
@@ -113,6 +112,7 @@ test("HTTP requires no domain and ACME accepts an IP in the form", async ({ page
   await network.getByRole("checkbox", { name: "Принимаю условия Let's Encrypt", exact: true }).check();
   await network.getByRole("button", { name: "Сохранить настройки веб-панели", exact: true }).click();
   expect(saved).toMatchObject({ mode: "acme", domain: "8.8.8.8", acceptedTerms: true });
+  await page.getByRole("dialog").getByRole("button", { name: "Отмена", exact: true }).click();
   await network.screenshot({ path: info.outputPath("ip-certificate.png") });
 });
 

@@ -2,6 +2,7 @@ package web
 
 import (
 	"errors"
+	"fmt"
 	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/transport"
 	"net/http"
@@ -14,7 +15,7 @@ func Restart(writer http.ResponseWriter, request *http.Request) {
 			transport.Fail(writer, err, http.StatusConflict)
 			return
 		}
-		transport.Fail(writer, errors.New("Не удалось запустить перезапуск панели. Проверьте помощник Docker"), http.StatusServiceUnavailable)
+		transport.Fail(writer, fmt.Errorf("Не удалось запустить перезапуск панели: %w", err), http.StatusServiceUnavailable)
 		return
 	}
 	writer.WriteHeader(http.StatusAccepted)

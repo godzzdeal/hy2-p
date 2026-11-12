@@ -69,8 +69,8 @@ export const NETWORK = {
     "Used in the panel and subscriptions when a user has no individual flag. User names are kept unchanged. Refresh the subscription after changing it.",
   "HTTP без сертификата": "HTTP without a certificate",
   "Домен или IP веб-панели": "Panel domain or IP address",
-  "Домен и сертификат не нужны. Для входа по IP укажите публичный URL с http://. Соединение HTTP не зашифровано.":
-    "No domain or certificate is required. To connect by IP, set a public URL starting with http://. HTTP traffic is not encrypted.",
+  "Домен и сертификат не нужны. Адрес формируется автоматически. Соединение HTTP не зашифровано.":
+    "No domain or certificate is required. The address is generated automatically. HTTP traffic is not encrypted.",
   "Входящий TCP 80 должен вести на этот порт. Для домена проверьте DNS, для IP укажите публичный адрес сервера.":
     "Inbound TCP port 80 must reach this port. Check DNS for a domain, or enter the server's public IP address.",
   "Для публичного IP используется сертификат Let's Encrypt на 160 часов. Панель автоматически продлевает его; TCP 80 должен оставаться доступным.":

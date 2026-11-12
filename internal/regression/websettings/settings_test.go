@@ -105,3 +105,18 @@ func TestManualIPCertificateDoesNotRequireADomain(t *testing.T) {
 		t.Fatal("certificate accepted for the wrong IP")
 	}
 }
+func TestPublicAddress(t *testing.T) {
+	if got := websettings.PublicAddress(websettings.Config{PublicURL: "http://203.0.113.25:8080", Mode: "http", Port: 9777}, "127.0.0.1:18080"); got != "http://203.0.113.25:9777" {
+		t.Fatal("frontend proxy replaced external host", got)
+	}
+	for _, item := range []struct{ domain, host, mode, want string }{
+		{"vpn.example.com", "old.example.com:8080", "acme", "https://vpn.example.com:9443"},
+		{"", "203.0.113.10:8080", "http", "http://203.0.113.10:9443"},
+		{"", "[2001:db8::1]:8080", "http", "http://[2001:db8::1]:9443"},
+	} {
+		got := websettings.PublicAddress(websettings.Config{Domain: item.domain, Mode: item.mode, Port: 9443}, item.host)
+		if got != item.want {
+			t.Fatalf("got %s, want %s", got, item.want)
+		}
+	}
+}

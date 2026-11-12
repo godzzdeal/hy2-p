@@ -8,15 +8,17 @@ import { useSaveWeb } from "@/hooks/admin/use-admin";
 import { type IWebSettings } from "@/services/admin/admin-types";
 import { updateWebConfig } from "@/utils/admin/web-config";
 import { useState, type FormEvent } from "react";
+import { RestartDialog } from "@/components/admin/maintenance/RestartDialog";
 import { useTranslation } from "react-i18next";
 export function WebForm({ initial }: { initial: IWebSettings }) {
   const { t } = useTranslation();
-  const [draft, setDraft] = useState(initial.config);
+  const [draft, setDraft] = useState(() => updateWebConfig(initial.config, initial.config));
   const mutation = useSaveWeb();
+  const [isRestartOpen, setRestartOpen] = useState(false);
   const current = mutation.data ?? initial;
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    mutation.mutate(draft);
+    mutation.mutate(draft, { onSuccess: (result) => setRestartOpen(result.restartRequired) });
   }
   return (
     <SettingsSection id="panel-network" title={t("Настройки панели")}>
@@ -30,13 +32,9 @@ export function WebForm({ initial }: { initial: IWebSettings }) {
                   "Текущий адрес продолжает работать до перезапуска. После него используйте новый порт и протокол.",
                 )}
               </p>
-              {current.container && (
-                <p>
-                  {t(
-                    "В Docker также измените опубликованный порт в Compose: PANEL_PORT должен соответствовать выбранному порту.",
-                  )}
-                </p>
-              )}
+              <Button type="button" onClick={() => setRestartOpen(true)}>
+                {t("Перезапустить панель")}
+              </Button>
             </Notice>
           </CardBody>
         )}
@@ -56,6 +54,9 @@ export function WebForm({ initial }: { initial: IWebSettings }) {
           </Button>
         </CardBody>
       </form>
+      {isRestartOpen && (
+        <RestartDialog targetURL={current.config.publicURL} onClose={() => setRestartOpen(false)} />
+      )}
     </SettingsSection>
   );
 }

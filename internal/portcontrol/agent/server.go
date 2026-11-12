@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"hy2-panel/internal/cloudbackup"
 	"hy2-panel/internal/firewall"
 	"hy2-panel/internal/panelmaintenance"
 	"hy2-panel/internal/portcontrol/protocol"
@@ -44,6 +45,7 @@ func New(root string) (*Agent, error) {
 }
 func (agent *Agent) Handler() http.Handler {
 	mux := http.NewServeMux()
+	mux.HandleFunc(cloudbackup.Path, cloudbackup.Host(agent.root, &agent.mu, func() bool { return agent.status.Busy || agent.panel.Busy() }))
 	mux.HandleFunc("GET /firewall", firewall.Host(agent.root))
 	mux.HandleFunc("POST /firewall", firewall.Host(agent.root))
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(204) })

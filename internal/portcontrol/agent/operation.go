@@ -2,7 +2,9 @@ package agent
 
 import (
 	"hy2-panel/internal/portcontrol/agent/commands"
+	"hy2-panel/internal/portcontrol/agent/commands/listener"
 	"hy2-panel/internal/portcontrol/protocol"
+	"hy2-panel/internal/security"
 	"hy2-panel/internal/transport"
 	"log"
 	"net/http"
@@ -63,6 +65,10 @@ func (agent *Agent) restartPanel(writer http.ResponseWriter, request *http.Reque
 	defer agent.mu.Unlock()
 	if agent.status.Busy || agent.panel.Busy() {
 		transport.Fail(writer, errBusy, http.StatusConflict)
+		return
+	}
+	if err := listener.Check(agent.root, security.Env("PANEL_DATA", "/panel-data")); err != nil {
+		transport.Fail(writer, err, http.StatusBadRequest)
 		return
 	}
 	agent.status = protocol.Status{ID: randomToken(), Operation: "restart", Phase: "restarting", Busy: true, Started: time.Now().UTC().Format(time.RFC3339), Message: "Панель перезапускается"}

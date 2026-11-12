@@ -53,9 +53,6 @@ export function NetworkFields({
             onChange({
               ...value,
               port: Number(event.target.value),
-              publicURL: /^https?:\/\/(localhost|127\.0\.0\.1):/.test(value.publicURL)
-                ? value.publicURL.replace(/:\d+\/?$/, ":" + event.target.value)
-                : value.publicURL,
             })
           }
         />
@@ -63,14 +60,14 @@ export function NetworkFields({
       <InfoField
         htmlFor={id}
         label={t("Публичный URL панели и подписок")}
-        description={t("Укажите внешний адрес, если используете Docker или reverse proxy.")}
+        description={t("Адрес формируется автоматически из домена или IP, протокола и порта панели.")}
       >
         <Input
           id={id}
           aria-label={t("Публичный URL панели и подписок")}
           placeholder={value.mode === "http" ? "http://203.0.113.10:8080" : "https://203.0.113.10:9443"}
           value={value.publicURL}
-          onChange={(event) => onChange({ ...value, publicURL: event.target.value })}
+          readOnly
         />
       </InfoField>
     </FieldGrid>

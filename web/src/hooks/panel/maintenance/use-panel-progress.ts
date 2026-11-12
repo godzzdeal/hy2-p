@@ -37,7 +37,7 @@ export function usePanelProgress() {
         .notify(active.action === "restart" ? "Панель перезапущена. Войдите снова." : result.message);
     else useUiStore.getState().showError(result.message);
     if (result.phase === "success" || result.phase === "rolled_back") {
-      if (active.action === "cleanup") {
+      if (active.action === "cleanup" || active.action === "backup" || active.action === "backup-cloud") {
         setActive(null);
         void client.invalidateQueries({ queryKey: QUERY_KEYS.system });
         void client.invalidateQueries({

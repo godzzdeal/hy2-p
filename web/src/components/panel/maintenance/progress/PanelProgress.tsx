@@ -18,6 +18,11 @@ export function PanelProgress() {
       aria-label={t("Обслуживание панели")}
     >
       {isBusy ? <Loader label={message} isInline /> : <p role="status">{t(message)}</p>}
+      {active.targetURL && (
+        <a href={active.targetURL}>
+          {t("Открыть новый адрес")}: {active.targetURL}
+        </a>
+      )}
       {!isBusy && (
         <Button type="button" variant="primary" onClick={onReload}>
           {t("Открыть панель")}

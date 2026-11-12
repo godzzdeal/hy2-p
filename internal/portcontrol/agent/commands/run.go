@@ -21,7 +21,7 @@ func Run(root, operationID, probeToken string, arguments ...string) error {
 		return os.ErrInvalid
 	}
 	timeout := 8 * time.Minute
-	if arguments[0] == "update" || arguments[0] == "rollback" {
+	if arguments[0] == "update" || arguments[0] == "rollback" || arguments[0] == "backup-cloud" {
 		timeout = 30 * time.Minute
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)

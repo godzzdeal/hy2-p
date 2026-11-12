@@ -26,7 +26,7 @@ func (request PanelRequest) Validate() error {
 		if request.Version != "" || !request.RestoreData {
 			return errors.New("Подтвердите восстановление данных из резервной копии")
 		}
-	case "cleanup":
+	case "cleanup", "backup", "backup-cloud":
 		if request.Version != "" || request.RestoreData {
 			return errors.New("Некорректный запрос очистки образов")
 		}
