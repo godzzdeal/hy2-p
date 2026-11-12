@@ -1,7 +1,7 @@
 {
   "name": "hy2-panel-web",
   "private": true,
-  "version": "0.9.4",
+  "version": "0.9.5",
   "type": "module",
   "sideEffects": [
     "./src/config/i18n/setup.ts",
