@@ -27,7 +27,7 @@ func Run(root, id string) error {
 		disableRestart(id)
 		return nil
 	}
-	validation := protocol.PanelRequest{Action: operation.Operation, Version: operation.Version}
+	validation := protocol.PanelRequest{Action: operation.Operation, Version: operation.Version, StorageID: operation.StorageID}
 	if operation.Operation == "rollback" {
 		validation.Version = ""
 		validation.RestoreData = true
@@ -38,7 +38,7 @@ func Run(root, id string) error {
 	if operation.Operation == "cleanup" {
 		return clean(root, operation)
 	}
-	if operation.Operation == "backup" || operation.Operation == "backup-cloud" {
+	if operation.Operation == "backup" || operation.Operation == "backup-cloud" || operation.Operation == "check-cloud" {
 		return backup(root, operation)
 	}
 	isRecovery := operation.Phase != "queued"

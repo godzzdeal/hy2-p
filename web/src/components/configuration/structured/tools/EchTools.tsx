@@ -28,7 +28,7 @@ export function EchTools({
     <section className="configuration-tools grid gap-4 min-w-0">
       <Notice>
         {t(
-          "ACME обновляет TLS-сертификат. ECH создаётся отдельно; клиентам передаётся только публичный tls.ech.",
+          "ACME продлевает TLS-сертификат. Ключ ECH создаётся отдельно. Клиентам передаётся только публичная часть tls.ech.",
         )}
       </Notice>
       <Field>

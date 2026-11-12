@@ -24,7 +24,7 @@ export function StorageCard({ value, isHost }: { value: ISystemStorage; isHost: 
         ))}
         {!isHost && (
           <small className="muted">
-            {t("Показан каталог данных панели. Для размеров бэкапов и образов нужен помощник Docker.")}
+            {t("Показан размер данных панели. Для подсчёта бэкапов и образов нужен помощник Docker.")}
           </small>
         )}
         {value.message && <Caption>{t(value.message)}</Caption>}

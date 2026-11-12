@@ -6,7 +6,7 @@ test("an expired session returns to login and can authenticate again", async ({ 
   const session = await mockSession(page, true);
   await page.getByRole("link", { name: "Пользователи", exact: true }).click();
   await expect(
-    page.getByText("Добавьте первого пользователя для получения ссылки подключения."),
+    page.getByText("Создайте пользователя, чтобы получить ссылку подключения."),
   ).toBeVisible();
   await page.route("**/api/users", async (route) => {
     session.expire();

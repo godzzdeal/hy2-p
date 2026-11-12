@@ -18,7 +18,7 @@ export const PIXEL = {
   "Конфигурация сохранена": "Configuration saved",
   "Перезапуск включит новые настройки и ненадолго прервёт подключения.":
     "Restarting applies the new settings and briefly interrupts connections.",
-  "Запустите экземпляр, чтобы включить сервер с сохранёнными настройками.":
+  "Запустите экземпляр, чтобы применить сохранённые настройки.":
     "Start the instance to run the server with the saved settings.",
   "Применяем…": "Applying…",
 
@@ -44,7 +44,7 @@ export const PIXEL = {
   "Вход в панель": "Sign in",
   "Войдите, чтобы управлять подключениями и настройками сервера.":
     "Sign in to manage connections and server settings.",
-  "Порт, сертификат и доступ нужны для запуска. Остальные параметры можно оставить по умолчанию.":
+  "Для запуска задайте порт, сертификат и доступ. Остальное можно оставить по умолчанию.":
     "Set the port, certificate and access to get started. Other settings can keep their defaults.",
   "Технические названия": "Technical field names",
   "Имя в сертификате (SNI)": "Certificate name (SNI)",
@@ -56,6 +56,6 @@ export const PIXEL = {
     "The client connection port. Save the change, then select Apply UDP port.",
   "Hysteria2 установлен": "Hysteria2 is installed",
   "Установите HY2 в разделе «Управление HY2».": "Install Hysteria2 in HY2 control.",
-  "Сохранение не прерывает подключения. Чтобы применить настройки, перезапустите экземпляр.":
+  "Сохранение не прерывает подключения. Для применения перезапустите экземпляр.":
     "Saving keeps connections active. Restart the instance to apply the settings.",
 };

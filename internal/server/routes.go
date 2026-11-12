@@ -42,8 +42,8 @@ func routes(auth *auth.Handler, users *users.Handler, registry *instances.Regist
 	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
 	mux.HandleFunc("GET /api/panel/restart/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{
-		"GET /api/admin/backups":                  cloudbackup.Panel,
-		"PUT /api/admin/backups":                  cloudbackup.Panel,
+		"GET /api/admin/backups/storages":         cloudbackup.Storages,
+		"POST /api/admin/backups/storages":        cloudbackup.Storages,
 		"GET /api/panel/maintenance":              portweb.Maintenance,
 		"POST /api/panel/maintenance":             portweb.Maintenance,
 		"GET /api/panel/versions":                 panelVersions.Read,

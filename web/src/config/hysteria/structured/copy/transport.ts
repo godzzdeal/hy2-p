@@ -2,15 +2,15 @@ import { type IFieldCopy } from "@/services/configuration/structured/field-types
 export const TRANSPORT_COPY: Record<string, IFieldCopy> = {
   listen: {
     label: "Порт Hysteria2",
-    hint: "Например :61254. Это порт VPN внутри контейнера. Порт входа в веб-панель настраивается отдельно.",
+    hint: "Например :61254. UDP-порт экземпляра внутри контейнера. Порт веб-панели задаётся отдельно.",
   },
   "bandwidth.up": {
     label: "Скорость скачивания у клиента",
-    hint: "Лимит для каждого подключения в режиме Brutal, например 100 mbps. Пустое поле означает отсутствие лимита.",
+    hint: "Скорость от сервера к клиенту в режиме Brutal, например 100 mbps. Пустое поле снимает лимит.",
   },
   "bandwidth.down": {
     label: "Скорость отправки у клиента",
-    hint: "Лимит передачи данных от клиента к серверу в режиме Brutal, например 50 mbps. На BBR и Reno не влияет.",
+    hint: "Скорость от клиента к серверу в режиме Brutal, например 50 mbps. На BBR и Reno не влияет.",
   },
   "bandwidth.disableLossCompensation": {
     label: "Отключить компенсацию потерь",
@@ -26,7 +26,7 @@ export const TRANSPORT_COPY: Record<string, IFieldCopy> = {
   },
   "congestion.bbrProfile": {
     label: "Профиль BBR",
-    hint: "Профиль BBR: standard, conservative или aggressive. Применяется только при congestion.type: bbr.",
+    hint: "Профиль BBR: standard, conservative или aggressive. Действует при congestion.type: bbr.",
   },
   speedTest: {
     label: "Тест скорости",
@@ -34,7 +34,7 @@ export const TRANSPORT_COPY: Record<string, IFieldCopy> = {
   },
   disableUDP: {
     label: "Запретить UDP-запросы клиентов",
-    hint: "Отключает UDP-трафик внутри VPN, например для игр и звонков. Само подключение Hysteria2 продолжит использовать UDP.",
+    hint: "Запрещает передачу UDP через VPN, в том числе для игр и звонков. Соединение Hysteria2 по-прежнему использует UDP.",
   },
   udpIdleTimeout: {
     label: "Таймаут UDP",
@@ -46,7 +46,7 @@ export const TRANSPORT_COPY: Record<string, IFieldCopy> = {
   },
   "quic.maxStreamReceiveWindow": {
     label: "Максимальный буфер потока",
-    hint: "Максимальный буфер одного потока в байтах. Большие значения увеличивают расход памяти.",
+    hint: "Максимальный буфер потока в байтах. Чем он больше, тем выше расход памяти.",
   },
   "quic.initConnReceiveWindow": {
     label: "Начальный буфер подключения",
@@ -58,7 +58,7 @@ export const TRANSPORT_COPY: Record<string, IFieldCopy> = {
   },
   "quic.maxIncomingStreams": {
     label: "Одновременные потоки",
-    hint: "Сколько параллельных потоков разрешено одному подключению. Низкий предел может замедлять открытие сайтов.",
+    hint: "Число одновременных потоков на подключение. Низкий предел может замедлить открытие сайтов.",
   },
   "quic.maxIdleTimeout": {
     label: "Таймаут соединения",
@@ -66,15 +66,15 @@ export const TRANSPORT_COPY: Record<string, IFieldCopy> = {
   },
   "quic.disablePathMTUDiscovery": {
     label: "Не подбирать размер пакетов",
-    hint: "Отключает автоматический поиск подходящего размера пакета. Меняйте только при диагностике проблем сети.",
+    hint: "Отключает подбор размера пакета. Меняйте только для диагностики сети.",
   },
   "quic.disableStatelessReset": {
     label: "Отключить быстрый сброс сессий",
-    hint: "Расширенная настройка QUIC. Для обычного сервера оставьте значение по умолчанию.",
+    hint: "Дополнительные параметры QUIC. Если не настраивали их, оставьте по умолчанию.",
   },
   "obfs.type": {
     label: "Маскировка трафика",
-    hint: "Меняет внешний вид UDP-пакетов. Для экспорта ссылки выберите Salamander. После смены обновите подписку клиента.",
+    hint: "Меняет вид UDP-пакетов. Для ссылки подключения выберите Salamander. После смены обновите подписку.",
   },
   "obfs.salamander.password": {
     label: "Пароль маскировки",

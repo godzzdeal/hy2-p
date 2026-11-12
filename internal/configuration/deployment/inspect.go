@@ -63,12 +63,12 @@ func Inspect(settings configuration.Settings, container bool, published, target 
 	host, port, err := net.SplitHostPort(config.Listen)
 	number, portError := strconv.Atoi(port)
 	if err != nil || portError != nil || number < 1 || number > 65535 {
-		result.UDPWarning = "Для автоматического проброса Docker укажите один UDP-порт в listen, например :61254."
+		result.UDPWarning = "Для применения порта Docker из панели укажите один UDP-порт в listen, например :61254."
 		return result, nil
 	}
 	result.UDPListenPort = strconv.Itoa(number)
 	if container && host != "" && host != "0.0.0.0" && host != "::" {
-		result.UDPWarning = "Для автоприменения в Docker укажите listen без фиксированного IP, например :61254."
+		result.UDPWarning = "Для применения порта Docker из панели задайте listen без IP, например :61254."
 	}
 	address := net.ParseIP(host)
 	if container && (host == "localhost" || address != nil && address.IsLoopback()) {

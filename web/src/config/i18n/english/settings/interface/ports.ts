@@ -12,13 +12,13 @@ export const PORTS = {
   "Восстанавливаем связь с панелью. Проверка продолжается.":
     "Reconnecting to the panel. Verification continues.",
   "Ожидаем ответ помощника…": "Waiting for the deployment helper…",
-  "Проверены проброс Docker, локальный UDP-ответ и работа экземпляра. Доступ из мобильной сети и firewall хостинга проверяются отдельно.":
+  "Проверены публикация Docker, локальный UDP-ответ и работа экземпляра. Проверьте подключение через сеть оператора и firewall хостинга отдельно.":
     "Docker port mapping, local UDP response and instance health were checked. Mobile connectivity and the hosting firewall need a separate check.",
   "Если появился экран входа, войдите в панель заново.": "If the login screen appears, sign in again.",
   Понятно: "Got it",
   "Запускаем проверку…": "Starting verification…",
   "Применить UDP-порт": "Apply UDP port",
-  "Панель кратковременно перезапустится. Результат проверки появится здесь; затем может потребоваться вход.":
+  "Панель ненадолго перезапустится, затем здесь появится результат проверки. Может потребоваться повторный вход.":
     "The panel will restart briefly. The result will appear here; you may need to sign in again.",
   "Для проверки сначала запустите экземпляр.": "Start the instance before verification.",
   "Сначала сохраните изменения конфигурации.": "Save your configuration changes first.",

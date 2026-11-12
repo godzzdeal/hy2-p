@@ -11,7 +11,7 @@ restore_backup() {
   engine volume inspect "$VOLUME" >/dev/null || return 1
   tar -tzf "$snapshot/data.tar.gz" >/dev/null || return 1
   tar -tzf "$snapshot/certs.tar.gz" >/dev/null || return 1
-  log "Восстанавливаем согласованную резервную копию $snapshot"
+  log "Восстанавливаем резервную копию $snapshot"
   engine run --rm -i --network none --user 0 -v "$VOLUME:/data" \
     --entrypoint sh "$(image_for "$sha")" -ec \
     'find /data -mindepth 1 -maxdepth 1 -exec rm -rf -- {} \; ; tar -xzf - -C /data' \

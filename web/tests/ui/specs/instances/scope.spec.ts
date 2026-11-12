@@ -78,7 +78,7 @@ test("certificate status belongs to the selected core", async ({ page }) => {
   await page.getByRole("option", { name: "Второй", exact: true }).click();
   await page.getByRole("link", { name: "Конфигурация", exact: true }).click();
   await page.getByRole("button", { name: "TLS / ACME", exact: true }).click();
-  await expect(page.getByText("Сертификаты пока не найдены.", { exact: false })).toBeVisible();
+  await expect(page.getByText("Сертификаты не найдены.", { exact: false })).toBeVisible();
   expect(fixture.requests).toContain("GET /api/instances/" + EXTRA_ID + "/certificates/hysteria");
   expect(fixture.requests.some((request) => request.includes("/instances/" + EXTRA_ID + "/instances/"))).toBe(
     false,

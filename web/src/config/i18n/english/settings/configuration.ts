@@ -10,15 +10,14 @@ export const CONFIGURATION: Record<string, string> = {
   "Не удалось проверить UDP-порты Docker.": "Could not check Docker UDP ports.",
   "После команды войдите в панель заново. Публичный UDP-порт должен быть разрешён в сетевом экране сервера и хостинга.":
     "Sign in again after running the command. Allow the public UDP port in the server and hosting firewall.",
-  "Для автоматического проброса Docker укажите один UDP-порт в listen, например :61254.":
+  "Для применения порта Docker из панели укажите один UDP-порт в listen, например :61254.":
     "For automatic Docker forwarding, set a single UDP port in listen, for example :61254.",
   "Экземпляр слушает только внутри контейнера. Для подключения снаружи укажите listen без 127.0.0.1, например :61254.":
     "The instance listens on container loopback only. To accept external connections, set listen without 127.0.0.1, for example :61254.",
   "Порт для подключения клиента. Проброс Docker показан ниже.":
     "The client connection port. Docker forwarding is shown below.",
   "Добавить параметр": "Add entry",
-  "Добавьте первого пользователя для получения ссылки подключения.":
-    "Add your first user to get a connection URL.",
+  "Создайте пользователя, чтобы получить ссылку подключения.": "Add your first user to get a connection URL.",
   Документация: "Documentation",
   "Домен веб-панели": "Web panel domain",
   "Домен или IP, доступный клиентам.": "A domain or IP address reachable by clients.",
@@ -120,7 +119,7 @@ export const CONFIGURATION: Record<string, string> = {
   "Новый пароль подключения": "New connection password",
   "Новый пользователь": "New user",
   "Маршрутизация клиентов": "Client routing",
-  "Правила передаются в подписке для Happ. Другие приложения могут их игнорировать. После обновления подписки переподключитесь.":
+  "Правила передаются в подписке для Happ. Другие приложения могут их игнорировать. Обновите подписку и переподключитесь.":
     "These subscription rules are supported by Happ. Other apps may ignore them. Reconnect after updating the subscription.",
   "Выбранные сайты напрямую, остальные через VPN": "Selected websites directly, everything else through VPN",
   "Сайты для прямого доступа": "Websites to access directly",

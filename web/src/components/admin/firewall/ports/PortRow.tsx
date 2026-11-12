@@ -23,7 +23,7 @@ export function PortRow({ port }: { port: IPortSummary }) {
       />
       {port.pending && (
         <Caption className="text-warning">
-          {t("Изменение ещё нужно применить или опубликовать порт Docker.")}
+          {t("Порт ещё не применён. Сохраните настройки и примените публикацию Docker.")}
         </Caption>
       )}
     </li>

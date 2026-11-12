@@ -16,7 +16,7 @@ export function CloudLogin({ challenge, onBack }: { challenge: string; onBack: (
       onSubmit={({ password }) => login.mutate({ challenge, password })}
     >
       <h2>{t("Облачный пароль")}</h2>
-      <Caption>{t("Введите дополнительный пароль, чтобы завершить вход.")}</Caption>
+      <Caption>{t("Введите облачный пароль, чтобы завершить вход.")}</Caption>
       <FormPassword
         control={form.control}
         name="password"

@@ -1,5 +1,5 @@
 export const API_ROUTES = {
-  backups: "/admin/backups",
+  storages: "/admin/backups/storages",
   panelMaintenance: "/panel/maintenance",
   panelVersions: "/panel/versions",
   system: "/system",

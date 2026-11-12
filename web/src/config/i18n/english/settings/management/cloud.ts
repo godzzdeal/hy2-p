@@ -1,7 +1,6 @@
 export const CLOUD = {
   "Облачный пароль": "Cloud password",
-  "Введите дополнительный пароль, чтобы завершить вход.":
-    "Enter your additional password to complete sign-in.",
+  "Введите облачный пароль, чтобы завершить вход.": "Enter your cloud password to complete sign-in.",
   "Проверяем…": "Checking…",
   Подтвердить: "Confirm",
   "Вернуться к входу": "Back to sign-in",
@@ -20,8 +19,8 @@ export const CLOUD = {
   "Включить облачный пароль": "Enable cloud password",
   Включён: "Enabled",
   "Не включён": "Not enabled",
-  "Дополнительный пароль, который запрашивается после основного пароля при каждом входе.":
-    "An additional password requested after your main password whenever you sign in.",
+  "Второй пароль для входа в панель. Вводится после основного при каждом входе.":
+    "A second password for the panel, entered after the main password at each sign-in.",
   "Настройки облачного пароля сохранены. Войдите заново.": "Cloud password settings saved. Sign in again.",
   "Здесь появится созданный пароль": "Your generated password appears here",
   "Неверный облачный пароль": "Incorrect cloud password",

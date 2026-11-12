@@ -126,6 +126,9 @@ export async function mockPanel(page: Page, isAuthorized = true, initial: IConfi
       case "/api/admin/account":
         response = { username: "admin" };
         break;
+      case "/api/admin/backups/storages":
+        response = route.request().method() === "POST" ? { providers: [] } : { accounts: [] };
+        break;
       case "/api/admin/announcement":
         if (route.request().method() === "PUT")
           announcement = route.request().postDataJSON() as IAnnouncement;

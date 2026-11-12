@@ -1,9 +1,8 @@
 export const ERRORS: Record<string, string> = {
   "Учётная запись администратора": "Administrator account",
-  "Учётная запись, сетевой адрес и сертификат веб-интерфейса.":
-    "Sign-in credentials, network address and web interface certificate.",
-  "Файл загружается с официального GitHub и сверяется с SHA-256. Предыдущий экземпляр продолжает работать до завершения загрузки.":
-    "The file is downloaded from the official GitHub release and checked against SHA-256. The previous server keeps running until the download finishes.",
+  "Логин, пароли, адрес и HTTPS панели.": "Username, passwords, address and HTTPS settings.",
+  "Файл скачивается с официального GitHub и проверяется по SHA-256. Текущий экземпляр работает до конца загрузки.":
+    "The file is downloaded from the official GitHub release and checked against SHA-256. The current instance runs until the download finishes.",
   "Файл правил ACL": "ACL rules file",
   "Файл сертификата слишком большой": "Certificate file is too large",
   "Центр сертификации": "Certificate authority",
@@ -16,7 +15,7 @@ export const ERRORS: Record<string, string> = {
     "Instance started, but rollback state could not be saved: ",
   "Управление HY2": "HY2 control",
   "Экземпляр остановлен вручную": "Instance stopped manually",
-  "Экземпляр перезапущен. Watchdog продолжает наблюдение.":
+  "Экземпляр перезапущен. Watchdog следит за его работой.":
     "Instance restarted. Watchdog is still monitoring it.",
   "Экземпляр под контролем": "Instance under control",
   "Экземпляр уже запущен": "Instance is already running",

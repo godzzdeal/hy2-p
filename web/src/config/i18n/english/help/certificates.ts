@@ -1,6 +1,6 @@
 export const CERTIFICATES_HELP = {
   "Сертификат сервера": "Server certificate",
-  "Путь к файлу сертификата внутри контейнера. Удобнее загрузить сертификат через форму ниже.":
+  "Путь к сертификату внутри контейнера. Для загрузки с компьютера используйте форму ниже.":
     "Certificate file path inside the container. You can upload it using the form below.",
   "Закрытый ключ сертификата": "Certificate private key",
   "Путь к ключу от этого сертификата. Ключ не нужно передавать пользователям.":
@@ -9,11 +9,10 @@ export const CERTIFICATES_HELP = {
   "Проверяет имя SNI клиента по сертификату сервера.":
     "Checks the client SNI against the server certificate.",
   "Сертификаты доверенных клиентов": "Trusted client certificates",
-  "Нужно только для входа по клиентскому сертификату. Обычным ссылкам подключения это не требуется.":
-    "Only needed for client certificate authentication. Regular connection links do not require this.",
+  "Нужен только для входа по клиентскому сертификату.": "Only needed for client certificate authentication.",
   "Ключ ECH": "ECH key",
-  "Путь к ключу шифрования имени сервера. Требуется совместимый клиент и отдельная настройка.":
-    "Key file for encrypted server names. Requires a compatible client and additional setup.",
+  "Путь к ключу ECH. Создайте его отдельно. Для подключения нужен клиент с поддержкой ECH.":
+    "ECH key file path. Create the key separately. Connections require a client with ECH support.",
   "Домены сервера": "Server domains",
   "Домены для сертификата, каждый с новой строки. Они должны указывать на этот сервер.":
     "Domains to include in the certificate, one per line. They must point to this server.",
@@ -22,7 +21,7 @@ export const CERTIFICATES_HELP = {
   "Кто выпускает сертификат": "Certificate authority",
   "Центр сертификации для выпуска сертификата.": "Certificate authority used to issue the certificate.",
   "Хранилище сертификатов": "Certificate storage",
-  "Папка с сертификатами и данными продления. Пустое поле использует постоянное хранилище панели.":
+  "Папка сертификатов и данных продления. Оставьте пустым для постоянного хранилища панели.":
     "Directory for certificates and renewal data. Leave empty to use the panel's persistent storage.",
   "Способ подтверждения домена": "Domain validation method",
   "HTTP требует внешний TCP 80. TLS требует TCP 443. DNS использует доступ к API вашего DNS-провайдера.":
@@ -37,11 +36,11 @@ export const CERTIFICATES_HELP = {
   "Внешний TCP 443 должен быть направлен на этот порт контейнера.":
     "Public TCP 443 must forward to this container port.",
   "Общий пароль подключения": "Shared connection password",
-  "Один пароль для всех клиентов в нативном режиме. Индивидуальные пользователи панели в этом режиме не управляют доступом.":
-    "One password for all clients in native mode. Panel user accounts do not control access in this mode.",
+  "Один пароль для всех клиентов в режиме «Настройки Hysteria2». Пользователи панели в этом режиме не управляют доступом.":
+    "One password for all clients in Hysteria2 settings mode. Panel user accounts do not control access in this mode.",
   "Логины и пароли": "Usernames and passwords",
-  "Добавьте пары логин и пароль для нативной аутентификации Hysteria2.":
-    "Add username and password pairs for native Hysteria2 authentication.",
+  "Добавьте логины и пароли для режима «Настройки Hysteria2».":
+    "Add usernames and passwords for Hysteria2 settings mode.",
   "Адрес проверки доступа": "Authentication service URL",
   "Hysteria2 будет обращаться к этому серверу, чтобы проверить данные клиента.":
     "Hysteria2 asks this service to verify client credentials.",

@@ -36,7 +36,7 @@ test("field information opens with keyboard or touch without submitting or movin
   await chooseTheme(page,theme);await trigger.scrollIntoViewIfNeeded();
   const input=page.getByLabel("listen",{exact:true});const before=(await input.boundingBox())!;
   await trigger.focus();await trigger.press("Enter");await expect(popup).toBeVisible();
-  await expect(popup).toContainText("Это порт VPN внутри контейнера");
+  await expect(popup).toContainText("UDP-порт экземпляра внутри контейнера");
   await expect(popup).toContainText("По умолчанию: :443");
   expect((await input.boundingBox())!.y).toBe(before.y);
   const bounds=(await popup.boundingBox())!;

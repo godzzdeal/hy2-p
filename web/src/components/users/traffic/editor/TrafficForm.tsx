@@ -25,7 +25,7 @@ export function TrafficForm({
     <form onSubmit={editor.onSubmit}>
       <Notice>
         {t("Использовано:")} {formatBytes(usage.upload + usage.download, t)}
-        {t(". При исчерпании квоты доступ блокируется до её увеличения или сброса счётчиков.")}
+        {t(". Когда лимит исчерпан, увеличьте его или сбросьте счётчики, чтобы вернуть доступ.")}
       </Notice>
       {!!usage.groupLimit && (
         <Notice>

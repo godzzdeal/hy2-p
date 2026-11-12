@@ -17,7 +17,7 @@ export const DOCUMENTATION = {
     "Mimic is required on both the server and a Linux client. Standard phone clients cannot connect. Port hopping is not supported.",
   "Выполните на сервере. Команда установит модуль Linux, добавит TCP-порт и перезапустит панель после подтверждения.":
     "Run on your server. After confirmation, the command installs the Linux module, publishes the TCP port and restarts the panel.",
-  "Режим выделяется одному экземпляру. Остальные продолжают работать с обычным UDP. В Docker используется интерфейс контейнера, обычно eth0.":
+  "Mimic работает с одним экземпляром. Остальные используют обычный UDP. В Docker используется интерфейс контейнера, обычно eth0.":
     "The mode is assigned to one instance. Other instances keep using regular UDP. In Docker, use the container interface, usually eth0.",
   "Отключить режим установки": "Disable installation mode",
   "Перед отключением выключите mimic.enabled и сохраните конфигурацию.":

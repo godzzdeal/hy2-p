@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	cloudtransfer "hy2-panel/internal/cloudbackup/transfer"
 	"hy2-panel/internal/panelmaintenance/job"
 	"hy2-panel/internal/portcontrol/agent"
 	"hy2-panel/internal/portcontrol/probe"
@@ -18,6 +19,8 @@ func main() {
 		mode = os.Args[1]
 	}
 	switch mode {
+	case "cloud-config", "cloud-save":
+		err = cloudtransfer.CLI(context.Background(), os.Getenv("HY2_INSTALL_DIR"), os.Args[1:], os.Stdout)
 	case "maintenance":
 		if len(os.Args) != 3 {
 			log.Fatal("expected maintenance ticket")

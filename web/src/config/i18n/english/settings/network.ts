@@ -2,7 +2,7 @@ export const NETWORK = {
   Предупреждение: "Warning",
   "Информация о поле {{field}}": "About {{field}}",
   "Закрыть подсказку": "Close field information",
-  "Выберите, на каких сетевых интерфейсах доступна панель. Локальный адрес подходит для reverse proxy.":
+  "Где панель принимает подключения. Для reverse proxy можно выбрать локальный адрес.":
     "Choose the network interfaces the panel listens on. A loopback address works with a reverse proxy.",
   "Порт для входа в веб-панель. После изменения сохраните настройки и перезапустите панель.":
     "The port used to access the panel. Save the settings and restart the panel after changing it.",
@@ -65,11 +65,11 @@ export const NETWORK = {
     "Files are verified with SHA-256. The previous version is kept for rollback.",
   "Общий флаг пользователей": "Default user flag",
   "Общий флаг": "Default flag",
-  "Используется в панели и подписках, если у пользователя не выбран свой флаг. Имена пользователей сохраняются. После изменения обновите подписку в используемом приложении.":
+  "Общий флаг для пользователей без своего флага. Имена не меняются. После изменения обновите подписку в приложении.":
     "Used in the panel and subscriptions when a user has no individual flag. User names are kept unchanged. Refresh the subscription after changing it.",
   "HTTP без сертификата": "HTTP without a certificate",
   "Домен или IP веб-панели": "Panel domain or IP address",
-  "Домен и сертификат не нужны. Адрес формируется автоматически. Соединение HTTP не зашифровано.":
+  "Домен и сертификат не нужны. Адрес формируется автоматически. HTTP не шифрует соединение.":
     "No domain or certificate is required. The address is generated automatically. HTTP traffic is not encrypted.",
   "Входящий TCP 80 должен вести на этот порт. Для домена проверьте DNS, для IP укажите публичный адрес сервера.":
     "Inbound TCP port 80 must reach this port. Check DNS for a domain, or enter the server's public IP address.",

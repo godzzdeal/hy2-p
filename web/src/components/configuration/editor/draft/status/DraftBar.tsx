@@ -28,7 +28,7 @@ export function DraftBar({
             <span className="md:hidden text-lg">{t(isDirty ? "Не сохранено" : "Сохранено")}</span>
           </strong>
           <small className="hidden text-foreground md:block">
-            {t("Сохранение не прерывает подключения. Чтобы применить настройки, перезапустите экземпляр.")}
+            {t("Сохранение не прерывает подключения. Для применения перезапустите экземпляр.")}
           </small>
         </div>
       </div>

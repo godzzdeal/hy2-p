@@ -1,6 +1,6 @@
 import { QUERY_KEYS } from "@/config/network";
 import { endSession } from "@/hooks/session/end-session";
-import { adminApi, backupsApi } from "@/services/admin/admin-api";
+import { adminApi } from "@/services/admin/admin-api";
 import { useUiStore } from "@/store/ui-store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export function useAccount() {
@@ -38,19 +38,4 @@ export function useSaveWeb() {
       notify("Настройки сети сохранены. Для применения перезапустите панель.");
     },
   });
-}
-
-const BACKUP_KEY = ["admin", "backups"] as const;
-export function useBackups() {
-  const client = useQueryClient();
-  const settings = useQuery({ queryKey: BACKUP_KEY, queryFn: backupsApi.read });
-  const save = useMutation({
-    mutationFn: backupsApi.save,
-    onSuccess: (result) => {
-      client.setQueryData(BACKUP_KEY, result);
-      useUiStore.getState().notify("Хранилище подключено");
-    },
-    onError: useUiStore.getState().showError,
-  });
-  return { settings, save };
 }

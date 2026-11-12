@@ -1,5 +1,5 @@
 export const EMOJI = {
-  "Флаг станет иконкой подключения в совместимых приложениях. Эмодзи можно добавить прямо в имя. После изменения обновите подписку.":
+  "Флаг станет иконкой подключения в совместимом приложении. Эмодзи добавляйте в имя. После изменения обновите подписку.":
     "The flag becomes the connection icon in compatible apps. Add emoji directly to the name. Refresh the subscription after changing it.",
   "Выбрать эмодзи": "Choose emoji",
   "Изменить эмодзи": "Change emoji",
