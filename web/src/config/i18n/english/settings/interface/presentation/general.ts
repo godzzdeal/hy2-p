@@ -10,9 +10,9 @@ export const INTERFACE = {
   "Показывать объявление в подписках": "Show announcement in subscriptions",
   "Текст объявления": "Announcement text",
   "Обновление подписки (часы)": "Subscription update interval (hours)",
-  "Совместимое приложение показывает объявление после обновления подписки. Это не push-уведомление; фоновое обновление зависит от приложения и ОС.":
+  "Объявление появится в совместимом приложении после обновления подписки. Фоновое обновление зависит от приложения и ОС. Мгновенной рассылки нет.":
     "Compatible apps display the announcement after a subscription update. This is not a push notification; background updates depend on the app and operating system.",
-  "Сообщение получат пользователи подписки. При импорте только ссылки сервера объявление не передаётся.":
+  "Объявление передаётся через подписку. Отдельная ссылка сервера его не содержит.":
     "The message is delivered to subscription users. Importing only a server link does not deliver announcements.",
   "Сохранить объявление": "Save announcement",
   "Объявление сохранено. Клиенты получат его при обновлении подписки.":
@@ -56,9 +56,9 @@ export const INTERFACE = {
   "Настройки Hysteria2": "Hysteria2 configuration",
   "Пользователи панели не применяются. Доступ определяют параметры auth ниже.":
     "Panel users are not applied. Access is controlled by the auth settings below.",
-  "HY2 проверяет пользователей через панель. Добавлять их в YAML и перезапускать экземпляр после создания пользователя не нужно.":
+  "HY2 проверяет пользователей через панель. После создания пользователя не нужно менять YAML или перезапускать экземпляр.":
     "HY2 authenticates users through the panel. Adding a user does not require YAML changes or an instance restart.",
-  "Создайте пользователя и откройте его подключение, чтобы скопировать подписку или QR-код.":
+  "Создайте пользователя и откройте «Подключение», чтобы скопировать подписку или показать QR-код.":
     "Create a user and open their connection to copy the subscription or QR code.",
   Упорядочить: "Sort",
   Открыть: "Open",

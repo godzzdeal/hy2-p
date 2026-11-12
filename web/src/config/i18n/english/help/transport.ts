@@ -1,12 +1,12 @@
 export const TRANSPORT_HELP = {
   "Порт Hysteria2": "Hysteria2 port",
-  "Например :61254. Это порт VPN внутри контейнера. Порт входа в веб-панель настраивается отдельно.":
+  "Например :61254. UDP-порт экземпляра внутри контейнера. Порт веб-панели задаётся отдельно.":
     "For example :61254. This is the VPN port inside the container. The web panel port is configured separately.",
   "Скорость скачивания у клиента": "Client download speed",
-  "Лимит для каждого подключения в режиме Brutal, например 100 mbps. Пустое поле означает отсутствие лимита.":
-    "Per-connection limit in Brutal mode, for example 100 mbps. Leave empty for no limit.",
+  "Скорость от сервера к клиенту в режиме Brutal, например 100 mbps. Пустое поле снимает лимит.":
+    "Server-to-client speed in Brutal mode, for example 100 mbps. Leave empty for no limit.",
   "Скорость отправки у клиента": "Client upload speed",
-  "Лимит передачи данных от клиента к серверу в режиме Brutal, например 50 mbps. На BBR и Reno не влияет.":
+  "Скорость от клиента к серверу в режиме Brutal, например 50 mbps. На BBR и Reno не влияет.":
     "Client-to-server limit in Brutal mode, for example 50 mbps. Has no effect on BBR or Reno.",
   "Отключить компенсацию потерь": "Disable loss compensation",
   "В режиме Brutal сервер может отправлять чуть больше данных при потерях. Включите, чтобы строго соблюдать заданную скорость.":
@@ -18,13 +18,13 @@ export const TRANSPORT_HELP = {
   "BBR подбирает скорость под качество сети. Reno обычно осторожнее. Если не уверены, оставьте BBR.":
     "BBR adapts to network conditions. Reno is generally more conservative. Leave BBR selected if unsure.",
   "Профиль BBR": "BBR profile",
-  "Профиль BBR: standard, conservative или aggressive. Применяется только при congestion.type: bbr.":
+  "Профиль BBR: standard, conservative или aggressive. Действует при congestion.type: bbr.":
     "BBR profile: standard, conservative or aggressive. Only applies when congestion.type is bbr.",
   "Тест скорости": "Speed test",
   "Разрешить встроенную проверку скорости Hysteria2. Это не проверка доступности сайтов.":
     "Allow the built-in Hysteria2 speed test. This does not check whether websites are reachable.",
   "Запретить UDP-запросы клиентов": "Block client UDP requests",
-  "Отключает UDP-трафик внутри VPN, например для игр и звонков. Само подключение Hysteria2 продолжит использовать UDP.":
+  "Запрещает передачу UDP через VPN, в том числе для игр и звонков. Соединение Hysteria2 по-прежнему использует UDP.":
     "Blocks UDP traffic inside the VPN, such as games and calls. Hysteria2 itself still uses UDP.",
   "Таймаут UDP": "UDP idle timeout",
   "Через сколько закрывать неактивный UDP-поток, например 60s.":
@@ -33,7 +33,7 @@ export const TRANSPORT_HELP = {
   "Начальный объём буфера для одного потока. Обычно менять не нужно.":
     "Initial receive buffer for one stream. Usually no change is needed.",
   "Максимальный буфер потока": "Maximum stream buffer",
-  "Максимальный буфер одного потока в байтах. Большие значения увеличивают расход памяти.":
+  "Максимальный буфер потока в байтах. Чем он больше, тем выше расход памяти.":
     "Maximum receive buffer per stream in bytes. Larger values use more memory.",
   "Начальный буфер подключения": "Initial connection buffer",
   "Начальный общий буфер одного клиентского подключения в байтах.":
@@ -41,19 +41,19 @@ export const TRANSPORT_HELP = {
   "Максимальный буфер подключения": "Maximum connection buffer",
   "Максимальный общий буфер подключения в байтах.": "Maximum total connection buffer in bytes.",
   "Одновременные потоки": "Concurrent streams",
-  "Сколько параллельных потоков разрешено одному подключению. Низкий предел может замедлять открытие сайтов.":
+  "Число одновременных потоков на подключение. Низкий предел может замедлить открытие сайтов.":
     "Number of simultaneous streams allowed per connection. A low limit may slow down websites.",
   "Таймаут соединения": "Connection idle timeout",
   "Как долго ждать пакеты перед закрытием неактивного соединения.":
     "How long to wait for packets before closing an idle connection.",
   "Не подбирать размер пакетов": "Disable packet size discovery",
-  "Отключает автоматический поиск подходящего размера пакета. Меняйте только при диагностике проблем сети.":
+  "Отключает подбор размера пакета. Меняйте только для диагностики сети.":
     "Disable automatic path MTU discovery. Change this only when diagnosing network issues.",
   "Отключить быстрый сброс сессий": "Disable stateless resets",
-  "Расширенная настройка QUIC. Для обычного сервера оставьте значение по умолчанию.":
-    "Advanced QUIC setting. Keep the default for normal use.",
+  "Дополнительные параметры QUIC. Если не настраивали их, оставьте по умолчанию.":
+    "Additional QUIC settings. Keep the defaults unless you need to change them.",
   "Маскировка трафика": "Traffic obfuscation",
-  "Меняет внешний вид UDP-пакетов. Для экспорта ссылки выберите Salamander. После смены обновите подписку клиента.":
+  "Меняет вид UDP-пакетов. Для ссылки подключения выберите Salamander. После смены обновите подписку.":
     "Changes the appearance of UDP packets. Choose Salamander for connection link export. Refresh client subscriptions after changing it.",
   "Пароль маскировки": "Obfuscation password",
   "Этот пароль должен совпадать на сервере и в приложении. Панель добавит его в ссылку подключения.":

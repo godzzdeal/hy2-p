@@ -21,17 +21,17 @@ export const TOOLS: Record<string, string> = {
   "Доступные экземпляры группы": "Group instances",
   "Лимит трафика на участника, ГБ": "Traffic limit per member, GB",
   "Лимит устройств на участника": "Device limit per member",
-  "0 отключает лимит группы. Личные ограничения продолжают действовать: применяется более строгий лимит и пересечение доступных экземпляров. Трафик участников не сбрасывается.":
-    "0 disables the group limit. Personal restrictions still apply: the stricter limit and the intersection of allowed instances take effect. Traffic counters are preserved.",
-  "Объединяйте пользователей и задавайте общие экземпляры, лимиты трафика и устройств. Каждый пользователь может состоять в одной группе.":
-    "Organize users and set shared instance, traffic and device restrictions. Each user can belong to one group.",
+  "0 снимает лимит группы. При личном и групповом лимите действует меньший. Доступны только экземпляры, разрешённые и группе, и пользователю. Трафик сохраняется.":
+    "0 removes the group limit. The lower personal or group limit applies. Only instances allowed for both the group and the user are available. Traffic counters are kept.",
+  "Объединяйте пользователей в группы с общими лимитами и доступом к экземплярам. Пользователь может входить в одну группу.":
+    "Group users with shared limits and instance access. Each user can belong to one group.",
   "Групп пока нет. Создайте первую и добавьте в неё пользователей.":
     "No groups yet. Create one and assign users to it.",
   "Фильтр по группе": "Filter by group",
   "Все группы": "All groups",
   "Без группы": "No group",
   "Изменить группу пользователя {{id}}": "Change group for user {{id}}",
-  "Лимиты группы дополняют личные. После смены группы подключение перезапустится; при включённом лимите устройств обновите подписку в используемом приложении.":
+  "Ограничения группы действуют вместе с личными. Смена группы перезапустит подключение. Если включён лимит устройств, обновите подписку в приложении.":
     "Group limits supplement personal limits. Changing groups restarts the connection; refresh the subscription if a device limit is enabled.",
   "Лимит группы:": "Group limit:",
   "Личный лимит может быть только строже.": "The personal limit can only be stricter.",
@@ -53,11 +53,11 @@ export const TOOLS: Record<string, string> = {
   "Развернуть меню": "Expand menu",
   "Свернуть меню": "Collapse menu",
   "Какие порты открыть": "Which ports to open",
-  "Обычно нужны TCP-порт панели, UDP-порты экземпляров и TCP 80 для HTTP ACME или 443 для TLS ACME. DNS ACME не требует входящего порта.":
+  "Откройте TCP-порт панели и UDP-порты экземпляров. Для HTTP-проверки ACME нужен TCP 80, для TLS-проверки TCP 443. DNS-проверке входящий порт не нужен.":
     "Usually allow the panel TCP port, instance UDP ports, and TCP 80 for HTTP ACME or 443 for TLS ACME. DNS ACME needs no inbound port.",
   "Порты из настроек и публикации Docker. Доступность из интернета не проверена.":
     "Ports from settings and Docker mappings. Internet reachability has not been checked.",
-  "Изменение ещё нужно применить или опубликовать порт Docker.":
+  "Порт ещё не применён. Сохраните настройки и примените публикацию Docker.":
     "Apply this change or publish the Docker port first.",
   "Скопировать команду для {{port}}": "Copy command for {{port}}",
   "Вход в панель": "Panel access",
@@ -67,13 +67,13 @@ export const TOOLS: Record<string, string> = {
   "HTTP-сайт маскировки": "HTTP masquerade site",
   "HTTPS-сайт маскировки": "HTTPS masquerade site",
   "Не удалось прочитать настройки экземпляров:": "Could not read instance settings:",
-  "Не открывайте Traffic Stats и внутренние порты панели в интернет. SSH-порт оставьте разрешённым. Те же публичные порты разрешите в firewall хостинга.":
+  "Откройте нужные публичные порты и в firewall хостинга. SSH-порт оставьте открытым. Traffic Stats и внутренние порты панели не открывайте в интернет.":
     "Keep Traffic Stats and internal panel ports private. Keep your SSH port allowed. Also allow public ports in the hosting firewall.",
   "Как вернуть доступ или отменить правило": "Restore access or undo a rule",
-  "Если закрыли нужный порт, выберите «Открыть порт» или выполните его команду выше через SSH. Для удаления добавленного правила посмотрите его номер и удалите только эту строку:":
+  "Закрыли нужный порт? Откройте его в панели или выполните команду выше через SSH. Для отмены правила найдите его номер и удалите эту строку:":
     "If you blocked a required port, select Allow port or run its command above over SSH. To remove an added rule, find its number and delete only that entry:",
   НОМЕР_ПРАВИЛА: "RULE_NUMBER",
-  "Удаление правила не восстанавливает прежние правила. Не используйте ufw reset для отката. UFW не заменяет публикацию Docker и firewall хостинга.":
+  "Удаление правила не возвращает прежние правила. Не используйте ufw reset: он удалит их все. Публикация Docker и firewall хостинга настраиваются отдельно.":
     "Deleting a rule does not restore earlier rules. Do not use ufw reset to undo changes. UFW does not replace Docker mappings or the hosting firewall.",
   Б: "B",
   КБ: "KB",
@@ -81,7 +81,7 @@ export const TOOLS: Record<string, string> = {
   ГБ: "GB",
   ТБ: "TB",
   "Фактический секрет Traffic Stats": "Actual Traffic Stats secret",
-  "ACME обновляет TLS-сертификат. ECH создаётся отдельно; клиентам передаётся только публичный tls.ech.":
+  "ACME продлевает TLS-сертификат. Ключ ECH создаётся отдельно. Клиентам передаётся только публичная часть tls.ech.":
     "ACME renews the TLS certificate. ECH uses separate keys; clients receive only the public tls.ech config.",
   "Внешнее имя SNI для ECH": "ECH public SNI name",
   "Создать ключ ECH": "Generate ECH key",
@@ -93,8 +93,8 @@ export const TOOLS: Record<string, string> = {
     "Public ECH is included in the connection link. Refresh the subscription after replacing the key. The client must support ECH for Hysteria2.",
   "Ключ ECH создан. Сохраните конфигурацию и перезапустите экземпляр.":
     "ECH key generated. Save the configuration and restart the instance.",
-  "Панель задаёт trafficStats.listen и trafficStats.secret при запуске экземпляра. Ниже можно получить фактические значения панели.":
-    "The panel sets trafficStats.listen and trafficStats.secret when the instance starts. Retrieve the actual panel values below.",
+  "Панель задаёт trafficStats.listen и trafficStats.secret при запуске экземпляра. Ниже можно посмотреть текущие значения.":
+    "The panel sets trafficStats.listen and trafficStats.secret when the instance starts. View the current values below.",
   "Скрыть секрет": "Hide secret",
   "Показать секрет Traffic Stats": "Show Traffic Stats secret",
   "Адрес статистики": "Statistics address",
@@ -102,13 +102,13 @@ export const TOOLS: Record<string, string> = {
   "Экземпляр остановлен. Значения применятся при запуске.":
     "The instance is stopped. These values will apply at startup.",
   "Скопировать секрет": "Copy secret",
-  "Секрет может измениться при перезапуске панели. API статистики доступен только внутри сервера.":
+  "Секрет может измениться после перезапуска панели. API статистики доступен только внутри сервера.":
     "The secret may change when the panel restarts. The statistics API is only accessible inside the server.",
   "Firewall сервера": "Server firewall",
   "Проверить UFW": "Check UFW",
   "Правила UFW для входящих TCP/UDP-портов Ubuntu. Порты SSH и панели защищены от закрытия.":
     "UFW rules for inbound Ubuntu TCP/UDP ports. SSH and panel ports are protected.",
-  "Порты Docker могут обходить UFW. Удаление правила не гарантирует закрытие порта. Проверьте также firewall хостинга.":
+  "Опубликованные Docker-порты могут обходить UFW. Удаление правила не гарантирует, что порт закроется. Проверьте firewall хостинга.":
     "Docker ports can bypass UFW. Removing a rule does not guarantee that a port is closed. Check the hosting firewall too.",
   "Для подключения помощника выполните на сервере: sudo hy2-panel firewall-setup":
     "To install the helper, run on your server: sudo hy2-panel firewall-setup",

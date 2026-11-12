@@ -1,9 +1,9 @@
 export const ENGINE: Record<string, string> = {
-  ". При исчерпании квоты доступ блокируется до её увеличения или сброса счётчиков.":
+  ". Когда лимит исчерпан, увеличьте его или сбросьте счётчики, чтобы вернуть доступ.":
     ". Access is blocked when the quota is exhausted until you increase it or reset the counters.",
   "; ошибка сохранения: ": "; could not save: ",
   "ACL и исходящие подключения": "ACL and outbounds",
-  "ACME продлевает сертификаты, пока экземпляр работает. DNS-проверка не занимает порты 80/443 и удобна, если на них работает веб-панель.":
+  "ACME продлевает сертификаты, пока экземпляр работает. DNS-проверке не нужны порты 80/443: их можно оставить для веб-панели.":
     "Hysteria2 renews ACME certificates while the instance is running. DNS validation leaves ports 80/443 available for the web panel.",
   "ACME: выпуск и автопродление": "ACME: issuance and renewal",
   "API статистики недоступен": "Statistics API unavailable",
@@ -59,7 +59,7 @@ export const ENGINE: Record<string, string> = {
   "Без срока": "No expiry",
   "Бинарный файл не найден": "Binary not found",
   "Быстрый старт": "Getting started",
-  "В Docker также измените опубликованный порт в Compose: PANEL_PORT должен соответствовать выбранному порту.":
+  "В Docker измените и публикацию порта: значение PANEL_PORT должно совпадать с выбранным портом.":
     "In Docker, also update the published Compose port: PANEL_PORT must match the selected port.",
   "Импортируйте ссылку из буфера обмена или отсканируйте QR-код в используемом приложении.":
     "Import the link from your clipboard or scan the QR code in your app.",
@@ -82,8 +82,8 @@ export const ENGINE: Record<string, string> = {
     "Recovery failed. Check the configuration and logs.",
   "Свойства Hysteria2 и полный YAML.": "Hysteria2 properties and full YAML.",
   "Все пользователи /": "All users /",
-  "Все поля сохраняются. В управляемом режиме auth задаёт панель; в нативном используется выбранный auth. trafficStats обслуживает статистику и watchdog.":
-    "All fields are preserved. The panel controls auth in managed mode; native mode uses your auth settings. trafficStats provides statistics and health checks.",
+  "Все поля сохраняются. В режиме «Пользователи панели» auth задаёт панель. В режиме «Настройки Hysteria2» действуют параметры auth ниже. trafficStats нужен для статистики и watchdog.":
+    "All fields are saved. Panel users mode manages auth automatically. Hysteria2 settings mode uses the auth fields below. trafficStats is needed for statistics and watchdog.",
   "Обзор сервера": "Server overview",
   "Вход, порт и HTTPS": "Sign-in, port and HTTPS",
   "Входим…": "Signing in…",
@@ -101,6 +101,6 @@ export const ENGINE: Record<string, string> = {
   "Для mTLS требуется клиентский сертификат; экспорт ссылки недоступен":
     "mTLS requires a client certificate; a connection URL cannot be exported",
   "Для отката": "Rollback version",
-  "Для проверки нужен рабочий TLS-конфиг. Даже остановленный экземпляр будет запущен на время проверки, затем остановлен снова.":
+  "Для проверки нужны рабочие настройки TLS. Остановленный экземпляр запустится на время проверки, затем остановится.":
     "A working TLS configuration is required. A stopped instance will be started for the trial and stopped again afterwards.",
 };

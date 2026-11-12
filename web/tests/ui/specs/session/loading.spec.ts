@@ -52,7 +52,7 @@ test("API waits use the same loader and leave no spinner after completion", asyn
     release();
     await expect(loader).toHaveCount(0);
     await expect(
-      page.getByText("Добавьте первого пользователя для получения ссылки подключения.", { exact: true }),
+      page.getByText("Создайте пользователя, чтобы получить ссылку подключения.", { exact: true }),
     ).toBeVisible();
   } finally {
     release();

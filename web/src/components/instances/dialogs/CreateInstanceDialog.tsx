@@ -38,7 +38,7 @@ export function CreateInstanceDialog({
   return (
     <Modal title={t("Добавить экземпляр")} onClose={onClose}>
       <p className="muted">
-        {t("Настройки будут скопированы из выбранного экземпляра. Новый экземпляр останется остановленным.")}
+        {t("Настройки скопируются из выбранного экземпляра. Новый экземпляр останется остановленным.")}
       </p>
       <QueryState isLoading={source.isPending} error={source.error} />
       <form onSubmit={onSubmit} className="instance-form grid gap-4">
@@ -65,7 +65,7 @@ export function CreateInstanceDialog({
         </Field>
         <Caption>
           {t(
-            "Выберите свободный UDP-порт, проверьте конфигурацию и примените порт. Затем запустите экземпляр.",
+            "Выберите свободный UDP-порт, сохраните конфигурацию и примените порт. Затем запустите экземпляр.",
           )}
         </Caption>
         <div className="form-actions">

@@ -15,7 +15,9 @@ export function CertificateStatus() {
     <section className="certificate-status grid min-w-0 gap-3">
       {query.data?.certificates.length === 0 && (
         <Notice variant="warning">
-          {t("Сертификаты пока не найдены. Для ACME проверьте запуск экземпляра, DNS и журнал выдачи.")}
+          {t(
+            "Сертификаты не найдены. Если используете ACME, проверьте запуск экземпляра, DNS и журнал выдачи.",
+          )}
         </Notice>
       )}
       <CardHeader className="p-0 pb-3 max-tablet:p-0 max-tablet:pb-3 bg-transparent">

@@ -15,7 +15,7 @@ export const COMMON: Record<string, string> = {
   "Название подписки": "Subscription name",
   Флаг: "Flag",
   "Без флага": "No flag",
-  "Название появится в приложении после обновления подписки. Можно добавить эмодзи.":
+  "Название появится в приложении после обновления подписки. Можно использовать эмодзи.":
     "The name appears in the app after refreshing the subscription. You can add an emoji.",
   "Настройки подписки сохранены. Обновите подписку в используемом приложении.":
     "Subscription settings saved. Update the subscription in your app.",
@@ -40,7 +40,7 @@ export const COMMON: Record<string, string> = {
   "Ожидание перезапуска": "Waiting to restart",
   "Ожидание статистики экземпляра": "Waiting for instance statistics",
   "Операция не выполнена": "Operation failed",
-  "Оставьте новый пароль пустым, чтобы изменить только логин. После сохранения все сессии будут завершены.":
+  "Чтобы изменить только логин, оставьте новый пароль пустым. После сохранения войдите заново на всех устройствах.":
     "Leave the new password empty to change only the username. Saving signs out all sessions.",
   "Оставьте пустым, чтобы не менять": "Leave empty to keep the current value",
   Остановить: "Stop",
@@ -56,12 +56,12 @@ export const COMMON: Record<string, string> = {
   "Отправка сервера": "Server upload",
   "Отправлено клиентом (байты)": "Sent by client (bytes)",
   "ПАНЕЛЬ УПРАВЛЕНИЯ": "CONTROL PANEL",
-  "Панель использует HTTP-аутентификацию для сроков доступа и квот. Нативные параметры ниже не применяются.":
+  "В этом режиме панель проверяет сроки доступа и лимиты через HTTP-аутентификацию. Параметры auth ниже не применяются.":
     "The panel uses HTTP authentication for access expiry and quotas. Native settings below are not applied.",
-  "Панель не подменяет auth. Пользователи и лимиты панели не управляют внешней аутентификацией.":
-    "The panel does not override auth. Panel users and quotas do not control external authentication.",
+  "Доступ определяют настройки auth. Пользователи и лимиты панели здесь не действуют.":
+    "Access is controlled by auth settings. Panel users and limits do not apply here.",
   "Панель управления /": "Control panel /",
-  "Пара сертификат/ключ проверяется перед сохранением. Затем сохраните конфигурацию и перезапустите экземпляр.":
+  "Сертификат и ключ проверяются перед сохранением. После загрузки сохраните конфигурацию и перезапустите экземпляр.":
     "The certificate/key pair is checked before saving. Then save the configuration and restart the instance.",
   "Параметры API DNS-провайдера": "DNS provider API parameters",
   "Параметры подключения": "Connection settings",
@@ -85,7 +85,7 @@ export const COMMON: Record<string, string> = {
   Подключение: "Connection",
   "Подключение ": "Connection ",
   "Ссылка подключения": "Connection link",
-  "Подключения кратковременно прервутся. Панель проверит запуск и локальный API экземпляра. При ошибке она попытается автоматически восстановить предыдущий экземпляр.":
+  "Подключения ненадолго прервутся. Панель проверит запуск и локальный API экземпляра. При ошибке попытается вернуть прежний экземпляр.":
     "Connections will briefly disconnect. The panel checks startup and the local instance API, then tries to restore the previous instance if the check fails.",
   "Подключите устройство": "Connect your device",
   Подписка: "Subscription",
@@ -111,7 +111,7 @@ export const COMMON: Record<string, string> = {
   "Предыдущая версия восстановлена": "Previous version restored",
   "Предыдущая версия восстановлена. Повторный откат на сбойную версию исключён.":
     "Previous version restored. Automatic rollback cannot switch back to the failed version.",
-  "Предыдущая версия сохраняется. При неудачном запуске панель выполняет откат и показывает причину.":
+  "Прежняя версия сохраняется для отката. Если новая не запустится, панель вернёт прежнюю и покажет причину.":
     "The previous version is preserved. If startup fails, the panel rolls back and shows the reason.",
   "Предыдущий экземпляр восстановлен. Причина: ": "Previous instance restored. Reason: ",
   "Предыдущих версий пока нет.": "No previous versions yet.",

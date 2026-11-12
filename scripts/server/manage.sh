@@ -18,8 +18,9 @@ case $command in
       '  start | stop | restart Управление панелью' \
       '  update [vX.Y.Z|main]    Новая версия с резервной копией и проверкой' \
       '  rollback [--yes]       Предыдущая версия и данные из её копии' \
-      '  backup                 Согласованная резервная копия данных и ключей' \
-      '  backup-cloud           Свежая копия с отправкой в подключённое облако' \
+      '  backup                 Резервная копия данных и ключей' \
+      '  backup-cloud [ID]      Свежая копия с отправкой в выбранное облако' \
+      '  check-cloud [ID]       Проверить доступ к выбранному облаку' \
       '  url                    Адрес панели или SSH-туннель'
     printf '%s\n' '  firewall-setup         Подключить помощник управления UFW'
     printf '%s\n' '  mimic-setup [--instance ID|--disable] Настроить установку Mimic'
@@ -30,7 +31,7 @@ case $command in
     printf '%s\n' '  password-reset         Создать новый пароль администратора'
     printf '%s\n' '  export <файл.json>     Экспорт экземпляров, групп и пользователей' '  import <файл.json> [--apply] Просмотр совпадений или добавление записей'
     exit 0 ;;
-  status|logs|start|stop|restart|start-panel|restart-panel|update|rollback|backup|backup-cloud|url|apply-udp|remove-udp|recover-udp|firewall-setup|cloud-password-reset|password-reset|import|export|cleanup-images|uninstall|mimic-setup|mimic-uninstall) ;;
+  status|logs|start|stop|restart|start-panel|restart-panel|update|rollback|backup|backup-cloud|check-cloud|url|apply-udp|remove-udp|recover-udp|firewall-setup|cloud-password-reset|password-reset|import|export|cleanup-images|uninstall|mimic-setup|mimic-uninstall) ;;
   *) die "Неизвестная команда: $command" ;;
 esac
 if [[ $command == uninstall ]]; then
@@ -74,10 +75,10 @@ case $command in
       update) update_panel "$current" "${2:-latest}" ;;
       rollback) rollback_panel "$current" "${2:-}" ;;
       backup) backup_panel "$current" ;;
-      backup-cloud)
+      backup-cloud|check-cloud)
         # shellcheck source=backups/cloud/index.sh
         source "$SCRIPT_DIR/backups/cloud/index.sh"
-        cloud_backup "$current" ;;
+        cloud_backup "$current" "${2:-}" "$command" ;;
       stop) compose "$current" stop panel ;;
       start-panel|restart-panel)
         restart_panel "$current" "$command" || die "Панель не прошла проверку запуска." ;;

@@ -15,7 +15,7 @@ test("configuration keeps its height and warnings share padding and distinct col
   await selectSection(page,"TLS / ACME");
   const body=page.locator(".configuration-section-body");
   const warning=body.locator('.notice[data-variant="warning"]').first();
-  await expect(warning).toContainText("Сертификаты пока не найдены");
+ await expect(warning).toContainText("Сертификаты не найдены");
   const padding=await warning.evaluate(element=>{
    const body=element.closest(".configuration-section-body")!.getBoundingClientRect();const box=element.getBoundingClientRect();
    return {left:box.left-body.left,top:box.top-body.top,right:body.right-box.right};

@@ -36,10 +36,10 @@ export const ADMINISTRATION: Record<string, string> = {
   "Сертификат Hysteria2": "Hysteria2 certificate",
   "Сертификат PEM": "Certificate PEM",
   "Сертификат веб-панели PEM": "Web panel certificate PEM",
-  "Сертификат выпускается и продлевается автоматически. Кеш ACME сохраняется на постоянном томе.":
+  "Сертификат выпускается и продлевается автоматически. Кеш ACME хранится на постоянном томе.":
     "The certificate is issued and renewed automatically. The ACME cache is kept on persistent storage.",
   "Сертификат истёк": "Certificate expired",
-  "Сертификаты пока не найдены. Для ACME проверьте запуск экземпляра, DNS и журнал выдачи.":
+  "Сертификаты не найдены. Если используете ACME, проверьте запуск экземпляра, DNS и журнал выдачи.":
     "No certificates found yet. For ACME, check instance startup, DNS and certificate issuance logs.",
   "Сессия завершена": "Session expired",
   Системная: "System",
@@ -122,8 +122,8 @@ export const ADMINISTRATION: Record<string, string> = {
   "Максимальный размер: 256 КБ": "Maximum size: 256 KB",
   "Создание копии кратковременно прерывает подключения. Архив содержит пароли, ключи и сертификаты.":
     "Creating a backup briefly interrupts connections. The archive contains passwords, keys and certificates.",
-  "Подключите Яндекс Диск, Google Drive или другое хранилище через rclone. Создайте конфигурацию на своём компьютере и загрузите её сюда.":
-    "Connect Yandex Disk, Google Drive or another storage provider with rclone. Create a configuration on your computer and upload it here.",
+  "Подключите хранилище для бэкапов. Для сервиса без формы подключения загрузите конфигурацию rclone.":
+    "Connect storage for backups. If your service has no connection form, upload an rclone configuration.",
   "Новый адрес панели": "New panel address",
   "Открыть новый адрес": "Open new address",
   "Адрес формируется автоматически из домена или IP, протокола и порта панели.":

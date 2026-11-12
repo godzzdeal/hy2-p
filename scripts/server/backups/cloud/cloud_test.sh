@@ -14,6 +14,11 @@ backup_panel() {
  printf 'local-copy' >"$LAST_BACKUP/data.tar.gz"
 }
 FAIL_UPLOAD=false
+compose() {
+ if [[ $* == *' cloud-config '* ]]; then
+   jq -n '{destination:"disk:HY2-P",configText:"[disk]\ntype=yandex\ntoken=PRIVATE"}'
+ fi
+}
 engine() {
  printf '%s\n' "$*" >>"$ROOT/events"
  if [[ $1 == run && $* == *' copyto '* && $FAIL_UPLOAD == true ]]; then return 1; fi

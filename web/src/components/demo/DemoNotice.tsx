@@ -18,7 +18,7 @@ export function DemoNotice() {
       <div>
         <strong>{t("HY2-P Demo")}</strong>
         <p>{t("Демоверсия. Изменения видны только в этой вкладке. VPN недоступен.")}</p>
-        <small>{t("Вход: demo / demo. Перезагрузка сбрасывает пример.")}</small>
+        <small>{t("Вход: demo / demo. Перезагрузка сбрасывает изменения.")}</small>
       </div>
       <Button type="button" variant="secondary" onClick={onReset}>
         <RefreshCw width={24} height={24} aria-hidden />

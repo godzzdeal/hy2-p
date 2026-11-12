@@ -64,7 +64,7 @@ export default function UsersPage() {
       </div>
       {configuration.data?.authMode === "native" && (
         <Notice variant="warning">
-          {t("Панель не подменяет auth. Пользователи и лимиты панели не управляют внешней аутентификацией.")}
+          {t("Доступ определяют настройки auth. Пользователи и лимиты панели здесь не действуют.")}
         </Notice>
       )}
       {configuration.data && configuration.data.authMode !== "native" && (
@@ -92,7 +92,7 @@ export default function UsersPage() {
           <EmptyState>
             {search
               ? t("Ничего не найдено.")
-              : t("Добавьте первого пользователя для получения ссылки подключения.")}
+              : t("Создайте пользователя, чтобы получить ссылку подключения.")}
           </EmptyState>
         )}
         <Pagination page={current} pageCount={pageCount} onChange={setPage} />

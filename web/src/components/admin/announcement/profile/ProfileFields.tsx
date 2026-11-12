@@ -26,7 +26,9 @@ export function ProfileFields({ value, onChange }: { value: string; onChange: (v
         <small id={id + "-hint"}>
           {count} / {PROFILE_TITLE_LIMIT}
         </small>
-        <small>{t("Название появится в приложении после обновления подписки. Можно добавить эмодзи.")}</small>
+        <small>
+          {t("Название появится в приложении после обновления подписки. Можно использовать эмодзи.")}
+        </small>
       </Field>
       <EmojiPicker value={leadingEmoji(value)} onChange={(emoji) => onChange(replaceEmoji(value, emoji))} />
       <div className="subscription-preview p-3 border border-line rounded-none bg-input md:col-span-2">

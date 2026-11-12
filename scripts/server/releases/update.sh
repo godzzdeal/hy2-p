@@ -28,7 +28,7 @@ update_panel() {
     source "$(dirname -- "${BASH_SOURCE[0]}")/../mimic/compose.sh"
     mimic_release_supported "$next"
   fi
-  log "Подготавливаем готовый образ; текущая панель продолжает работать."
+  log "Готовим образ. Текущая панель продолжает работать."
   prepare_image "$next" || return 1
   sync_listener "$old"
   compose "$old" stop panel || return 1

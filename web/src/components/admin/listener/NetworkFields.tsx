@@ -20,9 +20,7 @@ export function NetworkFields({
       <InfoField
         htmlFor={id + "-host"}
         label={t("Адрес веб-панели")}
-        description={t(
-          "Выберите, на каких сетевых интерфейсах доступна панель. Локальный адрес подходит для reverse proxy.",
-        )}
+        description={t("Где панель принимает подключения. Для reverse proxy можно выбрать локальный адрес.")}
       >
         <Select
           id={id + "-host"}

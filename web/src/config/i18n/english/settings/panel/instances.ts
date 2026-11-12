@@ -12,9 +12,9 @@ export const INSTANCES: Record<string, string> = {
   "Порт пока не опубликован": "Port not published yet",
   "Ни один экземпляр не выбран. Подключения пользователя будут запрещены.":
     "No instances selected. The user will not be able to connect.",
-  "В подписке будут только разрешённые опубликованные экземпляры. При снятии доступа активное подключение к этому экземпляру отключается.":
+  "В подписке появятся только разрешённые экземпляры с опубликованным портом. Если убрать доступ к экземпляру, текущее подключение к нему прервётся.":
     "Subscriptions include only allowed, published instances. Removing access disconnects active sessions on that instance.",
-  "Экземпляры с собственной аутентификацией управляют доступом через свою конфигурацию.":
+  "Доступ к экземплярам с режимом «Настройки Hysteria2» задаётся в их конфигурации.":
     "Instances with custom authentication manage access through their own configuration.",
   "Доступ к экземплярам сохранён": "Instance access saved",
   "Сохранить доступ": "Save access",
@@ -27,7 +27,7 @@ export const INSTANCES: Record<string, string> = {
   "Не удалось проверить конфигурацию экземпляра": "Could not check the instance configuration",
   "Доступ к этому экземпляру задаётся в его конфигурации":
     "Access to this instance is set in its configuration",
-  "Пользователи и лимиты трафика общие. Доступ к экземплярам настраивается отдельно для каждого пользователя.":
+  "Пользователи и лимиты трафика общие для всех экземпляров. Доступ к экземплярам задаётся каждому пользователю.":
     "Users and traffic limits are shared. Instance access is configured separately for each user.",
   "UDP-порт не опубликован. Примените его в конфигурации экземпляра.":
     "The UDP port is not published. Apply it in the instance configuration.",
@@ -51,14 +51,14 @@ export const INSTANCES: Record<string, string> = {
   Неизвестна: "Unknown",
   "Экземпляр подключения": "Connection instance",
   "Отдельные конфигурации и управление экземплярами.": "Separate configurations and instance controls.",
-  "Отдельные конфигурации, порты, версии и журналы. До 8 экземпляров на одном сервере.":
+  "До 8 экземпляров на сервере. У каждого свои настройки, порты, версия и журнал.":
     "Separate configurations, ports, versions and logs. Up to 8 instances on one server.",
-  "Пользователи и лимиты трафика общие. Подписка содержит подключения ко всем опубликованным экземплярам с доступом через панель.":
+  "Пользователи и лимиты трафика общие. В подписку входят экземпляры с опубликованными портами и доступом через панель.":
     "Users and traffic limits are shared. Subscriptions include all published instances using panel authentication.",
-  "Настройки будут скопированы из выбранного экземпляра. Новый экземпляр останется остановленным.":
-    "Settings will be copied from the selected server. The new server will remain stopped.",
-  "Выберите свободный UDP-порт, проверьте конфигурацию и примените порт. Затем запустите экземпляр.":
-    "Choose an available UDP port, review the configuration and apply the port. Then start the instance.",
+  "Настройки скопируются из выбранного экземпляра. Новый экземпляр останется остановленным.":
+    "Settings are copied from the selected instance. The new instance stays stopped.",
+  "Выберите свободный UDP-порт, сохраните конфигурацию и примените порт. Затем запустите экземпляр.":
+    "Choose an available UDP port, save the configuration and apply the port. Then start the instance.",
   "Удалить экземпляр «{{name}}» и его конфигурацию? Пользователи останутся в панели.":
     "Delete instance “{{name}}” and its configuration? Panel users will be kept.",
 };

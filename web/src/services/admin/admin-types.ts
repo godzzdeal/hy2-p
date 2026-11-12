@@ -25,11 +25,3 @@ export interface IWebSettings {
   container: boolean;
   activeURL: string;
 }
-export interface IBackupSettings {
-  destination: string;
-  hasConfig: boolean;
-}
-export interface IBackupInput {
-  destination: string;
-  configText?: string;
-}

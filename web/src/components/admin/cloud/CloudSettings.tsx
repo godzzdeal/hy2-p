@@ -17,9 +17,7 @@ export function CloudSettings() {
       action={<span>{t(query.data?.enabled ? "Включён" : "Выключен")}</span>}
     >
       <CardBody>
-        <Caption>
-          {t("Дополнительный пароль, который запрашивается после основного пароля при каждом входе.")}
-        </Caption>
+        <Caption>{t("Второй пароль для входа в панель. Вводится после основного при каждом входе.")}</Caption>
         <QueryState isLoading={query.isPending} error={query.error} />
         {query.error && (
           <Button type="button" variant="secondary" onClick={() => void query.refetch()}>

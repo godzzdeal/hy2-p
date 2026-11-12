@@ -13,7 +13,7 @@ export function StatsSecret() {
     <section className="configuration-tools grid gap-4 min-w-0">
       <Notice>
         {t(
-          "Панель задаёт trafficStats.listen и trafficStats.secret при запуске экземпляра. Ниже можно получить фактические значения панели.",
+          "Панель задаёт trafficStats.listen и trafficStats.secret при запуске экземпляра. Ниже можно посмотреть текущие значения.",
         )}
       </Notice>
       <Button
@@ -50,7 +50,9 @@ export function StatsSecret() {
         </>
       )}
       <Caption>
-        {t("Секрет может измениться при перезапуске панели. API статистики доступен только внутри сервера.")}
+        {t(
+          "Секрет может измениться после перезапуска панели. API статистики доступен только внутри сервера.",
+        )}
       </Caption>
     </section>
   );

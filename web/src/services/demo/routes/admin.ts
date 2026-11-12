@@ -9,6 +9,7 @@ export function demoAdmin(path: string, { method = "GET", body }: IRequest): unk
     return demoState.announcement;
   }
   if (path === API_ROUTES.panelVersion) return { version: DEMO.version, revision: "demo" };
+  if (path === API_ROUTES.storages && method === "GET") return { accounts: [] };
   if (path === API_ROUTES.panelMaintenance) {
     if (method !== "GET") return unavailable();
     return {
@@ -33,7 +34,6 @@ export function demoAdmin(path: string, { method = "GET", body }: IRequest): unk
   if (method !== "GET") return unavailable();
   if (path === API_ROUTES.adminAccount) return { username: "demo" };
   if (path === API_ROUTES.cloudPassword) return { enabled: false };
-  if (path === API_ROUTES.backups) return { destination: "disk:HY2-P", hasConfig: false };
   if (path === API_ROUTES.adminWeb)
     return {
       container: true,

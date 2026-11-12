@@ -1,8 +1,8 @@
 export const TRANSFER = {
   "Не импортировать": "Do not import",
   "Исключено из импорта": "Excluded from import",
-  "Исключённые экземпляры не создаются и не попадают в доступ пользователей и групп. Если исключить все экземпляры пользователя, он будет добавлен без доступных подключений.":
-    "Excluded servers are not created or granted to users and groups. If all of a user's servers are excluded, the user is added without available connections.",
+  "Исключённые экземпляры не добавляются. Пользователи и группы не получат к ним доступ. Если исключить все экземпляры пользователя, он будет добавлен без доступных подключений.":
+    "Excluded instances are not added or granted to users and groups. If all of a user's instances are excluded, the user is added without available connections.",
   "Импорт уже выполняется. Дождитесь его завершения": "An import is already running. Wait for it to finish",
   "Панель недоступна. Проверьте соединение и повторите действие.":
     "The panel is unreachable. Check your connection and try again.",
@@ -10,9 +10,9 @@ export const TRANSFER = {
     "The panel returned an invalid response. Try again later.",
   "Перенос данных": "Data transfer",
   "Импорт и экспорт": "Import and export",
-  "Перенос конфигураций экземпляров, пользователей, групп и лимитов между панелями HY2-P. Существующие записи не перезаписываются.":
+  "Переносите конфигурации, пользователей, группы и лимиты между панелями HY2-P. Импорт добавляет записи, сохраняя существующие.":
     "Transfer instance configurations, users, groups and limits between HY2-P panels. Existing entries are kept unchanged.",
-  "Файл содержит пароли и ссылки подписок. Храните его в защищённом месте. Сертификаты, устройства и пароль входа в панель не переносятся.":
+  "Файл содержит пароли и ссылки подписок. Храните его в закрытом месте. Сертификаты, устройства и данные входа в панель не переносятся.":
     "This file contains passwords and subscription links. Store it securely. Certificates, enrolled devices and panel login credentials are not included.",
   "Экспортировать данные": "Export data",
   "Выбрать файл импорта": "Choose import file",

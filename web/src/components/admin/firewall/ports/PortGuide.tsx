@@ -19,7 +19,7 @@ export function PortGuide() {
           {t("Не удалось прочитать настройки экземпляров:")} {query.data.warnings.join(", ")}
         </Notice>
       )}
-      <Caption>{t("Порты из настроек панели и экземпляров. Доступность извне не проверена.")}</Caption>
+      <Caption>{t("Порты панели и экземпляров. Доступность из интернета не проверена.")}</Caption>
       <QueryState isLoading={query.isPending} error={query.error} />
       {query.error && (
         <Button variant="secondary" onClick={() => void query.refetch()}>

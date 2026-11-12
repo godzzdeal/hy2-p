@@ -1,6 +1,6 @@
 export const NETWORK_HELP = {
   "DNS на сервере": "Server DNS",
-  "Как сервер определяет IP-адреса сайтов. Пустое поле использует системный DNS сервера.":
+  "Как сервер получает IP-адреса сайтов. Оставьте пустым для системного DNS.":
     "How the server resolves website addresses. Leave empty to use its system DNS.",
   "Определять домены из трафика": "Detect domains in traffic",
   "Помогает применять правила к доменам, когда клиент передал только IP-адрес.":
@@ -16,10 +16,9 @@ export const NETWORK_HELP = {
   "Какие UDP-порты проверять": "UDP ports to inspect",
   "UDP-порты для определения домена, например 443.": "UDP ports used for domain detection, for example 443.",
   "Файл правил": "Routing rules file",
-  "Правила, которые определяют, куда отправлять или какие запросы блокировать.":
-    "Rules that choose where requests are sent or which requests are blocked.",
+  "Куда отправлять трафик и какие запросы блокировать.": "Where to send traffic and which requests to block.",
   "Правила в панели": "Rules in the panel",
-  "Каждое правило с новой строки. Порядок важен: сначала проверяются верхние правила.":
+  "Каждое правило с новой строки. Проверяются сверху вниз.":
     "One rule per line. Order matters: rules are checked from top to bottom.",
   "База IP-адресов стран": "Country IP database",
   "Путь к базе GeoIP для правил по странам.": "GeoIP database path for country-based rules.",
@@ -29,7 +28,7 @@ export const NETWORK_HELP = {
   "Как часто загружать свежие GeoIP и GeoSite, например 168h.":
     "How often to update GeoIP and GeoSite, for example 168h.",
   "Как выходить в интернет": "Internet exit routes",
-  "Исходящие соединения сервера: напрямую или через другой прокси. Настраивается в JSON.":
+  "Куда сервер отправляет трафик: напрямую или через другой прокси. Настройка в JSON.":
     "Server outbound connections: direct or through another proxy. Configured as JSON.",
   "Ответ посторонним запросам": "Response to other requests",
   "Что покажет сервер, если запрос пришёл не от клиента Hysteria2.":
@@ -49,9 +48,9 @@ export const NETWORK_HELP = {
   "Перенаправляет обычные HTTP-запросы сайта маскировки на HTTPS.":
     "Redirects HTTP requests for the masquerade site to HTTPS.",
   "Имитация TCP для Linux": "TCP imitation for Linux",
-  "Дополнительный режим Hysteria2 с отдельной подготовкой сети сервера. Оставьте выключенным, если его не настраивали.":
+  "Режим Hysteria2, для которого нужно отдельно подготовить сеть сервера. Оставьте выключенным, если не настраивали его.":
     "Additional Hysteria2 mode requiring server network setup. Leave disabled unless configured.",
   "Дополнительные серверы Realm": "Realm servers",
-  "Расширенная настройка соединения с другими серверами Hysteria2. Ссылки подключения для этого режима не создаются.":
+  "Соединение с другими серверами Hysteria2. Для этого режима панель не создаёт ссылки подключения.":
     "Advanced Hysteria2 server chaining. Connection link export is unavailable for this mode.",
 };

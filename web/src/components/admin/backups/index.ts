@@ -1,2 +1,2 @@
 export { BackupSettings } from "./BackupSettings";
-export { BackupForm } from "./BackupForm";
+export { BackupContent } from "./BackupContent";

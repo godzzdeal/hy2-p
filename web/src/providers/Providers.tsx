@@ -5,8 +5,10 @@ import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { Loader } from "@/components/ui/loading";
 import { Suspense, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 
 export function Providers({ children, nonce }: { children: ReactNode; nonce?: string }) {
+  const isAuthorization = usePathname()?.startsWith("/connect/");
   return (
     <ThemeProvider
       attribute="data-theme"
@@ -18,7 +20,7 @@ export function Providers({ children, nonce }: { children: ReactNode; nonce?: st
       <ErrorBoundary>
         <QueryProvider>
           <Suspense fallback={<Loader className="min-h-dvh" />}>
-            <App>{children}</App>
+            {isAuthorization ? children : <App>{children}</App>}
           </Suspense>
         </QueryProvider>
       </ErrorBoundary>

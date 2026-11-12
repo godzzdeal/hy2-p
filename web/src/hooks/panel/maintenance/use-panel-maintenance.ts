@@ -31,7 +31,8 @@ export function usePanelMaintenance() {
         operation.operation === "rollback" ||
         operation.operation === "cleanup" ||
         operation.operation === "backup" ||
-        operation.operation === "backup-cloud")
+        operation.operation === "backup-cloud" ||
+        operation.operation === "check-cloud")
     )
       usePanelOperationStore.getState().setActive({ ticket: operation.id, action: operation.operation });
   }, [active, operation, client]);
