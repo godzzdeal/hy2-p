@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 SOURCE=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)
 SHA=1111111111111111111111111111111111111111
-PANEL_ID=aaaaaaaaaaaa
-WORKER_ID=bbbbbbbbbbbb
-FOREIGN_ID=cccccccccccc
-AGENT_ID=dddddddddddd
+PANEL_ID=$(printf 'a%.0s' {1..64})
+WORKER_ID=$(printf 'b%.0s' {1..64})
+FOREIGN_ID=$(printf 'c%.0s' {1..64})
+AGENT_ID=$(printf 'd%.0s' {1..64})
 IMAGE_ID=sha256:1111111111111111111111111111111111111111111111111111111111111111
 
 setup_uninstall() {

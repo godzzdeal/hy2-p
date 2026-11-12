@@ -4,14 +4,16 @@ uninstall_engine() {
   printf '%s\n' "$*" >>"$EVENTS"
   case "$kind $action" in
     'ps -aq')
-      case $resource in
+      value=$(case $resource in
         ancestor=*) value=${resource#ancestor=}
           jq -r --arg reference "$value" '. as $state | [.images[] | select(.Id==$reference or any(.RepoTags[]; .==$reference)) | .Id] as $images |
             $state.containers[] | select(.Image==$reference or (.Image as $id | $images | index($id))) | .Id' "$STATE" ;;
         volume=*) jq -r --arg name "${resource#volume=}" '.containers[]|select(any(.Mounts[]; .Name==$name))|.Id' "$STATE" ;;
         label=*) jq -r --arg root "${resource#label=io.hy2-panel.install-dir=}" '.containers[]|select(.Config.Labels["io.hy2-panel.install-dir"]==$root)|.Id' "$STATE" ;;
         *) jq -r '.containers[].Id' "$STATE" ;;
-      esac ;;
+      esac) || return 1
+      if [[ " $* " == *' --no-trunc '* ]]; then printf '%s\n' "$value"
+      else jq -Rr '.[0:12]' <<<"$value"; fi ;;
     'container inspect')
       shift 2; ids=$(printf '%s\n' "$@" | jq -R . | jq -s .)
       jq --argjson ids "$ids" '[.containers[]|select(.Id as $id | $ids|index($id))]' "$STATE" ;;
