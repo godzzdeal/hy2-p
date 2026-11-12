@@ -27,6 +27,8 @@ printf '{}\n' >"$ROOT/update.pending"
 printf '{}\n' >"$ROOT/udp.pending"
 uninstall_panel --yes
 [[ ! -e $ROOT ]]
+assert_first_stop=$(grep '^container stop' "$EVENTS" | head -n 1)
+[[ $assert_first_stop == "container stop --time 30 $AGENT_ID" ]]
 jq -e --arg id "$FOREIGN_ID" '.containers|length==1 and .[0].Id==$id and .[0].State.Status=="running"' "$STATE" >/dev/null
 jq -e '.volumes==[{Name:"foreign-data",Labels:{}}] and .networks==[] and .images==[]' "$STATE" >/dev/null
 ! grep -Eq '(prune|--force|ufw|system rm)' "$EVENTS"
@@ -46,6 +48,12 @@ jq -e '.images[0].RepoTags | index("another-app:shared")!=null' "$STATE" >/dev/n
 setup_uninstall shared-volume
 change_state '.containers[2].Mounts=[{Name:"hy2-panel_panel-data"}]'
 if (uninstall_panel --yes); then printf 'Shared data volume deletion allowed\n' >&2; exit 1; fi
+[[ -f $ROOT/.env ]]
+! grep -q '^container stop' "$EVENTS"
+
+setup_uninstall unlabelled-helper
+change_state --arg agent "$AGENT_ID" '(.containers[] | select(.Id==$agent) | .Config.Labels)={}'
+if (uninstall_panel --yes); then printf 'Unowned helper deletion allowed\n' >&2; exit 1; fi
 [[ -f $ROOT/.env ]]
 ! grep -q '^container stop' "$EVENTS"
 
