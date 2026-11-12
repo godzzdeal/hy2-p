@@ -59,7 +59,3 @@ volumes:
   panel-data:
     labels:
       io.hy2-panel.install-dir: ${PANEL_INSTALL_DIR:-manual}
-networks:
-  default:
-    labels:
-      io.hy2-panel.install-dir: ${PANEL_INSTALL_DIR:-manual}

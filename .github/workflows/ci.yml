@@ -11,8 +11,26 @@ concurrency:
   group: checks-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  validation:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+    outputs:
+      reuse: ${{ steps.validation.outputs.reuse }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Find matching verified PR
+        id: validation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash .github/reuse-checks.sh
   checks:
     needs:
+      - validation
       - go
       - web
       - scripts
@@ -22,7 +40,12 @@ jobs:
       - name: Require every check
         env:
           RESULTS: ${{ toJSON(needs) }}
-        run: echo "$RESULTS" | jq -e 'all(.[]; .result == "success")'
+        run: |
+          echo "$RESULTS" | jq -e '
+            .validation.result == "success" and
+            (if .validation.outputs.reuse == "true"
+             then all([.go, .web, .scripts][]; .result == "skipped")
+             else all([.go, .web, .scripts][]; .result == "success") end)'
   images:
     if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     strategy:
@@ -77,8 +100,14 @@ jobs:
       - name: Install from GitHub, start core, restart and back up
         run: bash scripts/tests/docker/run.sh
   go:
+    needs: validation
+    if: needs.validation.outputs.reuse != 'true'
     uses: ./.github/workflows/check-go.yml
   web:
+    needs: validation
+    if: needs.validation.outputs.reuse != 'true'
     uses: ./.github/workflows/check-web.yml
   scripts:
+    needs: validation
+    if: needs.validation.outputs.reuse != 'true'
     uses: ./.github/workflows/check-scripts.yml
