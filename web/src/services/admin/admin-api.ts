@@ -1,6 +1,8 @@
 import { API_ROUTES } from "@/config/network";
 import {
   type IAccount,
+  type IBackupInput,
+  type IBackupSettings,
   type IAccountChange,
   type IWebConfig,
   type IWebSettings,
@@ -12,4 +14,9 @@ export const adminApi = {
     request<IAccount>(API_ROUTES.adminAccount, { method: "PUT", body }),
   web: () => request<IWebSettings>(API_ROUTES.adminWeb),
   saveWeb: (body: IWebConfig) => request<IWebSettings>(API_ROUTES.adminWeb, { method: "PUT", body }),
+};
+
+export const backupsApi = {
+  read: () => request<IBackupSettings>(API_ROUTES.backups),
+  save: (body: IBackupInput) => request<IBackupSettings>(API_ROUTES.backups, { method: "PUT", body }),
 };

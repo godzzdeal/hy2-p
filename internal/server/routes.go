@@ -7,6 +7,7 @@ import (
 	"hy2-panel/internal/buildinfo"
 	"hy2-panel/internal/buildinfo/updates"
 	"hy2-panel/internal/buildinfo/updates/catalog"
+	"hy2-panel/internal/cloudbackup"
 	deviceapi "hy2-panel/internal/devices/integration"
 	"hy2-panel/internal/firewall"
 	"hy2-panel/internal/firewall/recommendations"
@@ -41,6 +42,8 @@ func routes(auth *auth.Handler, users *users.Handler, registry *instances.Regist
 	mux.HandleFunc("GET /api/deployment/udp/status/{ticket}", portweb.Status)
 	mux.HandleFunc("GET /api/panel/restart/{ticket}", portweb.Status)
 	protected := map[string]http.HandlerFunc{
+		"GET /api/admin/backups":                  cloudbackup.Panel,
+		"PUT /api/admin/backups":                  cloudbackup.Panel,
 		"GET /api/panel/maintenance":              portweb.Maintenance,
 		"POST /api/panel/maintenance":             portweb.Maintenance,
 		"GET /api/panel/versions":                 panelVersions.Read,

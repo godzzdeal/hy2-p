@@ -9,10 +9,15 @@ export function usePanelOperation() {
       useUiStore.getState().setPanelRestarting(true);
       try {
         const result = await panelMaintenanceApi.start(input);
-        usePanelOperationStore.getState().setActive({ ticket: result.id, action: input.action });
+        usePanelOperationStore.getState().setActive({
+          ticket: result.id,
+          action: input.action,
+          targetURL: input.action === "restart" ? input.targetURL : undefined,
+        });
       } finally {
         useUiStore.getState().setPanelRestarting(false);
       }
     },
+    onError: useUiStore.getState().showError,
   });
 }

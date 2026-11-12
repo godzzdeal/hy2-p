@@ -26,4 +26,5 @@ backup_panel() {
   if [[ $running == true ]]; then start_release "$sha" || result=1; fi
   ((result==0)) || die "Резервное копирование или повторный запуск не удались."
   log "Резервная копия готова: $snapshot"
+  export LAST_BACKUP=$snapshot
 }

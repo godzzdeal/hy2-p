@@ -5,13 +5,18 @@ import { Loader } from "@/components/ui/loading";
 import { usePanelOperation } from "@/hooks/panel/maintenance";
 import { useTranslation } from "react-i18next";
 
-export function RestartDialog({ onClose }: { onClose: () => void }) {
+export function RestartDialog({ onClose, targetURL }: { onClose: () => void; targetURL?: string }) {
   const { t } = useTranslation();
   const restart = usePanelOperation();
   return (
     <Modal title="Перезапустить панель?" isDismissible={!restart.isPending} onClose={onClose}>
       <p>{t("Подключения HY2 кратковременно прервутся. Настройки и пользователи сохранятся.")}</p>
       <p>{t("После перезапуска войдите снова.")}</p>
+      {targetURL && (
+        <p>
+          {t("Новый адрес панели")}: <a href={targetURL}>{targetURL}</a>
+        </p>
+      )}
       {restart.isPending && <Loader label="Панель перезапускается…" />}
       <Actions className="mt-4">
         <Button type="button" variant="secondary" disabled={restart.isPending} onClick={onClose}>
@@ -21,7 +26,7 @@ export function RestartDialog({ onClose }: { onClose: () => void }) {
           type="button"
           variant="primary"
           disabled={restart.isPending}
-          onClick={() => restart.mutate({ action: "restart" }, { onSuccess: onClose })}
+          onClick={() => restart.mutate({ action: "restart", targetURL }, { onSuccess: onClose })}
         >
           {t("Перезапустить")}
         </Button>

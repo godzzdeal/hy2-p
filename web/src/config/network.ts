@@ -1,4 +1,5 @@
 export const API_ROUTES = {
+  backups: "/admin/backups",
   panelMaintenance: "/panel/maintenance",
   panelVersions: "/panel/versions",
   system: "/system",
@@ -51,6 +52,7 @@ export const API_ROUTES = {
   rotate: (id: string) => "/users/" + encodeURIComponent(id) + "/rotate",
   control: (action: string) => "/core/" + action,
 } as const;
+export const BACKUP_LIMITS = { configBytes: 256 * 1024 } as const;
 export const QUERY_KEYS = {
   ech: ["ech"],
   mimic: ["mimic"],

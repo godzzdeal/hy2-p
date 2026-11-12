@@ -6,6 +6,7 @@ import { CloudSettings } from "@/components/admin/cloud/CloudSettings";
 import { FirewallSettings } from "@/components/admin/firewall/FirewallSettings";
 import { WebSettings } from "@/components/admin/listener/WebSettings";
 import { useTranslation } from "react-i18next";
+import { BackupSettings } from "@/components/admin/backups";
 export default function AdminPage() {
   const { t } = useTranslation();
   return (
@@ -19,6 +20,7 @@ export default function AdminPage() {
       <AccountSettings />
       <CloudSettings />
       <TransferSettings />
+      <BackupSettings />
       <WebSettings />
       <FirewallSettings />
       <RestartSettings />

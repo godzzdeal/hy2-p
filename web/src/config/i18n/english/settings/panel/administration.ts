@@ -111,4 +111,26 @@ export const ADMINISTRATION: Record<string, string> = {
   "Установить новую версию?": "Install a new version?",
   Установленная: "Installed",
   "Учитывайте проброс порта Docker.": "Account for Docker port forwarding.",
+
+  "Резервные копии": "Backups",
+  "Создать бэкап": "Create backup",
+  "Отправить в облако": "Send to cloud",
+  "Хранилище подключено": "Storage connected",
+  "Папка в облаке": "Cloud folder",
+  "Конфигурация rclone": "rclone configuration",
+  "CONF, до 256 КБ": "CONF, up to 256 KB",
+  "Максимальный размер: 256 КБ": "Maximum size: 256 KB",
+  "Создание копии кратковременно прерывает подключения. Архив содержит пароли, ключи и сертификаты.":
+    "Creating a backup briefly interrupts connections. The archive contains passwords, keys and certificates.",
+  "Подключите Яндекс Диск, Google Drive или другое хранилище через rclone. Создайте конфигурацию на своём компьютере и загрузите её сюда.":
+    "Connect Yandex Disk, Google Drive or another storage provider with rclone. Create a configuration on your computer and upload it here.",
+  "Новый адрес панели": "New panel address",
+  "Открыть новый адрес": "Open new address",
+  "Адрес формируется автоматически из домена или IP, протокола и порта панели.":
+    "The address is generated from the panel domain or IP, protocol and port.",
+  "Резервная копия создана": "Backup created",
+  "Резервная копия отправлена в облако и проверена": "Backup uploaded to cloud and verified",
+  "Создаём копию и отправляем в облако": "Creating a backup and uploading it to cloud",
+  "Создаём резервную копию. Панель кратковременно перезапустится":
+    "Creating a backup. The panel will briefly restart",
 };

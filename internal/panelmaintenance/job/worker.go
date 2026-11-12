@@ -38,6 +38,9 @@ func Run(root, id string) error {
 	if operation.Operation == "cleanup" {
 		return clean(root, operation)
 	}
+	if operation.Operation == "backup" || operation.Operation == "backup-cloud" {
+		return backup(root, operation)
+	}
 	isRecovery := operation.Phase != "queued"
 	arguments := []string{"update", operation.Version}
 	if operation.Operation == "rollback" {

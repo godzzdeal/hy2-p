@@ -29,7 +29,9 @@ export function usePanelMaintenance() {
       client.getQueryData<IPanelOperation>([...QUERY_KEYS.panelOperation, operation.id])?.busy !== false &&
       (operation.operation === "update" ||
         operation.operation === "rollback" ||
-        operation.operation === "cleanup")
+        operation.operation === "cleanup" ||
+        operation.operation === "backup" ||
+        operation.operation === "backup-cloud")
     )
       usePanelOperationStore.getState().setActive({ ticket: operation.id, action: operation.operation });
   }, [active, operation, client]);

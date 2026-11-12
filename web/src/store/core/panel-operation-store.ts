@@ -5,6 +5,7 @@ const STORAGE_KEY = "hy2.panel-operation";
 interface IActivePanelOperation {
   ticket: string;
   action: TPanelAction;
+  targetURL?: string;
 }
 interface IPanelOperationState {
   active: IActivePanelOperation | null;
@@ -23,9 +24,18 @@ function readActive(): IActivePanelOperation | null {
       (value.action === "update" ||
         value.action === "rollback" ||
         value.action === "restart" ||
-        value.action === "cleanup")
+        value.action === "cleanup" ||
+        value.action === "backup" ||
+        value.action === "backup-cloud")
     )
-      return { ticket: value.ticket, action: value.action };
+      return {
+        ticket: value.ticket,
+        action: value.action,
+        targetURL:
+          "targetURL" in value && typeof value.targetURL === "string" && /^https?:\/\//.test(value.targetURL)
+            ? value.targetURL
+            : undefined,
+      };
   } catch {
     /* An interrupted browser write does not block panel startup. */
   }
