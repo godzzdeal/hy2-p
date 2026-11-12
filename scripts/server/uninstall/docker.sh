@@ -5,7 +5,7 @@ uninstall_inventory() {
   declare -gA UNINSTALL_RESOURCE_FINGERPRINTS=()
   UNINSTALL_LABEL=$(printf '%s' "$ROOT" | sha256sum); UNINSTALL_LABEL=${UNINSTALL_LABEL%% *}
   check_volume
-  identifiers=$(engine ps -aq) || return 1
+  identifiers=$(engine ps -aq --no-trunc) || return 1
   metadata='[]'
   if [[ -n $identifiers ]]; then
     local -a containers
@@ -29,7 +29,7 @@ uninstall_inventory() {
       owner=$(jq -r '.[0].Labels["io.hy2-panel.install-dir"] // ""' <<<"$owner") || return 1
       [[ $owner == "$ROOT" || ( -z $owner && $project == "$PROJECT" ) ]] || continue
       if [[ $kind == volume ]]; then
-        users=$(engine ps -aq --filter "volume=$resource") || return 1
+        users=$(engine ps -aq --no-trunc --filter "volume=$resource") || return 1
         for identifier in $users; do
           grep -Fxq "$identifier" <<<"$UNINSTALL_CONTAINERS" ||
             die "Том $resource используется другим контейнером ($identifier). Ничего не удалено."
@@ -43,7 +43,7 @@ uninstall_inventory() {
     metadata=$(engine image inspect "$identifier") || return 1
     sha=$(jq -r '.[0].Config.Labels["io.hy2-panel.commit"] // ""' <<<"$metadata") || return 1
     valid_sha "$sha" && [[ -d $ROOT/releases/$sha ]] || continue
-    users=$(engine ps -aq --filter "ancestor=$identifier") || return 1
+    users=$(engine ps -aq --no-trunc --filter "ancestor=$identifier") || return 1
     for reference in $users; do
       if ! grep -Fxq "$reference" <<<"$UNINSTALL_CONTAINERS"; then
         log "Образ $identifier сохранится: его использует другой контейнер."
@@ -100,10 +100,10 @@ uninstall_docker() {
     else engine network rm "$resource" || return 1; fi
   done
   for resource in $UNINSTALL_IMAGES; do
-    users=$(engine ps -aq --filter "ancestor=$resource") || return 1
+    users=$(engine ps -aq --no-trunc --filter "ancestor=$resource") || return 1
     if [[ -n $users ]]; then log "Образ $resource сохранён: его использует другой контейнер."
     else engine image rm "$resource" || return 1; fi
   done
-  users=$(engine ps -aq --filter "label=io.hy2-panel.install-dir=$ROOT") || return 1
+  users=$(engine ps -aq --no-trunc --filter "label=io.hy2-panel.install-dir=$ROOT") || return 1
   [[ -z $users ]] || { log 'После проверки появился новый контейнер HY2-P. Повторите удаление.'; return 1; }
 }
