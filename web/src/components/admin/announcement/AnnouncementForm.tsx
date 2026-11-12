@@ -12,6 +12,7 @@ import { Form } from "@/components/ui/forms";
 import { ANNOUNCEMENT_LIMIT, MAX_UPDATE_HOURS, type IAnnouncement } from "@/services/admin/announcement";
 import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { RoutingFields } from "@/components/admin/announcement/RoutingFields";
 export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
   const { t } = useTranslation();
   const { form, count, isEnabled, isPending, isTooLong, onSubmit } = useAnnouncementForm(initial);
@@ -84,6 +85,16 @@ export function AnnouncementForm({ initial }: { initial: IAnnouncement }) {
             )}
           </Caption>
           <Caption>{t("При добавлении только отдельной ссылки сервера сообщение не передаётся.")}</Caption>
+          <Controller
+            control={form.control}
+            name="routing"
+            render={({ field }) => (
+              <RoutingFields
+                value={field.value ?? { enabled: false, domains: [] }}
+                onChange={field.onChange}
+              />
+            )}
+          />
           <Button variant="primary" disabled={isPending || isTooLong}>
             {t("Сохранить")}
           </Button>

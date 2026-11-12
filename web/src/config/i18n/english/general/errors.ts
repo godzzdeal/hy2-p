@@ -66,4 +66,10 @@ export const ERRORS: Record<string, string> = {
   "слишком много перенаправлений": "too many redirects",
   "такой пароль уже используется другим пользователем": "this password is already used by another user",
   "текущий пароль неверен": "current password is incorrect",
+  "Прямой доступ: не более %d доменов": "Direct access: up to %d domains",
+  "Прямой доступ: неверный домен «%s». Укажите имя без https://, пути и порта":
+    "Direct access: invalid domain '%s'. Enter a domain without https://, a path or a port",
+  "Список доменов слишком большой для передачи через подписку":
+    "The domain list is too large to send with the subscription",
+  "Добавьте хотя бы один домен для прямого доступа": "Add at least one domain for direct access",
 };

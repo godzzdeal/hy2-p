@@ -119,4 +119,11 @@ export const CONFIGURATION: Record<string, string> = {
   "Новый пароль (не менее 16 символов)": "New password (at least 16 characters)",
   "Новый пароль подключения": "New connection password",
   "Новый пользователь": "New user",
+  "Маршрутизация клиентов": "Client routing",
+  "Правила передаются в подписке для Happ. Другие приложения могут их игнорировать. После обновления подписки переподключитесь.":
+    "These subscription rules are supported by Happ. Other apps may ignore them. Reconnect after updating the subscription.",
+  "Выбранные сайты напрямую, остальные через VPN": "Selected websites directly, everything else through VPN",
+  "Сайты для прямого доступа": "Websites to access directly",
+  "По одному домену в строке, без https:// и пути. Поддомены включены. Не более {{count}} доменов.":
+    "One domain per line, without https:// or a path. Subdomains are included. Up to {{count}} domains.",
 };

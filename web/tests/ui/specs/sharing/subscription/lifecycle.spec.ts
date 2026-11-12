@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { expandSettings, mockPanel } from "../../fixtures";
+import { expandSettings, mockPanel } from "../../../fixtures";
 test("announcement checkbox supports its label, keyboard and saving", async ({ page }, info) => {
   const panel = await mockPanel(page);
   await page.getByRole("link", { name: "Подписка", exact: true }).click();
