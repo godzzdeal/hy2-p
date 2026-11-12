@@ -105,4 +105,5 @@ printf 'Deployment lifecycle tests passed.\n'
 bash "$(dirname -- "${BASH_SOURCE[0]}")/transfer.sh"
 bash "$(dirname -- "${BASH_SOURCE[0]}")/account/password.sh"
 bash "$(dirname -- "${BASH_SOURCE[0]}")/images/run.sh"
+bash "$(dirname -- "${BASH_SOURCE[0]}")/uninstall/run.sh"
 source "$(dirname -- "${BASH_SOURCE[0]}")/install/index.sh"

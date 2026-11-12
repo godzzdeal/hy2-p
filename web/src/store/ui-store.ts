@@ -18,6 +18,8 @@ function readSettingsSections(): TSettingsSections {
   return sections;
 }
 interface IUiState {
+  configurationSection: string;
+  setConfigurationSection: (id: string) => void;
   settingsSections: TSettingsSections;
   setSettingsSection: (id: string, isOpen: boolean) => void;
   isPanelRestarting: boolean;
@@ -30,6 +32,8 @@ interface IUiState {
   notify: (notice: string) => void;
 }
 export const useUiStore = create<IUiState>((set, get) => ({
+  configurationSection: "listen",
+  setConfigurationSection: (id) => set({ configurationSection: id }),
   settingsSections: readSettingsSections(),
   setSettingsSection: (id, isOpen) => {
     const sections = get().settingsSections;

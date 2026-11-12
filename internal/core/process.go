@@ -13,6 +13,7 @@ import (
 	"hy2-panel/internal/core/supervision"
 	"hy2-panel/internal/core/update"
 	"hy2-panel/internal/core/watchdog"
+	"hy2-panel/internal/mimic"
 	"hy2-panel/internal/releases"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/useraccess"
@@ -78,6 +79,9 @@ func (handler *Handler) start() error {
 	if _, port := deployment.Published(handler.InstanceID); port != "" {
 		deployment.RuntimeListen(document, port)
 	}
+	if err := mimic.CheckRuntime(document, handler.InstanceID, handler.Binary, handler.Probe); err != nil {
+		return err
+	}
 	acmehttp.PrepareAt(document, handler.Data, os.Getenv("PANEL_CONTAINER") == "true", handler.ChallengePort())
 	if settings.AuthMode != "native" {
 		document["auth"] = map[string]any{"type": "http", "http": map[string]any{"url": useraccess.CallbackURL(handler.InstanceID)}}
@@ -87,7 +91,7 @@ func (handler *Handler) start() error {
 	if err != nil {
 		return err
 	}
-	path := filepath.Join(handler.Data, "runtime.yaml")
+	path := filepath.Join(handler.Data, configuration.RuntimeFilename)
 	if err = os.WriteFile(path, payload, 0600); err != nil {
 		return err
 	}

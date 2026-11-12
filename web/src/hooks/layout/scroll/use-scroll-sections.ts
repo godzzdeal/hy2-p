@@ -31,7 +31,9 @@ export function useScrollSections(root: RefObject<HTMLDivElement | null>, page: 
       if (!frame) frame = requestAnimationFrame(updateActive);
     }
     function collect() {
-      targets = Array.from(content!.querySelectorAll<HTMLElement>("[data-scroll-section]"));
+      targets = Array.from(content!.querySelectorAll<HTMLElement>("[data-scroll-section]")).filter(
+        (target) => target.id && !target.closest('[hidden], [aria-hidden="true"]'),
+      );
       const next = targets.map((target) => ({
         id: target.id,
         label: target.dataset.scrollLabel ?? target.id,

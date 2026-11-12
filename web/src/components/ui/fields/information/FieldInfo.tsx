@@ -11,9 +11,9 @@ interface IFieldInfo extends Omit<ComponentProps<typeof Button>, "children"> {
   children: ReactNode;
 }
 
-export function FieldInfo({ label, children, className, ...props }: IFieldInfo) {
+export function FieldInfo({ label, children, className, "aria-label": ariaLabel, ...props }: IFieldInfo) {
   const { t } = useTranslation();
-  const name = t("Информация о поле {{field}}", { field: label });
+  const name = ariaLabel ?? t("Информация о поле {{field}}", { field: label });
   return (
     <Popover
       trigger={

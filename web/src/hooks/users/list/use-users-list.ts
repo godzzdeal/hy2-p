@@ -6,7 +6,7 @@ import { groupUsers, paginateGroups } from "@/services/groups/membership";
 import { useState } from "react";
 export function useUsersList() {
   const query = useUsers();
-  const groups = useGroups();
+  const groups = useGroups(true);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
   const [groupId, setGroupId] = useState<string>(GROUP_FILTERS.all);

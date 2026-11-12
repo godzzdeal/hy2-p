@@ -8,6 +8,7 @@ export interface IMetricChart {
   field: TMetric;
   secondary?: TMetric;
   value: string;
+  secondaryValue?: string;
   maximum?: number;
   unit?: TChartUnit;
 }

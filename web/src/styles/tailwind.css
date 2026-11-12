@@ -3,7 +3,6 @@
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
 @source "../components";
-@source "../views";
 @source "../app";
 @source "../utils";
 @custom-variant selected-option (&[data-state="checked"]);
@@ -32,6 +31,7 @@
   --color-command: var(--command-background);
   --color-command-text: var(--command-foreground);
   --color-command-line: var(--command-border);
+  --color-command-accent: var(--command-accent);
   --color-syntax-number: var(--syntax-number);
   --color-syntax-string: var(--syntax-string);
   --color-editor-selection: var(--editor-selection);

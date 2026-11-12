@@ -1,6 +1,20 @@
 import { expect, test } from "@playwright/test";
 import { chooseTheme, mockPanel } from "../../fixtures";
 
+test("log search remains usable between desktop and mobile breakpoints", async ({ page }, info) => {
+  await mockPanel(page);
+  await page.getByRole("link", { name: "Управление HY2", exact: true }).click();
+  const widths = info.project.name === "mobile" ? [390, 600] : [900, 1100, 1280, 1440];
+  const MIN_SEARCH_WIDTH = 192;
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: 1000 });
+    const toolbar = page.locator(".log-toolbar");
+    const search = toolbar.getByRole("searchbox", { name: "Поиск в журнале" });
+    expect((await search.boundingBox())!.width).toBeGreaterThanOrEqual(MIN_SEARCH_WIDTH);
+    expect(await toolbar.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+  }
+});
+
 test("log client IDs resolve to users and device IDs and can be filtered", async ({ page }, info) => {
   await mockPanel(page);
   const first = "a".repeat(16),

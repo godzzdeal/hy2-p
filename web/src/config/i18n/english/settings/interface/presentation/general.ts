@@ -56,10 +56,10 @@ export const INTERFACE = {
   "Настройки Hysteria2": "Hysteria2 configuration",
   "Пользователи панели не применяются. Доступ определяют параметры auth ниже.":
     "Panel users are not applied. Access is controlled by the auth settings below.",
-  "Пользователи хранятся в панели. Приложение получает пароль по ссылке подключения, а HY2 проверяет его через панель. Добавлять пользователей в YAML и перезапускать экземпляр не нужно.":
-    "Users are stored in the panel. The app receives the password through the connection link and Hysteria2 checks it with the panel. You do not need to add users to YAML or restart the instance.",
-  "Пользователи хранятся в панели и работают сразу после добавления. Для подключения скопируйте подписку или откройте QR-код.":
-    "Users are stored in the panel and work as soon as they are added. Copy a subscription or open the QR code to connect.",
+  "HY2 проверяет пользователей через панель. Добавлять их в YAML и перезапускать экземпляр после создания пользователя не нужно.":
+    "HY2 authenticates users through the panel. Adding a user does not require YAML changes or an instance restart.",
+  "Создайте пользователя и откройте его подключение, чтобы скопировать подписку или QR-код.":
+    "Create a user and open their connection to copy the subscription or QR code.",
   Упорядочить: "Sort",
   Открыть: "Open",
   "Есть несохранённые изменения": "You have unsaved changes",

@@ -17,11 +17,7 @@ export function DemoNotice() {
     >
       <div>
         <strong>{t("HY2-P Demo")}</strong>
-        <p>
-          {t(
-            "Попробуйте панель. Данные учебные, изменения видны только в этой вкладке. VPN не подключается.",
-          )}
-        </p>
+        <p>{t("Демоверсия. Изменения видны только в этой вкладке. VPN недоступен.")}</p>
         <small>{t("Вход: demo / demo. Перезагрузка сбрасывает пример.")}</small>
       </div>
       <Button type="button" variant="secondary" onClick={onReset}>

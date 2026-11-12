@@ -1,5 +1,7 @@
 # Установка HY2-P
 
+[Параметры установщика](installation/parameters.md) | [Переменные окружения](installation/environment.md) | [Ошибки установки](installation/troubleshooting.md) | [Команды управления](management.md)
+
 ## 1. Подготовьте сервер
 
 Нужен VPS с публичным IP и Ubuntu 22.04, 24.04, 26.04 или 26.10. Поддерживаются amd64 и arm64. Docker устанавливается автоматически, панель загружается готовым образом.
@@ -58,9 +60,9 @@ Name:   my-vpn.mooo.com
 Address: 203.0.113.10
 ```
 
-Проверьте **Address под именем `my-vpn.mooo.com`**: там должен быть IP вашего VPS. `203.0.113.10` указан для примера. Ответ через `8.8.8.8` должен содержать тот же IP. Надпись `Non-authoritative answer` означает ответ публичного DNS-сервера и не является ошибкой.
+Проверьте **Address под именем `my-vpn.mooo.com`**: там должен быть IP вашего VPS. `203.0.113.10` указан для примера. Ответ через `8.8.8.8` должен содержать тот же IP. `Non-authoritative answer` означает обычный ответ публичного DNS-сервера, ошибки в нём нет.
 
-Изменения могут появиться не сразу из-за кеширования DNS. У FreeDNS TTL по умолчанию составляет 1 час. Если видите старый IP или `NXDOMAIN`, подождите и повторите проверку. При длительной задержке проверьте имя, тип **A** и **Destination**.
+Обновление DNS может занять время: публичные DNS-серверы и устройства сохраняют прежний ответ в кеше. Если видите старый IP или `NXDOMAIN`, подождите и повторите проверку. При длительной задержке проверьте имя, тип **A** и **Destination**. Срок кеширования зависит от TTL записи и DNS-сервера.
 
 Выпускайте сертификат после того, как домен начнёт указывать на сервер. При смене IP обновите **Destination** в **Subdomains**; для автоматического обновления есть **Dynamic DNS**.
 
@@ -68,10 +70,10 @@ Address: 203.0.113.10
 
 ## 3. Установка
 
-Скачайте установщик:
+Если подключились не под `root`, перейдите в него:
 
 ```bash
-curl -fsSL https://hy2-p.vercel.app/install.sh -o /tmp/hy2-install.sh
+sudo -i
 ```
 
 Выберите один вариант запуска. Замените адрес и email своими значениями.
@@ -79,7 +81,7 @@ curl -fsSL https://hy2-p.vercel.app/install.sh -o /tmp/hy2-install.sh
 ### С выбором настроек
 
 ```bash
-sudo bash /tmp/hy2-install.sh
+bash <(curl -fsSL https://hy2-p.vercel.app/install.sh)
 ```
 
 Введите домен или публичный IP и выберите HTTPS либо HTTP. Пустой адрес оставит доступ через SSH-туннель. Подтверждения принимают `yes/no` и `y/n`.
@@ -87,21 +89,26 @@ sudo bash /tmp/hy2-install.sh
 ### HTTPS по домену
 
 ```bash
-sudo bash /tmp/hy2-install.sh --yes --domain panel.example.com --email admin@example.com --accept-acme-terms
+bash <(curl -fsSL https://hy2-p.vercel.app/install.sh) \
+  --yes --domain panel.example.com --email admin@example.com \
+  --accept-acme-terms --open-ports
 ```
 
 ### HTTPS по публичному IP
 
 ```bash
-sudo bash /tmp/hy2-install.sh --yes --address IP_СЕРВЕРА --email admin@example.com --accept-acme-terms
+bash <(curl -fsSL https://hy2-p.vercel.app/install.sh) \
+  --yes --address IP_СЕРВЕРА --email admin@example.com \
+  --accept-acme-terms --open-ports
 ```
 
-Let's Encrypt выдаёт IP-сертификат на 160 часов. Панель продлевает его автоматически; входящий TCP 80 должен оставаться доступным. Приватные адреса для такого сертификата не подходят.
+Let's Encrypt выдаёт IP-сертификат на 160 часов. Панель продлевает его автоматически; входящий TCP 80 должен оставаться доступным. Приватные адреса для такого сертификата не подходят. [О сертификатах на IP](https://letsencrypt.org/2026/01/15/6day-and-ip-general-availability/).
 
 ### HTTP по публичному IP
 
 ```bash
-sudo bash /tmp/hy2-install.sh --yes --address IP_СЕРВЕРА --http
+bash <(curl -fsSL https://hy2-p.vercel.app/install.sh) \
+  --yes --address IP_СЕРВЕРА --http --open-ports
 ```
 
 Домен и сертификат не нужны. HTTP-соединение не шифруется.
@@ -129,6 +136,6 @@ sudo bash /tmp/hy2-install.sh --yes --address IP_СЕРВЕРА --http
 3. Сохраните пользователя и откройте **Подключение**.
 4. Импортируйте подписку по ссылке или QR-коду в приложение с поддержкой Hysteria2 и проверьте подключение.
 
-Подписка получает изменения при обновлении в приложении. Отдельная ссылка подключения автоматически не обновляется. Общий флаг пользователей задаётся в **Подписках**; индивидуальный флаг имеет приоритет.
+Подписка получает изменения при обновлении в приложении. Отдельная ссылка подключения автоматически не обновляется. Общий флаг пользователей задаётся в **Подписке**; индивидуальный флаг имеет приоритет.
 
-[Назад к описанию панели](../README.md) | [Команды управления и восстановление доступа](management.md)
+[Работа в панели](panel/index.md) | [Описание проекта](../README.md) | [Удаление](uninstall.md)

@@ -10,6 +10,7 @@ import (
 	"hy2-panel/internal/core"
 	"hy2-panel/internal/core/supervision"
 	"hy2-panel/internal/instances/validation"
+	"hy2-panel/internal/mimic"
 	"hy2-panel/internal/portcontrol/protocol"
 	"hy2-panel/internal/security"
 	"os"
@@ -29,7 +30,7 @@ func (registry *Registry) Add(name string, settings configuration.Settings) (*In
 	if err := registry.validate("", settings); err != nil {
 		return nil, err
 	}
-	if len(registry.definitions) >= MaxInstances {
+	if len(registry.definitions) >= validation.MaxInstances {
 		return nil, errors.New("Достигнут предел: 8 экземпляров")
 	}
 	slot := 1
@@ -61,8 +62,8 @@ func (registry *Registry) Add(name string, settings configuration.Settings) (*In
 		return nil, err
 	}
 	runtime.InstanceID = definition.ID
-	runtime.StatsPort = FirstStatsPort + slot
-	runtime.ACMEPort = FirstChallengePort + slot
+	runtime.StatsPort = security.FirstStatsPort + slot
+	runtime.ACMEPort = security.FirstChallengePort + slot
 	instance := &Instance{Definition: definition, Config: config, Core: runtime}
 	registry.definitions = append(registry.definitions, definition)
 	if err := registry.save(); err != nil {
@@ -81,6 +82,9 @@ func snapshot(instance *Instance) *Instance {
 }
 
 func (registry *Registry) Remove(ctx context.Context, id string) (*protocol.Status, error) {
+	if os.Getenv(mimic.EnabledEnv) == "true" && os.Getenv(mimic.InstanceEnv) == id {
+		return nil, errors.New("Сначала отключите режим установки Mimic для этого экземпляра")
+	}
 	registry.mu.Lock()
 	defer registry.mu.Unlock()
 	instance := registry.instances[id]

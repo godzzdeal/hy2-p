@@ -29,8 +29,8 @@ export const INSTANCES: Record<string, string> = {
     "Access to this instance is set in its configuration",
   "Пользователи и лимиты трафика общие. Доступ к экземплярам настраивается отдельно для каждого пользователя.":
     "Users and traffic limits are shared. Instance access is configured separately for each user.",
-  "UDP-порт этого экземпляра ещё не опубликован. Запустите экземпляр и нажмите «Применить UDP-порт».":
-    "This instance's UDP port is not published yet. Start the instance and click “Apply UDP port”.",
+  "UDP-порт не опубликован. Примените его в конфигурации экземпляра.":
+    "The UDP port is not published. Apply it in the instance configuration.",
   Экземпляры: "Instances",
   Экземпляр: "Instance",
   "Экземпляры HY2": "Hysteria2 instances",
@@ -57,8 +57,8 @@ export const INSTANCES: Record<string, string> = {
     "Users and traffic limits are shared. Subscriptions include all published instances using panel authentication.",
   "Настройки будут скопированы из выбранного экземпляра. Новый экземпляр останется остановленным.":
     "Settings will be copied from the selected server. The new server will remain stopped.",
-  "Каждому экземпляру нужен свободный UDP-порт. После создания проверьте конфигурацию, запустите экземпляр и примените порт.":
-    "Each instance needs an available UDP port. After creation, check its configuration, start the instance and apply the port.",
+  "Выберите свободный UDP-порт, проверьте конфигурацию и примените порт. Затем запустите экземпляр.":
+    "Choose an available UDP port, review the configuration and apply the port. Then start the instance.",
   "Удалить экземпляр «{{name}}» и его конфигурацию? Пользователи останутся в панели.":
     "Delete instance “{{name}}” and its configuration? Panel users will be kept.",
 };

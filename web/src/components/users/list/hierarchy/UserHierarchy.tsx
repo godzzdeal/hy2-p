@@ -13,12 +13,15 @@ interface IUserHierarchy extends IUserActions {
 }
 export function UserHierarchy({ sections, ...actions }: IUserHierarchy) {
   const [group, setGroup] = useState<IGroup>();
-  const traffic = useTraffic();
+  const traffic = useTraffic(true);
   return (
     <>
-      <TrafficStatus />
+      <TrafficStatus
+        updated={traffic.data?.updated ?? ""}
+        error={traffic.error?.message || traffic.data?.error}
+      />
       <div className="user-hierarchy @container">
-        <UserTable hasStatus={false}>
+        <UserTable>
           {sections.map((section) => (
             <GroupSection
               key={section.id}

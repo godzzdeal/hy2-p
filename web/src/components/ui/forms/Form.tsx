@@ -26,7 +26,10 @@ export function Form<T extends FieldValues>({ form, onSubmit, children, classNam
       {...props}
       className={cn("grid min-w-0 gap-3", className)}
       noValidate
-      onSubmit={form.handleSubmit(onValid, onInvalid)}
+      onSubmit={(event) => {
+        event.stopPropagation();
+        void form.handleSubmit(onValid, onInvalid)(event).catch(showError);
+      }}
     >
       {children}
     </form>

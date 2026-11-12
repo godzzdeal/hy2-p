@@ -46,7 +46,6 @@ export const CONFIGURATION: Record<string, string> = {
   Запущено: "Running",
   "Значение или пароль": "Value or password",
   "Значение пароля для копирования": "Password value to copy",
-  "И вы в сети.": "And you're connected.",
   "Игнорировать скорость клиента": "Ignore client bandwidth",
   "Идёт операция с экземпляром": "An instance operation is in progress",
   "Изменения применяются после перезапуска экземпляра.": "Restart the instance to apply changes.",

@@ -23,6 +23,11 @@ update_panel() {
   local old=$1 next snapshot previous previous_backup
   next=$(fetch_release "${2:-latest}") || return 1
   if [[ $next == "$old" ]]; then log "Эта версия уже установлена."; return 0; fi
+  if [[ $(env_read PANEL_MIMIC_ENABLED) == true ]]; then
+    # shellcheck source=/dev/null
+    source "$(dirname -- "${BASH_SOURCE[0]}")/../mimic/compose.sh"
+    mimic_release_supported "$next"
+  fi
   log "Подготавливаем готовый образ; текущая панель продолжает работать."
   prepare_image "$next" || return 1
   sync_listener "$old"

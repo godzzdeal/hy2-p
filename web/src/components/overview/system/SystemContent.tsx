@@ -57,14 +57,8 @@ export function SystemContent({ data, traffic }: ISystemContent) {
               field="receive"
               secondary="transmit"
               unit="rate"
-              value={
-                "↓ " +
-                formatBytes(Math.round(current?.receive ?? 0), t) +
-                t("/с") +
-                " ↑ " +
-                formatBytes(Math.round(current?.transmit ?? 0), t) +
-                t("/с")
-              }
+              value={"↓ " + formatBytes(Math.round(current?.receive ?? 0), t) + t("/с")}
+              secondaryValue={"↑ " + formatBytes(Math.round(current?.transmit ?? 0), t) + t("/с")}
             />
           )}
         </div>

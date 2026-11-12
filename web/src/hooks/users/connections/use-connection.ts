@@ -5,7 +5,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useConnection(userId: string) {
   const client = useQueryClient();
-  const { notify, showError } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   const queryKey = [...QUERY_KEYS.connection, userId];
   const links = useQuery({
     queryKey,

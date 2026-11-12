@@ -10,7 +10,8 @@ export function useAnnouncement() {
 }
 export function useSaveAnnouncement() {
   const client = useQueryClient();
-  const { showError, notify } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   return useMutation({
     mutationFn: announcementApi.save,
     onError: showError,

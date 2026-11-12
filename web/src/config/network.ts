@@ -34,6 +34,8 @@ export const API_ROUTES = {
   announcement: "/admin/announcement",
   hy2Certificates: "/certificates/hysteria",
   ech: "/tools/ech",
+  mimic: "/tools/mimic",
+  aclFile: "/tools/acl-file",
   statsSecret: "/tools/traffic-stats",
   firewall: "/firewall",
   firewallPorts: "/firewall/ports",
@@ -51,6 +53,7 @@ export const API_ROUTES = {
 } as const;
 export const QUERY_KEYS = {
   ech: ["ech"],
+  mimic: ["mimic"],
   panelMaintenance: ["panel-maintenance"],
   panelVersions: ["panel-versions"],
   panelOperation: ["panel-operation"],

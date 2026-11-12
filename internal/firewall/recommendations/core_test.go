@@ -15,6 +15,7 @@ func TestCorePortsRespectPublishingAndACME(t *testing.T) {
 		{"DNS ACME needs no inbound TCP", "listen: :61254\nacme: {type: dns}\n", "61254", true, []Port{{61254, "udp", "vpn", "", false}}},
 		{"TLS ACME needs TCP 443", "listen: :61254\nacme: {type: tls}\n", "61254", true, []Port{{61254, "udp", "vpn", "", false}, {443, "tcp", "acme-tls", "", false}}},
 		{"native uses actual listen", "listen: :8443\ntls: {}\n", "", false, []Port{{8443, "udp", "vpn", "", false}}},
+		{"mimic needs both protocols", "listen: :8443\nmimic: {enabled: true}\n", "", false, []Port{{8443, "udp", "vpn", "", false}, {8443, "tcp", "vpn", "", false}}},
 		{"local listeners stay private", "listen: '127.0.0.1:8443'\nmasquerade: {listenHTTP: '127.0.0.1:8080'}\n", "", false, []Port{}},
 		{"optional masquerade requires publishing", "listen: :8443\nmasquerade: {listenHTTP: ':8080', listenHTTPS: ':8444'}\n", "61254", true, []Port{{61254, "udp", "vpn", "", false}, {8080, "tcp", "masquerade-http", "", true}, {8444, "tcp", "masquerade-https", "", true}}},
 	}

@@ -1,6 +1,7 @@
 import { type IConfiguration } from "@/services/configuration/configuration-types";
 import { demoSystem } from "@/services/demo/routes/system";
 export const PANEL_METADATA: Record<string, unknown> = {
+  "/api/tools/mimic": {ready:false,container:true,managed:false,instanceId:"",kernel:"6.8.0",interfaces:["eth0"],checks:[{id:"installation",ok:false,detail:"Включите режим установки Mimic"}]},
   "/api/panel/maintenance": {
     available: false,
     current: "",

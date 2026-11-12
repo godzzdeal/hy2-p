@@ -31,7 +31,12 @@ export function Dashboard({ children }: { children: ReactNode }) {
       <SpaceScene />
       <Sidebar />
       <main>
-        <Header title={t(NAVIGATION.find((item) => item.id === page)?.label ?? "")} />
+        <Header
+          title={t(
+            page === "core" ? "Управление" : (NAVIGATION.find((item) => item.id === page)?.label ?? ""),
+          )}
+          hasHysteriaBadge={page === "core"}
+        />
         <div
           data-page-content
           className="content relative flex-1 min-h-0 w-full overflow-auto scrollbar-stable snap-proximity scroll-py-4"

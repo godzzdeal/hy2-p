@@ -25,7 +25,6 @@ export const ADMINISTRATION: Record<string, string> = {
   "Режим аутентификации": "Authentication mode",
   "Режим маскировки": "Masquerade mode",
   Русский: "Russian",
-  "СИСТЕМА / HYSTERIA 2": "SYSTEM / HYSTERIA 2",
   "Сбросить счётчики": "Reset counters",
   Свернуть: "Collapse",
   Светлая: "Light",
@@ -102,8 +101,8 @@ export const ADMINISTRATION: Record<string, string> = {
     "Set the external URL if you use Docker or a reverse proxy.",
   "Укажите домен или IP без схемы и пути": "Enter a domain or IP without a scheme or path",
   "Укажите порт": "Enter a port",
-  "Управляйте доступом и подключениями.": "Manage access and connections.",
-  "Управляйте процессом Hysteria2.": "Manage the Hysteria2 process.",
+  "Пользователи, группы и права доступа.": "Users, groups and access permissions.",
+  "Запуск, версия и журнал экземпляра.": "Instance controls, version and logs.",
   "Условия центра сертификации": "Certificate authority terms",
   "Установите экземпляр и настройте конфигурацию для первого запуска.":
     "Install the instance and configure it before the first startup.",

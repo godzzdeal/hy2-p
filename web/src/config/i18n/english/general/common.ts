@@ -36,7 +36,7 @@ export const COMMON: Record<string, string> = {
   "Обновление: %v. Откат: %v. Требуется проверка журнала.": "Update: %v. Rollback: %v. Check the logs.",
   Обфускация: "Obfuscation",
   "Общий пароль": "Shared password",
-  "Одна ссылка.": "One link.",
+  "Подключение устройств": "Connect devices",
   "Ожидание перезапуска": "Waiting to restart",
   "Ожидание статистики экземпляра": "Waiting for instance statistics",
   "Операция не выполнена": "Operation failed",
@@ -56,7 +56,6 @@ export const COMMON: Record<string, string> = {
   "Отправка сервера": "Server upload",
   "Отправлено клиентом (байты)": "Sent by client (bytes)",
   "ПАНЕЛЬ УПРАВЛЕНИЯ": "CONTROL PANEL",
-  "ПРОСТОЕ ПОДКЛЮЧЕНИЕ": "EASY CONNECTION",
   "Панель использует HTTP-аутентификацию для сроков доступа и квот. Нативные параметры ниже не применяются.":
     "The panel uses HTTP authentication for access expiry and quotas. Native settings below are not applied.",
   "Панель не подменяет auth. Пользователи и лимиты панели не управляют внешней аутентификацией.":
@@ -77,7 +76,7 @@ export const COMMON: Record<string, string> = {
   "Перезапуски не помогли. Откатываем версию": "Restart attempts failed. Rolling back",
   Перезапустить: "Restart",
   "Перенаправлять маскировку на HTTPS": "Redirect masquerade traffic to HTTPS",
-  "Персональные URL и QR-коды.": "Personal connection URLs and QR codes.",
+  "Подписки и QR-коды.": "Subscriptions and QR codes.",
   "Пользователи: открыть список": "Users: open list",
   "По умолчанию / выключено": "Default / disabled",
   Повторить: "Retry",
@@ -95,8 +94,8 @@ export const COMMON: Record<string, string> = {
   "Поиск по имени…": "Search by name…",
   "Поиск пользователей": "Search users",
   "Пока нет": "None yet",
-  "Пока нет записей. После запуска здесь появятся сообщения Hysteria2.":
-    "No entries yet. Hysteria2 messages will appear after startup.",
+  "Записей нет. Запустите экземпляр, чтобы увидеть журнал.":
+    "No entries. Start the instance to view its logs.",
   "Получаем версии с GitHub…": "Fetching releases from GitHub…",
   "Получено клиентом (байты)": "Received by client (bytes)",
   Пользователи: "Users",

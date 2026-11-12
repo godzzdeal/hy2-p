@@ -12,7 +12,8 @@ export function useCloudPassword() {
 }
 export function useSaveCloudPassword() {
   const client = useQueryClient();
-  const { notify, showError } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   return useMutation({
     mutationFn: cloudPasswordApi.save,
     gcTime: 0,

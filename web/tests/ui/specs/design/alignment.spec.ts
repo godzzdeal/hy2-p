@@ -46,7 +46,7 @@ test("all pages keep expanded content inside the viewport in both themes", async
     for (const title of [
       "Обзор",
       "Пользователи",
-      "Подписки",
+      "Подписка",
       "Экземпляры",
       "Конфигурация",
       "Управление HY2",
@@ -54,7 +54,7 @@ test("all pages keep expanded content inside the viewport in both themes", async
     ]) {
       await page.locator(".app-sidebar nav").getByRole("link", { name: title, exact: true }).click();
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-      if (title === "Настройки" || title === "Подписки") await expandSettings(page);
+      if (title === "Настройки" || title === "Подписка") await expandSettings(page);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await expectInside(page.locator(".content"));
       await expectInside(page.getByRole("contentinfo"));

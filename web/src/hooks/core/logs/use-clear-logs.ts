@@ -7,7 +7,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 export function useClearLogs() {
   const id = useInstanceId();
   const client = useQueryClient();
-  const { notify, showError } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   return useMutation({
     mutationFn: () => coreApi.clearLogs(id),
     onMutate: async () => {

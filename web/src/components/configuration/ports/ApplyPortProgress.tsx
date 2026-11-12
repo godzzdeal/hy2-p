@@ -8,7 +8,8 @@ export function ApplyPortProgress() {
   const { t } = useTranslation();
   const query = usePortProgress();
   const clear = usePortOperationStore((state) => state.setTicket);
-  const { notify, showError } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   const result = query.data;
   useEffect(() => {
     if (!query.ticket) return;

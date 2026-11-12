@@ -3,6 +3,11 @@ import { mockInstances } from "./fixture";
 test("create, configure, rename and remove an independent core", async ({ page }, info) => {
   const fixture = await mockInstances(page);
   await page.getByRole("link", { name: "Экземпляры", exact: true }).click();
+  const heading = page.getByRole("heading", { level: 1 });
+  const logo = (await heading.getByRole("img", { name: "Hysteria2", exact: true }).boundingBox())!;
+  const count = (await heading.locator(".user-count").boundingBox())!;
+  expect(logo.height).toBe(count.height);
+  expect(logo.y).toBe(count.y);
   await page.getByRole("button", { name: "Добавить экземпляр", exact: true }).click();
   await page.getByLabel("Название экземпляра", { exact: true }).fill("Второй");
   await page.getByLabel("UDP-порт", { exact: true }).fill("8444");

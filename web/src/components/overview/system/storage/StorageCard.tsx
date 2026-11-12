@@ -2,7 +2,7 @@ import { Caption } from "@/components/elements/Caption";
 import { Card } from "@/components/ui/cards/Card";
 import { CardHeader } from "@/components/ui/cards/CardHeader";
 import { CardBody } from "@/components/ui/cards/CardBody";
-import { StorageRow } from "@/components/overview/system/storage/StorageRow";
+import { ByteRow } from "@/components/overview/system/storage/ByteRow";
 import { storageItems } from "@/components/overview/system/storage/storage-items";
 import { type ISystemStorage } from "@/services/admin/maintenance";
 import { formatBytes } from "@/services/users/traffic/traffic-types";
@@ -20,7 +20,7 @@ export function StorageCard({ value, isHost }: { value: ISystemStorage; isHost: 
       </CardHeader>
       <CardBody className="gap-1">
         {items.map((item) => (
-          <StorageRow key={item.label} {...item} />
+          <ByteRow key={item.label} {...item} />
         ))}
         {!isHost && (
           <small className="muted">

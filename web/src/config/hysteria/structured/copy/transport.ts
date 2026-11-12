@@ -18,7 +18,7 @@ export const TRANSPORT_COPY: Record<string, IFieldCopy> = {
   },
   ignoreClientBandwidth: {
     label: "Игнорировать скорость клиента",
-    hint: "Сервер будет использовать BBR или Reno, даже если клиент запросил Brutal. Подходит для работы без ручной настройки скорости.",
+    hint: "Использовать BBR или Reno, даже если клиент запросил Brutal.",
   },
   "congestion.type": {
     label: "Контроль перегрузки",
@@ -26,7 +26,7 @@ export const TRANSPORT_COPY: Record<string, IFieldCopy> = {
   },
   "congestion.bbrProfile": {
     label: "Профиль BBR",
-    hint: "Standard подходит для обычного использования. Conservative снижает напор, aggressive увеличивает его.",
+    hint: "Профиль BBR: standard, conservative или aggressive. Применяется только при congestion.type: bbr.",
   },
   speedTest: {
     label: "Тест скорости",
@@ -54,7 +54,7 @@ export const TRANSPORT_COPY: Record<string, IFieldCopy> = {
   },
   "quic.maxConnReceiveWindow": {
     label: "Максимальный буфер подключения",
-    hint: "Верхний предел общего буфера подключения. Оставьте стандартное значение, если нет конкретной причины менять.",
+    hint: "Максимальный общий буфер подключения в байтах.",
   },
   "quic.maxIncomingStreams": {
     label: "Одновременные потоки",

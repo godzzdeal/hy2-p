@@ -3,7 +3,7 @@ import { previewDemo } from ".";
 test("demo pages work without a server or API requests", async ({ page }, info) => {
   const demo = await previewDemo(page);
   await expect(page.getByRole("complementary", { name: "Демоверсия" })).toBeVisible();
-  for (const title of ["Пользователи", "Подписки", "Экземпляры", "Конфигурация", "Управление HY2", "Настройки", "Обзор"]) {
+  for (const title of ["Пользователи", "Подписка", "Экземпляры", "Конфигурация", "Управление HY2", "Настройки", "Обзор"]) {
     await page.locator(".app-sidebar nav").getByRole("link", { name: title, exact: true }).click();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   }

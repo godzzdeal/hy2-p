@@ -25,6 +25,16 @@ export function demoSettings(path: string, instanceId: string, { method = "GET",
     return demoState.settings[instanceId];
   }
   if (path === API_ROUTES.history) return demoState.history[instanceId] ?? [];
+  if (path === API_ROUTES.mimic)
+    return {
+      ready: false,
+      container: true,
+      managed: false,
+      instanceId: "",
+      kernel: "",
+      interfaces: ["eth0"],
+      checks: [{ id: "installation", ok: false, detail: "Включите режим установки Mimic" }],
+    };
   if (path === API_ROUTES.hy2Certificates) {
     if (method !== "GET") return unavailable();
     return {

@@ -3,7 +3,6 @@ import { readField } from "@/utils/configuration/structured/yaml/fields";
 import { EmptyState } from "@/components/ui/status/EmptyState";
 import { Card } from "@/components/ui/cards/Card";
 import { CardBody } from "@/components/ui/cards/CardBody";
-import { Notice } from "@/components/ui/feedback";
 import { CertificateMode } from "@/components/configuration/structured/certificates/CertificateMode";
 import { CertificateStatus } from "@/components/configuration/structured/certificates/CertificateStatus";
 import { CertificateUpload } from "@/components/configuration/structured/certificates/CertificateUpload";
@@ -14,6 +13,9 @@ import { ConfigNavigation } from "@/components/configuration/structured/form/nav
 import { OutboundsEditor } from "@/components/configuration/structured/outbounds/OutboundsEditor";
 import { EchTools } from "@/components/configuration/structured/tools/EchTools";
 import { StatsSecret } from "@/components/configuration/structured/tools/StatsSecret";
+import { AclEditor } from "@/components/configuration/structured/acl";
+import { AclSources } from "@/components/configuration/structured/acl/sources";
+import { MimicTools } from "@/components/configuration/structured/tools/mimic";
 import { CONFIGURATION_DOCS } from "@/config/hysteria/structured/schema/documentation/sections";
 import { type IConfiguration } from "@/services/configuration/configuration-types";
 import { useTranslation } from "react-i18next";
@@ -65,7 +67,7 @@ export function ConfigurationForm({
             </div>
             <div
               key={active.id}
-              className="configuration-section-scroll min-h-0 flex-1 overflow-y-auto scrollbar-stable"
+              className="configuration-section-scroll relative min-h-0 flex-1 overflow-y-auto scrollbar-stable"
             >
               <CardBody className="configuration-section-body gap-4">
                 {active.id === "tls" && <CertificateStatus />}
@@ -86,13 +88,9 @@ export function ConfigurationForm({
                   />
                 )}
                 {active.id === "trafficStats" && <StatsSecret key={instanceId} />}
-                {active.id === "mimic" && (
-                  <Notice variant="warning">
-                    {t(
-                      "Mimic требует отдельной установки программы и модуля Linux. Обычный контейнер панели не получает права root для экземпляра.",
-                    )}
-                  </Notice>
-                )}
+                {active.id === "acl" && !search && <AclEditor document={document} onSet={onSet} />}
+                {active.id === "acl" && !search && <AclSources document={document} onSet={onSet} />}
+                {active.id === "mimic" && <MimicTools key={instanceId} source={value.config} />}
                 {document.errors.length ? (
                   <p className="inline-error text-danger text-lg py-3 px-0 wrap-anywhere">
                     {t(document.errors[0].message)}
@@ -105,7 +103,14 @@ export function ConfigurationForm({
                   />
                 ) : (
                   <SectionFields
-                    fields={active.fields}
+                    fields={
+                      active.id === "acl" && !search
+                        ? active.fields.filter(
+                            (field) =>
+                              !["acl.inline", "acl.file", "acl.geoip", "acl.geosite"].includes(field.path),
+                          )
+                        : active.fields
+                    }
                     document={document}
                     isNative={value.authMode === "native"}
                     isManagedHttp={isManagedHttp}

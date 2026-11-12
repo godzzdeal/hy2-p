@@ -77,7 +77,7 @@ test("page forms share padding and content stays inside the viewport", async ({ 
   for (const title of [
     "Обзор",
     "Пользователи",
-    "Подписки",
+    "Подписка",
     "Экземпляры",
     "Конфигурация",
     "Управление HY2",
@@ -88,7 +88,7 @@ test("page forms share padding and content stays inside the viewport", async ({ 
     await link.click();
     await page.waitForURL(url => url.pathname === route);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-    if (title === "Настройки" || title === "Подписки") await expandSettings(page);
+    if (title === "Настройки" || title === "Подписка") await expandSettings(page);
     if (title === "Настройки") await expect(page.locator("#cloud-password input").first()).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),

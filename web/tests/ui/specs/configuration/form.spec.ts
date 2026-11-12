@@ -78,12 +78,14 @@ test("configuration sections preserve edits on desktop and mobile", async ({ pag
       const wrapper = element.parentElement!;
       return {
         height: element.clientHeight,
+        editorHeight: wrapper.closest(".structured-config")!.getBoundingClientRect().height,
         available: window.innerHeight - 32,
         wrapperBottom: wrapper.getBoundingClientRect().bottom,
         fieldsBottom: wrapper.nextElementSibling!.getBoundingClientRect().bottom,
       };
     });
-    expect(geometry.height).toBeGreaterThan(560);
+    expect(geometry.height).toBeGreaterThan(0);
+    expect(geometry.editorHeight).toBeLessThanOrEqual(page.viewportSize()!.height * 0.65);
     expect(geometry.height).toBeLessThanOrEqual(geometry.available);
     expect(Math.abs(geometry.wrapperBottom - geometry.fieldsBottom)).toBeLessThanOrEqual(1);
     await navigation.getByRole("button", { name: "Masquerade", exact: true }).click();

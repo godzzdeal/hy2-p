@@ -8,8 +8,6 @@ export const TRANSFER = {
     "The panel is unreachable. Check your connection and try again.",
   "Панель вернула некорректный ответ. Повторите действие позже.":
     "The panel returned an invalid response. Try again later.",
-  "Чтобы связать пользователей с существующим основным экземпляром:":
-    "To link users to the existing primary instance:",
   "Перенос данных": "Data transfer",
   "Импорт и экспорт": "Import and export",
   "Перенос конфигураций экземпляров, пользователей, групп и лимитов между панелями HY2-P. Существующие записи не перезаписываются.":
@@ -48,7 +46,7 @@ export const TRANSFER = {
   "Ошибка экземпляра": "Instance error",
   "Не удалось загрузить данные.": "Could not load data.",
   "Такая конфигурация уже существует": "This configuration already exists",
-  "Совпадает имя, идентификатор или порт экземпляра": "A instance name or port is already in use",
+  "Совпадает имя, идентификатор или порт экземпляра": "An instance name, ID or port is already in use",
   "Выбранный экземпляр недоступен": "The selected instance is unavailable",
   "Используется выбранный экземпляр без изменения его настроек":
     "Using the selected instance without changing its settings",

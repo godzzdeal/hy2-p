@@ -1,2 +1,2 @@
-export * from "./InstanceCard";
+export * from "./card";
 export * from "./InstanceSelector";

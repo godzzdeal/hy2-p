@@ -21,14 +21,23 @@ case $command in
       '  backup                 Согласованная резервная копия данных и ключей' \
       '  url                    Адрес панели или SSH-туннель'
     printf '%s\n' '  firewall-setup         Подключить помощник управления UFW'
+    printf '%s\n' '  mimic-setup [--instance ID|--disable] Настроить установку Mimic'
+    printf '%s\n' '  mimic-uninstall        Удалить установку Mimic'
     printf '%s\n' '  cleanup-images         Удалить старые образы, сохранив откат'
+    printf '%s\n' '  uninstall [--dry-run|--yes] Полностью удалить HY2-P и его данные'
     printf '%s\n' '  cloud-password-reset   Отключить забытый облачный пароль'
     printf '%s\n' '  password-reset         Создать новый пароль администратора'
     printf '%s\n' '  export <файл.json>     Экспорт экземпляров, групп и пользователей' '  import <файл.json> [--apply] Просмотр совпадений или добавление записей'
     exit 0 ;;
-  status|logs|start|stop|restart|start-panel|restart-panel|update|rollback|backup|url|apply-udp|remove-udp|recover-udp|firewall-setup|cloud-password-reset|password-reset|import|export|cleanup-images) ;;
+  status|logs|start|stop|restart|start-panel|restart-panel|update|rollback|backup|url|apply-udp|remove-udp|recover-udp|firewall-setup|cloud-password-reset|password-reset|import|export|cleanup-images|uninstall|mimic-setup|mimic-uninstall) ;;
   *) die "Неизвестная команда: $command" ;;
 esac
+if [[ $command == uninstall ]]; then
+  # shellcheck source=uninstall/index.sh
+  source "$SCRIPT_DIR/uninstall/index.sh"
+  uninstall_panel "${@:2}"
+  exit
+fi
 [[ -f $ROOT/.env && -f $ROOT/current ]] || die "Установка не найдена."
 current=$(cat "$ROOT/current")
 valid_sha "$current" || die "Повреждён файл текущей версии."
@@ -46,6 +55,11 @@ case $command in
     fi
     current=$(cat "$ROOT/current")
     case $command in
+      mimic-setup|mimic-uninstall)
+        # shellcheck source=mimic/setup.sh
+        source "$SCRIPT_DIR/mimic/setup.sh"
+        if [[ $command == mimic-uninstall ]]; then uninstall_mimic "$current" "${@:2}"
+        else setup_mimic "$current" "${@:2}"; fi ;;
       cleanup-images) cleanup_images "$current" ;;
       password-reset) reset_admin_password "$current" ;;
       cloud-password-reset) cloud_password_reset "$current" ;;

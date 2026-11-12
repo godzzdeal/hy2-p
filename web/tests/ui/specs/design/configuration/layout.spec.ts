@@ -24,8 +24,13 @@ test("configuration keeps its height and warnings share padding and distinct col
   const warningColor=await warning.evaluate(element=>getComputedStyle(element).backgroundColor);
   expect((await warning.boundingBox())!.y).toBeLessThan((await page.getByLabel("Сертификат Hysteria2",{exact:true}).boundingBox())!.y);
   await page.locator(".configuration-fields").screenshot({path:info.outputPath("tls-warning-"+theme.value+".png")});
-  for(const section of ["ECH","Traffic Stats API","Realm","Listen","TLS / ACME"]) {
+  for(const section of ["ECH","Traffic Stats API","Realm","QUIC parameters","Mimic","ACL","Listen","TLS / ACME"]) {
    await selectSection(page,section);expect((await editor.boundingBox())!.height).toBe(height);
+   const excess=await page.locator(".content").evaluate(content=>{
+    const pageContent=content.querySelector<HTMLElement>(".page-content")!;
+    return content.scrollHeight-Math.max(content.clientHeight,pageContent.offsetTop+pageContent.offsetHeight);
+   });
+   expect(excess).toBeLessThanOrEqual(1);
    expect(await body.evaluate(element=>element.scrollWidth<=element.clientWidth)).toBe(true);
    if(section==="ECH") {
     const notice=body.locator('.notice[data-variant="info"]').first();

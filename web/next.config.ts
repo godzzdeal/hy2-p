@@ -3,6 +3,7 @@ import { version } from "./package.json";
 
 const backend = process.env.HY2_API_URL ?? "http://127.0.0.1:18080";
 const config: NextConfig = {
+  experimental: { proxyClientMaxBodySize: "129mb" },
   output: "standalone",
   poweredByHeader: false,
   devIndicators: false,
