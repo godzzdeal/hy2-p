@@ -4,6 +4,7 @@ SHA=1111111111111111111111111111111111111111
 PANEL_ID=aaaaaaaaaaaa
 WORKER_ID=bbbbbbbbbbbb
 FOREIGN_ID=cccccccccccc
+AGENT_ID=dddddddddddd
 IMAGE_ID=sha256:1111111111111111111111111111111111111111111111111111111111111111
 
 setup_uninstall() {
@@ -22,11 +23,12 @@ setup_uninstall() {
   STATE=$WORK/$1.json
   EVENTS=$WORK/$1.events
   jq -n --arg root "$ROOT" --arg sha "$SHA" --arg image "$IMAGE_ID" --arg label "$label" \
-    --arg panel "$PANEL_ID" --arg worker "$WORKER_ID" --arg foreign "$FOREIGN_ID" '{
+    --arg panel "$PANEL_ID" --arg worker "$WORKER_ID" --arg foreign "$FOREIGN_ID" --arg agent "$AGENT_ID" '{
     containers:[
       {Id:$panel, Image:$image, Config:{Labels:{"io.hy2-panel.install-dir":$root}}, Mounts:[{Name:"hy2-panel_panel-data"}], State:{Status:"running"}},
       {Id:$worker, Image:$image, Config:{Labels:{"io.hy2-panel.maintenance":$label}}, Mounts:[], State:{Status:"exited"}},
-      {Id:$foreign, Image:"foreign-image", Config:{Labels:{}}, Mounts:[], State:{Status:"running"}}
+      {Id:$foreign, Image:"foreign-image", Config:{Labels:{}}, Mounts:[], State:{Status:"running"}},
+      {Id:$agent, Image:$image, Config:{Labels:{"io.hy2-panel.install-dir":$root,"com.docker.compose.service":"port-agent"}}, Mounts:[{Name:"hy2-panel_panel-data"},{Name:"hy2-panel_port-agent-socket"}], State:{Status:"running"}}
     ],
     volumes:[
       {Name:"hy2-panel_panel-data", Labels:{"io.hy2-panel.install-dir":$root}},

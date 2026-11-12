@@ -40,6 +40,12 @@ sudo env HY2_ADMIN_PASSWORD=integration-test-password-only \
   bash scripts/install.sh --version "$GITHUB_SHA" --directory "$ROOT" --port 19080 --yes
 manager() { sudo "$ROOT/hy2-panel" "$@"; }
 manager status
+for service in frontend panel port-agent; do
+  identifier=$(sudo docker ps -q --filter label=com.docker.compose.project=hy2-panel --filter "label=com.docker.compose.service=$service")
+  [[ $identifier =~ ^[a-f0-9]{12,64}$ ]] || exit 1
+  owner=$(sudo docker inspect --format '{{index .Config.Labels "io.hy2-panel.install-dir"}}' "$identifier")
+  [[ $owner == "$ROOT" ]] || { printf 'Missing installation ownership label: %s\n' "$service" >&2; exit 1; }
+done
 URL=http://127.0.0.1:19080
 curl -fsS -D "$WORK/interface.headers" "$URL/" -o "$WORK/interface.html"
 grep -q '<html' "$WORK/interface.html"

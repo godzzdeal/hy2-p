@@ -32,7 +32,7 @@ uninstall_inventory() {
         users=$(engine ps -aq --filter "volume=$resource") || return 1
         for identifier in $users; do
           grep -Fxq "$identifier" <<<"$UNINSTALL_CONTAINERS" ||
-            die "Том $resource используется другим контейнером. Ничего не удалено."
+            die "Том $resource используется другим контейнером ($identifier). Ничего не удалено."
         done
         UNINSTALL_VOLUMES+="$resource"$'\n'
       else UNINSTALL_NETWORKS+="$resource"$'\n'; fi

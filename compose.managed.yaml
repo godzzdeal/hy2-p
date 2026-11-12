@@ -11,6 +11,8 @@ services:
       - port-agent-socket:/run/hy2-port-agent:ro
   port-agent:
     image: ${PANEL_IMAGE:?Managed image required}
+    labels:
+      io.hy2-panel.install-dir: ${PANEL_INSTALL_DIR:?Installation directory required}
     user: "0:0"
     entrypoint: ["/usr/local/bin/port-agent"]
     restart: unless-stopped
