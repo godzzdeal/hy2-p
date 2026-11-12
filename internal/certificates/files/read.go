@@ -4,10 +4,12 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
+	"golang.org/x/net/idna"
 	"hy2-panel/internal/security"
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -20,6 +22,23 @@ type Certificate struct {
 	Expired   bool     `json:"expired"`
 	PinSHA256 string   `json:"pinSHA256"`
 	leaf      *x509.Certificate
+}
+
+func (certificate Certificate) MatchesName(name string) bool {
+	wildcard := strings.HasPrefix(name, "*.")
+	name, err := idna.Lookup.ToASCII(strings.TrimPrefix(strings.TrimSuffix(name, "."), "*."))
+	if err != nil || certificate.leaf == nil {
+		return false
+	}
+	if wildcard {
+		for _, domain := range certificate.Domains {
+			if strings.EqualFold(domain, "*."+name) {
+				return true
+			}
+		}
+		return false
+	}
+	return certificate.leaf.VerifyHostname(name) == nil
 }
 
 func Read(path string) (Certificate, error) {

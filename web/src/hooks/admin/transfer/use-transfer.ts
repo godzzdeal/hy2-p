@@ -6,7 +6,8 @@ import { downloadFile } from "@/utils/files";
 export function useTransfer() {
   const [bundle, setBundle] = useState<unknown>(null);
   const client = useQueryClient();
-  const { notify, showError } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   const preview = useMutation({
     mutationFn: transferApi.preview,
     onError: showError,

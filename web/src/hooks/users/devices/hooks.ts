@@ -12,7 +12,8 @@ export function useDevices(id: string) {
 }
 export function useDeviceCommands(id: string) {
   const client = useQueryClient();
-  const { showError, notify } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   const queryKey = [...QUERY_KEYS.devices, id];
   const saved = async (data: IDevices) => {
     client.setQueryData(queryKey, data);

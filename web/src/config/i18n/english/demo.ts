@@ -1,8 +1,8 @@
 export const DEMO_TRANSLATIONS = {
   Демоверсия: "Demo",
   "HY2-P Demo": "HY2-P Demo",
-  "Попробуйте панель. Данные учебные, изменения видны только в этой вкладке. VPN не подключается.":
-    "Try the panel. All data is fictional and changes stay in this tab. VPN connections are unavailable.",
+  "Демоверсия. Изменения видны только в этой вкладке. VPN недоступен.":
+    "Demo. Changes are visible only in this tab. VPN connections are unavailable.",
   "Вход: demo / demo. Перезагрузка сбрасывает пример.": "Sign in: demo / demo. Reloading resets the example.",
   "Сбросить пример": "Reset example",
   "Для входа в демоверсию используйте demo / demo": "Sign in to the demo with demo / demo",

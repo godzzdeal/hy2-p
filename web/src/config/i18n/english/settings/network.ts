@@ -23,8 +23,8 @@ export const NETWORK = {
   "Отпечаток сертификата: 64 hex-символа, можно с двоеточиями. После перевыпуска сертификата обновите отпечаток и подписку.":
     "Certificate fingerprint: 64 hex characters, optionally separated by colons. Refresh the fingerprint and subscription after certificate renewal.",
   "основной пароль должен отличаться от облачного": "the main password must differ from the cloud password",
-  "Перетащите файл сюда": "Drag a file here",
-  "или нажмите, чтобы выбрать": "or click to choose",
+  "Перетащите файл": "Drag a file",
+  "или выберите": "or choose one",
   "Отпустите файл для загрузки": "Drop the file to upload",
   "Выбрать файл: {{label}}": "Choose a file: {{label}}",
   "Выберите один файл": "Choose one file",

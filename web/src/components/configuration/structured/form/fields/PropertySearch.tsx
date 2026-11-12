@@ -1,4 +1,3 @@
-import { Field } from "@/components/ui/fields/Field";
 import { Input } from "@/components/ui/fields/controls/Input";
 import { useTranslation } from "react-i18next";
 export function PropertySearch({
@@ -12,16 +11,18 @@ export function PropertySearch({
 }) {
   const { t } = useTranslation();
   return (
-    <Field className="property-search m-0 flex-1 max-w-140">
-      {t("Найти свойство")}
+    <div className="property-search flex min-w-0 flex-1 flex-wrap items-center gap-3">
       <Input
+        className="min-w-40 max-w-140 flex-1"
         aria-label={t("Найти свойство")}
         type="search"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="disableUDP, quic, auth…"
+        placeholder={t("Название свойства")}
       />
-      <small role="status">{t("Найдено свойств: {{count}}", { count })}</small>
-    </Field>
+      <small className="whitespace-nowrap text-muted" role="status">
+        {t("Найдено свойств: {{count}}", { count })}
+      </small>
+    </div>
   );
 }

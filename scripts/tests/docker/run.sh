@@ -70,3 +70,16 @@ source "$(dirname -- "${BASH_SOURCE[0]}")/auth.sh"
 # shellcheck source=/dev/null
 source "$(dirname -- "${BASH_SOURCE[0]}")/acme.sh"
 test_acme_gateway
+
+# The install is disposable and isolated by its directory label; exercise real Docker cleanup last.
+printf 'keep\n' >"$WORK/unrelated-file"
+manager uninstall --dry-run
+sudo test -f "$ROOT/current"
+manager uninstall --yes
+sudo test ! -e "$ROOT"
+[[ -f $WORK/unrelated-file ]]
+[[ -z $(sudo docker ps -aq --filter "label=io.hy2-panel.install-dir=$ROOT") ]]
+! sudo docker volume inspect hy2-panel_panel-data >/dev/null 2>&1
+! sudo docker volume inspect hy2-panel_port-agent-socket >/dev/null 2>&1
+[[ ! -L /usr/local/bin/hy2-panel ]]
+printf 'Complete uninstall and preservation of unrelated files passed.\n'

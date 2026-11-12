@@ -6,9 +6,6 @@
   .engine-summary p {
     @apply text-muted max-w-160 text-lg;
   }
-  .engine-badge i {
-    @apply w-2 h-2 rounded-full bg-current;
-  }
   .caption {
     @apply text-muted text-lg leading-snug;
   }
@@ -24,6 +21,9 @@
     }
     .engine-controls .row-actions {
       @apply w-full;
+    }
+    .engine-controls .row-actions > button {
+      @apply size-11 min-h-11 p-1;
     }
   }
 }

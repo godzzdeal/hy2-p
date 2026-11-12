@@ -3,7 +3,9 @@ package certificates
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"errors"
 	"hy2-panel/internal/certificates/files"
+	"hy2-panel/internal/certificates/management"
 	"hy2-panel/internal/configuration"
 	"hy2-panel/internal/security"
 	"hy2-panel/internal/transport"
@@ -16,8 +18,9 @@ import (
 const MaxCertificateSize = files.MaxCertificateSize
 
 type Handler struct {
-	Data   string
-	Config *configuration.Handler
+	Data       string
+	Config     *configuration.Handler
+	References []management.Reference
 }
 
 func (handler *Handler) Upload(writer http.ResponseWriter, request *http.Request) {
@@ -61,15 +64,15 @@ func (handler *Handler) Inspect(writer http.ResponseWriter, request *http.Reques
 		transport.Fail(writer, err, 500)
 		return
 	}
-	mode, paths, err := files.Sources(settings.Config, handler.Data)
+	mode, entries, err := management.List(settings.Config, handler.Data, handler.references(settings.Config))
 	if err != nil {
 		transport.Fail(writer, err, 400)
 		return
 	}
 	certificates := []files.Certificate{}
-	for _, path := range paths {
-		if info, err := files.Read(path); err == nil {
-			certificates = append(certificates, info)
+	for _, entry := range entries {
+		if entry.FromSource {
+			certificates = append(certificates, entry.Certificate)
 		}
 	}
 	name := settings.SNI
@@ -81,5 +84,48 @@ func (handler *Handler) Inspect(writer http.ResponseWriter, request *http.Reques
 	if pinError != nil {
 		message = pinError.Error()
 	}
-	transport.Respond(writer, map[string]any{"mode": mode, "automaticRenewal": mode == "acme", "certificates": certificates, "pinSHA256": pin, "pinError": message})
+	transport.Respond(writer, map[string]any{"mode": mode, "automaticRenewal": mode == "acme", "certificates": entries, "pinSHA256": pin, "pinError": message})
+}
+
+func (handler *Handler) references(source string) []management.Reference {
+	if handler.References != nil {
+		return handler.References
+	}
+	return []management.Reference{{Source: source, Data: handler.Data}}
+}
+
+func (handler *Handler) Delete(writer http.ResponseWriter, request *http.Request) {
+	var input struct {
+		ID string `json:"id"`
+	}
+	if err := transport.Decode(writer, request, &input); err != nil {
+		transport.Fail(writer, err, 400)
+		return
+	}
+	settings, err := handler.Config.Get()
+	if err != nil {
+		transport.Fail(writer, err, 500)
+		return
+	}
+	_, entries, err := management.List(settings.Config, handler.Data, handler.references(settings.Config))
+	if err != nil {
+		transport.Fail(writer, err, 500)
+		return
+	}
+	for _, entry := range entries {
+		if entry.ID != input.ID {
+			continue
+		}
+		if !entry.CanDelete {
+			transport.Fail(writer, errors.New(entry.DeleteReason), 409)
+			return
+		}
+		if err := management.Remove(handler.Data, entry); err != nil {
+			transport.Fail(writer, err, 500)
+			return
+		}
+		transport.Respond(writer, map[string]bool{"ok": true})
+		return
+	}
+	transport.Fail(writer, errors.New("Сертификат не найден"), 404)
 }

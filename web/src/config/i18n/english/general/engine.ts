@@ -80,11 +80,11 @@ export const ENGINE: Record<string, string> = {
   Восстановление: "Recovering",
   "Восстановление не удалось. Проверьте конфигурацию и журнал.":
     "Recovery failed. Check the configuration and logs.",
-  "Все параметры Hysteria2 в одном месте.": "All Hysteria2 settings in one place.",
+  "Свойства Hysteria2 и полный YAML.": "Hysteria2 properties and full YAML.",
   "Все пользователи /": "All users /",
   "Все поля сохраняются. В управляемом режиме auth задаёт панель; в нативном используется выбранный auth. trafficStats обслуживает статистику и watchdog.":
     "All fields are preserved. The panel controls auth in managed mode; native mode uses your auth settings. trafficStats provides statistics and health checks.",
-  "Всё под контролем": "Everything under control",
+  "Обзор сервера": "Server overview",
   "Вход, порт и HTTPS": "Sign-in, port and HTTPS",
   "Входим…": "Signing in…",
   "Выберите версию": "Select a version",

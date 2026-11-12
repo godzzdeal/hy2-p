@@ -12,14 +12,14 @@ export const TRANSPORT_HELP = {
   "В режиме Brutal сервер может отправлять чуть больше данных при потерях. Включите, чтобы строго соблюдать заданную скорость.":
     "In Brutal mode, the server may send extra data to compensate for losses. Enable this to keep the configured rate.",
   "Игнорировать скорость клиента": "Ignore client bandwidth",
-  "Сервер будет использовать BBR или Reno, даже если клиент запросил Brutal. Подходит для работы без ручной настройки скорости.":
-    "Use BBR or Reno even when a client requests Brutal. Useful when you do not want to configure bandwidth manually.",
+  "Использовать BBR или Reno, даже если клиент запросил Brutal.":
+    "Use BBR or Reno even when the client requests Brutal.",
   "Контроль перегрузки": "Congestion control",
   "BBR подбирает скорость под качество сети. Reno обычно осторожнее. Если не уверены, оставьте BBR.":
     "BBR adapts to network conditions. Reno is generally more conservative. Leave BBR selected if unsure.",
   "Профиль BBR": "BBR profile",
-  "Standard подходит для обычного использования. Conservative снижает напор, aggressive увеличивает его.":
-    "Standard suits most connections. Conservative sends less aggressively; aggressive sends more aggressively.",
+  "Профиль BBR: standard, conservative или aggressive. Применяется только при congestion.type: bbr.":
+    "BBR profile: standard, conservative or aggressive. Only applies when congestion.type is bbr.",
   "Тест скорости": "Speed test",
   "Разрешить встроенную проверку скорости Hysteria2. Это не проверка доступности сайтов.":
     "Allow the built-in Hysteria2 speed test. This does not check whether websites are reachable.",
@@ -39,8 +39,7 @@ export const TRANSPORT_HELP = {
   "Начальный общий буфер одного клиентского подключения в байтах.":
     "Initial total receive buffer for one client connection in bytes.",
   "Максимальный буфер подключения": "Maximum connection buffer",
-  "Верхний предел общего буфера подключения. Оставьте стандартное значение, если нет конкретной причины менять.":
-    "Maximum total receive buffer per connection. Keep the default unless you have a specific reason to change it.",
+  "Максимальный общий буфер подключения в байтах.": "Maximum total connection buffer in bytes.",
   "Одновременные потоки": "Concurrent streams",
   "Сколько параллельных потоков разрешено одному подключению. Низкий предел может замедлять открытие сайтов.":
     "Number of simultaneous streams allowed per connection. A low limit may slow down websites.",

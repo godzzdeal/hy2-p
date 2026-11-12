@@ -6,8 +6,8 @@ export const CERTIFICATES_HELP = {
   "Путь к ключу от этого сертификата. Ключ не нужно передавать пользователям.":
     "Private key file matching this certificate. Do not share it with users.",
   "Проверка имени сервера": "Server name validation",
-  "Проверяет, совпадает ли имя из запроса с именем сертификата. Стандартный режим подходит большинству серверов.":
-    "Checks the requested server name against the certificate. The default suits most servers.",
+  "Проверяет имя SNI клиента по сертификату сервера.":
+    "Checks the client SNI against the server certificate.",
   "Сертификаты доверенных клиентов": "Trusted client certificates",
   "Нужно только для входа по клиентскому сертификату. Обычным ссылкам подключения это не требуется.":
     "Only needed for client certificate authentication. Regular connection links do not require this.",
@@ -18,11 +18,9 @@ export const CERTIFICATES_HELP = {
   "Домены для сертификата, каждый с новой строки. Они должны указывать на этот сервер.":
     "Domains to include in the certificate, one per line. They must point to this server.",
   "Email для сертификатов": "Certificate email",
-  "Адрес для уведомлений центра сертификации об ошибках и сроке действия.":
-    "Address for certificate authority notifications about errors and expiry.",
+  "Email для аккаунта ACME.": "Email for the ACME account.",
   "Кто выпускает сертификат": "Certificate authority",
-  "Центр сертификации, который выдаст и будет продлевать сертификат.":
-    "The authority that issues and renews your certificate.",
+  "Центр сертификации для выпуска сертификата.": "Certificate authority used to issue the certificate.",
   "Хранилище сертификатов": "Certificate storage",
   "Папка с сертификатами и данными продления. Пустое поле использует постоянное хранилище панели.":
     "Directory for certificates and renewal data. Leave empty to use the panel's persistent storage.",
@@ -48,6 +46,6 @@ export const CERTIFICATES_HELP = {
   "Hysteria2 будет обращаться к этому серверу, чтобы проверить данные клиента.":
     "Hysteria2 asks this service to verify client credentials.",
   "Команда проверки доступа": "Authentication command",
-  "Программа на сервере, которая решает, разрешить ли подключение. Для обычного входа используйте пользователей панели.":
-    "Server program that decides whether access is allowed. Use panel users for normal account management.",
+  "Команда на сервере для проверки данных клиента. Используется в режиме auth.type: command.":
+    "Server command used to verify client credentials when auth.type is command.",
 };

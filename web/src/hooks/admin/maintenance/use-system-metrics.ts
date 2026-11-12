@@ -7,7 +7,7 @@ import { useChartStore } from "@/store/overview";
 export function useSystemMetrics() {
   const visible = useChartStore((state) => state.visible);
   const hasVisibleCharts = Object.values(visible).some(Boolean);
-  const traffic = useTraffic();
+  const traffic = useTraffic(true);
   const read = useQuery({
     queryKey: QUERY_KEYS.system,
     queryFn: maintenanceApi.metrics,

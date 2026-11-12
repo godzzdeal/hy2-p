@@ -94,11 +94,7 @@ export function CoreLog() {
         {visible.length ? (
           visible.map((line, index) => <LogLine key={index} {...line} search={search} />)
         ) : (
-          <p className="muted">
-            {text
-              ? t("Сообщений по этому запросу нет")
-              : t("Пока нет записей. После запуска здесь появятся сообщения Hysteria2.")}
-          </p>
+          <p className="muted">{text ? t("Сообщений по этому запросу нет") : t("Журнал пуст.")}</p>
         )}
       </div>
       <div

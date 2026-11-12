@@ -13,9 +13,8 @@
     @apply text-accent bg-surface-soft;
   }
   .structured-config {
-    --configuration-header-height: var(--header-height);
     @apply flex flex-col;
-    height: calc(100dvh - var(--configuration-header-height) - var(--space-16) - var(--space-8));
+    height: clamp(var(--configuration-min-height), 60dvh, var(--configuration-height));
     min-height: var(--configuration-min-height);
   }
   .configuration-layout {
@@ -54,16 +53,8 @@
       @apply grid-cols-1;
     }
   }
-  @variant max-tablet {
-    .structured-config {
-      --configuration-header-height: calc(var(--header-height) + var(--space-16));
-    }
-  }
   .draft-bar {
     @apply rounded-none;
     box-shadow: 0 var(--space-2) var(--space-6) var(--shadow);
-  }
-  .draft-bar span {
-    @apply text-muted text-lg;
   }
 }

@@ -28,9 +28,7 @@ export function DeploymentNotice() {
               public: status.publishedUdpPort,
               target: status.publishedUdpListenPort,
             })
-          : t(
-              "UDP-порт этого экземпляра ещё не опубликован. Запустите экземпляр и нажмите «Применить UDP-порт».",
-            )}
+          : t("UDP-порт не опубликован. Примените его в конфигурации экземпляра.")}
       </p>
       {status.udpWarning && <p className="mt-2">{t(status.udpWarning)}</p>}
       {status.udpRestartRequired && (

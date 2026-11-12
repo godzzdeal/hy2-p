@@ -14,7 +14,8 @@ export function useWebSettings() {
 }
 export function useAccountChange() {
   const client = useQueryClient();
-  const { notify, showError } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   return useMutation({
     mutationFn: adminApi.changeAccount,
     onError: showError,
@@ -27,7 +28,8 @@ export function useAccountChange() {
 }
 export function useSaveWeb() {
   const client = useQueryClient();
-  const { notify, showError } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   return useMutation({
     mutationFn: adminApi.saveWeb,
     onError: showError,

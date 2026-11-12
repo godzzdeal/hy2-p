@@ -15,6 +15,7 @@ export const ChartContent = memo(
     field,
     secondary,
     value,
+    secondaryValue,
     maximum,
     unit = "number",
   }: IChartContent) {
@@ -26,7 +27,10 @@ export const ChartContent = memo(
       <>
         <figcaption>
           <h3>{t(title)}</h3>
-          <strong>{value}</strong>
+          <strong className="flex flex-wrap gap-x-2">
+            <span className="whitespace-nowrap">{value}</span>
+            {secondaryValue && <span className="whitespace-nowrap text-syntax-number">{secondaryValue}</span>}
+          </strong>
         </figcaption>
         <ChartPlot
           title={title}

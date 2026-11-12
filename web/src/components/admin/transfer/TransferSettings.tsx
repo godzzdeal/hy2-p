@@ -92,8 +92,11 @@ export function TransferSettings() {
           <CommandBlock command="sudo hy2-panel export /root/hy2-p.json" />
           <CommandBlock command="sudo hy2-panel import /root/hy2-p.json" />
           <CommandBlock command="sudo hy2-panel import /root/hy2-p.json --apply" />
-          <p>{t("Чтобы связать пользователей с существующим основным экземпляром:")}</p>
-          <CommandBlock command="sudo hy2-panel import /root/hy2-p.json --map-core default=default --apply" />
+          <CommandBlock
+            command="sudo hy2-panel import /root/hy2-p.json --map-core default=default --apply"
+            label={t("Связать пользователей")}
+            description={t("Связывает пользователей из файла с существующим основным экземпляром.")}
+          />
         </details>
       </CardBody>
     </SettingsSection>

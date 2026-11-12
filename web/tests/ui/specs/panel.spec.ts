@@ -65,11 +65,14 @@ test("logs support Unicode, search, level filters, pause and clearing", async ({
   await page.getByRole("combobox", { name: "Уровень сообщений" }).click();
   await page.getByRole("option", { name: "Ошибки", exact: true }).click();
   const follow = page.getByRole("button", { name: "Автопрокрутка", exact: true });
+  const enabledColor = await follow.evaluate((element) => getComputedStyle(element).backgroundColor);
   await follow.click();
   await expect(follow).toHaveAttribute("aria-pressed", "false");
+  expect(await follow.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(enabledColor);
+  await expect(follow).toHaveText("Автопрокрутка");
   await page.screenshot({ path: info.outputPath("logs.png"), fullPage: true });
   await page.getByRole("button", { name: "Очистить", exact: true }).click();
-  await expect(region).toContainText("Пока нет записей");
+  await expect(region).toContainText("Журнал пуст.");
 });
 
 test("the panel displays the server build version", async ({ page }) => {
@@ -101,7 +104,7 @@ test("pixel themes and the emoji menu work with keyboard navigation", async ({ p
       true,
     );
   }
-  await page.getByRole("link", { name: "Подписки", exact: true }).click();
+  await page.getByRole("link", { name: "Подписка", exact: true }).click();
   await expandSettings(page);
   await page.getByRole("button", { name: "Выбрать эмодзи", exact: true }).click();
   await page.getByLabel("Поиск эмодзи", { exact: true }).fill("ракета");

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v3"
 	"hy2-panel/internal/configuration/profiles"
+	"hy2-panel/internal/mimic"
 	"hy2-panel/internal/security"
 	"io"
 	"net"
@@ -12,6 +13,8 @@ import (
 	"strconv"
 	"strings"
 )
+
+const RuntimeFilename = "runtime.yaml"
 
 type Settings = profiles.Settings
 
@@ -68,5 +71,5 @@ func Validate(settings Settings) error {
 			return errors.New("неверный тип auth")
 		}
 	}
-	return nil
+	return mimic.ValidateSource(settings.Config)
 }

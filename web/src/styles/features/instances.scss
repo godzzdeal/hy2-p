@@ -9,27 +9,29 @@
     @apply border-accent;
   }
   .instance-card .card-header {
-    @apply gap-3 flex-wrap;
+    @apply gap-2 flex-wrap;
   }
   .instance-card h2 {
     @apply wrap-anywhere min-w-0;
   }
   .instance-details dt {
-    @apply text-muted;
+    @apply shrink-0 text-muted text-base;
   }
   .instance-details dd {
-    @apply wrap-anywhere;
-    margin: var(--space-1) 0 0;
+    @apply m-0 min-w-0 wrap-anywhere text-lg;
+  }
+  .instance-details > div {
+    @apply flex min-w-0 max-w-full items-baseline gap-2;
   }
   .instance-card > .instance-actions {
-    padding: 0 var(--space-4) var(--space-4);
+    padding: 0 var(--space-3) var(--space-3);
   }
   @variant max-tablet {
     .instance-selector .select-trigger {
       @apply w-full;
     }
-    .instance-details > div:first-child {
-      @apply col-span-full;
+    .instance-card .instance-actions > button {
+      @apply size-11 min-h-11;
     }
   }
 }

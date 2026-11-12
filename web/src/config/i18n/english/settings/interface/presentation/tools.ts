@@ -55,8 +55,8 @@ export const TOOLS: Record<string, string> = {
   "Какие порты открыть": "Which ports to open",
   "Обычно нужны TCP-порт панели, UDP-порты экземпляров и TCP 80 для HTTP ACME или 443 для TLS ACME. DNS ACME не требует входящего порта.":
     "Usually allow the panel TCP port, instance UDP ports, and TCP 80 for HTTP ACME or 443 for TLS ACME. DNS ACME needs no inbound port.",
-  "Ниже порты из сохранённых настроек и текущей публикации Docker. Это рекомендации, доступность извне не проверялась.":
-    "Ports below come from saved settings and current Docker mappings. These are recommendations, not an external connectivity check.",
+  "Порты из настроек и публикации Docker. Доступность из интернета не проверена.":
+    "Ports from settings and Docker mappings. Internet reachability has not been checked.",
   "Изменение ещё нужно применить или опубликовать порт Docker.":
     "Apply this change or publish the Docker port first.",
   "Скопировать команду для {{port}}": "Copy command for {{port}}",
@@ -102,14 +102,14 @@ export const TOOLS: Record<string, string> = {
   "Экземпляр остановлен. Значения применятся при запуске.":
     "The instance is stopped. These values will apply at startup.",
   "Скопировать секрет": "Copy secret",
-  "Секрет может измениться после перезапуска панели. API статистики слушает loopback и не публикуется в интернет.":
-    "The secret may change after restarting the panel. The statistics API uses loopback and is not exposed to the internet.",
+  "Секрет может измениться при перезапуске панели. API статистики доступен только внутри сервера.":
+    "The secret may change when the panel restarts. The statistics API is only accessible inside the server.",
   "Firewall сервера": "Server firewall",
   "Проверить UFW": "Check UFW",
   "Правила UFW для входящих TCP/UDP-портов Ubuntu. Порты SSH и панели защищены от закрытия.":
     "UFW rules for inbound Ubuntu TCP/UDP ports. SSH and panel ports are protected.",
-  "Опубликованные порты Docker могут обходить UFW. Панель не выдаёт такие порты за закрытые. Firewall хостинга настраивается отдельно.":
-    "Published Docker ports may bypass UFW. The panel does not report them as blocked. Configure the hosting firewall separately.",
+  "Порты Docker могут обходить UFW. Удаление правила не гарантирует закрытие порта. Проверьте также firewall хостинга.":
+    "Docker ports can bypass UFW. Removing a rule does not guarantee that a port is closed. Check the hosting firewall too.",
   "Для подключения помощника выполните на сервере: sudo hy2-panel firewall-setup":
     "To install the helper, run on your server: sudo hy2-panel firewall-setup",
   "UFW включён": "UFW is active",

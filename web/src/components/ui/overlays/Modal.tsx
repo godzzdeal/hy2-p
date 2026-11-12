@@ -5,6 +5,7 @@ import { cn } from "@/utils/cn";
 import { type ComponentProps, type MouseEvent, type ReactNode } from "react";
 import { DIALOG_STYLES } from "@/components/ui/overlays/overlay-styles";
 import { useTranslation } from "react-i18next";
+import { createPortal } from "react-dom";
 interface IModal extends Omit<ComponentProps<"div">, "title" | "onClose"> {
   title: string;
   heading?: ReactNode;
@@ -29,7 +30,8 @@ export function Modal({
   function onBackdrop(event: MouseEvent<HTMLDivElement>) {
     if (event.target === event.currentTarget) onDismiss();
   }
-  return (
+  if (typeof document === "undefined") return null;
+  return createPortal(
     <div
       className="overlay max-tablet:p-4 fixed inset-0 z-20 flex items-center justify-center bg-backdrop p-4 backdrop-blur-sm"
       onMouseDown={onBackdrop}
@@ -51,6 +53,7 @@ export function Modal({
         </div>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

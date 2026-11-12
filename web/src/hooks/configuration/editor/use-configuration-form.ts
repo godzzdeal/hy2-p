@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useLayoutEffect } from "react";
 import { parseDocument } from "yaml";
 import { useWebSettings } from "@/hooks/admin/use-admin";
 import { DOCUMENTATION_SECTIONS } from "@/config/hysteria/structured/schema/documentation/sections";
@@ -12,9 +12,14 @@ export interface IConfigurationForm {
   onChange: (value: IConfiguration) => void;
 }
 export function useConfigurationForm({ value, onChange }: IConfigurationForm) {
+  const latestConfiguration = useRef({ value, onChange });
+  useLayoutEffect(() => {
+    latestConfiguration.current = { value, onChange };
+  }, [value, onChange]);
   const instanceId = useInstanceId();
   const web = useWebSettings();
-  const [section, setSection] = useState("listen");
+  const section = useUiStore((state) => state.configurationSection);
+  const setSection = useUiStore((state) => state.setConfigurationSection);
   const [search, setSearch] = useState("");
   const document = useMemo(() => parseDocument(value.config), [value.config]);
   const showError = useUiStore((state) => state.showError);
@@ -28,15 +33,17 @@ export function useConfigurationForm({ value, onChange }: IConfigurationForm) {
   const isManagedHttp = !!web.data?.container && (!challengeType || challengeType === "http");
   function onSet(path: string, next: unknown) {
     try {
-      onChange({ ...value, config: updateField(value.config, path, next) });
+      const current = latestConfiguration.current;
+      current.onChange({ ...current.value, config: updateField(current.value.config, path, next) });
     } catch (error) {
       showError(error);
     }
   }
   function onUploaded(cert: string, key: string) {
-    onChange({
-      ...value,
-      config: updateField(updateField(value.config, "tls.cert", cert), "tls.key", key),
+    const current = latestConfiguration.current;
+    current.onChange({
+      ...current.value,
+      config: updateField(updateField(current.value.config, "tls.cert", cert), "tls.key", key),
     });
   }
 

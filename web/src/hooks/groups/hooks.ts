@@ -4,11 +4,11 @@ import { EMPTY_GROUPS, type IGroupAssignment, type IGroups, type IGroupSave } fr
 import { useUiStore } from "@/store/ui-store";
 import { replaceGroupMembers } from "@/services/groups/membership";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-export function useGroups() {
+export function useGroups(isPolling = false) {
   return useQuery({
     queryKey: QUERY_KEYS.groups,
     queryFn: groupsApi.list,
-    refetchInterval: NETWORK.staleMs,
+    refetchInterval: isPolling ? NETWORK.staleMs : false,
   });
 }
 export function useSetGroupMembers() {
@@ -19,7 +19,8 @@ function useGroupChange<TInput>(
   optimistic: (state: IGroups, input: TInput) => IGroups,
 ) {
   const client = useQueryClient();
-  const { notify, showError } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   return useMutation({
     mutationFn: send,
     onMutate: async (input) => {

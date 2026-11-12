@@ -1,6 +1,30 @@
 import { expect, test } from "@playwright/test";
 import { chooseTheme, expectInside, mockPanel } from "../fixture";
 
+test("panel-managed authentication blocks selects and native mode unlocks them",async({page})=>{
+ const panel=await mockPanel(page);
+ await page.getByRole("link",{name:"Конфигурация",exact:true}).click();
+ await page.getByRole("button",{name:"Authentication",exact:true}).click();
+ for(const path of ["auth.type","auth.http.insecure"]) {
+  const control=page.getByRole("combobox",{name:path,exact:true});
+  await expect(control).toBeDisabled();
+  await control.click({force:true});
+  await control.dispatchEvent("keydown",{key:"Enter"});
+  await expect(page.getByRole("listbox")).toHaveCount(0);
+ }
+ await page.getByLabel("Кто управляет доступом",{exact:true}).click();
+ await page.getByRole("option",{name:"Настройки Hysteria2",exact:true}).click();
+ const type=page.getByRole("combobox",{name:"auth.type",exact:true});
+ await expect(type).toBeEnabled();
+ await type.click();await page.getByRole("option",{name:"http",exact:true}).click();
+ const insecure=page.getByRole("combobox",{name:"auth.http.insecure",exact:true});
+ await expect(insecure).toBeEnabled();
+ await insecure.click();await page.getByRole("option",{name:"true",exact:true}).click();
+ await page.getByRole("button",{name:"Сохранить конфигурацию",exact:true}).click();
+ await expect.poll(()=>panel.saved().authMode).toBe("native");
+ expect(panel.saved().config).toContain("insecure: true");
+});
+
 test("field information opens with keyboard or touch without submitting or moving controls",async({page},info)=>{
  await mockPanel(page);let saves=0;
  await page.route("**/api/settings",route=>{if(route.request().method()==="PUT")saves++;return route.fallback()});

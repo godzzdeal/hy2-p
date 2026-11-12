@@ -31,7 +31,7 @@ export function FirewallSettings() {
       <CardBody>
         <Notice variant="warning">
           {t(
-            "Опубликованные порты Docker могут обходить UFW. Панель не выдаёт такие порты за закрытые. Firewall хостинга настраивается отдельно.",
+            "Порты Docker могут обходить UFW. Удаление правила не гарантирует закрытие порта. Проверьте также firewall хостинга.",
           )}
         </Notice>
         <PortGuide />

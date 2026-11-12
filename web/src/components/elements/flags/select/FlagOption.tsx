@@ -4,7 +4,7 @@ export function FlagOption({ value, label }: { value: string; label: string }) {
   return (
     <SelectOption value={value}>
       <span className="flag-name inline-flex items-center gap-2 min-w-0 align-middle">
-        <CountryFlag value={value} />
+        <CountryFlag value={value} loading="lazy" />
         <span>{label}</span>
       </span>
     </SelectOption>

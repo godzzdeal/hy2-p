@@ -1,15 +1,10 @@
 import { Fieldset } from "@/components/ui/fields/Fieldset";
-import { Field } from "@/components/ui/fields/Field";
-import { FieldInfo } from "@/components/ui/fields/information";
-import { Button } from "@/components/ui/button/Button";
+import { ConfigProperty } from "@/components/configuration/structured/ConfigProperty";
 import { FieldControl } from "@/components/configuration/structured/controls/FieldControl";
-import { RotateCcw } from "@/components/elements/icons";
 import { FIELD_COPY } from "@/config/hysteria/structured/field-copy";
-import { FIELD_DEFAULTS } from "@/config/hysteria/structured/schema/documentation/defaults";
 import { type IConfigField } from "@/services/configuration/structured/field-types";
 import { cn } from "@/utils/cn";
 import { useId } from "react";
-import { useTranslation } from "react-i18next";
 export function ConfigField({
   field,
   value,
@@ -21,7 +16,6 @@ export function ConfigField({
   value: unknown;
   onChange: (value: unknown) => void;
 }) {
-  const { t } = useTranslation();
   const id = useId();
   const displayField = {
     ...field,
@@ -29,38 +23,27 @@ export function ConfigField({
     hint: FIELD_COPY[field.path]?.hint ?? field.hint ?? field.label,
   };
   const isSet = value !== undefined && value !== null;
+  const isDisabled = !!disabledReason;
+  function onChangeValue(next: unknown) {
+    if (!isDisabled) onChange(next);
+  }
   return (
     <div
       className={cn("config-field min-w-0 grid grid-rows-subgrid row-span-2 gap-y-2", {
         "col-span-full": field.kind === "json" || field.kind === "pairs",
       })}
     >
-      <div className="config-property flex items-center justify-between gap-1 min-h-control pl-2 border-l-4 border-accent bg-surface-soft">
-        <Field htmlFor={id} id={id + "-label"} className="m-0 flex-1">
-          {field.path}
-        </Field>
-        <FieldInfo label={field.path}>
-          {disabledReason && <p className="text-accent">{t(disabledReason)}</p>}
-          <p>{t(displayField.hint)}</p>
-          {FIELD_DEFAULTS[field.path] !== undefined && (
-            <p className="text-muted">
-              {t("По умолчанию: {{value}}", { value: String(FIELD_DEFAULTS[field.path]) })}
-            </p>
-          )}
-        </FieldInfo>
-        <Button
-          type="button"
-          className="field-reset w-control min-w-control p-1 disabled:hidden"
-          disabled={!isSet || !!disabledReason}
-          aria-label={t("Сбросить {{field}}", { field: t(displayField.label) })}
-          title={t("Вернуть значение по умолчанию")}
-          onClick={() => onChange(undefined)}
-        >
-          <RotateCcw width={24} height={24} aria-hidden />
-        </Button>
-      </div>
-      <Fieldset className="config-control m-0 p-0 border-0 min-w-0" disabled={!!disabledReason}>
-        <FieldControl id={id} field={displayField} value={value} onChange={onChange} />
+      <ConfigProperty
+        path={field.path}
+        htmlFor={id}
+        labelId={id + "-label"}
+        hint={displayField.hint}
+        disabledReason={disabledReason}
+        canReset={isSet && !disabledReason}
+        onReset={() => onChangeValue(undefined)}
+      />
+      <Fieldset className="config-control m-0 p-0 border-0 min-w-0" disabled={isDisabled}>
+        <FieldControl id={id} field={displayField} value={value} onChange={onChangeValue} />
       </Fieldset>
     </div>
   );

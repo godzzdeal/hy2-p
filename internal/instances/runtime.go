@@ -26,7 +26,7 @@ func (registry *Registry) Get(id string) (*Instance, error) {
 	if id == "" {
 		id = DefaultID
 	}
-	if !IDPattern.MatchString(id) {
+	if !protocol.InstancePattern.MatchString(id) {
 		return nil, errors.New("Экземпляр не найден")
 	}
 	registry.mu.RLock()
@@ -60,8 +60,8 @@ func Open(ctx context.Context, data string, db *sql.DB, vault *cryptovault.Vault
 				return nil, err
 			}
 			instance.Core.InstanceID = definition.ID
-			instance.Core.StatsPort = FirstStatsPort + definition.Slot
-			instance.Core.ACMEPort = FirstChallengePort + definition.Slot
+			instance.Core.StatsPort = security.FirstStatsPort + definition.Slot
+			instance.Core.ACMEPort = security.FirstChallengePort + definition.Slot
 		}
 		registry.attach(instance)
 	}

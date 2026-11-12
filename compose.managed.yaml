@@ -30,3 +30,5 @@ services:
       retries: 15
 volumes:
   port-agent-socket:
+    labels:
+      io.hy2-panel.install-dir: ${PANEL_INSTALL_DIR:?Installation directory required}

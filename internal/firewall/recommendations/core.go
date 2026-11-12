@@ -10,7 +10,10 @@ import (
 func Core(settings configuration.Settings, published string, container bool) ([]Port, error) {
 	var config struct {
 		Listen string `yaml:"listen"`
-		ACME   *struct {
+		Mimic  struct {
+			Enabled bool `yaml:"enabled"`
+		} `yaml:"mimic"`
+		ACME *struct {
 			Type string `yaml:"type"`
 		} `yaml:"acme"`
 		Masquerade struct {
@@ -34,6 +37,13 @@ func Core(settings configuration.Settings, published string, container bool) ([]
 		}
 		if port := publicListener(listen); port != 0 {
 			report.add(port, "udp", "vpn", "", false)
+		}
+	}
+	if config.Mimic.Enabled {
+		for _, port := range report.Ports {
+			if port.Purpose == "vpn" {
+				report.add(port.Port, "tcp", "vpn", "", port.Pending)
+			}
 		}
 	}
 	if config.ACME != nil {

@@ -4,7 +4,8 @@ import { useUiStore } from "@/store/ui-store";
 import { isMap, parseDocument } from "yaml";
 const MAX_YAML_BYTES = 1024 * 1024;
 export function useConfigurationFile(value: IConfiguration, onChange: (value: IConfiguration) => void) {
-  const { notify, showError } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   return useMutation({
     mutationFn: async (file: File) => {
       if (file.size > MAX_YAML_BYTES) throw new Error("Размер YAML-файла не должен превышать 1 МБ");

@@ -4,6 +4,7 @@ import { cn } from "@/utils/cn";
 import { CONTROL_STYLES } from "@/components/ui/fields/controls/control-styles";
 import * as Primitive from "@radix-ui/react-select";
 import { type ComponentProps } from "react";
+import { useFieldsetDisabled } from "@/hooks/ui/use-fieldset";
 interface ISelect
   extends
     Omit<ComponentProps<typeof Primitive.Root>, "value">,
@@ -26,6 +27,8 @@ export function Select({
   disabled,
   ...triggerProps
 }: ISelect) {
+  const isFieldsetDisabled = useFieldsetDisabled();
+  const isDisabled = isFieldsetDisabled || !!disabled;
   return (
     <Primitive.Root
       open={open}
@@ -36,9 +39,11 @@ export function Select({
       name={name}
       form={form}
       required={required}
-      disabled={disabled}
+      disabled={isDisabled}
       value={encodeSelectValue(value)}
-      onValueChange={(next) => onValueChange?.(next === EMPTY_SELECT_VALUE ? "" : next)}
+      onValueChange={(next) => {
+        if (!isDisabled) onValueChange?.(next === EMPTY_SELECT_VALUE ? "" : next);
+      }}
     >
       <Primitive.Trigger
         {...triggerProps}

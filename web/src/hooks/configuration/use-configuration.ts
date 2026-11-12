@@ -15,7 +15,8 @@ export function useConfiguration() {
 export function useSaveConfiguration() {
   const id = useInstanceId();
   const client = useQueryClient();
-  const { showError, notify } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   return useMutation({
     mutationFn: (body: IConfiguration) => configurationApi.save(body, id),
     onMutate: async (next) => {

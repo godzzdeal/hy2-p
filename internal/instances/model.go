@@ -10,25 +10,20 @@ import (
 	"hy2-panel/internal/core"
 	"hy2-panel/internal/cryptovault"
 	"hy2-panel/internal/instances/validation"
-	"hy2-panel/internal/portcontrol/protocol"
 	portweb "hy2-panel/internal/portcontrol/web"
 	"hy2-panel/internal/records"
-	"hy2-panel/internal/security"
 	"hy2-panel/internal/transport"
 	"log"
+	"maps"
 	"net/http"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"sync"
 )
 
 const DefaultID = validation.DefaultID
-const MaxInstances = validation.MaxInstances
-const FirstStatsPort = security.FirstStatsPort
-const FirstChallengePort = security.FirstChallengePort
-
-var IDPattern = protocol.InstancePattern
 
 type Definition = validation.Definition
 type Instance struct {
@@ -90,6 +85,12 @@ func (registry *Registry) Definitions() []Definition {
 	registry.mu.RLock()
 	defer registry.mu.RUnlock()
 	return append([]Definition(nil), registry.definitions...)
+}
+
+func (registry *Registry) WithInstances(operation func([]*Instance) error) error {
+	registry.mu.Lock()
+	defer registry.mu.Unlock()
+	return operation(slices.Collect(maps.Values(registry.instances)))
 }
 
 func (registry *Registry) Rename(id, name string) error {

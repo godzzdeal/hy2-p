@@ -1,4 +1,5 @@
 import { Caption } from "@/components/elements/Caption";
+import { HysteriaBadge } from "@/components/elements/hysteria";
 import { Card } from "@/components/ui/cards/Card";
 import { CardHeader } from "@/components/ui/cards/CardHeader";
 import { Button } from "@/components/ui/button/Button";
@@ -48,20 +49,31 @@ export function UpdateCard() {
           <RefreshCw width={24} height={24} aria-hidden />
         </Button>
       </CardHeader>
-      <div className="version-body p-4 grid gap-3">
+      <div className="version-body p-3 grid gap-2">
         <div className="version-controls flex items-end gap-3 flex-wrap">
           <Field
             htmlFor="core-version"
             className="m-0 min-w-48 flex-1 max-tablet:min-w-0 max-tablet:basis-full"
           >
-            {t("Версия HY2")}
+            <span className="flex items-center gap-2">
+              {t("Версия")} <HysteriaBadge />
+            </span>
             <Select
               id="core-version"
+              aria-label={t("Версия HY2")}
               value={version}
               disabled={versions.isPending || isBusy || !!versions.error}
               onValueChange={setSelected}
             >
               <SelectOption value="">{t("Выберите версию")}</SelectOption>
+              {current &&
+                version === current &&
+                !versions.data?.some((release) => release.tag === current) && (
+                  <SelectOption value={current}>
+                    {normalizeVersion(current)}
+                    {t(" (установлена)")}
+                  </SelectOption>
+                )}
               {versions.data?.map((release) => (
                 <ReleaseOption key={release.tag} release={release} current={current} />
               ))}

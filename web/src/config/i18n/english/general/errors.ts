@@ -11,8 +11,7 @@ export const ERRORS: Record<string, string> = {
     "Connection link export supports Salamander only; change obfs",
   "Экспорт режима Realm пока не поддерживается": "Realm export is not supported yet",
   "Экземпляр восстановлен, но состояние не сохранено: ": "Instance restored, but state could not be saved: ",
-  "Экземпляр готов к работе. Управляйте запуском и версиями ниже.":
-    "The instance is ready. Manage startup and versions below.",
+  "Экземпляр готов к работе.": "The instance is ready.",
   "Экземпляр запущен, но состояние отката не сохранено: ":
     "Instance started, but rollback state could not be saved: ",
   "Управление HY2": "HY2 control",

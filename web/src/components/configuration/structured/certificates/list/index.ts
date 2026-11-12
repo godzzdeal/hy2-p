@@ -1,0 +1,1 @@
+export { CertificateRow } from "./CertificateRow";

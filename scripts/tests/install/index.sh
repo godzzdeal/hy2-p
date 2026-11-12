@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-for install_test in wizard firewall; do
+for install_test in wizard firewall mimic; do
   # shellcheck source=/dev/null
   source "$(dirname -- "${BASH_SOURCE[0]}")/$install_test.sh"
 done

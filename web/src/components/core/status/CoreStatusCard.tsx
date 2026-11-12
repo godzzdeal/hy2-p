@@ -37,7 +37,6 @@ export function CoreStatusCard() {
           <Activity width={24} height={24} aria-hidden />
         </span>
         <div>
-          <span className="eyebrow tracking-normal">HYSTERIA 2</span>
           <h2>
             {query.isPending
               ? t("Проверяем состояние\u2026")
@@ -47,17 +46,20 @@ export function CoreStatusCard() {
           </h2>
           <p>
             {query.data?.available
-              ? t("Экземпляр готов к работе. Управляйте запуском и версиями ниже.")
+              ? t("Экземпляр готов к работе.")
               : t("Установите экземпляр и настройте конфигурацию для первого запуска.")}
           </p>
         </div>
         <span
           className={cn(
-            "engine-badge flex items-center gap-2 border border-line py-2 px-3 rounded-none text-lg text-muted whitespace-nowrap max-tablet:col-start-2 max-tablet:justify-self-start",
-            { "engine-badge-active text-accent bg-success-bg": isRunning },
+            "engine-badge flex items-center gap-2 text-lg text-muted whitespace-nowrap max-tablet:col-start-2 max-tablet:justify-self-start",
+            { "engine-badge-active text-accent": isRunning },
           )}
         >
-          <i />
+          <span
+            className={cn("connection-indicator inline-grid place-items-center", isRunning && "is-online")}
+            aria-hidden
+          />
           {isRunning ? t("В сети") : t("Не в сети")}
         </span>
       </div>
@@ -67,27 +69,30 @@ export function CoreStatusCard() {
         <Actions>
           <Button
             variant="primary"
+            title={t("Запустить")}
             disabled={isBusy || !query.data?.available || isRunning}
             onClick={() => control.mutate("start")}
           >
             <Power width={24} height={24} aria-hidden />
-            {t("Запустить")}
+            <span className="max-tablet:sr-only">{t("Запустить")}</span>
           </Button>
           <Button
             variant="secondary"
+            title={t("Перезапустить")}
             disabled={isBusy || !isRunning}
             onClick={() => control.mutate("restart")}
           >
             <RefreshCw width={24} height={24} aria-hidden />
-            {t("Перезапустить")}
+            <span className="max-tablet:sr-only">{t("Перезапустить")}</span>
           </Button>
           <Button
             variant="outline"
+            title={t("Остановить")}
             disabled={isBusy || (!isRunning && !watchdog?.desiredRunning)}
             onClick={() => control.mutate("stop")}
           >
             <Square width={24} height={24} aria-hidden />
-            {t("Остановить")}
+            <span className="max-tablet:sr-only">{t("Остановить")}</span>
           </Button>
         </Actions>
         <span className="caption">

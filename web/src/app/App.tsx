@@ -4,7 +4,7 @@ import { QueryState } from "@/components/ui/loading";
 import { useInstall } from "@/hooks/install/use-install";
 import { useSession } from "@/hooks/session/use-session";
 import { useTheme } from "@/hooks/use-theme";
-import { LoginPage } from "@/views/panel/LoginPage";
+import { LoginPage } from "@/components/session/LoginPage";
 import { Dashboard } from "@/components/layout/Dashboard";
 import { PanelProgress } from "@/components/panel/maintenance/progress/PanelProgress";
 import { ApplyPortProgress } from "@/components/configuration/ports/ApplyPortProgress";

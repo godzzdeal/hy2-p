@@ -4,6 +4,11 @@ rollback_panel() {
   previous=$(cat "$ROOT/previous" 2>/dev/null || true)
   snapshot=$(cat "$ROOT/rollback-backup" 2>/dev/null || true)
   valid_sha "$previous" && [[ -n $snapshot ]] || die "Предыдущая версия отсутствует."
+  if [[ $(env_read PANEL_MIMIC_ENABLED) == true ]]; then
+    # shellcheck source=/dev/null
+    source "$(dirname -- "${BASH_SOURCE[0]}")/../mimic/compose.sh"
+    mimic_release_supported "$previous"
+  fi
   if [[ ${2:-} != --yes ]]; then
     log "Откат восстановит версию и данные на момент $snapshot."
     log "Текущие данные сначала будут сохранены в отдельную копию."

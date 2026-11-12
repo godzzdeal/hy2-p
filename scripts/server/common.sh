@@ -45,7 +45,7 @@ state_write() {
   mv -f -- "$temporary" "$ROOT/$1"
 }
 compose() {
-  local sha=$1 release image
+  local sha=$1 release image mimic_instance='' mimic_public='' mimic_target=''
   shift
   release=$(release_path "$sha")
   image=$(image_for "$sha")
@@ -53,7 +53,15 @@ compose() {
   if [[ -f $release/compose.managed.yaml ]]; then arguments+=(-f "$release/compose.managed.yaml"); fi
   if [[ -f $ROOT/compose-udp.json ]]; then arguments+=(-f "$ROOT/compose-udp.json"); fi
   if [[ $(env_read PANEL_ACME_ENABLED) == true ]]; then arguments+=(-f "$release/compose.acme.yaml"); fi
-  PANEL_IMAGE=$image PANEL_CERTS_DIR=$ROOT/certs PANEL_INSTALL_DIR=$ROOT engine compose "${arguments[@]}" "$@"
+  if [[ $(env_read PANEL_MIMIC_ENABLED) == true ]]; then
+    [[ -f $release/scripts/server/mimic/compose.sh && -f $ROOT/compose-mimic.json ]] || die "Версия не поддерживает режим Mimic."
+    # shellcheck source=/dev/null
+    source "$release/scripts/server/mimic/compose.sh"
+    mimic_ports || die "Не найдены опубликованные порты экземпляра Mimic."
+    arguments+=(-f "$ROOT/compose-mimic.json")
+  fi
+  PANEL_MIMIC_INSTANCE=$mimic_instance MIMIC_PUBLIC_PORT=$mimic_public MIMIC_LISTEN_PORT=$mimic_target \
+    PANEL_IMAGE=$image PANEL_CERTS_DIR=$ROOT/certs PANEL_INSTALL_DIR=$ROOT engine compose "${arguments[@]}" "$@"
 }
 check_volume() {
   local owner

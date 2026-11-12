@@ -6,12 +6,6 @@
   .firewall-port-row {
     @apply gap-3;
   }
-  .firewall-port-info {
-    grid-template-columns: 104px minmax(0, 1fr);
-  }
-  .firewall-port-description small {
-    @apply text-muted wrap-anywhere;
-  }
   .firewall-help summary {
     @apply flex items-center gap-2 cursor-pointer list-none;
   }
@@ -26,10 +20,5 @@
   }
   .firewall-help summary:focus-visible {
     @apply outline-2 outline-accent outline-offset-4;
-  }
-  @variant max-tablet {
-    .firewall-port-info {
-      @apply grid-cols-1;
-    }
   }
 }

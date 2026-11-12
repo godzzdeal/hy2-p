@@ -7,8 +7,16 @@ export async function request<T>(path: string, options: IRequest = {}): Promise<
     response = await fetch("/api" + path, {
       method: options.method ?? "GET",
       signal: options.signal,
-      headers: { "Content-Type": "application/json", "X-Panel-Request": "1" },
-      body: options.body === undefined ? undefined : JSON.stringify(options.body),
+      headers:
+        options.body instanceof FormData
+          ? { "X-Panel-Request": "1" }
+          : { "Content-Type": "application/json", "X-Panel-Request": "1" },
+      body:
+        options.body instanceof FormData
+          ? options.body
+          : options.body === undefined
+            ? undefined
+            : JSON.stringify(options.body),
     });
   } catch {
     if (

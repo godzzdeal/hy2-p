@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 
 interface IFileDropzone extends IFileDropOptions {
   label: string;
-  hint: string;
+  hint?: string;
 }
 
 export function FileDropzone({ label, hint, ...options }: IFileDropzone) {
@@ -24,11 +24,11 @@ export function FileDropzone({ label, hint, ...options }: IFileDropzone) {
       <Button
         type="button"
         className={cn(
-          "file-dropzone w-full min-w-0 min-h-26 h-auto p-4 gap-4 border-line border-dashed bg-input text-left",
+          "file-dropzone w-full min-w-0 min-h-20 h-auto px-3 py-2 gap-3 border-line border-dashed bg-input text-left",
           { "file-dropzone-active": drop.isDragging },
         )}
         aria-label={t("Выбрать файл: {{label}}", { label })}
-        aria-describedby={hintId}
+        aria-describedby={hint ? hintId : undefined}
         aria-busy={drop.isReading}
         disabled={drop.isUnavailable}
         onClick={() => input.current?.click()}
@@ -37,21 +37,21 @@ export function FileDropzone({ label, hint, ...options }: IFileDropzone) {
         onDragOver={drop.onDragOver}
         onDrop={drop.onDrop}
       >
-        <Icon width={32} height={32} aria-hidden="true" />
-        <span className="file-dropzone-content grid gap-1 min-w-0 wrap-anywhere">
-          <strong>
+        <Icon width={24} height={24} aria-hidden="true" />
+        <span className="file-dropzone-content grid min-w-0 wrap-anywhere">
+          <strong className="text-lg leading-snug">
             {t(
               drop.isReading
                 ? "Обрабатываем файл…"
                 : drop.isDragging
                   ? "Отпустите файл для загрузки"
-                  : "Перетащите файл сюда",
+                  : "Перетащите файл",
             )}
           </strong>
           <span className="file-dropzone-name" role="status">
-            {drop.filename || t("или нажмите, чтобы выбрать")}
+            {drop.filename || t("или выберите")}
           </span>
-          <small id={hintId}>{hint}</small>
+          {hint && <small id={hintId}>{hint}</small>}
         </span>
       </Button>
       <Input

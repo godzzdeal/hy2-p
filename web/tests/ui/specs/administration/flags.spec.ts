@@ -9,7 +9,7 @@ test("default user flag can be saved and individual names remain editable", asyn
     if (route.request().method() === "PUT") settings = route.request().postDataJSON() as IAnnouncement;
     await route.fulfill({ json: settings });
   });
-  await page.getByRole("link", { name: "Подписки", exact: true }).click();
+  await page.getByRole("link", { name: "Подписка", exact: true }).click();
   await expandSettings(page);
   const picker = page.getByRole("combobox", { name: "Общий флаг пользователей", exact: true });
   await picker.click();

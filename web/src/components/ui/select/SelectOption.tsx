@@ -3,10 +3,12 @@ import { encodeSelectValue } from "@/components/ui/select/select-value";
 import * as Primitive from "@radix-ui/react-select";
 import { type ComponentProps } from "react";
 import { cn } from "@/utils/cn";
+import { useFieldsetDisabled } from "@/hooks/ui/use-fieldset";
 interface ISelectOption extends Omit<ComponentProps<typeof Primitive.Item>, "value"> {
   value: string | number;
 }
 export function SelectOption({ value, children, disabled, className, ...props }: ISelectOption) {
+  const isFieldsetDisabled = useFieldsetDisabled();
   return (
     <Primitive.Item
       {...props}
@@ -15,7 +17,7 @@ export function SelectOption({ value, children, disabled, className, ...props }:
         className,
       )}
       value={encodeSelectValue(value)}
-      disabled={disabled}
+      disabled={isFieldsetDisabled || disabled}
     >
       <Primitive.ItemText>{children}</Primitive.ItemText>
       <Primitive.ItemIndicator className={cn("flex w-6 shrink-0")}>

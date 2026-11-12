@@ -19,11 +19,17 @@ RUN CGO_ENABLED=0 go build -trimpath -ldflags "-X hy2-panel/internal/buildinfo.R
 RUN CGO_ENABLED=0 go build -trimpath -o /firewall-agent ./cmd/firewall-agent
 
 FROM ${HYSTERIA_IMAGE} AS core
+FROM alpine:3.22 AS mimic
+RUN apk add --no-cache build-base clang19 llvm19 libbpf-dev libffi-dev argp-standalone bpftool linux-headers pkgconf git
+RUN git init /mimic && cd /mimic && git remote add origin https://github.com/hack3ric/mimic.git && git fetch --depth 1 origin 96e0a316ec9b0b971866edada7bb3ccefe5a2d84 && git checkout --detach FETCH_HEAD && make -j2 build-cli MODE=release BPF_CC=clang-19 BPFTOOL=/usr/sbin/bpftool USE_LIBXDP=0 && git archive --format=tar.gz HEAD > /mimic-source.tar.gz
 FROM docker:28-cli AS docker-client
 FROM alpine:3.22
 ARG PANEL_REVISION=local
 LABEL io.hy2-panel.commit=${PANEL_REVISION}
-RUN apk add --no-cache bash curl git jq coreutils util-linux ca-certificates tzdata libstdc++ && addgroup -g 10001 panel && adduser -D -u 10001 -G panel panel && mkdir /data && chown panel:panel /data
+RUN apk add --no-cache bash curl git jq coreutils util-linux ca-certificates tzdata libstdc++ libbpf libffi && addgroup -g 10001 panel && adduser -D -u 10001 -G panel panel && mkdir /data && chown panel:panel /data
+COPY --from=mimic /mimic/out/mimic /usr/local/bin/mimic
+COPY --from=mimic /mimic/LICENSE /usr/share/licenses/mimic/LICENSE
+COPY --from=mimic /mimic-source.tar.gz /usr/share/doc/mimic/source.tar.gz
 COPY --from=core /usr/local/bin/hysteria /usr/local/bin/hysteria
 COPY --from=docker-client /usr/local/bin/docker /usr/local/bin/docker
 COPY --from=docker-client /usr/local/libexec/docker/cli-plugins/docker-compose /usr/local/libexec/docker/cli-plugins/docker-compose

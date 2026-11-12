@@ -12,7 +12,8 @@ export function useUserAccess(id: string) {
 }
 export function useSaveUserAccess(id: string) {
   const client = useQueryClient();
-  const { notify, showError } = useUiStore();
+  const notify = useUiStore((state) => state.notify);
+  const showError = useUiStore((state) => state.showError);
   const queryKey = [...QUERY_KEYS.userAccess, id];
   return useMutation({
     mutationFn: (policy: IUserAccess) => userAccessApi.save(id, policy),
